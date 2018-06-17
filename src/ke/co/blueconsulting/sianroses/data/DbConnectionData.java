@@ -8,6 +8,7 @@ import com.j256.ormlite.table.TableUtils;
 import ke.co.blueconsulting.sianroses.model.DbConnection;
 
 import java.io.File;
+import java.sql.SQLException;
 
 import static ke.co.blueconsulting.sianroses.MainApplication.CONSTANTS.APP_DIR_NAME;
 
@@ -15,23 +16,18 @@ public class DbConnectionData {
   
   private final static String DATABASE_NAME = "production.db";
   private Dao<DbConnection, Integer> dbConnectionDao;
-  private ConnectionSource connectionSource = null;
-  public DbConnection dbConnectionData;
   
-  public DbConnectionData() {
-    try {
-      Class.forName("org.sqlite.JDBC");
-      this.connectionSource = new JdbcConnectionSource(getDatabaseUrl());
-      setupDatabase();
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+  
+  public DbConnectionData() throws ClassNotFoundException, SQLException {
+    Class.forName("org.sqlite.JDBC");
+    ConnectionSource connectionSource = new JdbcConnectionSource(getDatabaseUrl());
+    dbConnectionDao = DaoManager.createDao(connectionSource, DbConnection.class);
+    TableUtils.createTableIfNotExists(connectionSource, DbConnection.class);
   }
   
   private String getDatabaseUrl() {
     String separator = File.separator;
     String directoryName = System.getProperty("user.home") + separator + APP_DIR_NAME + separator;
-    
     File directory = new File(directoryName);
     if (!directory.exists()) {
       directory.mkdirs();
@@ -40,22 +36,12 @@ public class DbConnectionData {
   }
   
   
-  private void setupDatabase() {
-    try {
-      dbConnectionDao = DaoManager.createDao(connectionSource, DbConnection.class);
-      TableUtils.createTableIfNotExists(connectionSource, DbConnection.class);
-      dbConnectionData = dbConnectionDao.queryForId(1);
-    } catch (Exception e) {
-      e.printStackTrace();
-    } finally {
-      if (dbConnectionData == null) {
-        dbConnectionData = new DbConnection();
-      }
-    }
+  public void save(DbConnection dbConnection) throws SQLException {
+    dbConnection.setId(1);
+    dbConnectionDao.createOrUpdate(dbConnection);
   }
   
-  
-  public DbConnection getDbConnectionData() {
-    return dbConnectionData;
+  public DbConnection getConnectionData() throws SQLException {
+    return dbConnectionDao.queryForId(1);
   }
 }

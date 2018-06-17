@@ -6,40 +6,39 @@ import com.j256.ormlite.table.DatabaseTable;
 @DatabaseTable(tableName = "db_connections")
 public class DbConnection {
   
-  public static final String DB_SERVER_ADDRESS = "server_address";
-  public static final String DB_SERVER_PORT = "server_port";
-  public static final String DB_NAME = "db_name";
-  public static final String DB_USERNAME = "db_username";
-  public static final String DB_PASSWORD = "db_password";
-  public static final String DB_SYNC_VALUE = "sync_value";
-  public static final String DB_SYNC_UNIT = "sync_unit";
-  
   @DatabaseField(generatedId = true)
   private int id;
   
-  @DatabaseField(columnName = DB_SERVER_ADDRESS, canBeNull = false)
+  @DatabaseField(columnName = "server_address", canBeNull = false)
   private String serverAddress = "";
   
-  @DatabaseField(columnName = DB_SERVER_PORT, canBeNull = false)
+  @DatabaseField(columnName = "server_port", canBeNull = false)
   private int serverPort;
   
-  @DatabaseField(columnName = DB_NAME, canBeNull = false)
+  @DatabaseField(columnName = "db_name", canBeNull = false)
   private String databaseName = "";
   
-  @DatabaseField(columnName = DB_USERNAME, canBeNull = false)
+  @DatabaseField(columnName = "db_username", canBeNull = false)
   private String databaseUsername = "";
   
-  @DatabaseField(columnName = DB_PASSWORD, canBeNull = false)
+  @DatabaseField(columnName = "db_password", canBeNull = false)
   private String databasePassword = "";
   
-  @DatabaseField(columnName = DB_SYNC_VALUE, canBeNull = false)
-  private int syncValue;
+  @DatabaseField(columnName = "sync_period", canBeNull = false)
+  private int syncPeriod;
   
-  @DatabaseField(columnName = DB_SYNC_UNIT, canBeNull = false)
-  private String syncUnit = "";
+  @DatabaseField(columnName = "sync_period_unit", canBeNull = false)
+  private String syncPeriodUnit = "";
   
   public DbConnection() {
+  }
   
+  public int getId() {
+    return id;
+  }
+  
+  public void setId(int id) {
+    this.id = id;
   }
   
   public String getServerAddress() {
@@ -82,19 +81,19 @@ public class DbConnection {
     this.databasePassword = databasePassword;
   }
   
-  public int getSyncValue() {
-    return syncValue;
+  public int getSyncPeriod() {
+    return syncPeriod;
   }
   
-  public void setSyncValue(int syncValue) {
-    this.syncValue = syncValue;
+  public void setSyncPeriod(int syncPeriod) {
+    this.syncPeriod = syncPeriod;
   }
   
-  public String getSyncUnit() {
-    return syncUnit;
+  public String getSyncPeriodUnit() {
+    return syncPeriodUnit;
   }
   
-  public void setSyncUnit(String syncUnit) {
-    this.syncUnit = syncUnit;
+  public void setSyncPeriodUnit(String syncPeriodUnit) {
+    this.syncPeriodUnit = syncPeriodUnit;
   }
 }

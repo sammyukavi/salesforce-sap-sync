@@ -2,18 +2,24 @@ package ke.co.blueconsulting.sianroses.presenter;
 
 import ke.co.blueconsulting.sianroses.BasePresenter;
 import ke.co.blueconsulting.sianroses.contract.SyncContract;
+import ke.co.blueconsulting.sianroses.data.DbConnectionData;
 import ke.co.blueconsulting.sianroses.fragment.SyncFragment;
+import ke.co.blueconsulting.sianroses.model.DbConnection;
+
+import java.sql.SQLException;
 
 public class SyncPresenter extends BasePresenter implements SyncContract.Presenter {
   private SyncContract.View syncFragment;
+  private DbConnectionData dbConnectionData;
   
-  public SyncPresenter(SyncFragment syncFragment) {
+  public SyncPresenter(SyncFragment syncFragment) throws SQLException, ClassNotFoundException {
     this.syncFragment = syncFragment;
+    this.dbConnectionData = new DbConnectionData();
   }
   
   @Override
   public void testConnection() {
-    syncFragment.showStatus(true);
+    syncFragment.setIsBusy(true);
     /*
     //syncFragment.showMessage("Connection Failed", ERROR);
 	  //http://41.72.195.70
@@ -58,5 +64,32 @@ public class SyncPresenter extends BasePresenter implements SyncContract.Present
   @Override
   public void sync() {
   
+  }
+  
+  @Override
+  public void saveConnectionDetails(String serverAddress, String serverPort, String databaseName,
+                                    String databaseUsername, String databasePassword, String syncPeriod,
+                                    String syncPeriodUnit) throws SQLException {
+    syncFragment.setIsBusy(true);
+    DbConnection dbConnection = new DbConnection();
+    dbConnection.setServerAddress(serverAddress);
+    dbConnection.setServerPort(Integer.parseInt(serverPort));
+    dbConnection.setDatabaseName(databaseName);
+    dbConnection.setDatabaseUsername(databaseUsername);
+    dbConnection.setDatabasePassword(databasePassword);
+    dbConnection.setSyncPeriod(Integer.parseInt(syncPeriod));
+    dbConnection.setSyncPeriodUnit(syncPeriodUnit);
+    dbConnectionData.save(dbConnection);
+    syncFragment.setIsBusy(false);
+  }
+  
+  @Override
+  public void getDbConnectionData() throws SQLException {
+    syncFragment.setIsBusy(true);
+    DbConnection connectionData = dbConnectionData.getConnectionData();
+    if (connectionData != null) {
+      syncFragment.updateUiFields(connectionData);
+    }
+    syncFragment.setIsBusy(false);
   }
 }
