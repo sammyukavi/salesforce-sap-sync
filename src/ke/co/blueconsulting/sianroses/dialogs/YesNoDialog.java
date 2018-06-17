@@ -10,6 +10,10 @@ import javax.swing.border.EmptyBorder;
 
 public class YesNoDialog extends JDialog {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6317245189234897873L;
 	private final JPanel contentPanel = new JPanel();
 
 	/**
