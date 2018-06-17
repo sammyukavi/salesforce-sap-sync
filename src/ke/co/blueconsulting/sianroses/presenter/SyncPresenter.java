@@ -4,13 +4,6 @@ import ke.co.blueconsulting.sianroses.BasePresenter;
 import ke.co.blueconsulting.sianroses.contract.SyncContract;
 import ke.co.blueconsulting.sianroses.fragment.SyncFragment;
 
-import static ke.co.blueconsulting.sianroses.MainApplication.MESSAGE_CODES.ERROR;
-
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
-
 public class SyncPresenter extends BasePresenter implements SyncContract.Presenter {
   private SyncContract.View syncFragment;
   
@@ -20,6 +13,8 @@ public class SyncPresenter extends BasePresenter implements SyncContract.Present
   
   @Override
   public void testConnection() {
+    syncFragment.showStatus(true);
+    /*
     //syncFragment.showMessage("Connection Failed", ERROR);
 	  //http://41.72.195.70
 	  
@@ -56,8 +51,8 @@ public class SyncPresenter extends BasePresenter implements SyncContract.Present
          if (rs != null) try { rs.close(); } catch(Exception e) {}  
          if (stmt != null) try { stmt.close(); } catch(Exception e) {}  
          if (con != null) try { con.close(); } catch(Exception e) {}  
-      }  	
-	  
+      }  	*/
+    
   }
   
   @Override

@@ -7,6 +7,9 @@ import ke.co.blueconsulting.sianroses.model.DbConnection;
 import ke.co.blueconsulting.sianroses.presenter.SyncPresenter;
 
 import javax.swing.*;
+import java.awt.*;
+import java.util.Arrays;
+import java.util.List;
 
 import static ke.co.blueconsulting.sianroses.MainApplication.MESSAGE_CODES.ERROR;
 
@@ -19,7 +22,10 @@ public class SyncFragment extends BaseFragment<SyncContract.Presenter> implement
   private JTextField databaseUsernameTextField;
   private JTextField databasePasswordTextField;
   private JTextField syncPeriodTextField;
+  private JProgressBar statusProgressBar;
   private DbConnection dbConnectionData;
+  private JButton testConnectionButton, saveConnectionButton, syncButton;
+  private JComboBox<String> syncPeriodComboBox;
   
   public SyncFragment() {
     DbConnectionData userDao = new DbConnectionData();
@@ -33,9 +39,15 @@ public class SyncFragment extends BaseFragment<SyncContract.Presenter> implement
     frmSyncDashboard = new JFrame();
     frmSyncDashboard.setResizable(false);
     frmSyncDashboard.setTitle("Sian Roses: Data Sync Dashboard");
-    frmSyncDashboard.setBounds(100, 100, 450, 350);
+    frmSyncDashboard.setBounds(100, 100, 450, 349);
     frmSyncDashboard.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     frmSyncDashboard.getContentPane().setLayout(null);
+    
+    statusProgressBar = new JProgressBar();
+    statusProgressBar.setIndeterminate(true);
+    statusProgressBar.setBounds(59, 295, 311, 14);
+    statusProgressBar.setVisible(false);
+    frmSyncDashboard.getContentPane().add(statusProgressBar);
     
     JLabel serverAddressLabel = new JLabel("Server Address");
     serverAddressLabel.setBounds(10, 11, 250, 15);
@@ -55,7 +67,9 @@ public class SyncFragment extends BaseFragment<SyncContract.Presenter> implement
     serverPortTextField.setBounds(275, 36, 150, 20);
     frmSyncDashboard.getContentPane().add(serverPortTextField);
     serverPortTextField.setColumns(10);
-    serverPortTextField.setText(String.valueOf(dbConnectionData.getServerPort()));
+    if (dbConnectionData.getServerPort() != 0) {
+      serverPortTextField.setText(String.valueOf(dbConnectionData.getServerPort()));
+    }
     
     JLabel databaseNameLabel = new JLabel("Database Name");
     databaseNameLabel.setBounds(10, 67, 255, 14);
@@ -96,29 +110,29 @@ public class SyncFragment extends BaseFragment<SyncContract.Presenter> implement
     frmSyncDashboard.getContentPane().add(syncPeriodTextField);
     syncPeriodTextField.setColumns(10);
     
-    JComboBox<String> syncPeriodComboBox = new JComboBox<>();
+    syncPeriodComboBox = new JComboBox<>();
     syncPeriodComboBox.setModel(new DefaultComboBoxModel<>(new String[]{"Minute(s)", "Hour(s)", "Day(s)", "Week(s)", "Month(s)", "Year(s)"}));
     syncPeriodComboBox.setBounds(145, 254, 120, 20);
     frmSyncDashboard.getContentPane().add(syncPeriodComboBox);
     
-    JButton testConnectionButton = new JButton("Test Connection");
-    testConnectionButton.setBounds(287, 203, 138, 23);
+    testConnectionButton = new JButton("Test Connection");
+    testConnectionButton.setBounds(287, 185, 138, 23);
     testConnectionButton.addActionListener(event -> {
       mPresenter.testConnection();
     });
     frmSyncDashboard.getContentPane().add(testConnectionButton);
-  
-    JButton saveConnectionButton = new JButton("Save");
-    saveConnectionButton.setBounds(287, 230, 138, 23);
+    
+    saveConnectionButton = new JButton("Save");
+    saveConnectionButton.setBounds(287, 219, 138, 23);
     frmSyncDashboard.getContentPane().add(saveConnectionButton);
     saveConnectionButton.addActionListener(event -> {
     
     });
     
-    JButton startSyncButton = new JButton("Sync");
-    startSyncButton.setBounds(287, 253, 138, 23);
-    frmSyncDashboard.getContentPane().add(startSyncButton);
-    startSyncButton.addActionListener(event -> {
+    syncButton = new JButton("Sync");
+    syncButton.setBounds(287, 253, 138, 23);
+    frmSyncDashboard.getContentPane().add(syncButton);
+    syncButton.addActionListener(event -> {
     
     });
   }
@@ -130,4 +144,25 @@ public class SyncFragment extends BaseFragment<SyncContract.Presenter> implement
         break;
     }
   }
+  
+  @Override
+  public void showStatus(boolean isBusy) {
+    List<Container> containerList = Arrays.asList(serverAddressTextField, serverPortTextField, databaseNameTextField,
+        databaseUsernameTextField, databasePasswordTextField, syncPeriodTextField, syncPeriodComboBox, testConnectionButton,
+        saveConnectionButton, syncButton);
+    if (isBusy) {
+      enableContainers(false, containerList);
+      statusProgressBar.setVisible(true);
+    } else {
+      statusProgressBar.setVisible(false);
+      enableContainers(true, containerList);
+    }
+  }
+  
+  private void enableContainers(boolean enabled, List<Container> containerList) {
+    for (Container container : containerList) {
+      container.setEnabled(enabled);
+    }
+  }
+  
 }
