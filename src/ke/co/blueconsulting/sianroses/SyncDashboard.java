@@ -1,6 +1,5 @@
-package ke.co.blueconsulting.sianroses.fragment;
+package ke.co.blueconsulting.sianroses;
 
-import ke.co.blueconsulting.sianroses.BaseFragment;
 import ke.co.blueconsulting.sianroses.contract.SyncContract;
 import ke.co.blueconsulting.sianroses.model.DbConnection;
 import ke.co.blueconsulting.sianroses.presenter.SyncPresenter;
@@ -11,11 +10,19 @@ import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 
-import static ke.co.blueconsulting.sianroses.MainApplication.MESSAGE_CODES.ERROR;
+import static ke.co.blueconsulting.sianroses.SyncDashboard.MESSAGE_CODES.ERROR;
 
-public class SyncFragment extends BaseFragment<SyncContract.Presenter> implements SyncContract.View {
+public class SyncDashboard implements SyncContract.View {
   
+  public static class CONSTANTS {
+    public static final String APP_DIR_NAME = ".sianroses";
+  }
   
+  static class MESSAGE_CODES {
+    static final int ERROR = 1;
+  }
+  
+  private SyncPresenter mPresenter;
   private JTextField serverAddressTextField;
   private JTextField serverPortTextField;
   private JTextField databaseNameTextField;
@@ -26,12 +33,8 @@ public class SyncFragment extends BaseFragment<SyncContract.Presenter> implement
   private JButton testConnectionButton, saveConnectionButton, syncButton;
   private JComboBox<String> syncPeriodComboBox;
   
-  public SyncFragment() {
-    try {
-      mPresenter = new SyncPresenter(this);
-    } catch (SQLException | ClassNotFoundException e) {
-      e.printStackTrace();
-    }
+  private SyncDashboard() throws SQLException, ClassNotFoundException {
+    mPresenter = new SyncPresenter(this);
     initViews();
   }
   
@@ -128,23 +131,32 @@ public class SyncFragment extends BaseFragment<SyncContract.Presenter> implement
     
     saveConnectionButton.addActionListener(event -> {
       try {
-        mPresenter.saveConnectionDetails(serverAddressTextField.getText(), serverPortTextField.getText(),
-            databaseNameTextField.getText(), databaseUsernameTextField.getText(), databasePasswordTextField.getText(),
-            syncPeriodTextField.getText(), syncPeriodComboBox.getSelectedItem().toString());
-      } catch (SQLException e) {
-        e.printStackTrace();
+        if (fieldsAreValid()) {
+          mPresenter.saveConnectionDetails(serverAddressTextField.getText(), serverPortTextField.getText(),
+              databaseNameTextField.getText(), databaseUsernameTextField.getText(), databasePasswordTextField.getText(),
+              syncPeriodTextField.getText(), syncPeriodComboBox.getSelectedItem().toString());
+        }
+      } catch (Exception e) {
+        showError("A fatal app error has occurred.\n" + e.getMessage());
       }
     });
     
     syncButton.addActionListener(event -> {
     
     });
+    
     frmSyncDashboard.setVisible(true);
+    
     try {
       mPresenter.getDbConnectionData();
-    } catch (SQLException e) {
-      e.printStackTrace();
+    } catch (Exception e) {
+      showError("A fatal app error has occurred.\n" + e.getMessage());
     }
+  }
+  
+  private boolean fieldsAreValid() {
+    
+    return false;
   }
   
   @Override
@@ -186,6 +198,24 @@ public class SyncFragment extends BaseFragment<SyncContract.Presenter> implement
     for (Container container : containerList) {
       container.setEnabled(enabled);
     }
+  }
+  
+  private static void showError(String title, String message) {
+    JOptionPane.showMessageDialog(null, message, title, JOptionPane.ERROR_MESSAGE);
+  }
+  
+  private static void showError(String message) {
+    JOptionPane.showMessageDialog(null, message, "Fatal Error", JOptionPane.ERROR_MESSAGE);
+  }
+  
+  public static void main(String[] args) {
+    EventQueue.invokeLater(() -> {
+      try {
+        new SyncDashboard();
+      } catch (Exception e) {
+        showError("Fatal Error", "A fatal app error has occurred.\n" + e.getMessage());
+      }
+    });
   }
   
 }

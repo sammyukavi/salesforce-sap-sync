@@ -1,18 +1,17 @@
 package ke.co.blueconsulting.sianroses.contract;
 
-import ke.co.blueconsulting.sianroses.BaseView;
 import ke.co.blueconsulting.sianroses.model.DbConnection;
 
 import java.sql.SQLException;
 
 public class SyncContract {
   
-  public interface View extends BaseView<Presenter> {
+  public interface View {
     
     void showMessage(String message, int error_code);
     
     void setIsBusy(boolean isBusy);
-  
+    
     void updateUiFields(DbConnection dbConnectionData);
   }
   
