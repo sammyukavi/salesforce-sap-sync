@@ -2,7 +2,7 @@ package ke.co.blueconsulting.sianroses.presenter;
 
 import ke.co.blueconsulting.sianroses.SyncDashboard;
 import ke.co.blueconsulting.sianroses.contract.SyncContract;
-import ke.co.blueconsulting.sianroses.data.DbConnectionData;
+import ke.co.blueconsulting.sianroses.data.sqlite.DbConnectionData;
 import ke.co.blueconsulting.sianroses.model.DbConnection;
 
 import java.sql.SQLException;

@@ -1,4 +1,4 @@
-package ke.co.blueconsulting.sianroses.data;
+package ke.co.blueconsulting.sianroses.data.sqlite;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
