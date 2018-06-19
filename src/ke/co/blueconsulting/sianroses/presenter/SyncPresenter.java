@@ -1,10 +1,12 @@
 package ke.co.blueconsulting.sianroses.presenter;
 
 
+import com.j256.ormlite.dao.Dao;
 import ke.co.blueconsulting.sianroses.SyncDashboard;
 import ke.co.blueconsulting.sianroses.contract.SyncContract;
 import ke.co.blueconsulting.sianroses.data.mssql.DbManager;
 import ke.co.blueconsulting.sianroses.data.sqlite.DbConnectionData;
+import ke.co.blueconsulting.sianroses.model.Arcredit;
 import ke.co.blueconsulting.sianroses.model.DbUser;
 
 import java.sql.SQLException;
@@ -15,6 +17,7 @@ public class SyncPresenter implements SyncContract.Presenter {
   private Thread connectThread;
   private DbManager dbManager;
   
+  
   public SyncPresenter(SyncDashboard syncDashboard) throws SQLException, ClassNotFoundException {
     this.syncDashboard = syncDashboard;
     this.dbConnectionData = new DbConnectionData();
@@ -24,15 +27,21 @@ public class SyncPresenter implements SyncContract.Presenter {
   @Override
   public void testConnection(String serverAddress, String serverPort, String databaseName,
                              String databaseUsername, String databasePassword) {
+    final boolean[] connectionSuccessful = {false};
     syncDashboard.setIsBusy(true);
     connectThread = new Thread(() -> {
       try {
-        dbManager.testOrmLiteConnection(serverAddress, serverPort, databaseName, databaseUsername, databasePassword);
-      } catch (SQLException e) {
-        syncDashboard.showError(e.getLocalizedMessage());
+        if (dbManager.testConnection(serverAddress, serverPort, databaseName, databaseUsername, databasePassword)) {
+          connectionSuccessful[0] = true;
+        }
+      } catch (ClassNotFoundException | SQLException e) {
+        syncDashboard.showErrorMessage(e.getLocalizedMessage());
       } finally {
+        syncDashboard.setIsBusy(false);
+        if (connectionSuccessful[0]) {
+          syncDashboard.showSuccessMessage("Connection Successful");
+        }
         try {
-          syncDashboard.setIsBusy(false);
           connectThread.join();
         } catch (Exception ignored) {
         }
@@ -42,8 +51,9 @@ public class SyncPresenter implements SyncContract.Presenter {
   }
   
   @Override
-  public void sync() {
-  
+  public void sync() throws SQLException {
+    Dao<Arcredit, Integer> arcreditDao = dbManager.createDao(Arcredit.class);
+    arcreditDao.queryForAll();
   }
   
   @Override

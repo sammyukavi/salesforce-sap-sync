@@ -3,6 +3,9 @@ package ke.co.blueconsulting.sianroses.model;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+/**
+ * This is the model used for storing the database login details.
+ */
 @DatabaseTable(tableName = "db_connections")
 public class DbUser {
   

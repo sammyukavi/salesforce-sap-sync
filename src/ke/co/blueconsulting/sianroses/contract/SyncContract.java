@@ -8,13 +8,15 @@ public class SyncContract {
   
   public interface View {
     
-    void showError(String message);
+    void showErrorMessage(String message);
     
-    void showError(String title, String message);
+    void showErrorMessage(String title, String message);
     
     void setIsBusy(boolean isBusy);
     
     void updateUiFields(DbUser dbUserData);
+  
+    void showSuccessMessage(String message);
   }
   
   public interface Presenter {
@@ -22,7 +24,7 @@ public class SyncContract {
     void testConnection(String serverAddress, String serverPort, String databaseName,
                         String databaseUsername, String databasePassword) throws InterruptedException;
     
-    void sync();
+    void sync() throws SQLException;
     
     void saveConnectionDetails(String serverAddress, String serverPort, String databaseName, String databaseUsername,
                                String databasePassword, String syncPeriod, String syncPeriodUnit) throws SQLException;
