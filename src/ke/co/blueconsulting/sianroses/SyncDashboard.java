@@ -1,7 +1,7 @@
 package ke.co.blueconsulting.sianroses;
 
 import ke.co.blueconsulting.sianroses.contract.SyncContract;
-import ke.co.blueconsulting.sianroses.model.DbConnection;
+import ke.co.blueconsulting.sianroses.model.DbUser;
 import ke.co.blueconsulting.sianroses.presenter.SyncPresenter;
 import ke.co.blueconsulting.sianroses.util.StringUtils;
 
@@ -16,10 +16,6 @@ public class SyncDashboard implements SyncContract.View {
   
   public static class CONSTANTS {
     public static final String APP_DIR_NAME = ".sianroses";
-  }
-  
-  static class MESSAGE_CODES {
-    static final int ERROR = 1;
   }
   
   private SyncPresenter mPresenter;
@@ -42,8 +38,14 @@ public class SyncDashboard implements SyncContract.View {
     initViews();
   }
   
-  private SyncDashboard(String param) {
-  
+  private SyncDashboard(boolean blankNewInstance) {
+    if (!blankNewInstance) {
+      try {
+        new SyncDashboard();
+      } catch (SQLException | ClassNotFoundException e) {
+        e.printStackTrace();
+      }
+    }
   }
   
   private void initViews() {
@@ -212,16 +214,16 @@ public class SyncDashboard implements SyncContract.View {
   }
   
   @Override
-  public void updateUiFields(DbConnection dbConnection) {
-    serverAddressTextField.setText(dbConnection.getServerAddress());
-    if (dbConnection.getServerPort() != 0) {
-      serverPortTextField.setText(String.valueOf(dbConnection.getServerPort()));
+  public void updateUiFields(DbUser dbUser) {
+    serverAddressTextField.setText(dbUser.getServerAddress());
+    if (dbUser.getServerPort() != 0) {
+      serverPortTextField.setText(String.valueOf(dbUser.getServerPort()));
     }
-    databaseNameTextField.setText(dbConnection.getDatabaseName());
-    databaseUsernameTextField.setText(dbConnection.getDatabaseUsername());
-    databasePasswordTextField.setText(dbConnection.getDatabasePassword());
-    syncPeriodTextField.setText(String.valueOf(dbConnection.getSyncPeriod()));
-    syncPeriodUnitComboBox.setSelectedItem(dbConnection.getSyncPeriodUnit());
+    databaseNameTextField.setText(dbUser.getDatabaseName());
+    databaseUsernameTextField.setText(dbUser.getDatabaseUsername());
+    databasePasswordTextField.setText(dbUser.getDatabasePassword());
+    syncPeriodTextField.setText(String.valueOf(dbUser.getSyncPeriod()));
+    syncPeriodUnitComboBox.setSelectedItem(dbUser.getSyncPeriodUnit());
   }
   
   
@@ -323,7 +325,7 @@ public class SyncDashboard implements SyncContract.View {
   }
   
   private static SyncDashboard getInstance() {
-    return new SyncDashboard("");
+    return new SyncDashboard(true);
   }
   
 }

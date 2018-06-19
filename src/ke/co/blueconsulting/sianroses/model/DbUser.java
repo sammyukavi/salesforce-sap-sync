@@ -4,7 +4,7 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable(tableName = "db_connections")
-public class DbConnection {
+public class DbUser {
   
   @DatabaseField(generatedId = true)
   private int id;
@@ -30,7 +30,7 @@ public class DbConnection {
   @DatabaseField(columnName = "sync_period_unit", canBeNull = false)
   private String syncPeriodUnit = "";
   
-  public DbConnection() {
+  public DbUser() {
   }
   
   public int getId() {

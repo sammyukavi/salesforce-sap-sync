@@ -3,9 +3,9 @@ package ke.co.blueconsulting.sianroses.presenter;
 
 import ke.co.blueconsulting.sianroses.SyncDashboard;
 import ke.co.blueconsulting.sianroses.contract.SyncContract;
-import ke.co.blueconsulting.sianroses.data.mssql.DaoManager;
+import ke.co.blueconsulting.sianroses.data.mssql.DbManager;
 import ke.co.blueconsulting.sianroses.data.sqlite.DbConnectionData;
-import ke.co.blueconsulting.sianroses.model.DbConnection;
+import ke.co.blueconsulting.sianroses.model.DbUser;
 
 import java.sql.SQLException;
 
@@ -13,12 +13,12 @@ public class SyncPresenter implements SyncContract.Presenter {
   private SyncContract.View syncDashboard;
   private DbConnectionData dbConnectionData;
   private Thread connectThread;
-  private DaoManager daoManager;
+  private DbManager dbManager;
   
   public SyncPresenter(SyncDashboard syncDashboard) throws SQLException, ClassNotFoundException {
     this.syncDashboard = syncDashboard;
     this.dbConnectionData = new DbConnectionData();
-    this.daoManager = new DaoManager();
+    this.dbManager = new DbManager();
   }
   
   @Override
@@ -27,16 +27,14 @@ public class SyncPresenter implements SyncContract.Presenter {
     syncDashboard.setIsBusy(true);
     connectThread = new Thread(() -> {
       try {
-        daoManager.testConnection(serverAddress, serverPort, databaseName, databaseUsername, databasePassword);
-      } catch (ClassNotFoundException | SQLException e) {
-        e.printStackTrace();
+        dbManager.testOrmLiteConnection(serverAddress, serverPort, databaseName, databaseUsername, databasePassword);
+      } catch (SQLException e) {
         syncDashboard.showError(e.getLocalizedMessage());
       } finally {
         try {
           syncDashboard.setIsBusy(false);
           connectThread.join();
-        } catch (Exception ex) {
-          ex.printStackTrace();
+        } catch (Exception ignored) {
         }
       }
     });
@@ -54,15 +52,15 @@ public class SyncPresenter implements SyncContract.Presenter {
                                     String syncPeriodUnit) throws SQLException {
     syncDashboard.setIsBusy(true);
     try {
-      DbConnection dbConnection = new DbConnection();
-      dbConnection.setServerAddress(serverAddress);
-      dbConnection.setServerPort(Integer.parseInt(serverPort));
-      dbConnection.setDatabaseName(databaseName);
-      dbConnection.setDatabaseUsername(databaseUsername);
-      dbConnection.setDatabasePassword(databasePassword);
-      dbConnection.setSyncPeriod(Integer.parseInt(syncPeriod));
-      dbConnection.setSyncPeriodUnit(syncPeriodUnit);
-      dbConnectionData.save(dbConnection);
+      DbUser dbUser = new DbUser();
+      dbUser.setServerAddress(serverAddress);
+      dbUser.setServerPort(Integer.parseInt(serverPort));
+      dbUser.setDatabaseName(databaseName);
+      dbUser.setDatabaseUsername(databaseUsername);
+      dbUser.setDatabasePassword(databasePassword);
+      dbUser.setSyncPeriod(Integer.parseInt(syncPeriod));
+      dbUser.setSyncPeriodUnit(syncPeriodUnit);
+      dbConnectionData.save(dbUser);
     } finally {
       syncDashboard.setIsBusy(false);
     }
@@ -72,7 +70,7 @@ public class SyncPresenter implements SyncContract.Presenter {
   public void getDbConnectionData() throws SQLException {
     syncDashboard.setIsBusy(true);
     try {
-      DbConnection connectionData = dbConnectionData.getConnectionData();
+      DbUser connectionData = dbConnectionData.getConnectionData();
       if (connectionData != null) {
         syncDashboard.updateUiFields(connectionData);
       }

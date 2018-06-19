@@ -1,6 +1,6 @@
 package ke.co.blueconsulting.sianroses.contract;
 
-import ke.co.blueconsulting.sianroses.model.DbConnection;
+import ke.co.blueconsulting.sianroses.model.DbUser;
 
 import java.sql.SQLException;
 
@@ -14,7 +14,7 @@ public class SyncContract {
     
     void setIsBusy(boolean isBusy);
     
-    void updateUiFields(DbConnection dbConnectionData);
+    void updateUiFields(DbUser dbUserData);
   }
   
   public interface Presenter {
