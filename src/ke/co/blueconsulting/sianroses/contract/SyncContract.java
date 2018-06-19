@@ -8,7 +8,9 @@ public class SyncContract {
   
   public interface View {
     
-    void showMessage(String message, int error_code);
+    void showError(String message);
+    
+    void showError(String title, String message);
     
     void setIsBusy(boolean isBusy);
     
@@ -17,7 +19,8 @@ public class SyncContract {
   
   public interface Presenter {
     
-    void testConnection();
+    void testConnection(String serverAddress, String serverPort, String databaseName,
+                        String databaseUsername, String databasePassword) throws InterruptedException;
     
     void sync();
     

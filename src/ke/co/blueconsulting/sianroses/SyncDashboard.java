@@ -12,8 +12,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static ke.co.blueconsulting.sianroses.SyncDashboard.MESSAGE_CODES.ERROR;
-
 public class SyncDashboard implements SyncContract.View {
   
   public static class CONSTANTS {
@@ -29,7 +27,7 @@ public class SyncDashboard implements SyncContract.View {
   private JTextField serverPortTextField;
   private JTextField databaseNameTextField;
   private JTextField databaseUsernameTextField;
-  private JTextField databasePasswordTextField;
+  private JPasswordField databasePasswordTextField;
   private JTextField syncPeriodTextField;
   private JProgressBar statusProgressBar;
   private JButton testConnectionButton, saveConnectionButton, syncButton;
@@ -42,6 +40,10 @@ public class SyncDashboard implements SyncContract.View {
   private SyncDashboard() throws SQLException, ClassNotFoundException {
     mPresenter = new SyncPresenter(this);
     initViews();
+  }
+  
+  private SyncDashboard(String param) {
+  
   }
   
   private void initViews() {
@@ -121,7 +123,7 @@ public class SyncDashboard implements SyncContract.View {
     databasePasswordLabel.setBounds(10, 179, 255, 14);
     frmSyncDashboard.getContentPane().add(databasePasswordLabel);
     
-    databasePasswordTextField = new JTextField();
+    databasePasswordTextField = new JPasswordField();
     databasePasswordTextField.setToolTipText("Enter the database password");
     databasePasswordTextField.setColumns(10);
     databasePasswordTextField.setBounds(10, 204, 255, 20);
@@ -130,6 +132,7 @@ public class SyncDashboard implements SyncContract.View {
     JLabel syncPeriodLabel = new JLabel("Sync Period");
     syncPeriodLabel.setBounds(10, 235, 255, 14);
     frmSyncDashboard.getContentPane().add(syncPeriodLabel);
+    
     
     syncPeriodTextField = new JTextField();
     syncPeriodTextField.setToolTipText("Enter the duration between synchronisation");
@@ -173,14 +176,21 @@ public class SyncDashboard implements SyncContract.View {
     frmSyncDashboard.getContentPane().add(syncButton);
     
     testConnectionButton.addActionListener(event -> {
-      mPresenter.testConnection();
+      try {
+        if (fieldsAreValid()) {
+          mPresenter.testConnection(serverAddressTextField.getText(), serverPortTextField.getText(),
+              databaseNameTextField.getText(), databaseUsernameTextField.getText(), new String(databasePasswordTextField.getPassword()));
+        }
+      } catch (Exception e) {
+        showError("A fatal app error has occurred.\n" + e.getMessage());
+      }
     });
     
     saveConnectionButton.addActionListener(event -> {
       try {
         if (fieldsAreValid()) {
           mPresenter.saveConnectionDetails(serverAddressTextField.getText(), serverPortTextField.getText(),
-              databaseNameTextField.getText(), databaseUsernameTextField.getText(), databasePasswordTextField.getText(),
+              databaseNameTextField.getText(), databaseUsernameTextField.getText(), new String(databasePasswordTextField.getPassword()),
               syncPeriodTextField.getText(), syncPeriodUnitComboBox.getSelectedItem().toString());
         }
       } catch (Exception e) {
@@ -214,13 +224,6 @@ public class SyncDashboard implements SyncContract.View {
     syncPeriodUnitComboBox.setSelectedItem(dbConnection.getSyncPeriodUnit());
   }
   
-  @Override
-  public void showMessage(String message, int error_code) {
-    switch (error_code) {
-      case ERROR:
-        break;
-    }
-  }
   
   @Override
   public void setIsBusy(boolean isBusy) {
@@ -242,11 +245,13 @@ public class SyncDashboard implements SyncContract.View {
     }
   }
   
-  private static void showError(String title, String message) {
+  @Override
+  public void showError(String title, String message) {
     JOptionPane.showMessageDialog(null, message, title, JOptionPane.ERROR_MESSAGE);
   }
   
-  private static void showError(String message) {
+  @Override
+  public void showError(String message) {
     JOptionPane.showMessageDialog(null, message, "Fatal Error", JOptionPane.ERROR_MESSAGE);
   }
   
@@ -258,7 +263,7 @@ public class SyncDashboard implements SyncContract.View {
     String port = serverPortTextField.getText().trim();
     String dbName = databaseNameTextField.getText().trim();
     String dbUserName = databaseUsernameTextField.getText().trim();
-    String dbPassword = databasePasswordTextField.getText().trim();
+    String dbPassword = new String(databasePasswordTextField.getPassword()).trim();
     String syncPeriod = syncPeriodTextField.getText().trim();
     String syncPeriodUnit = syncPeriodUnitComboBox.getSelectedItem().toString().trim();
     
@@ -267,9 +272,6 @@ public class SyncDashboard implements SyncContract.View {
       isValid = false;
     } else if (StringUtils.isBlank(port) || StringUtils.isNullOrEmpty(port)) {
       messages.add("Server port is required");
-      isValid = false;
-    } else if (!StringUtils.isValidURL(serverAddress.concat(":").concat(port))) {
-      messages.add("Use a valid URL for the server address");
       isValid = false;
     }
     
@@ -310,13 +312,18 @@ public class SyncDashboard implements SyncContract.View {
   }
   
   public static void main(String[] args) {
+    
     EventQueue.invokeLater(() -> {
       try {
         new SyncDashboard();
       } catch (Exception e) {
-        showError("Fatal Error", "A fatal app error has occurred.\n" + e.getMessage());
+        SyncDashboard.getInstance().showError("Fatal Error", "A fatal app error has occurred.\n" + e.getMessage());
       }
     });
+  }
+  
+  private static SyncDashboard getInstance() {
+    return new SyncDashboard("");
   }
   
 }

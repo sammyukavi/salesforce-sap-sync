@@ -1,5 +1,6 @@
 package ke.co.blueconsulting.sianroses.util;
 
+import org.apache.commons.validator.routines.InetAddressValidator;
 import org.apache.commons.validator.routines.UrlValidator;
 
 import javax.swing.*;
@@ -21,6 +22,11 @@ public class StringUtils {
     String[] schemes = {"http", "https"};
     UrlValidator urlValidator = new UrlValidator(schemes);
     return urlValidator.isValid(url);
+  }
+  
+  public static boolean isValidIP(String ip) {
+    InetAddressValidator addressValidator = new InetAddressValidator();
+    return addressValidator.isValid(ip);
   }
   
   public static boolean notNull(String string) {
