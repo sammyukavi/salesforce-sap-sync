@@ -30,20 +30,20 @@ public class DbManager {
         ";password=" + connectionData.getDatabasePassword();
   }
   
-  public boolean testConnection(String serverAddress, String serverPort, String databaseName,
-                                String databaseUsername, String databasePassword) throws ClassNotFoundException, SQLException {
+  public boolean testServerConnection(String serverAddress, String serverPort, String databaseName,
+                                      String databaseUsername, String databasePassword) throws ClassNotFoundException, SQLException {
     String connectionUrl = "jdbc:sqlserver://" + serverAddress + ":" + serverPort + ";" + "databaseName=" +
         databaseName + ";user=" + databaseUsername + ";password=" + databasePassword;
-    Connection con = null;
+    Connection connection = null;
     boolean status;
     try {
       Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-      con = DriverManager.getConnection(connectionUrl);
+      connection = DriverManager.getConnection(connectionUrl);
       status = true;
     } finally {
-      if (con != null) {
+      if (connection != null) {
         try {
-          con.close();
+          connection.close();
         } catch (Exception ignored) {
         }
       }

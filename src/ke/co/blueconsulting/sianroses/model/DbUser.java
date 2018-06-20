@@ -4,7 +4,7 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 /**
- * This is the model used for storing the database login details.
+ * This model is used for storing the user credentials used to login to MSSQL Server.
  */
 @DatabaseTable(tableName = "db_connections")
 public class DbUser {

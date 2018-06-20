@@ -6,7 +6,7 @@ import ke.co.blueconsulting.sianroses.SyncDashboard;
 import ke.co.blueconsulting.sianroses.contract.SyncContract;
 import ke.co.blueconsulting.sianroses.data.mssql.DbManager;
 import ke.co.blueconsulting.sianroses.data.sqlite.DbConnectionData;
-import ke.co.blueconsulting.sianroses.model.Arcredit;
+import ke.co.blueconsulting.sianroses.model.ArCredit;
 import ke.co.blueconsulting.sianroses.model.DbUser;
 
 import java.sql.SQLException;
@@ -31,7 +31,7 @@ public class SyncPresenter implements SyncContract.Presenter {
     syncDashboard.setIsBusy(true);
     connectThread = new Thread(() -> {
       try {
-        if (dbManager.testConnection(serverAddress, serverPort, databaseName, databaseUsername, databasePassword)) {
+        if (dbManager.testServerConnection(serverAddress, serverPort, databaseName, databaseUsername, databasePassword)) {
           connectionSuccessful[0] = true;
         }
       } catch (ClassNotFoundException | SQLException e) {
@@ -52,8 +52,11 @@ public class SyncPresenter implements SyncContract.Presenter {
   
   @Override
   public void sync() throws SQLException {
-    Dao<Arcredit, Integer> arcreditDao = dbManager.createDao(Arcredit.class);
-    arcreditDao.queryForAll();
+    Dao<ArCredit, Integer> arCreditDao = dbManager.createDao(ArCredit.class);
+    //arcreditDao.queryForAll();
+    ArCredit arCredit = new ArCredit();
+    arCredit.setFarmC("Test");
+    arCreditDao.create(arCredit);
   }
   
   @Override
