@@ -9,7 +9,7 @@ import java.util.Date;
 public class CustomerContacts {
   
   @DatabaseField(generatedId = true, columnName = "AUTOID")
-  private int id;
+  private int autoId;
   
   @DatabaseField(columnName = "CONTACTID")
   private String contactId;
@@ -63,12 +63,12 @@ public class CustomerContacts {
   private Character pullFromSap;
   
   
-  public int getId() {
-    return id;
+  public int getAutoId() {
+    return autoId;
   }
   
-  public void setId(int id) {
-    this.id = id;
+  public void setAutoId(int autoId) {
+    this.autoId = autoId;
   }
   
   public String getContactId() {

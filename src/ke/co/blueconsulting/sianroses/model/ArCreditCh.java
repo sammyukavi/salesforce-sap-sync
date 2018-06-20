@@ -9,7 +9,7 @@ import java.util.Date;
 public class ArCreditCh {
   
   @DatabaseField(generatedId = true, columnName = "AUTOID")
-  private int id;
+  private int autoId;
   
   @DatabaseField(columnName = "ERP_ID__c")
   private String erpId;
@@ -44,12 +44,12 @@ public class ArCreditCh {
   @DatabaseField(columnName = "Pull_from_SAP__c")
   private Character pullFromSap;
   
-  public int getId() {
-    return id;
+  public int getAutoId() {
+    return autoId;
   }
   
-  public void setId(int id) {
-    this.id = id;
+  public void setAutoId(int autoId) {
+    this.autoId = autoId;
   }
   
   public String getErpId() {

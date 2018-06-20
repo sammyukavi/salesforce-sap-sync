@@ -3,35 +3,29 @@ package ke.co.blueconsulting.sianroses.model;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
-@DatabaseTable(tableName = "ARINVOICECH")
-public class ArInvoiceCh {
+@DatabaseTable(tableName = "STOCKMANAGEMENT")
+public class StockManagement {
   
   @DatabaseField(generatedId = true, columnName = "AUTOID")
   private int autoId;
   
-  @DatabaseField(columnName = "AUTOIDMST")
-  private int autoIdMst;
-  
   @DatabaseField(columnName = "Flower_Code__c")
-  private String flowerCodeC;
+  private String flowerCode;
   
   @DatabaseField(columnName = "Name")
   private String name;
   
-  @DatabaseField(columnName = "Quantity__c")
-  private double quantity;
-  
   @DatabaseField(columnName = "Warehouse__c")
   private String warehouse;
   
-  @DatabaseField(columnName = "UnitPrice")
-  private double unitPrice;
+  @DatabaseField(columnName = "Quantity__c")
+  private double quantity;
   
-  @DatabaseField(columnName = "Tax_Code__c")
-  private String taxCode;
+  @DatabaseField(columnName = "Farm_Code__c")
+  private String farmCode;
   
-  @DatabaseField(columnName = "Invoice_Entry__c")
-  private String invoiceEntry;
+  @DatabaseField(columnName = "Farm__c")
+  private String farm;
   
   @DatabaseField(columnName = "Push_to_SAP__c")
   private Character pushToSap;
@@ -47,20 +41,12 @@ public class ArInvoiceCh {
     this.autoId = autoId;
   }
   
-  public int getAutoIdMst() {
-    return autoIdMst;
+  public String getFlowerCode() {
+    return flowerCode;
   }
   
-  public void setAutoIdMst(int autoIdMst) {
-    this.autoIdMst = autoIdMst;
-  }
-  
-  public String getFlowerCodeC() {
-    return flowerCodeC;
-  }
-  
-  public void setFlowerCodeC(String flowerCodeC) {
-    this.flowerCodeC = flowerCodeC;
+  public void setFlowerCode(String flowerCode) {
+    this.flowerCode = flowerCode;
   }
   
   public String getName() {
@@ -71,14 +57,6 @@ public class ArInvoiceCh {
     this.name = name;
   }
   
-  public double getQuantity() {
-    return quantity;
-  }
-  
-  public void setQuantity(double quantity) {
-    this.quantity = quantity;
-  }
-  
   public String getWarehouse() {
     return warehouse;
   }
@@ -87,28 +65,28 @@ public class ArInvoiceCh {
     this.warehouse = warehouse;
   }
   
-  public double getUnitPrice() {
-    return unitPrice;
+  public double getQuantity() {
+    return quantity;
   }
   
-  public void setUnitPrice(double unitPrice) {
-    this.unitPrice = unitPrice;
+  public void setQuantity(double quantity) {
+    this.quantity = quantity;
   }
   
-  public String getTaxCode() {
-    return taxCode;
+  public String getFarmCode() {
+    return farmCode;
   }
   
-  public void setTaxCode(String taxCode) {
-    this.taxCode = taxCode;
+  public void setFarmCode(String farmCode) {
+    this.farmCode = farmCode;
   }
   
-  public String getInvoiceEntry() {
-    return invoiceEntry;
+  public String getFarm() {
+    return farm;
   }
   
-  public void setInvoiceEntry(String invoiceEntry) {
-    this.invoiceEntry = invoiceEntry;
+  public void setFarm(String farm) {
+    this.farm = farm;
   }
   
   public Character getPushToSap() {
