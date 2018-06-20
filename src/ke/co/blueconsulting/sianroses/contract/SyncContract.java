@@ -15,7 +15,7 @@ public class SyncContract {
     void setIsBusy(boolean isBusy);
     
     void updateUiFields(DbUser dbUserData);
-  
+    
     void showSuccessMessage(String message);
   }
   

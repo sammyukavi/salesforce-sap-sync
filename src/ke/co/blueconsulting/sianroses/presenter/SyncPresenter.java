@@ -1,26 +1,32 @@
 package ke.co.blueconsulting.sianroses.presenter;
 
 
-import com.j256.ormlite.dao.Dao;
 import ke.co.blueconsulting.sianroses.SyncDashboard;
 import ke.co.blueconsulting.sianroses.contract.SyncContract;
-import ke.co.blueconsulting.sianroses.data.mssql.DbManager;
-import ke.co.blueconsulting.sianroses.data.sqlite.DbConnectionData;
-import ke.co.blueconsulting.sianroses.model.*;
+import ke.co.blueconsulting.sianroses.data.impl.SqliteDbService;
+import ke.co.blueconsulting.sianroses.data.impl.SyncDataService;
+import ke.co.blueconsulting.sianroses.data.impl.SyncDbService;
+import ke.co.blueconsulting.sianroses.data.rest.DataService;
+import ke.co.blueconsulting.sianroses.model.ArCredit;
+import ke.co.blueconsulting.sianroses.model.DbUser;
+import ke.co.blueconsulting.sianroses.model.ServerResponse;
 
 import java.sql.SQLException;
+import java.util.List;
 
 public class SyncPresenter implements SyncContract.Presenter {
   private SyncContract.View syncDashboard;
-  private DbConnectionData dbConnectionData;
+  private SqliteDbService sqliteDbService;
   private Thread connectThread;
-  private DbManager dbManager;
+  private SyncDataService syncDataService;
+  private SyncDbService syncDbService;
   
   
   public SyncPresenter(SyncDashboard syncDashboard) throws SQLException, ClassNotFoundException {
     this.syncDashboard = syncDashboard;
-    this.dbConnectionData = new DbConnectionData();
-    this.dbManager = new DbManager();
+    this.sqliteDbService = new SqliteDbService();
+    this.syncDataService = new SyncDataService();
+    this.syncDbService = new SyncDbService();
   }
   
   @Override
@@ -30,7 +36,7 @@ public class SyncPresenter implements SyncContract.Presenter {
     syncDashboard.setIsBusy(true);
     connectThread = new Thread(() -> {
       try {
-        if (dbManager.testServerConnection(serverAddress, serverPort, databaseName, databaseUsername, databasePassword)) {
+        if (syncDbService.testServerConnection(serverAddress, serverPort, databaseName, databaseUsername, databasePassword)) {
           connectionSuccessful[0] = true;
         }
       } catch (ClassNotFoundException | SQLException e) {
@@ -51,10 +57,28 @@ public class SyncPresenter implements SyncContract.Presenter {
   
   @Override
   public void sync() throws SQLException {
-    Dao<Warehouse, Integer> arCreditDao = dbManager.createDao(Warehouse.class);
-    Warehouse arCredit = new Warehouse();
-    arCredit.setFarm("Some farm " + Math.random());
-    arCreditDao.create(arCredit);
+    fetchFromTheServer();
+    sendToTheServer();
+  }
+  
+  private void sendToTheServer() throws SQLException {
+    List<ArCredit> arCredits = syncDbService.getUnsyncedRecords(ArCredit.class);
+    System.out.println(arCredits.toString());
+  }
+  
+  private void fetchFromTheServer() {
+    DataService.GetCallback<ServerResponse> getFromTheServerCallback = new DataService.GetCallback<ServerResponse>() {
+      @Override
+      public void onCompleted(ServerResponse serverResponse) {
+        System.out.println(serverResponse.toString());
+      }
+      
+      @Override
+      public void onError(Throwable t) {
+        t.printStackTrace();
+      }
+    };
+    syncDataService.getServerData(getFromTheServerCallback);
   }
   
   @Override
@@ -71,7 +95,7 @@ public class SyncPresenter implements SyncContract.Presenter {
       dbUser.setDatabasePassword(databasePassword);
       dbUser.setSyncPeriod(Integer.parseInt(syncPeriod));
       dbUser.setSyncPeriodUnit(syncPeriodUnit);
-      dbConnectionData.save(dbUser);
+      sqliteDbService.save(dbUser);
     } finally {
       syncDashboard.setIsBusy(false);
     }
@@ -81,7 +105,7 @@ public class SyncPresenter implements SyncContract.Presenter {
   public void getDbConnectionData() throws SQLException {
     syncDashboard.setIsBusy(true);
     try {
-      DbUser connectionData = dbConnectionData.getConnectionData();
+      DbUser connectionData = sqliteDbService.getConnectionData();
       if (connectionData != null) {
         syncDashboard.updateUiFields(connectionData);
       }

@@ -1,4 +1,4 @@
-package ke.co.blueconsulting.sianroses.data.sqlite;
+package ke.co.blueconsulting.sianroses.data.impl;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
@@ -12,13 +12,13 @@ import java.sql.SQLException;
 
 import static ke.co.blueconsulting.sianroses.SyncDashboard.CONSTANTS.APP_DIR_NAME;
 
-public class DbConnectionData {
+public class SqliteDbService {
   
   private final static String DATABASE_NAME = "production.db";
   private Dao<DbUser, Integer> dbConnectionDao;
   
   
-  public DbConnectionData() throws ClassNotFoundException, SQLException {
+  public SqliteDbService() throws ClassNotFoundException, SQLException {
     Class.forName("org.sqlite.JDBC");
     ConnectionSource connectionSource = new JdbcConnectionSource(getDatabaseUrl());
     dbConnectionDao = DaoManager.createDao(connectionSource, DbUser.class);
