@@ -6,8 +6,7 @@ import ke.co.blueconsulting.sianroses.SyncDashboard;
 import ke.co.blueconsulting.sianroses.contract.SyncContract;
 import ke.co.blueconsulting.sianroses.data.mssql.DbManager;
 import ke.co.blueconsulting.sianroses.data.sqlite.DbConnectionData;
-import ke.co.blueconsulting.sianroses.model.ArCredit;
-import ke.co.blueconsulting.sianroses.model.DbUser;
+import ke.co.blueconsulting.sianroses.model.*;
 
 import java.sql.SQLException;
 
@@ -52,10 +51,9 @@ public class SyncPresenter implements SyncContract.Presenter {
   
   @Override
   public void sync() throws SQLException {
-    Dao<ArCredit, Integer> arCreditDao = dbManager.createDao(ArCredit.class);
-    //arcreditDao.queryForAll();
-    ArCredit arCredit = new ArCredit();
-    arCredit.setFarmC("Test");
+    Dao<Warehouse, Integer> arCreditDao = dbManager.createDao(Warehouse.class);
+    Warehouse arCredit = new Warehouse();
+    arCredit.setFarm("Some farm " + Math.random());
     arCreditDao.create(arCredit);
   }
   

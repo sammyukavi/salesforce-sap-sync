@@ -3,40 +3,35 @@ package ke.co.blueconsulting.sianroses.model;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
-import java.util.Date;
-
 @DatabaseTable(tableName = "ARCREDITCH")
 public class ArCreditCh {
   
   @DatabaseField(generatedId = true, columnName = "AUTOID")
   private int autoId;
   
-  @DatabaseField(columnName = "ERP_ID__c")
-  private String erpId;
+  @DatabaseField(columnName = "AUTOIDMST")
+  private int autoIdMst;
   
-  @DatabaseField(columnName = "AccountID")
-  private String accountId;
+  @DatabaseField(columnName = "Flower_Code__c")
+  private String flowerCodeC;
   
-  @DatabaseField(columnName = "Posting_Date__c")
-  private Date postingDate;
+  @DatabaseField(columnName = "Name")
+  private String name;
   
-  @DatabaseField(columnName = "Due_Date__c")
-  private Date dueDate;
+  @DatabaseField(columnName = "Quantity__c")
+  private double quantity;
   
-  @DatabaseField(columnName = "PO_Number__c")
-  private String pONumber;
+  @DatabaseField(columnName = "Warehouse__c")
+  private String warehouse;
   
-  @DatabaseField(columnName = "Invoice_Number__c")
-  private String invoiceNumber;
+  @DatabaseField(columnName = "UnitPrice")
+  private double unitPrice;
+  
+  @DatabaseField(columnName = "Tax__c")
+  private String taxCode;
   
   @DatabaseField(columnName = "Invoice_Entry__c")
   private String invoiceEntry;
-  
-  @DatabaseField(columnName = "Farm_c")
-  private String farmC;
-  
-  @DatabaseField(columnName = "Reason")
-  private String reason;
   
   @DatabaseField(columnName = "Push_to_SAP__c")
   private Character pushToSap;
@@ -52,52 +47,60 @@ public class ArCreditCh {
     this.autoId = autoId;
   }
   
-  public String getErpId() {
-    return erpId;
+  public int getAutoIdMst() {
+    return autoIdMst;
   }
   
-  public void setErpId(String erpId) {
-    this.erpId = erpId;
+  public void setAutoIdMst(int autoIdMst) {
+    this.autoIdMst = autoIdMst;
   }
   
-  public String getAccountId() {
-    return accountId;
+  public String getFlowerCodeC() {
+    return flowerCodeC;
   }
   
-  public void setAccountId(String accountId) {
-    this.accountId = accountId;
+  public void setFlowerCodeC(String flowerCodeC) {
+    this.flowerCodeC = flowerCodeC;
   }
   
-  public Date getPostingDate() {
-    return postingDate;
+  public String getName() {
+    return name;
   }
   
-  public void setPostingDate(Date postingDate) {
-    this.postingDate = postingDate;
+  public void setName(String name) {
+    this.name = name;
   }
   
-  public Date getDueDate() {
-    return dueDate;
+  public double getQuantity() {
+    return quantity;
   }
   
-  public void setDueDate(Date dueDate) {
-    this.dueDate = dueDate;
+  public void setQuantity(double quantity) {
+    this.quantity = quantity;
   }
   
-  public String getpONumber() {
-    return pONumber;
+  public String getWarehouse() {
+    return warehouse;
   }
   
-  public void setpONumber(String pONumber) {
-    this.pONumber = pONumber;
+  public void setWarehouse(String warehouse) {
+    this.warehouse = warehouse;
   }
   
-  public String getInvoiceNumber() {
-    return invoiceNumber;
+  public double getUnitPrice() {
+    return unitPrice;
   }
   
-  public void setInvoiceNumber(String invoiceNumber) {
-    this.invoiceNumber = invoiceNumber;
+  public void setUnitPrice(double unitPrice) {
+    this.unitPrice = unitPrice;
+  }
+  
+  public String getTaxCode() {
+    return taxCode;
+  }
+  
+  public void setTaxCode(String taxCode) {
+    this.taxCode = taxCode;
   }
   
   public String getInvoiceEntry() {
@@ -106,22 +109,6 @@ public class ArCreditCh {
   
   public void setInvoiceEntry(String invoiceEntry) {
     this.invoiceEntry = invoiceEntry;
-  }
-  
-  public String getFarmC() {
-    return farmC;
-  }
-  
-  public void setFarmC(String farmC) {
-    this.farmC = farmC;
-  }
-  
-  public String getReason() {
-    return reason;
-  }
-  
-  public void setReason(String reason) {
-    this.reason = reason;
   }
   
   public Character getPushToSap() {

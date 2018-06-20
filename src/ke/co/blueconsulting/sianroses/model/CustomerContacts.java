@@ -11,13 +11,13 @@ public class CustomerContacts {
   @DatabaseField(generatedId = true, columnName = "AUTOID")
   private int autoId;
   
-  @DatabaseField(columnName = "CONTACTID")
+  @DatabaseField(columnName = "CONTACTID", canBeNull = false)
   private String contactId;
   
-  @DatabaseField(columnName = "AccountID")
+  @DatabaseField(columnName = "AccountID", canBeNull = false)
   private String accountId;
   
-  @DatabaseField(columnName = "Lastname")
+  @DatabaseField(columnName = "Lastname", canBeNull = false)
   private String lastName;
   
   @DatabaseField(columnName = "Firstname")

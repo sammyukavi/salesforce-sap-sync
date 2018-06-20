@@ -53,6 +53,7 @@ public class SyncDashboard implements SyncContract.View {
     dashboardJFrame.setBounds(100, 100, 450, 349);
     dashboardJFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     dashboardJFrame.getContentPane().setLayout(null);
+    dashboardJFrame.setLocationRelativeTo(null);
     
     statusProgressBar = new JProgressBar();
     statusProgressBar.setIndeterminate(true);
@@ -166,11 +167,11 @@ public class SyncDashboard implements SyncContract.View {
     testConnectionButton.setBounds(287, 185, 138, 23);
     dashboardJFrame.getContentPane().add(testConnectionButton);
     
-    saveConnectionButton = new JButton("Save");
+    saveConnectionButton = new JButton("Save Credentials");
     saveConnectionButton.setBounds(287, 219, 138, 23);
     dashboardJFrame.getContentPane().add(saveConnectionButton);
     
-    syncButton = new JButton("Sync");
+    syncButton = new JButton("Sync Data");
     syncButton.setBounds(287, 253, 138, 23);
     dashboardJFrame.getContentPane().add(syncButton);
     

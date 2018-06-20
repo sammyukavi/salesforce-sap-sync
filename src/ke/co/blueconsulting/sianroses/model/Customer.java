@@ -12,10 +12,10 @@ public class Customer {
   @DatabaseField(columnName = "ERP_ID__c")
   private String erpId;
   
-  @DatabaseField(columnName = "Name")
+  @DatabaseField(columnName = "Name", canBeNull = false)
   private String name;
   
-  @DatabaseField(columnName = "Currencyisocode")
+  @DatabaseField(columnName = "Currencyisocode", canBeNull = false)
   private String currencyIsoCode;
   
   @DatabaseField(columnName = "Account_Number__c")
@@ -39,7 +39,7 @@ public class Customer {
   @DatabaseField(columnName = "Shippingstate")
   private String shippingState;
   
-  @DatabaseField(columnName = "Shippingostalcode")
+  @DatabaseField(columnName = "Shippingpostalcode")
   private String shippingPostalCode;
   
   @DatabaseField(columnName = "Shippingcountry")
@@ -48,7 +48,7 @@ public class Customer {
   @DatabaseField(columnName = "Phone")
   private String phone;
   
-  @DatabaseField(columnName = "Email_c")
+  @DatabaseField(columnName = "Email__c")
   private String email;
   
   @DatabaseField(columnName = "Website")

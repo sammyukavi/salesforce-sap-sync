@@ -30,7 +30,7 @@ public class Product {
   @DatabaseField(columnName = "Family")
   private String family;
   
-  @DatabaseField(columnName = "Product_Type__c")
+  @DatabaseField(columnName = "Product_Type__c", canBeNull = false)
   private String productType;
   
   @DatabaseField(columnName = "Parent_Product__c")

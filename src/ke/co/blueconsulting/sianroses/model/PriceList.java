@@ -9,9 +9,6 @@ public class PriceList {
   @DatabaseField(generatedId = true, columnName = "AUTOID")
   private int autoId;
   
-  @DatabaseField(columnName = "PaymentTermCode")
-  private String paymentTermCode;
-  
   @DatabaseField(columnName = "Pricebook2Id")
   private String pricebook2Id;
   
@@ -39,14 +36,6 @@ public class PriceList {
   
   public void setAutoId(int autoId) {
     this.autoId = autoId;
-  }
-  
-  public String getPaymentTermCode() {
-    return paymentTermCode;
-  }
-  
-  public void setPaymentTermCode(String paymentTermCode) {
-    this.paymentTermCode = paymentTermCode;
   }
   
   public String getPricebook2Id() {

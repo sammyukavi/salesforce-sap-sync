@@ -21,7 +21,7 @@ public class ProductChild {
   @DatabaseField(columnName = "Classification__c")
   private String classification;
   
-  @DatabaseField(columnName = "IsActive")
+  @DatabaseField(columnName = "Is_Active__c")
   private String isActive;
   
   @DatabaseField(columnName = "Breeder__c")
