@@ -21,13 +21,13 @@ public class ArInvoiceCh {
   private String name;
   
   @DatabaseField(columnName = "Quantity__c")
-  private Date quantity;
+  private double quantity;
   
   @DatabaseField(columnName = "Warehouse__c")
-  private Date warehouse;
+  private String warehouse;
   
   @DatabaseField(columnName = "UnitPrice")
-  private String unitPrice;
+  private double unitPrice;
   
   @DatabaseField(columnName = "Tax_Code__c")
   private String taxCode;
@@ -73,27 +73,27 @@ public class ArInvoiceCh {
     this.name = name;
   }
   
-  public Date getQuantity() {
+  public double getQuantity() {
     return quantity;
   }
   
-  public void setQuantity(Date quantity) {
+  public void setQuantity(double quantity) {
     this.quantity = quantity;
   }
   
-  public Date getWarehouse() {
+  public String getWarehouse() {
     return warehouse;
   }
   
-  public void setWarehouse(Date warehouse) {
+  public void setWarehouse(String warehouse) {
     this.warehouse = warehouse;
   }
   
-  public String getUnitPrice() {
+  public double getUnitPrice() {
     return unitPrice;
   }
   
-  public void setUnitPrice(String unitPrice) {
+  public void setUnitPrice(double unitPrice) {
     this.unitPrice = unitPrice;
   }
   
