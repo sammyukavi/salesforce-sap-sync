@@ -5,8 +5,8 @@ import com.j256.ormlite.table.DatabaseTable;
 
 import java.util.Date;
 
-@DatabaseTable(tableName = "ARCREDIT")
-public class ArCredit {
+@DatabaseTable(tableName = "ARINVOICE")
+public class ArInvoice {
   
   @DatabaseField(generatedId = true, columnName = "AUTOID")
   private int id;
@@ -26,6 +26,9 @@ public class ArCredit {
   @DatabaseField(columnName = "PO_Number__c")
   private String pONumber;
   
+  @DatabaseField(columnName = "Farm_Order_Number__c")
+  private String farmOrderNumber;
+  
   @DatabaseField(columnName = "Invoice_Number__c")
   private String invoiceNumber;
   
@@ -34,6 +37,9 @@ public class ArCredit {
   
   @DatabaseField(columnName = "Farm_c")
   private String farmC;
+  
+  @DatabaseField(columnName = "Auction")
+  private String auction;
   
   @DatabaseField(columnName = "Reason")
   private String reason;
@@ -138,5 +144,21 @@ public class ArCredit {
   
   public void setPullFromSap(Character pullFromSap) {
     this.pullFromSap = pullFromSap;
+  }
+  
+  public String getFarmOrderNumber() {
+    return farmOrderNumber;
+  }
+  
+  public void setFarmOrderNumber(String farmOrderNumber) {
+    this.farmOrderNumber = farmOrderNumber;
+  }
+  
+  public String getAuction() {
+    return auction;
+  }
+  
+  public void setAuction(String auction) {
+    this.auction = auction;
   }
 }

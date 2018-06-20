@@ -7,6 +7,7 @@ import java.util.Date;
 
 @DatabaseTable(tableName = "ARCREDITCH")
 public class ArCreditCh {
+  
   @DatabaseField(generatedId = true, columnName = "AUTOID")
   private int id;
   
