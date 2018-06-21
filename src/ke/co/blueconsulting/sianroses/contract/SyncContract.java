@@ -24,7 +24,7 @@ public class SyncContract {
     void testConnection(String serverAddress, String serverPort, String databaseName,
                         String databaseUsername, String databasePassword) throws InterruptedException;
     
-    void sync() throws SQLException;
+    void performSync() throws SQLException;
     
     void saveConnectionDetails(String serverAddress, String serverPort, String databaseName, String databaseUsername,
                                String databasePassword, String syncPeriod, String syncPeriodUnit) throws SQLException;

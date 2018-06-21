@@ -10,6 +10,7 @@ import ke.co.blueconsulting.sianroses.data.rest.DataService;
 import ke.co.blueconsulting.sianroses.model.ArCredit;
 import ke.co.blueconsulting.sianroses.model.DbUser;
 import ke.co.blueconsulting.sianroses.model.ServerResponse;
+import ke.co.blueconsulting.sianroses.util.Console;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -56,14 +57,28 @@ public class SyncPresenter implements SyncContract.Presenter {
   }
   
   @Override
-  public void sync() throws SQLException {
-    fetchFromTheServer();
+  public void performSync() throws SQLException {
+    //fetchFromTheServer()
     sendToTheServer();
   }
   
   private void sendToTheServer() throws SQLException {
+    DataService.GetCallback<ServerResponse> postToserverCallback = new DataService.GetCallback<ServerResponse>() {
+      @Override
+      public void onCompleted(ServerResponse serverResponse) {
+        Console.dump(serverResponse);
+      }
+      
+      @Override
+      public void onError(Throwable t) {
+        t.printStackTrace();
+      }
+    };
+    
     List<ArCredit> arCredits = syncDbService.getUnsyncedRecords(ArCredit.class);
-    System.out.println(arCredits.toString());
+    ServerResponse serverResponse = new ServerResponse();
+    serverResponse.addData("ArCredit", arCredits);
+    syncDataService.postToServer(serverResponse, postToserverCallback);
   }
   
   private void fetchFromTheServer() {
@@ -78,7 +93,7 @@ public class SyncPresenter implements SyncContract.Presenter {
         t.printStackTrace();
       }
     };
-    syncDataService.getServerData(getFromTheServerCallback);
+    syncDataService.getFromServer(getFromTheServerCallback);
   }
   
   @Override

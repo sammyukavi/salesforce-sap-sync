@@ -1,52 +1,40 @@
 package ke.co.blueconsulting.sianroses.model;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-public class ServerResponse implements Serializable {
+
+public class ServerResponse<S> implements Serializable {
   
-  @SerializedName("server_time")
-  private String serverTime;
+  @SerializedName("data")
+  @Expose
+  private Map<String, List<S>> data = new HashMap<>();
   
-  @SerializedName("api_version")
-  private Long apiVersion;
-  
-  @SerializedName("status")
-  private Long status;
-  
-  public String getServerTime() {
-    return serverTime;
+  public void addData(String key, List<S> value) {
+    data.put(key, value);
   }
   
-  public void setServerTime(String serverTime) {
-    this.serverTime = serverTime;
+  public Map<String, List<S>> getData() {
+    return data;
   }
   
-  public Long getApiVersion() {
-    return apiVersion;
+  public void setData(Map<String, List<S>> data) {
+    this.data.clear();
+    this.data.putAll(data);
   }
   
-  public void setApiVersion(Long apiVersion) {
-    this.apiVersion = apiVersion;
+  @Override
+  public String toString() {
+    return
+        "ServerResponse{" +
+            //"server_time = '" + serverTime + '\'' +
+            ",data = '" + data + '\'' +
+            // ",api_version = '" + apiVersion + '\'' +
+            "}";
   }
-  
-  public Long getStatus() {
-    return status;
-  }
-  
-  public void setStatus(Long status) {
-    this.status = status;
-  }
-	
-	/*@Override
-	public String toString() {
-		return
-				"ServerResponse{" +
-						"server_time = '" + serverTime + '\'' +
-						",data = '" + data + '\'' +
-						",api_version = '" + apiVersion + '\'' +
-						",status = '" + status + '\'' +
-						"}";
-	}*/
 }

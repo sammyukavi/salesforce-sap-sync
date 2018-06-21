@@ -42,9 +42,14 @@ public class SyncDbService extends BaseDbService {
   }
   
   
-  public ArrayList<ArCredit> getArCredit() {
-    ArrayList<ArCredit> arCredit = null;
-    return arCredit;
+  public void attempt_save() {
+    try {
+      Dao<ArCredit, Integer> dao = createDao(ArCredit.class);
+      dao.create(new ArCredit());
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+  
   }
   
   

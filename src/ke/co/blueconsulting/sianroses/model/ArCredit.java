@@ -1,13 +1,16 @@
 package ke.co.blueconsulting.sianroses.model;
 
+import com.google.gson.annotations.SerializedName;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+import java.io.Serializable;
 import java.util.Date;
 
 @DatabaseTable(tableName = "ARCREDIT")
-public class ArCredit {
+public class ArCredit implements Serializable {
   
+  @SerializedName("AUTOID")
   @DatabaseField(generatedId = true, columnName = "AUTOID")
   private int autoId;
   

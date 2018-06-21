@@ -200,7 +200,7 @@ public class SyncDashboard implements SyncContract.View {
     
     syncButton.addActionListener(event -> {
       try {
-        syncPresenter.sync();
+        syncPresenter.performSync();
       } catch (SQLException e) {
         e.printStackTrace();
       }
