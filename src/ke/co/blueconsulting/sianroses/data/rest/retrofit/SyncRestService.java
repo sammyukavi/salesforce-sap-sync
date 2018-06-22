@@ -2,12 +2,10 @@ package ke.co.blueconsulting.sianroses.data.rest.retrofit;
 
 import ke.co.blueconsulting.sianroses.model.ServerResponse;
 import retrofit2.Call;
-import retrofit2.http.Body;
-import retrofit2.http.GET;
-import retrofit2.http.POST;
-import retrofit2.http.Query;
+import retrofit2.http.*;
 
-import static ke.co.blueconsulting.sianroses.util.Constants.BundleKeys.TOKEN;
+import static ke.co.blueconsulting.sianroses.util.Constants.RequestKeys.*;
+
 
 /**
  * An interface class used by retrofit to make REST calls
@@ -17,11 +15,12 @@ public interface SyncRestService {
   @GET("api/index.php")
   Call<ServerResponse> fetch(@Query(TOKEN) String token);
   
-  /*@POST("api/index.php")
-  @FormUrlEncoded
-  Call<ServerResponse> post(@Query(TOKEN) String token, @FieldMap Map<String, String> values);*/
-  
   @POST("api/index.php")
   Call<ServerResponse> post(@Body ServerResponse serverResponse);
   
+  @POST("services/oauth2/token")
+  @FormUrlEncoded
+  Call<ServerResponse> authenticate(@Field(CLIENT_ID) String clientId, @Field(CLIENT_SECRET) String clientSecret,
+                                    @Field(GRANT_TYPE) String grantType, @Field(USERNAME) String username,
+                                    @Field(PASSWORD) String password);
 }

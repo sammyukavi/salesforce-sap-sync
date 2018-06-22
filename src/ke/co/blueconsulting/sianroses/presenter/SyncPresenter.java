@@ -16,6 +16,8 @@ import ke.co.blueconsulting.sianroses.util.Console;
 import java.sql.SQLException;
 import java.util.List;
 
+import static ke.co.blueconsulting.sianroses.util.Constants.BundleKeys.MESSAGE_CONNECTION_SUCCESSFUL;
+
 public class SyncPresenter implements SyncContract.Presenter {
   private SyncContract.View syncDashboard;
   private SqliteDbService sqliteDbService;
@@ -46,7 +48,7 @@ public class SyncPresenter implements SyncContract.Presenter {
       } finally {
         syncDashboard.setIsBusy(false);
         if (connectionSuccessful[0]) {
-          syncDashboard.showSuccessMessage("Connection Successful");
+          syncDashboard.showSuccessMessage(SyncDashboard.getString(MESSAGE_CONNECTION_SUCCESSFUL));
         }
         try {
           connectThread.join();
@@ -132,6 +134,36 @@ public class SyncPresenter implements SyncContract.Presenter {
   
   @Override
   public void testSalesforceAuthentication(String salesforceClientId, String salesforceClientSecret, String salesforceUsername, String salesforcePassword, String salesforceSecurityToken) {
-  
+    
+    DataService.GetCallback<ServerResponse> authCallback = new DataService.GetCallback<ServerResponse>() {
+      @Override
+      public void onCompleted(ServerResponse serverResponse) {
+      
+      }
+      
+      @Override
+      public void onError(Throwable t) {
+        t.printStackTrace();
+      }
+    };
+    
+    
+    syncDashboard.setIsBusy(true);
+    connectThread = new Thread(() -> {
+      try {
+        syncDataService.authenticate(salesforceClientId, salesforceClientSecret, salesforceUsername, salesforcePassword, salesforceSecurityToken, authCallback);
+      } catch (Exception e) {
+        e.printStackTrace();
+      } finally {
+        syncDashboard.setIsBusy(false);
+        try {
+          connectThread.join();
+        } catch (Exception ignored) {
+        }
+      }
+    });
+    connectThread.start();
+    
+    
   }
 }

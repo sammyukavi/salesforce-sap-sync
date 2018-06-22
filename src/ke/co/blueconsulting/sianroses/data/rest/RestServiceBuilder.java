@@ -13,7 +13,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
-import static ke.co.blueconsulting.sianroses.util.Constants.BASE_URL;
+import static ke.co.blueconsulting.sianroses.util.Constants.DATABASE_SERVER_URL;
 import static ke.co.blueconsulting.sianroses.util.Constants.Units.CONNECT_TIME_OUT_SECONDS;
 import static ke.co.blueconsulting.sianroses.util.Constants.Units.READ_TIME_OUT_SECONDS;
 
@@ -29,7 +29,7 @@ public class RestServiceBuilder {
     builder =
         new Retrofit.Builder()
             .addConverterFactory(buildGsonConverter())
-            .baseUrl(BASE_URL)
+            .baseUrl(DATABASE_SERVER_URL)
             .client(getHttpClient());
   }
   

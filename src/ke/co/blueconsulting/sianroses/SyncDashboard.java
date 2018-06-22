@@ -44,18 +44,18 @@ public class SyncDashboard implements SyncContract.View {
     if (!blankNewInstance) {
       try {
         new SyncDashboard();
-      } catch (SQLException | ClassNotFoundException e) {
-        e.printStackTrace();
+      } catch (SQLException | ClassNotFoundException ignored) {
+      
       }
     }
   }
   
-  private static String getString(String key) {
+  public static String getString(String key) {
     String string = null;
     try {
       string = java.util.ResourceBundle.getBundle("ke/co/blueconsulting/sianroses/resources/strings").getString(key);
-    } catch (MissingResourceException e) {
-      e.printStackTrace();
+    } catch (MissingResourceException ignored) {
+    
     }
     return string;
   }
@@ -152,7 +152,7 @@ public class SyncDashboard implements SyncContract.View {
       try {
         syncPresenter.performSync();
       } catch (SQLException e) {
-        e.printStackTrace();
+        showErrorMessage(getString(MESSAGE_FATAL_ERROR) + e.getMessage());
       }
     });
     
@@ -464,7 +464,6 @@ public class SyncDashboard implements SyncContract.View {
       try {
         new SyncDashboard();
       } catch (Exception e) {
-        e.printStackTrace();
         SyncDashboard.getInstance().showErrorMessage(getString(MESSAGE_FATAL_ERROR), getString(MESSAGE_FATAL_ERROR) + e.getMessage());
       }
     });

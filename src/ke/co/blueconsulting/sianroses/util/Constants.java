@@ -2,7 +2,8 @@ package ke.co.blueconsulting.sianroses.util;
 
 public class Constants {
   
-  public static String BASE_URL = "http://127.0.0.1/";//With a forwardSlash. Very important!!!
+  public static String DATABASE_SERVER_URL = "http://127.0.0.1/";//With a forwardSlash. Very important!!!
+  public static String SALESFORCE_AUTH_URL = "http://127.0.0.1/";//With a forwardSlash. Very important!!!
   
   public static final String APP_DIR_NAME = ".sianroses";
   public static final String DATABASE_SERVER_CONFIGURATION = "databaseServerConfiguration";
@@ -13,10 +14,18 @@ public class Constants {
     public static final int CONNECT_TIME_OUT_SECONDS = 10;
   }
   
-  public static class BundleKeys {
+  public static class RequestKeys {
     public static final String TOKEN = "token";
-    public static final String TAB_DATABASE_SERVER_CONFIG = "tabDatabaseServerConfiguration";
-    public static final String TAB_SALESFORCE_CONFIG = "tabSalesforceConfiguration";
+    public static final String CLIENT_ID = "client_id";
+    public static final String CLIENT_SECRET = "client_secret";
+    public static final String GRANT_TYPE = "grant_type";
+    public static final String USERNAME = "username";
+    public static final String PASSWORD = "password";
+  }
+  
+  public static class BundleKeys {
+    public static final String TAB_DATABASE_SERVER_CONFIG = "tab.databaseServerConfiguration";
+    public static final String TAB_SALESFORCE_CONFIG = "tab.salesforceConfiguration";
     public static final String LABEL_APP_NAME = "labels.appName";
     public static final String LABEL_SERVER_ADDRESS = "labels.serverAddress";
     public static final String LABEL_SERVER_PORT = "labels.serverPort";
@@ -24,10 +33,10 @@ public class Constants {
     public static final String LABEL_DATABASE_USERNAME = "labels.databaseUsername";
     public static final String LABEL_DATABASE_PASSWORD = "labels.databasePassword";
     public static final String LABEL_SYNC_PERIOD = "labels.syncPeriod";
-    public static final String LABEL_SALESFORCE_CLIENT_ID = "label.salesforceClientId";
+    public static final String LABEL_SALESFORCE_CLIENT_ID = "labels.salesforceClientId";
     public static final String LABEL_SALESFORCE_CLIENT_SECRET = "labels.salesforceClientSecret";
-    public static final String LABEL_SALESFORCE_USERNAME = "label.salesforceUsername";
-    public static final String LABEL_SALESFORCE_PASSWORD = "label.salesforcePassword";
+    public static final String LABEL_SALESFORCE_USERNAME = "labels.salesforceUsername";
+    public static final String LABEL_SALESFORCE_PASSWORD = "labels.salesforcePassword";
     public static final String LABEL_SALESFORCE_SECURITY_TOKEN = "labels.salesforceSecurityToken";
     public static final String MESSAGE_PORT_OUT_OF_RANGE = "messages.portOutOfRange";
     public static final String MESSAGE_VALIDATION_ERROR = "messages.validationError";
@@ -42,6 +51,7 @@ public class Constants {
     public static final String MESSAGE_DATABASE_USERNAME_REQUIRED = "messages.databaseUsernameRequired";
     public static final String MESSAGE_DATABASE_NAME_REQUIRED = "messages.databaseNameRequired";
     public static final String MESSAGE_SERVER_PORT_REQUIRED = "messages.serverPortRequired";
+    public static final String MESSAGE_CONNECTION_SUCCESSFUL = "messages.connectionSuccessful";
     public static final String BTN_TEST_DB_CONNECTION = "buttons.testDbConnection";
     public static final String BTN_TEST_SALESFORCE_AUTH = "buttons.testSalesforceAuth";
     public static final String BTN_SAVE = "buttons.save";
