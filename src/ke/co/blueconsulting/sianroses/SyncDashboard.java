@@ -6,47 +6,37 @@ import ke.co.blueconsulting.sianroses.presenter.SyncPresenter;
 import ke.co.blueconsulting.sianroses.util.StringUtils;
 
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
+import javax.swing.plaf.basic.BasicTabbedPaneUI;
 import java.awt.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.MissingResourceException;
+
+import static ke.co.blueconsulting.sianroses.util.Constants.BundleKeys.*;
+import static ke.co.blueconsulting.sianroses.util.Constants.DATABASE_SERVER_CONFIGURATION;
+import static ke.co.blueconsulting.sianroses.util.Constants.SALESFORCE_CONFIGURATION;
 
 public class SyncDashboard implements SyncContract.View {
   
   private JButton testConnectionButton, saveConnectionButton, syncButton;
   private JProgressBar statusProgressBar;
-  
-  public static class CONSTANTS {
-    public static final String APP_DIR_NAME = ".sianroses";
-  }
-  
+  private String tabOnView = DATABASE_SERVER_CONFIGURATION;
   private SyncPresenter syncPresenter;
-  private String[] syncPeriodUnits = new String[]{"Minute(s)", "Hour(s)", "Day(s)", "Week(s)", "Month(s)", "Year(s)"};
+  private String[] syncPeriodUnits;
   private JTextField serverAddressTextField, serverPortTextField, databaseNameTextField, databaseUsernameTextField,
-      syncPeriodTextField;
-  private JPasswordField databasePasswordTextField;
+      syncPeriodTextField, salesforceClientIdTextField, salesforceClientSecretTextField,
+      salesforceUsernameTextField, salesforceSecurityTokenTextField;
+  private JPasswordField databasePasswordTextField, salesforcePasswordTextField;
   private JComboBox syncPeriodUnitComboBox;
-  private JLabel clientId;
-  private JTextField clientIdTextField;
-  private JLabel lblClientSecret;
-  private JTextField clientSecretTextField;
-  private JLabel lblRedirectUri;
-  private JTextField redirectUriTextField;
-  private JLabel lblUsername;
-  private JTextField salesforceUsernametextField;
-  private JLabel lblSecurityToken;
-  private JTextField securityTokenTextField;
-  private JLabel lblSalesforcePassword;
-  private JTextField salesforcePasswordTextField;
   
   /**
    * @wbp.parser.entryPoint
    */
   private SyncDashboard() throws SQLException, ClassNotFoundException {
-    syncPresenter = new SyncPresenter(this);
+    this.syncPeriodUnits = getString(SYNC_PERIOD_UNITS).split(",");
+    this.syncPresenter = new SyncPresenter(this);
     initViews();
   }
   
@@ -60,18 +50,28 @@ public class SyncDashboard implements SyncContract.View {
     }
   }
   
+  private static String getString(String key) {
+    String string = null;
+    try {
+      string = java.util.ResourceBundle.getBundle("ke/co/blueconsulting/sianroses/resources/strings").getString(key);
+    } catch (MissingResourceException e) {
+      e.printStackTrace();
+    }
+    return string;
+  }
+  
   private void initViews() {
     JFrame dashboardJFrame = new JFrame();
     dashboardJFrame.setResizable(false);
-    dashboardJFrame.setTitle("Sian Roses: Data Sync Dashboard");
-    dashboardJFrame.setBounds(100, 100, 485, 497);
+    dashboardJFrame.setTitle(getString(LABEL_APP_NAME));
+    dashboardJFrame.setBounds(100, 100, 530, 455);
     dashboardJFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-    //dashboardJFrame.getContentPane().setLayout(null);
+    dashboardJFrame.getContentPane().setLayout(null);
     dashboardJFrame.setLocationRelativeTo(null);
     dashboardJFrame.getContentPane().setLayout(null);
     
     JTabbedPane tabbedPane = new JTabbedPane();
-    /*tabbedPane.setUI(new BasicTabbedPaneUI() {
+    tabbedPane.setUI(new BasicTabbedPaneUI() {
       private final Insets borderInsets = new Insets(0, 0, 0, 0);
       
       @Override
@@ -82,41 +82,54 @@ public class SyncDashboard implements SyncContract.View {
       protected Insets getContentBorderInsets(int tabPlacement) {
         return borderInsets;
       }
-    });*/
-    tabbedPane.setBounds(0, 0, 479, 355);
+    });
+    tabbedPane.setBounds(0, 0, 524, 335);
     tabbedPane.setAlignmentY(Component.BOTTOM_ALIGNMENT);
     tabbedPane.setAlignmentX(Component.RIGHT_ALIGNMENT);
     
     JComponent dbServerConfigPanel = makeDbServerConfigPanel();
-    tabbedPane.addTab("Database Server Configuration", null, dbServerConfigPanel, "Settings for connecting to the database server");
+    tabbedPane.addTab(getString(TAB_DATABASE_SERVER_CONFIG), null, dbServerConfigPanel);
     
     JComponent salesforceConfigPanel = makeSalesforceConfigPanel();
-    tabbedPane.addTab("Salesforce Configuration", null, salesforceConfigPanel, "Settings for connecting to the Salesforce API");
+    tabbedPane.addTab(getString(TAB_SALESFORCE_CONFIG), null, salesforceConfigPanel);
     
-    tabbedPane.addChangeListener(new ChangeListener() {
-      public void stateChanged(ChangeEvent e) {
-        System.out.println("Tab: " + tabbedPane.getSelectedIndex());
-      }
+    tabbedPane.addChangeListener(e -> {
+      updateUiButtons(tabbedPane.getSelectedIndex());
     });
     
     dashboardJFrame.getContentPane().add(tabbedPane);
     
-    syncButton = new JButton("Sync");
-    syncButton.setBounds(323, 399, 144, 23);
-    dashboardJFrame.getContentPane().add(syncButton);
-    
     statusProgressBar = new JProgressBar();
-    statusProgressBar.setBounds(12, 367, 219, 20);
-    dashboardJFrame.getContentPane().add(statusProgressBar);
+    statusProgressBar.setBounds(10, 345, 219, 20);
     statusProgressBar.setIndeterminate(true);
+    statusProgressBar.setVisible(false);
+    dashboardJFrame.getContentPane().add(statusProgressBar);
     
-    testConnectionButton = new JButton("Test Connection");
-    testConnectionButton.setBounds(12, 399, 144, 23);
+    testConnectionButton = new JButton(getString(BTN_TEST_DB_CONNECTION));
+    testConnectionButton.setBounds(10, 380, 160, 23);
+    testConnectionButton.addActionListener(event -> {
+      try {
+        if (tabOnView.equals(DATABASE_SERVER_CONFIGURATION)) {
+          if (serverConfigFieldsAreValid()) {
+            syncPresenter.testDbConnection(serverAddressTextField.getText(), serverPortTextField.getText(),
+                databaseNameTextField.getText(), databaseUsernameTextField.getText(), new String(databasePasswordTextField.getPassword()));
+          }
+        } else {
+          if (salesforceConfigFieldsAreValid()) {
+            syncPresenter.testSalesforceAuthentication(salesforceClientIdTextField.getText(),
+                salesforceClientSecretTextField.getText(), salesforceUsernameTextField.getText(),
+                salesforcePasswordTextField.getPassword().toString(), salesforceSecurityTokenTextField.getText());
+          }
+        }
+      } catch (Exception e) {
+        showErrorMessage(getString(MESSAGE_FATAL_ERROR) + e.getMessage());
+      }
+    });
+    
     dashboardJFrame.getContentPane().add(testConnectionButton);
     
-    saveConnectionButton = new JButton("Save");
-    saveConnectionButton.setBounds(168, 399, 144, 23);
-    dashboardJFrame.getContentPane().add(saveConnectionButton);
+    saveConnectionButton = new JButton(getString(BTN_SAVE));
+    saveConnectionButton.setBounds(181, 380, 160, 23);
     saveConnectionButton.addActionListener(event -> {
       try {
         if (serverConfigFieldsAreValid()) {
@@ -125,20 +138,16 @@ public class SyncDashboard implements SyncContract.View {
               syncPeriodTextField.getText(), syncPeriodUnitComboBox.getSelectedItem().toString());
         }
       } catch (Exception e) {
-        showErrorMessage("A fatal app error has occurred.\n" + e.getMessage());
+        showErrorMessage(getString(MESSAGE_FATAL_ERROR) + e.getMessage());
       }
     });
-    testConnectionButton.addActionListener(event -> {
-      try {
-        if (serverConfigFieldsAreValid()) {
-          syncPresenter.testConnection(serverAddressTextField.getText(), serverPortTextField.getText(),
-              databaseNameTextField.getText(), databaseUsernameTextField.getText(), new String(databasePasswordTextField.getPassword()));
-        }
-      } catch (Exception e) {
-        showErrorMessage("A fatal app error has occurred.\n" + e.getMessage());
-      }
-    });
-    statusProgressBar.setVisible(false);
+    
+    dashboardJFrame.getContentPane().add(saveConnectionButton);
+    
+    syncButton = new JButton(getString(BTN_SYNC));
+    syncButton.setBounds(353, 380, 160, 23);
+    dashboardJFrame.getContentPane().add(syncButton);
+    
     syncButton.addActionListener(event -> {
       try {
         syncPresenter.performSync();
@@ -152,36 +161,58 @@ public class SyncDashboard implements SyncContract.View {
     try {
       syncPresenter.getDbConnectionData();
     } catch (Exception e) {
-      showErrorMessage("A fatal app error has occurred.\n" + e.getMessage());
+      showErrorMessage(getString(MESSAGE_FATAL_ERROR) + e.getMessage());
     }
     
   }
   
+  /**
+   * Check if the Salesforce Configuration UI fields have been filled as required
+   *
+   * @return boolean True if fields are properly filled in False if a field has not been properly filled
+   */
+  private boolean salesforceConfigFieldsAreValid() {
+    return true;
+  }
+  
+  private void updateUiButtons(int selectedIndex) {
+    if (selectedIndex == 0) {
+      tabOnView = DATABASE_SERVER_CONFIGURATION;
+      testConnectionButton.setText(getString(BTN_TEST_DB_CONNECTION));
+    } else {
+      tabOnView = SALESFORCE_CONFIGURATION;
+      testConnectionButton.setText(getString(BTN_TEST_SALESFORCE_AUTH));
+    }
+  }
+  
+  /**
+   * Build the MSSQL Server Config Panel UI
+   *
+   * @return JPanel
+   */
   private JComponent makeDbServerConfigPanel() {
     JPanel jPanel = new JPanel();
     jPanel.setBorder(null);
     jPanel.setLayout(null);
-    JLabel lblServerAddress = new JLabel("Server Address");
-    lblServerAddress.setBounds(10, 10, 215, 14);
+    JLabel lblServerAddress = new JLabel(getString(LABEL_SERVER_ADDRESS));
+    lblServerAddress.setBounds(10, 10, 497, 15);
     jPanel.add(lblServerAddress);
     
     serverAddressTextField = new JTextField();
-    serverAddressTextField.setBounds(10, 30, 452, 20);
-    serverAddressTextField.setToolTipText("Enter a server url or IP without the scheme");
+    serverAddressTextField.setBounds(10, 30, 497, 20);
     jPanel.add(serverAddressTextField);
     serverAddressTextField.setColumns(10);
     
-    JLabel lblServerPort = new JLabel("Server Port");
-    lblServerPort.setBounds(10, 55, 80, 14);
+    JLabel lblServerPort = new JLabel(getString(LABEL_SERVER_PORT));
+    lblServerPort.setBounds(10, 55, 497, 15);
     jPanel.add(lblServerPort);
     
     serverPortTextField = new JTextField();
-    serverPortTextField.setBounds(10, 81, 452, 20);
-    serverPortTextField.setToolTipText("Enter a port number: 1-65535");
+    serverPortTextField.setBounds(10, 75, 497, 20);
     serverPortTextField.setInputVerifier(new InputVerifier() {
       @Override
       public boolean verify(JComponent input) {
-        String errMsg = "Port can only be a number between 1 and 65535";
+        String errMsg = getString(MESSAGE_PORT_OUT_OF_RANGE);
         boolean isOkay = false;
         JTextField jTextField = (JTextField) input;
         try {
@@ -191,7 +222,7 @@ public class SyncDashboard implements SyncContract.View {
           }
           isOkay = true;
         } catch (Exception ex) {
-          showErrorMessage("Validation Error", errMsg);
+          showErrorMessage(getString(MESSAGE_VALIDATION_ERROR), errMsg);
         }
         return isOkay;
       }
@@ -199,45 +230,42 @@ public class SyncDashboard implements SyncContract.View {
     jPanel.add(serverPortTextField);
     serverPortTextField.setColumns(10);
     
-    JLabel lblDatabaseName = new JLabel("Database Name");
-    lblDatabaseName.setBounds(10, 101, 215, 14);
+    JLabel lblDatabaseName = new JLabel(getString(LABEL_DATABASE_NAME));
+    lblDatabaseName.setBounds(10, 100, 497, 15);
     jPanel.add(lblDatabaseName);
     
     databaseNameTextField = new JTextField();
     databaseNameTextField.setColumns(10);
-    databaseNameTextField.setBounds(10, 121, 452, 20);
-    databaseNameTextField.setToolTipText("Enter a valid database name");
+    databaseNameTextField.setBounds(10, 120, 497, 20);
     jPanel.add(databaseNameTextField);
     
-    JLabel lblDatabaseUsername = new JLabel("Database Username");
-    lblDatabaseUsername.setBounds(10, 152, 215, 14);
+    JLabel lblDatabaseUsername = new JLabel(getString(LABEL_DATABASE_USERNAME));
+    lblDatabaseUsername.setBounds(10, 150, 497, 15);
     jPanel.add(lblDatabaseUsername);
     
     databaseUsernameTextField = new JTextField();
     databaseUsernameTextField.setColumns(10);
-    databaseUsernameTextField.setBounds(10, 172, 452, 20);
-    databaseUsernameTextField.setToolTipText("Enter database username");
+    databaseUsernameTextField.setBounds(10, 170, 497, 20);
     jPanel.add(databaseUsernameTextField);
     
-    JLabel lblDatabasePassword = new JLabel("Database Password");
-    lblDatabasePassword.setBounds(10, 203, 215, 14);
+    JLabel lblDatabasePassword = new JLabel(getString(LABEL_DATABASE_PASSWORD));
+    lblDatabasePassword.setBounds(10, 200, 497, 15);
     jPanel.add(lblDatabasePassword);
     
     databasePasswordTextField = new JPasswordField();
-    databasePasswordTextField.setBounds(10, 219, 452, 20);
-    databasePasswordTextField.setToolTipText("Enter the database password");
+    databasePasswordTextField.setBounds(10, 220, 497, 20);
     jPanel.add(databasePasswordTextField);
     
-    JLabel lblSyncPeriod = new JLabel("Sync Period");
-    lblSyncPeriod.setBounds(10, 250, 215, 14);
+    JLabel lblSyncPeriod = new JLabel(getString(LABEL_SYNC_PERIOD));
+    lblSyncPeriod.setBounds(10, 250, 497, 15);
     jPanel.add(lblSyncPeriod);
     
     syncPeriodTextField = new JTextField();
-    syncPeriodTextField.setBounds(10, 272, 107, 20);
+    syncPeriodTextField.setBounds(10, 270, 107, 20);
     syncPeriodTextField.setInputVerifier(new InputVerifier() {
       @Override
       public boolean verify(JComponent input) {
-        String errMsg = "Sync period can only be a number between 1 and 55";
+        String errMsg = getString(MESSAGE_SYNC_UNIT_OUT_OF_RANGE);
         boolean isOkay = false;
         JTextField jTextField = (JTextField) input;
         try {
@@ -247,7 +275,7 @@ public class SyncDashboard implements SyncContract.View {
           }
           isOkay = true;
         } catch (Exception ex) {
-          showErrorMessage("Validation Error", errMsg);
+          showErrorMessage(getString(MESSAGE_VALIDATION_ERROR), errMsg);
         }
         return isOkay;
       }
@@ -256,76 +284,67 @@ public class SyncDashboard implements SyncContract.View {
     
     syncPeriodUnitComboBox = new JComboBox();
     syncPeriodUnitComboBox.setModel(new DefaultComboBoxModel(syncPeriodUnits));
-    syncPeriodUnitComboBox.setBounds(127, 272, 98, 20);
+    syncPeriodUnitComboBox.setBounds(125, 270, 98, 20);
     jPanel.add(syncPeriodUnitComboBox);
     
     return jPanel;
   }
   
+  /**
+   * Build the Salesforce Config Panel UI
+   *
+   * @return JPanel
+   */
   private JComponent makeSalesforceConfigPanel() {
     JPanel jPanel = new JPanel(false);
     jPanel.setBorder(null);
     jPanel.setLayout(null);
     
-    clientId = new JLabel("Client Id");
-    clientId.setBounds(10, 11, 215, 14);
+    JLabel clientId = new JLabel(getString(LABEL_SALESFORCE_CLIENT_ID));
+    clientId.setBounds(10, 10, 497, 15);
     jPanel.add(clientId);
     
-    clientIdTextField = new JTextField();
-    clientIdTextField.setToolTipText("Enter a server url or IP without the scheme");
-    clientIdTextField.setColumns(10);
-    clientIdTextField.setBounds(10, 31, 454, 20);
-    jPanel.add(clientIdTextField);
+    salesforceClientIdTextField = new JTextField();
+    salesforceClientIdTextField.setColumns(10);
+    salesforceClientIdTextField.setBounds(10, 30, 497, 20);
+    jPanel.add(salesforceClientIdTextField);
     
-    lblClientSecret = new JLabel("Client Secret");
-    lblClientSecret.setBounds(10, 62, 215, 14);
+    JLabel lblClientSecret = new JLabel(getString(LABEL_SALESFORCE_CLIENT_SECRET));
+    lblClientSecret.setBounds(10, 55, 497, 15);
     jPanel.add(lblClientSecret);
     
-    clientSecretTextField = new JTextField();
-    clientSecretTextField.setToolTipText("Enter a server url or IP without the scheme");
-    clientSecretTextField.setColumns(10);
-    clientSecretTextField.setBounds(10, 82, 454, 20);
-    jPanel.add(clientSecretTextField);
+    salesforceClientSecretTextField = new JTextField();
+    salesforceClientSecretTextField.setColumns(10);
+    salesforceClientSecretTextField.setBounds(10, 75, 497, 20);
+    jPanel.add(salesforceClientSecretTextField);
     
-    lblRedirectUri = new JLabel("Redirect URI");
-    lblRedirectUri.setBounds(10, 164, 215, 14);
-    jPanel.add(lblRedirectUri);
-    
-    redirectUriTextField = new JTextField();
-    redirectUriTextField.setToolTipText("Enter a server url or IP without the scheme");
-    redirectUriTextField.setColumns(10);
-    redirectUriTextField.setBounds(10, 184, 454, 20);
-    jPanel.add(redirectUriTextField);
-    
-    lblUsername = new JLabel("Salesforce Username");
-    lblUsername.setBounds(10, 215, 215, 14);
+    JLabel lblUsername = new JLabel(getString(LABEL_SALESFORCE_USERNAME));
+    lblUsername.setBounds(10, 100, 497, 15);
     jPanel.add(lblUsername);
     
-    salesforceUsernametextField = new JTextField();
-    salesforceUsernametextField.setToolTipText("Enter a server url or IP without the scheme");
-    salesforceUsernametextField.setColumns(10);
-    salesforceUsernametextField.setBounds(10, 235, 454, 20);
-    jPanel.add(salesforceUsernametextField);
+    salesforceUsernameTextField = new JTextField();
+    salesforceUsernameTextField.setColumns(10);
+    salesforceUsernameTextField.setBounds(10, 120, 497, 20);
+    jPanel.add(salesforceUsernameTextField);
     
-    lblSecurityToken = new JLabel("Security Token");
-    lblSecurityToken.setBounds(10, 113, 215, 14);
-    jPanel.add(lblSecurityToken);
-    
-    securityTokenTextField = new JTextField();
-    securityTokenTextField.setToolTipText("Enter a server url or IP without the scheme");
-    securityTokenTextField.setColumns(10);
-    securityTokenTextField.setBounds(10, 133, 454, 20);
-    jPanel.add(securityTokenTextField);
-    
-    lblSalesforcePassword = new JLabel("Salesforce Password");
-    lblSalesforcePassword.setBounds(10, 266, 215, 14);
+    JLabel lblSalesforcePassword = new JLabel(getString(LABEL_SALESFORCE_PASSWORD));
+    lblSalesforcePassword.setBounds(10, 150, 497, 15);
     jPanel.add(lblSalesforcePassword);
     
-    salesforcePasswordTextField = new JTextField();
-    salesforcePasswordTextField.setToolTipText("Enter a server url or IP without the scheme");
+    salesforcePasswordTextField = new JPasswordField();
     salesforcePasswordTextField.setColumns(10);
-    salesforcePasswordTextField.setBounds(10, 286, 454, 20);
+    salesforcePasswordTextField.setBounds(10, 170, 497, 20);
     jPanel.add(salesforcePasswordTextField);
+    
+    JLabel lblSecurityToken = new JLabel(getString(LABEL_SALESFORCE_SECURITY_TOKEN));
+    lblSecurityToken.setBounds(10, 200, 497, 15);
+    jPanel.add(lblSecurityToken);
+    
+    salesforceSecurityTokenTextField = new JTextField();
+    salesforceSecurityTokenTextField.setColumns(10);
+    salesforceSecurityTokenTextField.setBounds(10, 220, 497, 20);
+    jPanel.add(salesforceSecurityTokenTextField);
+    
     return jPanel;
   }
   
@@ -344,7 +363,7 @@ public class SyncDashboard implements SyncContract.View {
   
   @Override
   public void showSuccessMessage(String message) {
-    JOptionPane.showMessageDialog(null, message, "Success", JOptionPane.INFORMATION_MESSAGE);
+    JOptionPane.showMessageDialog(null, message, getString(MESSAGE_SUCCESS), JOptionPane.INFORMATION_MESSAGE);
   }
   
   
@@ -375,7 +394,7 @@ public class SyncDashboard implements SyncContract.View {
   
   @Override
   public void showErrorMessage(String message) {
-    JOptionPane.showMessageDialog(null, message, "Fatal Error", JOptionPane.ERROR_MESSAGE);
+    JOptionPane.showMessageDialog(null, message, getString(MESSAGE_FATAL_ERROR), JOptionPane.ERROR_MESSAGE);
   }
   
   private boolean serverConfigFieldsAreValid() {
@@ -391,36 +410,36 @@ public class SyncDashboard implements SyncContract.View {
     String syncPeriodUnit = syncPeriodUnitComboBox.getSelectedItem().toString().trim();
     
     if (StringUtils.isBlank(serverAddress) || StringUtils.isNullOrEmpty(serverAddress)) {
-      messages.add("Server address is required");
+      messages.add(getString(MESSAGE_SERVER_ADDRESS_REQUIRED));
       isValid = false;
     } else if (StringUtils.isBlank(port) || StringUtils.isNullOrEmpty(port)) {
-      messages.add("Server port is required");
+      messages.add(getString(MESSAGE_SERVER_PORT_REQUIRED));
       isValid = false;
     }
     
     if (StringUtils.isBlank(dbName) || StringUtils.isNullOrEmpty(dbName)) {
-      messages.add("Database name is required");
+      messages.add(getString(MESSAGE_DATABASE_NAME_REQUIRED));
       isValid = false;
     }
     
     if (StringUtils.isBlank(dbUserName) || StringUtils.isNullOrEmpty(dbUserName)) {
-      messages.add("Database username is required");
+      messages.add(getString(MESSAGE_DATABASE_USERNAME_REQUIRED));
       isValid = false;
     }
     
     if (StringUtils.isBlank(dbPassword) || StringUtils.isNullOrEmpty(dbPassword)) {
-      messages.add("Database password is required");
+      messages.add(getString(MESSAGE_DATABASE_PASSWORD_REQUIRED));
       isValid = false;
     }
     
     if (StringUtils.isBlank(syncPeriod) || StringUtils.isNullOrEmpty(syncPeriod)) {
-      messages.add("Sync period is required");
+      messages.add(getString(MESSAGE_SYNC_PERIOD_REQUIRED));
       isValid = false;
     }
     
     if (StringUtils.isBlank(syncPeriodUnit) || StringUtils.isNullOrEmpty(syncPeriodUnit) ||
         !Arrays.asList(syncPeriodUnits).contains(syncPeriodUnit)) {
-      messages.add("Select time from that provided");
+      messages.add(getString(MESSAGE_SELECT_PROVIDED_TIME));
       isValid = false;
     }
     
@@ -429,18 +448,24 @@ public class SyncDashboard implements SyncContract.View {
       msgString.append(message).append("\n");
     }
     if (!isValid) {
-      showErrorMessage("Validation Error", "Please correct the following errors:\n" + msgString.toString());
+      showErrorMessage(getString(MESSAGE_VALIDATION_ERROR), getString(MESSAGE_CORRECT_ERRORS) + "\n" + msgString.toString());
     }
     return isValid;
   }
   
+  /**
+   * The start point of the application
+   *
+   * @param args
+   */
   public static void main(String[] args) {
     
     EventQueue.invokeLater(() -> {
       try {
         new SyncDashboard();
       } catch (Exception e) {
-        SyncDashboard.getInstance().showErrorMessage("Fatal Error", "A fatal app error has occurred.\n" + e.getMessage());
+        e.printStackTrace();
+        SyncDashboard.getInstance().showErrorMessage(getString(MESSAGE_FATAL_ERROR), getString(MESSAGE_FATAL_ERROR) + e.getMessage());
       }
     });
   }

@@ -21,8 +21,8 @@ public class SyncContract {
   
   public interface Presenter {
     
-    void testConnection(String serverAddress, String serverPort, String databaseName,
-                        String databaseUsername, String databasePassword) throws InterruptedException;
+    void testDbConnection(String serverAddress, String serverPort, String databaseName,
+                          String databaseUsername, String databasePassword) throws InterruptedException;
     
     void performSync() throws SQLException;
     
@@ -30,5 +30,8 @@ public class SyncContract {
                                String databasePassword, String syncPeriod, String syncPeriodUnit) throws SQLException;
     
     void getDbConnectionData() throws SQLException;
+    
+    void testSalesforceAuthentication(String salesforceClientId, String salesforceClientSecret, String salesforceUsername,
+                                      String salesforcePassword, String salesforceSecurityToken);
   }
 }

@@ -7,7 +7,7 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 
-import static ke.co.blueconsulting.sianroses.util.Constants.Units.BundleKeys.TOKEN;
+import static ke.co.blueconsulting.sianroses.util.Constants.BundleKeys.TOKEN;
 
 /**
  * An interface class used by retrofit to make REST calls

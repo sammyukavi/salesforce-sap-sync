@@ -4,13 +4,50 @@ public class Constants {
   
   public static String BASE_URL = "http://127.0.0.1/";//With a forwardSlash. Very important!!!
   
+  public static final String APP_DIR_NAME = ".sianroses";
+  public static final String DATABASE_SERVER_CONFIGURATION = "databaseServerConfiguration";
+  public static final String SALESFORCE_CONFIGURATION = "salesforceConfiguration";
+  
   public static class Units {
-    
     public static final int READ_TIME_OUT_SECONDS = 10;
     public static final int CONNECT_TIME_OUT_SECONDS = 10;
-    public static class BundleKeys {
-      public static final String TOKEN = "token";
-    }
   }
+  
+  public static class BundleKeys {
+    public static final String TOKEN = "token";
+    public static final String TAB_DATABASE_SERVER_CONFIG = "tabDatabaseServerConfiguration";
+    public static final String TAB_SALESFORCE_CONFIG = "tabSalesforceConfiguration";
+    public static final String LABEL_APP_NAME = "labels.appName";
+    public static final String LABEL_SERVER_ADDRESS = "labels.serverAddress";
+    public static final String LABEL_SERVER_PORT = "labels.serverPort";
+    public static final String LABEL_DATABASE_NAME = "labels.databaseName";
+    public static final String LABEL_DATABASE_USERNAME = "labels.databaseUsername";
+    public static final String LABEL_DATABASE_PASSWORD = "labels.databasePassword";
+    public static final String LABEL_SYNC_PERIOD = "labels.syncPeriod";
+    public static final String LABEL_SALESFORCE_CLIENT_ID = "label.salesforceClientId";
+    public static final String LABEL_SALESFORCE_CLIENT_SECRET = "labels.salesforceClientSecret";
+    public static final String LABEL_SALESFORCE_USERNAME = "label.salesforceUsername";
+    public static final String LABEL_SALESFORCE_PASSWORD = "label.salesforcePassword";
+    public static final String LABEL_SALESFORCE_SECURITY_TOKEN = "labels.salesforceSecurityToken";
+    public static final String MESSAGE_PORT_OUT_OF_RANGE = "messages.portOutOfRange";
+    public static final String MESSAGE_VALIDATION_ERROR = "messages.validationError";
+    public static final String MESSAGE_CORRECT_ERRORS = "messages.correctErrors";
+    public static final String MESSAGE_FATAL_ERROR = "messages.fatalError";
+    public static final String MESSAGE_SUCCESS = "messages.success";
+    public static final String MESSAGE_SYNC_UNIT_OUT_OF_RANGE = "messages.syncUnitOutOfRange";
+    public static final String MESSAGE_SERVER_ADDRESS_REQUIRED = "messages.serverAddressRequired";
+    public static final String MESSAGE_SELECT_PROVIDED_TIME = "messages.selectProvidedTime";
+    public static final String MESSAGE_SYNC_PERIOD_REQUIRED = "messages.syncPeriodRequired";
+    public static final String MESSAGE_DATABASE_PASSWORD_REQUIRED = "messages.databasePasswordRequired";
+    public static final String MESSAGE_DATABASE_USERNAME_REQUIRED = "messages.databaseUsernameRequired";
+    public static final String MESSAGE_DATABASE_NAME_REQUIRED = "messages.databaseNameRequired";
+    public static final String MESSAGE_SERVER_PORT_REQUIRED = "messages.serverPortRequired";
+    public static final String BTN_TEST_DB_CONNECTION = "buttons.testDbConnection";
+    public static final String BTN_TEST_SALESFORCE_AUTH = "buttons.testSalesforceAuth";
+    public static final String BTN_SAVE = "buttons.save";
+    public static final String BTN_SYNC = "button.sync";
+    public static final String SYNC_PERIOD_UNITS = "units.sync_period";
+  }
+  
   
 }

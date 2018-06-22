@@ -1,6 +1,7 @@
 package ke.co.blueconsulting.sianroses.presenter;
 
 
+import com.sun.istack.internal.NotNull;
 import ke.co.blueconsulting.sianroses.SyncDashboard;
 import ke.co.blueconsulting.sianroses.contract.SyncContract;
 import ke.co.blueconsulting.sianroses.data.impl.SqliteDbService;
@@ -31,8 +32,8 @@ public class SyncPresenter implements SyncContract.Presenter {
   }
   
   @Override
-  public void testConnection(String serverAddress, String serverPort, String databaseName,
-                             String databaseUsername, String databasePassword) {
+  public void testDbConnection(@NotNull String serverAddress, String serverPort, String databaseName,
+                               String databaseUsername, String databasePassword) {
     final boolean[] connectionSuccessful = {false};
     syncDashboard.setIsBusy(true);
     connectThread = new Thread(() -> {
@@ -127,5 +128,10 @@ public class SyncPresenter implements SyncContract.Presenter {
     } finally {
       syncDashboard.setIsBusy(false);
     }
+  }
+  
+  @Override
+  public void testSalesforceAuthentication(String salesforceClientId, String salesforceClientSecret, String salesforceUsername, String salesforcePassword, String salesforceSecurityToken) {
+  
   }
 }

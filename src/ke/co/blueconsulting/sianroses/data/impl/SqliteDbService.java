@@ -10,7 +10,7 @@ import ke.co.blueconsulting.sianroses.model.DbUser;
 import java.io.File;
 import java.sql.SQLException;
 
-import static ke.co.blueconsulting.sianroses.SyncDashboard.CONSTANTS.APP_DIR_NAME;
+import static ke.co.blueconsulting.sianroses.util.Constants.APP_DIR_NAME;
 
 public class SqliteDbService {
   
