@@ -15,14 +15,14 @@ import java.util.List;
 import java.util.MissingResourceException;
 
 import static ke.co.blueconsulting.sianroses.util.Constants.BundleKeys.*;
-import static ke.co.blueconsulting.sianroses.util.Constants.DATABASE_SERVER_CONFIGURATION;
-import static ke.co.blueconsulting.sianroses.util.Constants.SALESFORCE_CONFIGURATION;
+import static ke.co.blueconsulting.sianroses.util.Constants.DATABASE_SERVER_CONFIGURATION_TAB;
+import static ke.co.blueconsulting.sianroses.util.Constants.SALESFORCE_CONFIGURATION_TAB;
 
 public class SyncDashboard implements SyncContract.View {
   
   private JButton testConnectionButton, saveConnectionButton, syncButton;
   private JProgressBar statusProgressBar;
-  private String tabOnView = DATABASE_SERVER_CONFIGURATION;
+  private String tabOnView = DATABASE_SERVER_CONFIGURATION_TAB;
   private SyncPresenter syncPresenter;
   private String[] syncPeriodUnits;
   private JTextField serverAddressTextField, serverPortTextField, databaseNameTextField, databaseUsernameTextField,
@@ -110,17 +110,13 @@ public class SyncDashboard implements SyncContract.View {
     testConnectionButton.setBounds(12, 350, 160, 23);
     testConnectionButton.addActionListener(event -> {
       try {
-        if (tabOnView.equals(DATABASE_SERVER_CONFIGURATION)) {
-          if (serverConfigFieldsAreValid()) {
-            syncPresenter.testDbConnection(serverAddressTextField.getText(), serverPortTextField.getText(),
-                databaseNameTextField.getText(), databaseUsernameTextField.getText(), new String(databasePasswordTextField.getPassword()));
-          }
-        } else {
-          if (salesforceConfigFieldsAreValid()) {
-            syncPresenter.testSalesforceAuth(salesforceClientIdTextField.getText(),
-                salesforceClientSecretTextField.getText(), salesforceUsernameTextField.getText(),
-                salesforcePasswordTextField.getPassword().toString(), salesforceSecurityTokenTextField.getText());
-          }
+        if (tabOnView.equals(DATABASE_SERVER_CONFIGURATION_TAB) && serverConfigFieldsAreValid()) {
+          syncPresenter.testDbConnection(serverAddressTextField.getText(), serverPortTextField.getText(),
+              databaseNameTextField.getText(), databaseUsernameTextField.getText(), new String(databasePasswordTextField.getPassword()));
+        } else if (tabOnView.equals(SALESFORCE_CONFIGURATION_TAB) && salesforceConfigFieldsAreValid()) {
+          syncPresenter.testSalesforceAuth(salesforceClientIdTextField.getText(),
+              salesforceClientSecretTextField.getText(), salesforceUsernameTextField.getText(),
+              salesforcePasswordTextField.getPassword().toString(), salesforceSecurityTokenTextField.getText());
         }
       } catch (Exception e) {
         e.printStackTrace();
@@ -134,7 +130,7 @@ public class SyncDashboard implements SyncContract.View {
     saveConnectionButton.setBounds(183, 350, 160, 23);
     saveConnectionButton.addActionListener(event -> {
       try {
-        if (tabOnView.equals(DATABASE_SERVER_CONFIGURATION)) {
+        if (tabOnView.equals(DATABASE_SERVER_CONFIGURATION_TAB)) {
           if (serverConfigFieldsAreValid()) {
             syncPresenter.saveDbAuth(serverAddressTextField.getText(), serverPortTextField.getText(),
                 databaseNameTextField.getText(), databaseUsernameTextField.getText(), new String(databasePasswordTextField.getPassword()),
@@ -180,10 +176,10 @@ public class SyncDashboard implements SyncContract.View {
   
   private void updateUiButtons(int selectedIndex) {
     if (selectedIndex == 0) {
-      tabOnView = DATABASE_SERVER_CONFIGURATION;
+      tabOnView = DATABASE_SERVER_CONFIGURATION_TAB;
       testConnectionButton.setText(getString(BTN_TEST_DB_CONNECTION));
     } else {
-      tabOnView = SALESFORCE_CONFIGURATION;
+      tabOnView = SALESFORCE_CONFIGURATION_TAB;
       testConnectionButton.setText(getString(BTN_TEST_SALESFORCE_AUTH));
     }
   }
@@ -389,7 +385,7 @@ public class SyncDashboard implements SyncContract.View {
   @Override
   public void showSuccessMessage(String message) {
     message = StringUtils.breakLongString(message);
-    JOptionPane.showMessageDialog(dashboardJFrame, message, getString(MESSAGE_SUCCESS), JOptionPane.INFORMATION_MESSAGE);
+    JOptionPane.showMessageDialog(dashboardJFrame, message, getString(MESSAGE), JOptionPane.INFORMATION_MESSAGE);
   }
   
   @Override

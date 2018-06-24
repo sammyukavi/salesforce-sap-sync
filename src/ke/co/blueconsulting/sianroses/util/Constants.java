@@ -6,8 +6,8 @@ public class Constants {
   public static String SALESFORCE_AUTH_URL = "http://127.0.0.1/";//With a forwardSlash. Very important!!!
   
   public static final String APP_DIR_NAME = ".sianroses";
-  public static final String DATABASE_SERVER_CONFIGURATION = "databaseServerConfiguration";
-  public static final String SALESFORCE_CONFIGURATION = "salesforceConfiguration";
+  public static final String DATABASE_SERVER_CONFIGURATION_TAB = "databaseServerConfiguration";
+  public static final String SALESFORCE_CONFIGURATION_TAB = "salesforceConfiguration";
   public static final String SQLITE_DATABASE_NAME = "production.db";
   
   public static class Units {
@@ -44,7 +44,7 @@ public class Constants {
     public static final String MESSAGE_CORRECT_ERRORS = "messages.correctErrors";
     public static final String MESSAGE_FATAL_ERROR = "messages.fatalError";
     public static final String MESSAGE_ERROR_OCCURRED = "messages.errorOccured";
-    public static final String MESSAGE_SUCCESS = "messages.success";
+    public static final String MESSAGE = "messages.message";
     public static final String MESSAGE_SYNC_UNIT_OUT_OF_RANGE = "messages.syncUnitOutOfRange";
     public static final String MESSAGE_SERVER_ADDRESS_REQUIRED = "messages.serverAddressRequired";
     public static final String MESSAGE_SERVER_PORT_REQUIRED = "messages.serverPortRequired";
