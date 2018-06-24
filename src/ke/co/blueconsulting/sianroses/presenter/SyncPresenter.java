@@ -5,18 +5,19 @@ import com.sun.istack.internal.NotNull;
 import ke.co.blueconsulting.sianroses.SyncDashboard;
 import ke.co.blueconsulting.sianroses.contract.SyncContract;
 import ke.co.blueconsulting.sianroses.data.DataService;
-import ke.co.blueconsulting.sianroses.data.impl.AuthCredentialsDbService;
+import ke.co.blueconsulting.sianroses.data.RestServiceBuilder;
+import ke.co.blueconsulting.sianroses.data.db.AuthCredentialsDbService;
+import ke.co.blueconsulting.sianroses.data.db.SyncDbService;
 import ke.co.blueconsulting.sianroses.data.impl.SyncDataService;
-import ke.co.blueconsulting.sianroses.data.impl.SyncDbService;
 import ke.co.blueconsulting.sianroses.model.app.AuthCredentials;
 import ke.co.blueconsulting.sianroses.model.salesforce.ArCredit;
-import ke.co.blueconsulting.sianroses.model.salesforce.ServerResponse;
+import ke.co.blueconsulting.sianroses.model.app.ServerResponse;
 import ke.co.blueconsulting.sianroses.util.Console;
 
 import java.sql.SQLException;
 import java.util.List;
 
-import static ke.co.blueconsulting.sianroses.util.Constants.BundleKeys.MESSAGE_CONNECTION_SUCCESSFUL;
+import static ke.co.blueconsulting.sianroses.util.Constants.BundleKeys.*;
 
 public class SyncPresenter implements SyncContract.Presenter {
   private SyncContract.View syncDashboard;
@@ -29,8 +30,12 @@ public class SyncPresenter implements SyncContract.Presenter {
   public SyncPresenter(SyncDashboard syncDashboard) throws SQLException, ClassNotFoundException {
     this.syncDashboard = syncDashboard;
     this.authCredentialsDbService = new AuthCredentialsDbService();
-    this.syncDataService = new SyncDataService();
     this.syncDbService = new SyncDbService();
+    createSyncDataService();
+  }
+  
+  private void createSyncDataService() {
+    this.syncDataService = new SyncDataService();
   }
   
   @Override
@@ -151,7 +156,6 @@ public class SyncPresenter implements SyncContract.Presenter {
         t.printStackTrace();
       }
     };
-    
     List<ArCredit> arCredits = syncDbService.getUnsyncedRecords(ArCredit.class);
     ServerResponse serverResponse = new ServerResponse();
     serverResponse.addData("ArCredit", arCredits);
@@ -182,23 +186,29 @@ public class SyncPresenter implements SyncContract.Presenter {
     DataService.GetCallback<ServerResponse> authCallback = new DataService.GetCallback<ServerResponse>() {
       @Override
       public void onCompleted(ServerResponse serverResponse) {
-      
+        Console.dump(serverResponse);
+        syncDashboard.showSuccessMessage(SyncDashboard.getString(MESSAGE_CONNECTION_SUCCESSFUL));
       }
       
       @Override
       public void onError(Throwable t) {
-        t.printStackTrace();
+        syncDashboard.showErrorMessage(SyncDashboard.getString(MESSAGE_LOGIN_FAILED),
+            SyncDashboard.getString(MESSAGE_INVALID_SALESFORCE_CREDENTIALS));
       }
     };
     
     syncDashboard.setIsBusy(true);
     connectThread = new Thread(() -> {
       try {
+        RestServiceBuilder.switchToSalesforceAuthUrl();
+        createSyncDataService();
         syncDataService.authenticate(salesforceClientId, salesforceClientSecret, salesforceUsername, salesforcePassword,
             salesforceSecurityToken, authCallback);
       } catch (Exception e) {
         e.printStackTrace();
       } finally {
+        RestServiceBuilder.switchToSalesforceBaseUrl();
+        createSyncDataService();
         syncDashboard.setIsBusy(false);
         try {
           connectThread.join();

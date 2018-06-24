@@ -133,11 +133,12 @@ public class SyncDashboard implements SyncContract.View {
       try {
         if (tabOnView.equals(DATABASE_SERVER_CONFIGURATION_TAB) && serverConfigFieldsAreValid()) {
           syncPresenter.testDbConnection(serverAddressTextField.getText(), serverPortTextField.getText(),
-              databaseNameTextField.getText(), databaseUsernameTextField.getText(), new String(databasePasswordTextField.getPassword()));
+              databaseNameTextField.getText(), databaseUsernameTextField.getText(),
+              String.valueOf(databasePasswordTextField.getPassword()));
         } else if (tabOnView.equals(SALESFORCE_CONFIGURATION_TAB) && salesforceConfigFieldsAreValid()) {
           syncPresenter.testSalesforceAuth(salesforceClientIdTextField.getText(),
               salesforceClientSecretTextField.getText(), salesforceUsernameTextField.getText(),
-              salesforcePasswordTextField.getPassword().toString(), salesforceSecurityTokenTextField.getText());
+              String.valueOf(salesforcePasswordTextField.getPassword()), salesforceSecurityTokenTextField.getText());
         }
       } catch (Exception e) {
         e.printStackTrace();
@@ -154,14 +155,14 @@ public class SyncDashboard implements SyncContract.View {
         if (tabOnView.equals(DATABASE_SERVER_CONFIGURATION_TAB)) {
           if (serverConfigFieldsAreValid()) {
             syncPresenter.saveDbAuth(serverAddressTextField.getText(), serverPortTextField.getText(),
-                databaseNameTextField.getText(), databaseUsernameTextField.getText(), new String(databasePasswordTextField.getPassword()),
+                databaseNameTextField.getText(), databaseUsernameTextField.getText(), String.valueOf(databasePasswordTextField.getPassword()),
                 syncPeriodTextField.getText(), syncPeriodUnitComboBox.getSelectedItem().toString());
           }
         } else {
           if (salesforceConfigFieldsAreValid()) {
             syncPresenter.saveSalesforceAuth(salesforceClientIdTextField.getText(),
                 salesforceClientSecretTextField.getText(), salesforceUsernameTextField.getText(),
-                salesforcePasswordTextField.getPassword().toString(), salesforceSecurityTokenTextField.getText());
+                String.valueOf(salesforcePasswordTextField.getPassword()), salesforceSecurityTokenTextField.getText());
           }
         }
         

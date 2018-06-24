@@ -6,8 +6,8 @@ public class Constants {
   public static final String DATABASE_SERVER_CONFIGURATION_TAB = "databaseServerConfiguration";
   public static final String SALESFORCE_CONFIGURATION_TAB = "salesforceConfiguration";
   public static final String SQLITE_DATABASE_NAME = "production.db";
-  public static String DATABASE_SERVER_URL = "http://127.0.0.1/";//With a forwardSlash. Very important!!!
-  public static String SALESFORCE_AUTH_URL = "http://127.0.0.1/";//With a forwardSlash. Very important!!!
+  public static final String SALESFORCE_BASE_URL = "http://127.0.0.1/";//With a forwardSlash. Very important!!!
+  public static final String SALESFORCE_AUTH_BASE_URL = "https://test.salesforce.com/";//With a forwardSlash. Very important!!!
   
   public static class Units {
     public static final int READ_TIME_OUT_SECONDS = 10;
@@ -15,12 +15,13 @@ public class Constants {
   }
   
   public static class RequestKeys {
-    public static final String TOKEN = "token";
     public static final String CLIENT_ID = "client_id";
     public static final String CLIENT_SECRET = "client_secret";
     public static final String GRANT_TYPE = "grant_type";
     public static final String USERNAME = "username";
     public static final String PASSWORD = "password";
+    public static final String TOKEN = "token";
+    public static final String GRANT_TYPE_PASSWORD = "password";
   }
   
   public static class BundleKeys {
@@ -57,9 +58,9 @@ public class Constants {
     public static final String MESSAGE_SALESFORCE_ACCOUNT_USERNAME_REQUIRED = "messages.salesforceAccountUsernameRequired";
     public static final String MESSAGE_SALESFORCE_ACCOUNT_PASSWORD_REQUIRED = "messages.salesforceAccountPasswordRequired";
     public static final String MESSAGE_SALESFORCE_SECURITY_TOKEN_REQUIRED = "messages.salesforceSecurityTokenRequired";
-    
-    
     public static final String MESSAGE_CONNECTION_SUCCESSFUL = "messages.connectionSuccessful";
+    public static final String MESSAGE_LOGIN_FAILED = "messages.loginFailed";
+    public static final String MESSAGE_INVALID_SALESFORCE_CREDENTIALS = "messages.invalidSalesforceCredentials";
     public static final String BTN_TEST_DB_CONNECTION = "buttons.testDbConnection";
     public static final String BTN_TEST_SALESFORCE_AUTH = "buttons.testSalesforceAuth";
     public static final String BTN_SAVE = "buttons.save";

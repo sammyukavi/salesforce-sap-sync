@@ -1,6 +1,6 @@
 package ke.co.blueconsulting.sianroses.data;
 
-import ke.co.blueconsulting.sianroses.model.salesforce.ServerResponse;
+import ke.co.blueconsulting.sianroses.model.app.ServerResponse;
 import ke.co.blueconsulting.sianroses.util.ErrorUtil;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -37,7 +37,7 @@ public abstract class BaseDataService<SR, RS, DS> implements DataService<SR> {
         } else {
           ServerResponse error = ErrorUtil.parseError(response);
           try {
-            Throwable t = new Throwable("SOME ERROR OCCURED, CUSTOMIZE THIS");
+            Throwable t = new Throwable(error.getError() + "\n" + error.getErrorDescription());
             if (callback != null) {
               callback.onError(t);
             }
@@ -69,7 +69,7 @@ public abstract class BaseDataService<SR, RS, DS> implements DataService<SR> {
           callback.onCompleted(response.body());
         } else {
           ServerResponse error = ErrorUtil.parseError(response);
-          Throwable t = new Throwable("SOME ERROR OCCURED 2, CUSTOMIZE THIS");
+          Throwable t = new Throwable(error.getError() + "\n" + error.getErrorDescription());
           callback.onError(t);
         }
       }

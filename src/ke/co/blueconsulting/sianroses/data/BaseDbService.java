@@ -3,7 +3,7 @@ package ke.co.blueconsulting.sianroses.data;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
-import ke.co.blueconsulting.sianroses.data.impl.AuthCredentialsDbService;
+import ke.co.blueconsulting.sianroses.data.db.AuthCredentialsDbService;
 import ke.co.blueconsulting.sianroses.model.app.AuthCredentials;
 
 import java.sql.SQLException;
