@@ -65,7 +65,7 @@ public class SyncDashboard implements SyncContract.View {
     dashboardJFrame = new JFrame();
     dashboardJFrame.setResizable(false);
     dashboardJFrame.setTitle(getString(LABEL_APP_NAME));
-    dashboardJFrame.setBounds(100, 100, 530, 455);
+    dashboardJFrame.setBounds(100, 100, 530, 410);
     dashboardJFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     dashboardJFrame.getContentPane().setLayout(null);
     dashboardJFrame.setLocationRelativeTo(null);
@@ -84,7 +84,7 @@ public class SyncDashboard implements SyncContract.View {
         return borderInsets;
       }
     });
-    tabbedPane.setBounds(0, 0, 524, 335);
+    tabbedPane.setBounds(0, 0, 524, 320);
     tabbedPane.setAlignmentY(Component.BOTTOM_ALIGNMENT);
     tabbedPane.setAlignmentX(Component.RIGHT_ALIGNMENT);
     
@@ -101,13 +101,13 @@ public class SyncDashboard implements SyncContract.View {
     dashboardJFrame.getContentPane().add(tabbedPane);
     
     statusProgressBar = new JProgressBar();
-    statusProgressBar.setBounds(10, 345, 219, 20);
+    statusProgressBar.setBounds(12, 324, 500, 20);
     statusProgressBar.setIndeterminate(true);
     statusProgressBar.setVisible(false);
     dashboardJFrame.getContentPane().add(statusProgressBar);
     
     testConnectionButton = new JButton(getString(BTN_TEST_DB_CONNECTION));
-    testConnectionButton.setBounds(10, 380, 160, 23);
+    testConnectionButton.setBounds(12, 350, 160, 23);
     testConnectionButton.addActionListener(event -> {
       try {
         if (tabOnView.equals(DATABASE_SERVER_CONFIGURATION)) {
@@ -131,7 +131,7 @@ public class SyncDashboard implements SyncContract.View {
     dashboardJFrame.getContentPane().add(testConnectionButton);
     
     saveConnectionButton = new JButton(getString(BTN_SAVE));
-    saveConnectionButton.setBounds(181, 380, 160, 23);
+    saveConnectionButton.setBounds(183, 350, 160, 23);
     saveConnectionButton.addActionListener(event -> {
       try {
         if (serverConfigFieldsAreValid()) {
@@ -147,7 +147,7 @@ public class SyncDashboard implements SyncContract.View {
     dashboardJFrame.getContentPane().add(saveConnectionButton);
     
     syncButton = new JButton(getString(BTN_SYNC));
-    syncButton.setBounds(353, 380, 160, 23);
+    syncButton.setBounds(355, 350, 160, 23);
     dashboardJFrame.getContentPane().add(syncButton);
     
     syncButton.addActionListener(event -> {

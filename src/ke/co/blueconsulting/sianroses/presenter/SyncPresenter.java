@@ -8,8 +8,8 @@ import ke.co.blueconsulting.sianroses.data.DataService;
 import ke.co.blueconsulting.sianroses.data.impl.AuthCredentialsDbService;
 import ke.co.blueconsulting.sianroses.data.impl.SyncDataService;
 import ke.co.blueconsulting.sianroses.data.impl.SyncDbService;
-import ke.co.blueconsulting.sianroses.model.salesforce.ArCredit;
 import ke.co.blueconsulting.sianroses.model.app.AuthCredentials;
+import ke.co.blueconsulting.sianroses.model.salesforce.ArCredit;
 import ke.co.blueconsulting.sianroses.model.salesforce.ServerResponse;
 import ke.co.blueconsulting.sianroses.util.Console;
 
@@ -34,6 +34,39 @@ public class SyncPresenter implements SyncContract.Presenter {
   }
   
   @Override
+  public void getCredentials() {
+    syncDashboard.setIsBusy(true);
+    try {
+      AuthCredentials connectionData = authCredentialsDbService.getAuthCredentials();
+      if (connectionData != null) {
+        syncDashboard.updateUiFields(connectionData);
+      }
+    } finally {
+      syncDashboard.setIsBusy(false);
+    }
+  }
+  
+  @Override
+  public void saveConnectionDetails(String serverAddress, String serverPort, String databaseName,
+                                    String databaseUsername, String databasePassword, String syncPeriod,
+                                    String syncPeriodUnit) throws SQLException {
+    syncDashboard.setIsBusy(true);
+    try {
+      AuthCredentials authCredentials = authCredentialsDbService.getAuthCredentials();
+      authCredentials.setServerAddress(serverAddress);
+      authCredentials.setServerPort(Integer.parseInt(serverPort));
+      authCredentials.setDatabaseName(databaseName);
+      authCredentials.setDatabaseUsername(databaseUsername);
+      authCredentials.setDatabasePassword(databasePassword);
+      authCredentials.setSyncPeriod(Integer.parseInt(syncPeriod));
+      authCredentials.setSyncPeriodUnit(syncPeriodUnit);
+      authCredentialsDbService.save(authCredentials);
+    } finally {
+      syncDashboard.setIsBusy(false);
+    }
+  }
+  
+  @Override
   public void testDbConnection(@NotNull String serverAddress, String serverPort, String databaseName,
                                String databaseUsername, String databasePassword) {
     final boolean[] connectionSuccessful = {false};
@@ -44,6 +77,7 @@ public class SyncPresenter implements SyncContract.Presenter {
           connectionSuccessful[0] = true;
         }
       } catch (ClassNotFoundException | SQLException e) {
+        syncDashboard.setIsBusy(false);
         syncDashboard.showErrorMessage(e.getMessage());
       } finally {
         syncDashboard.setIsBusy(false);
@@ -62,7 +96,7 @@ public class SyncPresenter implements SyncContract.Presenter {
   @Override
   public void performSync() throws SQLException {
     //fetchFromTheServer()
-    sendToTheServer();
+    //sendToTheServer();
   }
   
   private void sendToTheServer() throws SQLException {
@@ -99,41 +133,11 @@ public class SyncPresenter implements SyncContract.Presenter {
     syncDataService.getFromServer(getFromTheServerCallback);
   }
   
-  @Override
-  public void saveConnectionDetails(String serverAddress, String serverPort, String databaseName,
-                                    String databaseUsername, String databasePassword, String syncPeriod,
-                                    String syncPeriodUnit) throws SQLException {
-    syncDashboard.setIsBusy(true);
-    try {
-      AuthCredentials authCredentials = authCredentialsDbService.getAuthCredentials();
-      authCredentials.setServerAddress(serverAddress);
-      authCredentials.setServerPort(Integer.parseInt(serverPort));
-      authCredentials.setDatabaseName(databaseName);
-      authCredentials.setDatabaseUsername(databaseUsername);
-      authCredentials.setDatabasePassword(databasePassword);
-      authCredentials.setSyncPeriod(Integer.parseInt(syncPeriod));
-      authCredentials.setSyncPeriodUnit(syncPeriodUnit);
-      authCredentialsDbService.save(authCredentials);
-    } finally {
-      syncDashboard.setIsBusy(false);
-    }
-  }
   
   @Override
-  public void getCredentials() {
-    syncDashboard.setIsBusy(true);
-    try {
-      AuthCredentials connectionData = authCredentialsDbService.getAuthCredentials();
-      if (connectionData != null) {
-        syncDashboard.updateUiFields(connectionData);
-      }
-    } finally {
-      syncDashboard.setIsBusy(false);
-    }
-  }
-  
-  @Override
-  public void testSalesforceAuthentication(String salesforceClientId, String salesforceClientSecret, String salesforceUsername, String salesforcePassword, String salesforceSecurityToken) {
+  public void testSalesforceAuthentication(String salesforceClientId, String salesforceClientSecret,
+                                           String salesforceUsername, String salesforcePassword,
+                                           String salesforceSecurityToken) {
     
     DataService.GetCallback<ServerResponse> authCallback = new DataService.GetCallback<ServerResponse>() {
       @Override
@@ -146,7 +150,6 @@ public class SyncPresenter implements SyncContract.Presenter {
         t.printStackTrace();
       }
     };
-    
     
     syncDashboard.setIsBusy(true);
     connectThread = new Thread(() -> {
