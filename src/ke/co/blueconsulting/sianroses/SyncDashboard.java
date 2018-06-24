@@ -93,7 +93,7 @@ public class SyncDashboard implements SyncContract.View {
     dashboardJFrame.getContentPane().setLayout(null);
     
     JTabbedPane tabbedPane = new JTabbedPane();
-    tabbedPane.setUI(new BasicTabbedPaneUI() {
+    /*tabbedPane.setUI(new BasicTabbedPaneUI() {
       private final Insets borderInsets = new Insets(0, 0, 0, 0);
       
       @Override
@@ -104,7 +104,7 @@ public class SyncDashboard implements SyncContract.View {
       protected Insets getContentBorderInsets(int tabPlacement) {
         return borderInsets;
       }
-    });
+    });*/
     tabbedPane.setBounds(0, 0, 524, 320);
     tabbedPane.setAlignmentY(Component.BOTTOM_ALIGNMENT);
     tabbedPane.setAlignmentX(Component.RIGHT_ALIGNMENT);

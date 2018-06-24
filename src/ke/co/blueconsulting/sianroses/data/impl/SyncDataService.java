@@ -5,6 +5,8 @@ import ke.co.blueconsulting.sianroses.data.db.SyncDbService;
 import ke.co.blueconsulting.sianroses.data.rest.SyncRestService;
 import ke.co.blueconsulting.sianroses.model.app.ServerResponse;
 
+import static ke.co.blueconsulting.sianroses.util.Constants.RequestKeys.GRANT_TYPE_PASSWORD;
+
 public class SyncDataService extends BaseDataService<ServerResponse, SyncRestService, SyncDbService> {
   
   @Override
@@ -29,6 +31,6 @@ public class SyncDataService extends BaseDataService<ServerResponse, SyncRestSer
                            String salesforceUsername, String salesforcePassword, String salesforceSecurityToken,
                            GetCallback<ServerResponse> callback) {
     executeSingleTask(callback, restService.authenticate(salesforceClientId, salesforceClientSecret,
-        "password", salesforceUsername, salesforcePassword + salesforceSecurityToken));
+        GRANT_TYPE_PASSWORD, salesforceUsername, salesforcePassword + salesforceSecurityToken));
   }
 }
