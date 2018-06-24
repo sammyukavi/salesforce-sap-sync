@@ -42,7 +42,7 @@ public class Constants {
     public static final String MESSAGE_VALIDATION_ERROR = "messages.validationError";
     public static final String MESSAGE_CORRECT_ERRORS = "messages.correctErrors";
     public static final String MESSAGE_FATAL_ERROR = "messages.fatalError";
-    public static final String MESSAGE_ERROR_OCCURED = "messages.errorOccured";
+    public static final String MESSAGE_ERROR_OCCURRED = "messages.errorOccured";
     public static final String MESSAGE_SUCCESS = "messages.success";
     public static final String MESSAGE_SYNC_UNIT_OUT_OF_RANGE = "messages.syncUnitOutOfRange";
     public static final String MESSAGE_SERVER_ADDRESS_REQUIRED = "messages.serverAddressRequired";

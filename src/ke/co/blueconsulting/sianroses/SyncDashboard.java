@@ -124,7 +124,7 @@ public class SyncDashboard implements SyncContract.View {
         }
       } catch (Exception e) {
         e.printStackTrace();
-        showErrorMessage(getString(MESSAGE_ERROR_OCCURED) + e.getMessage());
+        showErrorMessage(getString(MESSAGE_ERROR_OCCURRED) + e.getMessage());
       }
     });
     
@@ -140,7 +140,7 @@ public class SyncDashboard implements SyncContract.View {
               syncPeriodTextField.getText(), syncPeriodUnitComboBox.getSelectedItem().toString());
         }
       } catch (Exception e) {
-        showErrorMessage(getString(MESSAGE_FATAL_ERROR) + e.getMessage());
+        showErrorMessage(getString(MESSAGE_ERROR_OCCURRED) + e.getMessage());
       }
     });
     
@@ -154,7 +154,7 @@ public class SyncDashboard implements SyncContract.View {
       try {
         syncPresenter.performSync();
       } catch (SQLException e) {
-        showErrorMessage(getString(MESSAGE_FATAL_ERROR) + e.getMessage());
+        showErrorMessage(getString(MESSAGE_ERROR_OCCURRED) + e.getMessage());
       }
     });
     
@@ -364,12 +364,6 @@ public class SyncDashboard implements SyncContract.View {
   }
   
   @Override
-  public void showSuccessMessage(String message) {
-    JOptionPane.showMessageDialog(dashboardJFrame, message, getString(MESSAGE_SUCCESS), JOptionPane.INFORMATION_MESSAGE);
-  }
-  
-  
-  @Override
   public void setIsBusy(boolean isBusy) {
     List<Container> containerList = Arrays.asList(serverAddressTextField, serverPortTextField, databaseNameTextField,
         databaseUsernameTextField, databasePasswordTextField, syncPeriodTextField, syncPeriodUnitComboBox, testConnectionButton,
@@ -385,13 +379,21 @@ public class SyncDashboard implements SyncContract.View {
   }
   
   @Override
+  public void showSuccessMessage(String message) {
+    message = StringUtils.breakLongString(message);
+    JOptionPane.showMessageDialog(dashboardJFrame, message, getString(MESSAGE_SUCCESS), JOptionPane.INFORMATION_MESSAGE);
+  }
+  
+  @Override
   public void showErrorMessage(String title, String message) {
+    message = StringUtils.breakLongString(message);
     JOptionPane.showMessageDialog(dashboardJFrame, message, title, JOptionPane.ERROR_MESSAGE);
   }
   
   @Override
   public void showErrorMessage(String message) {
-    JOptionPane.showMessageDialog(dashboardJFrame, message, getString(MESSAGE_FATAL_ERROR), JOptionPane.ERROR_MESSAGE);
+    message = StringUtils.breakLongString(message);
+    JOptionPane.showMessageDialog(dashboardJFrame, message, getString(MESSAGE_ERROR_OCCURRED), JOptionPane.ERROR_MESSAGE);
   }
   
   private boolean serverConfigFieldsAreValid() {

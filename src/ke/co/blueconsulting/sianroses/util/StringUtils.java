@@ -83,4 +83,37 @@ public class StringUtils {
     if (d != null) d.addDocumentListener(dl);
   }
   
+  /**
+   * Force-inserts line breaks into an otherwise human-unfriendly long string.
+   */
+  private static String breakLongString(String input, int charLimit) {
+    String output = "", rest = input;
+    int i = 0;
+    
+    // validate.
+    if (rest.length() < charLimit) {
+      output = rest;
+    } else if (!rest.equals("") && (rest != null))  // safety precaution
+    {
+      do {    // search the next index of interest.
+        i = rest.lastIndexOf(" ", charLimit) + 1;
+        if (i == -1)
+          i = charLimit;
+        if (i > rest.length())
+          i = rest.length();
+        
+        // break!
+        output += rest.substring(0, i) + "\n";
+        rest = rest.substring(i);
+      }
+      while ((rest.length() > charLimit));
+      output += rest;
+    }
+    
+    return output;
+  }
+  
+  public static String breakLongString(String message) {
+    return breakLongString(message, 100);
+  }
 }

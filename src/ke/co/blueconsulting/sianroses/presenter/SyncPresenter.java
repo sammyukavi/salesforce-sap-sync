@@ -44,7 +44,7 @@ public class SyncPresenter implements SyncContract.Presenter {
           connectionSuccessful[0] = true;
         }
       } catch (ClassNotFoundException | SQLException e) {
-        syncDashboard.showErrorMessage(e.getLocalizedMessage());
+        syncDashboard.showErrorMessage(e.getMessage());
       } finally {
         syncDashboard.setIsBusy(false);
         if (connectionSuccessful[0]) {
