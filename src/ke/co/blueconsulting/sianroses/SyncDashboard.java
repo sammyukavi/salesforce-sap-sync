@@ -30,6 +30,7 @@ public class SyncDashboard implements SyncContract.View {
       salesforceUsernameTextField, salesforceSecurityTokenTextField;
   private JPasswordField databasePasswordTextField, salesforcePasswordTextField;
   private JComboBox syncPeriodUnitComboBox;
+  private JFrame dashboardJFrame;
   
   /**
    * @wbp.parser.entryPoint
@@ -61,11 +62,11 @@ public class SyncDashboard implements SyncContract.View {
   }
   
   private void initViews() {
-    JFrame dashboardJFrame = new JFrame();
+    dashboardJFrame = new JFrame();
     dashboardJFrame.setResizable(false);
     dashboardJFrame.setTitle(getString(LABEL_APP_NAME));
     dashboardJFrame.setBounds(100, 100, 530, 455);
-    dashboardJFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    dashboardJFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     dashboardJFrame.getContentPane().setLayout(null);
     dashboardJFrame.setLocationRelativeTo(null);
     dashboardJFrame.getContentPane().setLayout(null);
@@ -123,7 +124,7 @@ public class SyncDashboard implements SyncContract.View {
         }
       } catch (Exception e) {
         e.printStackTrace();
-        showErrorMessage(getString(MESSAGE_FATAL_ERROR) + e.getMessage());
+        showErrorMessage(getString(MESSAGE_ERROR_OCCURED) + e.getMessage());
       }
     });
     
@@ -364,7 +365,7 @@ public class SyncDashboard implements SyncContract.View {
   
   @Override
   public void showSuccessMessage(String message) {
-    JOptionPane.showMessageDialog(null, message, getString(MESSAGE_SUCCESS), JOptionPane.INFORMATION_MESSAGE);
+    JOptionPane.showMessageDialog(dashboardJFrame, message, getString(MESSAGE_SUCCESS), JOptionPane.INFORMATION_MESSAGE);
   }
   
   
@@ -373,13 +374,8 @@ public class SyncDashboard implements SyncContract.View {
     List<Container> containerList = Arrays.asList(serverAddressTextField, serverPortTextField, databaseNameTextField,
         databaseUsernameTextField, databasePasswordTextField, syncPeriodTextField, syncPeriodUnitComboBox, testConnectionButton,
         saveConnectionButton, syncButton);
-    if (isBusy) {
-      enableContainers(false, containerList);
-      statusProgressBar.setVisible(true);
-    } else {
-      statusProgressBar.setVisible(false);
-      enableContainers(true, containerList);
-    }
+    enableContainers(!isBusy, containerList);
+    statusProgressBar.setVisible(isBusy);
   }
   
   private void enableContainers(boolean enabled, List<Container> containerList) {
@@ -390,12 +386,12 @@ public class SyncDashboard implements SyncContract.View {
   
   @Override
   public void showErrorMessage(String title, String message) {
-    JOptionPane.showMessageDialog(null, message, title, JOptionPane.ERROR_MESSAGE);
+    JOptionPane.showMessageDialog(dashboardJFrame, message, title, JOptionPane.ERROR_MESSAGE);
   }
   
   @Override
   public void showErrorMessage(String message) {
-    JOptionPane.showMessageDialog(null, message, getString(MESSAGE_FATAL_ERROR), JOptionPane.ERROR_MESSAGE);
+    JOptionPane.showMessageDialog(dashboardJFrame, message, getString(MESSAGE_FATAL_ERROR), JOptionPane.ERROR_MESSAGE);
   }
   
   private boolean serverConfigFieldsAreValid() {
