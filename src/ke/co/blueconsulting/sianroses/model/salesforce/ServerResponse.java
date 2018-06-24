@@ -1,4 +1,4 @@
-package ke.co.blueconsulting.sianroses.model;
+package ke.co.blueconsulting.sianroses.model.salesforce;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

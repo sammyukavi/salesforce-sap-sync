@@ -5,24 +5,29 @@ import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
-import ke.co.blueconsulting.sianroses.model.DbUser;
+import ke.co.blueconsulting.sianroses.model.app.AuthCredentials;
 
 import java.io.File;
 import java.sql.SQLException;
 
 import static ke.co.blueconsulting.sianroses.util.Constants.APP_DIR_NAME;
 
-public class SqliteDbService {
+public class AuthCredentialsDbService {
   
   private final static String DATABASE_NAME = "production.db";
-  private Dao<DbUser, Integer> dbConnectionDao;
+  private Dao<AuthCredentials, Integer> credentialsDao;
+  private AuthCredentials authCredentials;
   
   
-  public SqliteDbService() throws ClassNotFoundException, SQLException {
+  public AuthCredentialsDbService() throws ClassNotFoundException, SQLException {
     Class.forName("org.sqlite.JDBC");
     ConnectionSource connectionSource = new JdbcConnectionSource(getDatabaseUrl());
-    dbConnectionDao = DaoManager.createDao(connectionSource, DbUser.class);
-    TableUtils.createTableIfNotExists(connectionSource, DbUser.class);
+    credentialsDao = DaoManager.createDao(connectionSource, AuthCredentials.class);
+    TableUtils.createTableIfNotExists(connectionSource, AuthCredentials.class);
+    this.authCredentials = credentialsDao.queryForId(1);
+    if (authCredentials == null) {
+      authCredentials = new AuthCredentials();
+    }
   }
   
   private String getDatabaseUrl() {
@@ -35,13 +40,16 @@ public class SqliteDbService {
     return "jdbc:sqlite:" + directoryName + DATABASE_NAME;
   }
   
-  
-  public void save(DbUser dbUser) throws SQLException {
-    dbUser.setId(1);
-    dbConnectionDao.createOrUpdate(dbUser);
+  public void save(AuthCredentials authCredentials) throws SQLException {
+    authCredentials.setId(1);
+    credentialsDao.createOrUpdate(authCredentials);
   }
   
-  public DbUser getConnectionData() throws SQLException {
-    return dbConnectionDao.queryForId(1);
+  public AuthCredentials getAuthCredentials() {
+    return authCredentials;
+  }
+  
+  public void setAuthCredentials(AuthCredentials authCredentials) {
+    this.authCredentials = authCredentials;
   }
 }

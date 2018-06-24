@@ -1,16 +1,16 @@
-package ke.co.blueconsulting.sianroses.data.rest;
+package ke.co.blueconsulting.sianroses.data;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
-import ke.co.blueconsulting.sianroses.data.impl.SqliteDbService;
-import ke.co.blueconsulting.sianroses.model.DbUser;
+import ke.co.blueconsulting.sianroses.data.impl.AuthCredentialsDbService;
+import ke.co.blueconsulting.sianroses.model.app.AuthCredentials;
 
 import java.sql.SQLException;
 
 public class BaseDbService {
   
-  protected JdbcConnectionSource connectionSource;
+  private JdbcConnectionSource connectionSource;
   
   public BaseDbService() {
     try {
@@ -21,14 +21,14 @@ public class BaseDbService {
   }
   
   private String getConnectionUrl() throws SQLException, ClassNotFoundException {
-    SqliteDbService sqliteDbService = new SqliteDbService();
-    DbUser connectionData = sqliteDbService.getConnectionData();
+    AuthCredentialsDbService authCredentialsDbService = new AuthCredentialsDbService();
+    AuthCredentials connectionData = authCredentialsDbService.getAuthCredentials();
     return "jdbc:sqlserver://" + connectionData.getServerAddress() + ":" + connectionData.getServerPort()
         + ";" + "databaseName=" + connectionData.getDatabaseName() + ";user=" + connectionData.getDatabaseUsername() +
         ";password=" + connectionData.getDatabasePassword();
   }
   
-  public <S> Dao<S, Integer> createDao(Class<S> sClass) throws SQLException {
+  protected <S> Dao<S, Integer> createDao(Class<S> sClass) throws SQLException {
     return DaoManager.createDao(connectionSource, sClass);
   }
   

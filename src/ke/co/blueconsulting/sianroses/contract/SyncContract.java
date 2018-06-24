@@ -1,6 +1,6 @@
 package ke.co.blueconsulting.sianroses.contract;
 
-import ke.co.blueconsulting.sianroses.model.DbUser;
+import ke.co.blueconsulting.sianroses.model.app.AuthCredentials;
 
 import java.sql.SQLException;
 
@@ -14,7 +14,7 @@ public class SyncContract {
     
     void setIsBusy(boolean isBusy);
     
-    void updateUiFields(DbUser dbUserData);
+    void updateUiFields(AuthCredentials authCredentialsData);
     
     void showSuccessMessage(String message);
   }
@@ -29,7 +29,7 @@ public class SyncContract {
     void saveConnectionDetails(String serverAddress, String serverPort, String databaseName, String databaseUsername,
                                String databasePassword, String syncPeriod, String syncPeriodUnit) throws SQLException;
     
-    void getDbConnectionData() throws SQLException;
+    void getCredentials() throws SQLException;
     
     void testSalesforceAuthentication(String salesforceClientId, String salesforceClientSecret, String salesforceUsername,
                                       String salesforcePassword, String salesforceSecurityToken);

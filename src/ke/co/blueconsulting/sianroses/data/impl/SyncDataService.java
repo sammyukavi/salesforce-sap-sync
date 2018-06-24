@@ -1,8 +1,8 @@
 package ke.co.blueconsulting.sianroses.data.impl;
 
-import ke.co.blueconsulting.sianroses.data.rest.BaseDataService;
-import ke.co.blueconsulting.sianroses.data.rest.retrofit.SyncRestService;
-import ke.co.blueconsulting.sianroses.model.ServerResponse;
+import ke.co.blueconsulting.sianroses.data.BaseDataService;
+import ke.co.blueconsulting.sianroses.data.rest.SyncRestService;
+import ke.co.blueconsulting.sianroses.model.salesforce.ServerResponse;
 
 public class SyncDataService extends BaseDataService<ServerResponse, SyncRestService, SyncDbService> {
   

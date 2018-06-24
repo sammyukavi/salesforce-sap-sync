@@ -1,7 +1,7 @@
 package ke.co.blueconsulting.sianroses;
 
 import ke.co.blueconsulting.sianroses.contract.SyncContract;
-import ke.co.blueconsulting.sianroses.model.DbUser;
+import ke.co.blueconsulting.sianroses.model.app.AuthCredentials;
 import ke.co.blueconsulting.sianroses.presenter.SyncPresenter;
 import ke.co.blueconsulting.sianroses.util.StringUtils;
 
@@ -122,6 +122,7 @@ public class SyncDashboard implements SyncContract.View {
           }
         }
       } catch (Exception e) {
+        e.printStackTrace();
         showErrorMessage(getString(MESSAGE_FATAL_ERROR) + e.getMessage());
       }
     });
@@ -159,7 +160,7 @@ public class SyncDashboard implements SyncContract.View {
     dashboardJFrame.setVisible(true);
     
     try {
-      syncPresenter.getDbConnectionData();
+      syncPresenter.getCredentials();
     } catch (Exception e) {
       showErrorMessage(getString(MESSAGE_FATAL_ERROR) + e.getMessage());
     }
@@ -349,16 +350,16 @@ public class SyncDashboard implements SyncContract.View {
   }
   
   @Override
-  public void updateUiFields(DbUser dbUser) {
-    serverAddressTextField.setText(dbUser.getServerAddress());
-    if (dbUser.getServerPort() != 0) {
-      serverPortTextField.setText(String.valueOf(dbUser.getServerPort()));
+  public void updateUiFields(AuthCredentials authCredentials) {
+    serverAddressTextField.setText(authCredentials.getServerAddress());
+    if (authCredentials.getServerPort() != 0) {
+      serverPortTextField.setText(String.valueOf(authCredentials.getServerPort()));
     }
-    databaseNameTextField.setText(dbUser.getDatabaseName());
-    databaseUsernameTextField.setText(dbUser.getDatabaseUsername());
-    databasePasswordTextField.setText(dbUser.getDatabasePassword());
-    syncPeriodTextField.setText(String.valueOf(dbUser.getSyncPeriod()));
-    syncPeriodUnitComboBox.setSelectedItem(dbUser.getSyncPeriodUnit());
+    databaseNameTextField.setText(authCredentials.getDatabaseName());
+    databaseUsernameTextField.setText(authCredentials.getDatabaseUsername());
+    databasePasswordTextField.setText(authCredentials.getDatabasePassword());
+    syncPeriodTextField.setText(String.valueOf(authCredentials.getSyncPeriod()));
+    syncPeriodUnitComboBox.setSelectedItem(authCredentials.getSyncPeriodUnit());
   }
   
   @Override
@@ -407,7 +408,10 @@ public class SyncDashboard implements SyncContract.View {
     String dbUserName = databaseUsernameTextField.getText().trim();
     String dbPassword = new String(databasePasswordTextField.getPassword()).trim();
     String syncPeriod = syncPeriodTextField.getText().trim();
-    String syncPeriodUnit = syncPeriodUnitComboBox.getSelectedItem().toString().trim();
+    String syncPeriodUnit = "";
+    if (syncPeriodUnitComboBox.getSelectedItem() != null) {
+      syncPeriodUnit = syncPeriodUnitComboBox.getSelectedItem().toString().trim();
+    }
     
     if (StringUtils.isBlank(serverAddress) || StringUtils.isNullOrEmpty(serverAddress)) {
       messages.add(getString(MESSAGE_SERVER_ADDRESS_REQUIRED));
@@ -464,6 +468,7 @@ public class SyncDashboard implements SyncContract.View {
       try {
         new SyncDashboard();
       } catch (Exception e) {
+        e.printStackTrace();
         SyncDashboard.getInstance().showErrorMessage(getString(MESSAGE_FATAL_ERROR), getString(MESSAGE_FATAL_ERROR) + e.getMessage());
       }
     });

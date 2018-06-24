@@ -4,13 +4,12 @@ package ke.co.blueconsulting.sianroses.data.impl;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.stmt.Where;
-import ke.co.blueconsulting.sianroses.data.rest.BaseDbService;
-import ke.co.blueconsulting.sianroses.model.ArCredit;
+import ke.co.blueconsulting.sianroses.data.BaseDbService;
+import ke.co.blueconsulting.sianroses.model.salesforce.ArCredit;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class SyncDbService extends BaseDbService {

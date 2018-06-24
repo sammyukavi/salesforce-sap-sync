@@ -1,6 +1,6 @@
-package ke.co.blueconsulting.sianroses.data.rest.retrofit;
+package ke.co.blueconsulting.sianroses.data.rest;
 
-import ke.co.blueconsulting.sianroses.model.ServerResponse;
+import ke.co.blueconsulting.sianroses.model.salesforce.ServerResponse;
 import retrofit2.Call;
 import retrofit2.http.*;
 

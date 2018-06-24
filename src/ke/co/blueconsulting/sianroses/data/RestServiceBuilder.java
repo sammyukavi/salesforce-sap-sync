@@ -1,4 +1,4 @@
-package ke.co.blueconsulting.sianroses.data.rest;
+package ke.co.blueconsulting.sianroses.data;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

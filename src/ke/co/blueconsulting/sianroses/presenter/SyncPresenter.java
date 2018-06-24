@@ -4,13 +4,13 @@ package ke.co.blueconsulting.sianroses.presenter;
 import com.sun.istack.internal.NotNull;
 import ke.co.blueconsulting.sianroses.SyncDashboard;
 import ke.co.blueconsulting.sianroses.contract.SyncContract;
-import ke.co.blueconsulting.sianroses.data.impl.SqliteDbService;
+import ke.co.blueconsulting.sianroses.data.DataService;
+import ke.co.blueconsulting.sianroses.data.impl.AuthCredentialsDbService;
 import ke.co.blueconsulting.sianroses.data.impl.SyncDataService;
 import ke.co.blueconsulting.sianroses.data.impl.SyncDbService;
-import ke.co.blueconsulting.sianroses.data.rest.DataService;
-import ke.co.blueconsulting.sianroses.model.ArCredit;
-import ke.co.blueconsulting.sianroses.model.DbUser;
-import ke.co.blueconsulting.sianroses.model.ServerResponse;
+import ke.co.blueconsulting.sianroses.model.salesforce.ArCredit;
+import ke.co.blueconsulting.sianroses.model.app.AuthCredentials;
+import ke.co.blueconsulting.sianroses.model.salesforce.ServerResponse;
 import ke.co.blueconsulting.sianroses.util.Console;
 
 import java.sql.SQLException;
@@ -20,15 +20,15 @@ import static ke.co.blueconsulting.sianroses.util.Constants.BundleKeys.MESSAGE_C
 
 public class SyncPresenter implements SyncContract.Presenter {
   private SyncContract.View syncDashboard;
-  private SqliteDbService sqliteDbService;
-  private Thread connectThread;
+  private AuthCredentialsDbService authCredentialsDbService;
   private SyncDataService syncDataService;
   private SyncDbService syncDbService;
+  private Thread connectThread;
   
   
   public SyncPresenter(SyncDashboard syncDashboard) throws SQLException, ClassNotFoundException {
     this.syncDashboard = syncDashboard;
-    this.sqliteDbService = new SqliteDbService();
+    this.authCredentialsDbService = new AuthCredentialsDbService();
     this.syncDataService = new SyncDataService();
     this.syncDbService = new SyncDbService();
   }
@@ -105,25 +105,25 @@ public class SyncPresenter implements SyncContract.Presenter {
                                     String syncPeriodUnit) throws SQLException {
     syncDashboard.setIsBusy(true);
     try {
-      DbUser dbUser = new DbUser();
-      dbUser.setServerAddress(serverAddress);
-      dbUser.setServerPort(Integer.parseInt(serverPort));
-      dbUser.setDatabaseName(databaseName);
-      dbUser.setDatabaseUsername(databaseUsername);
-      dbUser.setDatabasePassword(databasePassword);
-      dbUser.setSyncPeriod(Integer.parseInt(syncPeriod));
-      dbUser.setSyncPeriodUnit(syncPeriodUnit);
-      sqliteDbService.save(dbUser);
+      AuthCredentials authCredentials = authCredentialsDbService.getAuthCredentials();
+      authCredentials.setServerAddress(serverAddress);
+      authCredentials.setServerPort(Integer.parseInt(serverPort));
+      authCredentials.setDatabaseName(databaseName);
+      authCredentials.setDatabaseUsername(databaseUsername);
+      authCredentials.setDatabasePassword(databasePassword);
+      authCredentials.setSyncPeriod(Integer.parseInt(syncPeriod));
+      authCredentials.setSyncPeriodUnit(syncPeriodUnit);
+      authCredentialsDbService.save(authCredentials);
     } finally {
       syncDashboard.setIsBusy(false);
     }
   }
   
   @Override
-  public void getDbConnectionData() throws SQLException {
+  public void getCredentials() {
     syncDashboard.setIsBusy(true);
     try {
-      DbUser connectionData = sqliteDbService.getConnectionData();
+      AuthCredentials connectionData = authCredentialsDbService.getAuthCredentials();
       if (connectionData != null) {
         syncDashboard.updateUiFields(connectionData);
       }
@@ -151,7 +151,8 @@ public class SyncPresenter implements SyncContract.Presenter {
     syncDashboard.setIsBusy(true);
     connectThread = new Thread(() -> {
       try {
-        syncDataService.authenticate(salesforceClientId, salesforceClientSecret, salesforceUsername, salesforcePassword, salesforceSecurityToken, authCallback);
+        syncDataService.authenticate(salesforceClientId, salesforceClientSecret, salesforceUsername, salesforcePassword,
+            salesforceSecurityToken, authCallback);
       } catch (Exception e) {
         e.printStackTrace();
       } finally {

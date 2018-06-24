@@ -1,7 +1,7 @@
 package ke.co.blueconsulting.sianroses.util;
 
-import ke.co.blueconsulting.sianroses.data.rest.RestServiceBuilder;
-import ke.co.blueconsulting.sianroses.model.ServerResponse;
+import ke.co.blueconsulting.sianroses.data.RestServiceBuilder;
+import ke.co.blueconsulting.sianroses.model.salesforce.ServerResponse;
 import okhttp3.ResponseBody;
 import retrofit2.Converter;
 import retrofit2.Response;

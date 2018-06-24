@@ -1,10 +1,10 @@
-package ke.co.blueconsulting.sianroses.model;
+package ke.co.blueconsulting.sianroses.model.salesforce;
 
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
-@DatabaseTable(tableName = "ARINVOICECH")
-public class ArInvoiceCh {
+@DatabaseTable(tableName = "ARCREDITCH")
+public class ArCreditCh {
   
   @DatabaseField(generatedId = true, columnName = "AUTOID")
   private int autoId;
@@ -27,7 +27,7 @@ public class ArInvoiceCh {
   @DatabaseField(columnName = "UnitPrice")
   private double unitPrice;
   
-  @DatabaseField(columnName = "Tax_Code__c")
+  @DatabaseField(columnName = "Tax__c")
   private String taxCode;
   
   @DatabaseField(columnName = "Invoice_Entry__c")
