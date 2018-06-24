@@ -8,6 +8,7 @@ public class Constants {
   public static final String APP_DIR_NAME = ".sianroses";
   public static final String DATABASE_SERVER_CONFIGURATION = "databaseServerConfiguration";
   public static final String SALESFORCE_CONFIGURATION = "salesforceConfiguration";
+  public static final String SQLITE_DATABASE_NAME = "production.db";
   
   public static class Units {
     public static final int READ_TIME_OUT_SECONDS = 10;
@@ -46,12 +47,19 @@ public class Constants {
     public static final String MESSAGE_SUCCESS = "messages.success";
     public static final String MESSAGE_SYNC_UNIT_OUT_OF_RANGE = "messages.syncUnitOutOfRange";
     public static final String MESSAGE_SERVER_ADDRESS_REQUIRED = "messages.serverAddressRequired";
+    public static final String MESSAGE_SERVER_PORT_REQUIRED = "messages.serverPortRequired";
     public static final String MESSAGE_SELECT_PROVIDED_TIME = "messages.selectProvidedTime";
     public static final String MESSAGE_SYNC_PERIOD_REQUIRED = "messages.syncPeriodRequired";
     public static final String MESSAGE_DATABASE_PASSWORD_REQUIRED = "messages.databasePasswordRequired";
     public static final String MESSAGE_DATABASE_USERNAME_REQUIRED = "messages.databaseUsernameRequired";
     public static final String MESSAGE_DATABASE_NAME_REQUIRED = "messages.databaseNameRequired";
-    public static final String MESSAGE_SERVER_PORT_REQUIRED = "messages.serverPortRequired";
+    public static final String MESSAGE_SALESFORCE_CLIENT_ID_REQUIRED = "messages.salesforceClientIdRequired";
+    public static final String MESSAGE_SALESFORCE_CLIENT_SECRET_REQUIRED = "messages.salesforceClientSecretRequired";
+    public static final String MESSAGE_SALESFORCE_ACCOUNT_USERNAME_REQUIRED = "messages.salesforceAccountUsernameRequired";
+    public static final String MESSAGE_SALESFORCE_ACCOUNT_PASSWORD_REQUIRED = "messages.salesforceAccountPasswordRequired";
+    public static final String MESSAGE_SALESFORCE_SECURITY_TOKEN_REQUIRED = "messages.salesforceSecurityTokenRequired";
+    
+    
     public static final String MESSAGE_CONNECTION_SUCCESSFUL = "messages.connectionSuccessful";
     public static final String BTN_TEST_DB_CONNECTION = "buttons.testDbConnection";
     public static final String BTN_TEST_SALESFORCE_AUTH = "buttons.testSalesforceAuth";

@@ -11,10 +11,10 @@ import java.io.File;
 import java.sql.SQLException;
 
 import static ke.co.blueconsulting.sianroses.util.Constants.APP_DIR_NAME;
+import static ke.co.blueconsulting.sianroses.util.Constants.SQLITE_DATABASE_NAME;
 
 public class AuthCredentialsDbService {
   
-  private final static String DATABASE_NAME = "production.db";
   private Dao<AuthCredentials, Integer> credentialsDao;
   private AuthCredentials authCredentials;
   
@@ -37,7 +37,7 @@ public class AuthCredentialsDbService {
     if (!directory.exists()) {
       directory.mkdirs();
     }
-    return "jdbc:sqlite:" + directoryName + DATABASE_NAME;
+    return "jdbc:sqlite:" + directoryName + SQLITE_DATABASE_NAME;
   }
   
   public void save(AuthCredentials authCredentials) throws SQLException {

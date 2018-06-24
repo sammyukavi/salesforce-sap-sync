@@ -143,7 +143,7 @@ public class AuthCredentials {
     return salesforcePassword;
   }
   
-  public void setSalesforcePassword(String salesforcePassword) {
+  public void setsalesforcePassword(String salesforcePassword) {
     this.salesforcePassword = salesforcePassword;
   }
   
@@ -151,7 +151,7 @@ public class AuthCredentials {
     return salesforceSecurityToken;
   }
   
-  public void setSalesforceSecurityToken(String salesforceSecurityToken) {
+  public void setsalesforceSecurityToken(String salesforceSecurityToken) {
     this.salesforceSecurityToken = salesforceSecurityToken;
   }
 }

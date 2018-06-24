@@ -117,7 +117,7 @@ public class SyncDashboard implements SyncContract.View {
           }
         } else {
           if (salesforceConfigFieldsAreValid()) {
-            syncPresenter.testSalesforceAuthentication(salesforceClientIdTextField.getText(),
+            syncPresenter.testSalesforceAuth(salesforceClientIdTextField.getText(),
                 salesforceClientSecretTextField.getText(), salesforceUsernameTextField.getText(),
                 salesforcePasswordTextField.getPassword().toString(), salesforceSecurityTokenTextField.getText());
           }
@@ -134,11 +134,21 @@ public class SyncDashboard implements SyncContract.View {
     saveConnectionButton.setBounds(183, 350, 160, 23);
     saveConnectionButton.addActionListener(event -> {
       try {
-        if (serverConfigFieldsAreValid()) {
-          syncPresenter.saveConnectionDetails(serverAddressTextField.getText(), serverPortTextField.getText(),
-              databaseNameTextField.getText(), databaseUsernameTextField.getText(), new String(databasePasswordTextField.getPassword()),
-              syncPeriodTextField.getText(), syncPeriodUnitComboBox.getSelectedItem().toString());
+        if (tabOnView.equals(DATABASE_SERVER_CONFIGURATION)) {
+          if (serverConfigFieldsAreValid()) {
+            syncPresenter.saveDbAuth(serverAddressTextField.getText(), serverPortTextField.getText(),
+                databaseNameTextField.getText(), databaseUsernameTextField.getText(), new String(databasePasswordTextField.getPassword()),
+                syncPeriodTextField.getText(), syncPeriodUnitComboBox.getSelectedItem().toString());
+          }
+        } else {
+          if (salesforceConfigFieldsAreValid()) {
+            syncPresenter.saveSalesforceAuth(salesforceClientIdTextField.getText(),
+                salesforceClientSecretTextField.getText(), salesforceUsernameTextField.getText(),
+                salesforcePasswordTextField.getPassword().toString(), salesforceSecurityTokenTextField.getText());
+          }
         }
+        
+        
       } catch (Exception e) {
         showErrorMessage(getString(MESSAGE_ERROR_OCCURRED) + e.getMessage());
       }
@@ -166,15 +176,6 @@ public class SyncDashboard implements SyncContract.View {
       showErrorMessage(getString(MESSAGE_FATAL_ERROR) + e.getMessage());
     }
     
-  }
-  
-  /**
-   * Check if the Salesforce Configuration UI fields have been filled as required
-   *
-   * @return boolean True if fields are properly filled in False if a field has not been properly filled
-   */
-  private boolean salesforceConfigFieldsAreValid() {
-    return true;
   }
   
   private void updateUiButtons(int selectedIndex) {
@@ -361,12 +362,19 @@ public class SyncDashboard implements SyncContract.View {
     databasePasswordTextField.setText(authCredentials.getDatabasePassword());
     syncPeriodTextField.setText(String.valueOf(authCredentials.getSyncPeriod()));
     syncPeriodUnitComboBox.setSelectedItem(authCredentials.getSyncPeriodUnit());
+    salesforceClientIdTextField.setText(authCredentials.getSalesforceClientId());
+    salesforceClientSecretTextField.setText(authCredentials.getSalesforceClientSecret());
+    salesforceUsernameTextField.setText(authCredentials.getSalesforceUsername());
+    salesforcePasswordTextField.setText(authCredentials.getSalesforcePassword());
+    salesforceSecurityTokenTextField.setText(authCredentials.getSalesforceSecurityToken());
   }
   
   @Override
   public void setIsBusy(boolean isBusy) {
     List<Container> containerList = Arrays.asList(serverAddressTextField, serverPortTextField, databaseNameTextField,
-        databaseUsernameTextField, databasePasswordTextField, syncPeriodTextField, syncPeriodUnitComboBox, testConnectionButton,
+        databaseUsernameTextField, databasePasswordTextField, syncPeriodTextField, syncPeriodUnitComboBox,
+        salesforceClientIdTextField, salesforceClientSecretTextField, salesforceUsernameTextField,
+        salesforcePasswordTextField, salesforceSecurityTokenTextField, testConnectionButton,
         saveConnectionButton, syncButton);
     enableContainers(!isBusy, containerList);
     statusProgressBar.setVisible(isBusy);
@@ -404,7 +412,7 @@ public class SyncDashboard implements SyncContract.View {
     String port = serverPortTextField.getText().trim();
     String dbName = databaseNameTextField.getText().trim();
     String dbUserName = databaseUsernameTextField.getText().trim();
-    String dbPassword = new String(databasePasswordTextField.getPassword()).trim();
+    String dbPassword = String.valueOf(databasePasswordTextField.getPassword()).trim();
     String syncPeriod = syncPeriodTextField.getText().trim();
     String syncPeriodUnit = "";
     if (syncPeriodUnitComboBox.getSelectedItem() != null) {
@@ -452,6 +460,57 @@ public class SyncDashboard implements SyncContract.View {
     if (!isValid) {
       showErrorMessage(getString(MESSAGE_VALIDATION_ERROR), getString(MESSAGE_CORRECT_ERRORS) + "\n" + msgString.toString());
     }
+    return isValid;
+  }
+  
+  /**
+   * Check if the Salesforce Configuration UI fields have been filled as required
+   *
+   * @return boolean True if fields are properly filled in False if a field has not been properly filled
+   */
+  private boolean salesforceConfigFieldsAreValid() {
+    boolean isValid = true;
+    List<String> messages = new ArrayList<>();
+    
+    String salesforceClientId = salesforceClientIdTextField.getText().trim();
+    String salesforceClientSecret = salesforceClientSecretTextField.getText().trim();
+    String salesforceUsername = salesforceUsernameTextField.getText().trim();
+    String salesforcePassword = String.valueOf(salesforcePasswordTextField.getPassword()).trim();
+    String salesforceSecurityToken = salesforceSecurityTokenTextField.getText();
+    
+    if (StringUtils.isBlank(salesforceClientId) || StringUtils.isNullOrEmpty(salesforceClientId)) {
+      messages.add(getString(MESSAGE_SALESFORCE_CLIENT_ID_REQUIRED));
+      isValid = false;
+    }
+    
+    if (StringUtils.isBlank(salesforceClientSecret) || StringUtils.isNullOrEmpty(salesforceClientSecret)) {
+      messages.add(getString(MESSAGE_SALESFORCE_CLIENT_SECRET_REQUIRED));
+      isValid = false;
+    }
+    
+    if (StringUtils.isBlank(salesforceUsername) || StringUtils.isNullOrEmpty(salesforceUsername)) {
+      messages.add(getString(MESSAGE_SALESFORCE_ACCOUNT_USERNAME_REQUIRED));
+      isValid = false;
+    }
+    
+    if (StringUtils.isBlank(salesforcePassword) || StringUtils.isNullOrEmpty(salesforcePassword)) {
+      messages.add(getString(MESSAGE_SALESFORCE_ACCOUNT_PASSWORD_REQUIRED));
+      isValid = false;
+    }
+    
+    if (StringUtils.isBlank(salesforceSecurityToken) || StringUtils.isNullOrEmpty(salesforceSecurityToken)) {
+      messages.add(getString(MESSAGE_SALESFORCE_SECURITY_TOKEN_REQUIRED));
+      isValid = false;
+    }
+    
+    StringBuilder msgString = new StringBuilder();
+    for (String message : messages) {
+      msgString.append(message).append("\n");
+    }
+    if (!isValid) {
+      showErrorMessage(getString(MESSAGE_VALIDATION_ERROR), getString(MESSAGE_CORRECT_ERRORS) + "\n" + msgString.toString());
+    }
+    
     return isValid;
   }
   

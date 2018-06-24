@@ -114,6 +114,6 @@ public class StringUtils {
   }
   
   public static String breakLongString(String message) {
-    return breakLongString(message, 100);
+    return breakLongString(message, 240);
   }
 }

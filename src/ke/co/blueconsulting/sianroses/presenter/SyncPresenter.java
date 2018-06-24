@@ -46,10 +46,22 @@ public class SyncPresenter implements SyncContract.Presenter {
     }
   }
   
+  /**
+   * Saves the user database connections in the sqlite database
+   *
+   * @param serverAddress
+   * @param serverPort
+   * @param databaseName
+   * @param databaseUsername
+   * @param databasePassword
+   * @param syncPeriod
+   * @param syncPeriodUnit
+   * @throws SQLException
+   */
   @Override
-  public void saveConnectionDetails(String serverAddress, String serverPort, String databaseName,
-                                    String databaseUsername, String databasePassword, String syncPeriod,
-                                    String syncPeriodUnit) throws SQLException {
+  public void saveDbAuth(String serverAddress, String serverPort, String databaseName,
+                         String databaseUsername, String databasePassword, String syncPeriod,
+                         String syncPeriodUnit) throws SQLException {
     syncDashboard.setIsBusy(true);
     try {
       AuthCredentials authCredentials = authCredentialsDbService.getAuthCredentials();
@@ -60,6 +72,34 @@ public class SyncPresenter implements SyncContract.Presenter {
       authCredentials.setDatabasePassword(databasePassword);
       authCredentials.setSyncPeriod(Integer.parseInt(syncPeriod));
       authCredentials.setSyncPeriodUnit(syncPeriodUnit);
+      authCredentialsDbService.save(authCredentials);
+    } finally {
+      syncDashboard.setIsBusy(false);
+    }
+  }
+  
+  /**
+   * Saves the salesforce authentication details in the sqlite database
+   *
+   * @param salesforceClientId
+   * @param salesforceClientSecret
+   * @param salesforceUsername
+   * @param salesforcePassword
+   * @param salesforceSecurityToken
+   * @throws SQLException
+   */
+  @Override
+  public void saveSalesforceAuth(String salesforceClientId, String salesforceClientSecret,
+                                 String salesforceUsername, String salesforcePassword,
+                                 String salesforceSecurityToken) throws SQLException {
+    syncDashboard.setIsBusy(true);
+    try {
+      AuthCredentials authCredentials = authCredentialsDbService.getAuthCredentials();
+      authCredentials.setSalesforceClientId(salesforceClientId);
+      authCredentials.setSalesforceClientSecret(salesforceClientSecret);
+      authCredentials.setSalesforceUsername(salesforceUsername);
+      authCredentials.setsalesforcePassword(salesforcePassword);
+      authCredentials.setsalesforceSecurityToken(salesforceSecurityToken);
       authCredentialsDbService.save(authCredentials);
     } finally {
       syncDashboard.setIsBusy(false);
@@ -135,9 +175,9 @@ public class SyncPresenter implements SyncContract.Presenter {
   
   
   @Override
-  public void testSalesforceAuthentication(String salesforceClientId, String salesforceClientSecret,
-                                           String salesforceUsername, String salesforcePassword,
-                                           String salesforceSecurityToken) {
+  public void testSalesforceAuth(String salesforceClientId, String salesforceClientSecret,
+                                 String salesforceUsername, String salesforcePassword,
+                                 String salesforceSecurityToken) {
     
     DataService.GetCallback<ServerResponse> authCallback = new DataService.GetCallback<ServerResponse>() {
       @Override
@@ -167,7 +207,5 @@ public class SyncPresenter implements SyncContract.Presenter {
       }
     });
     connectThread.start();
-    
-    
   }
 }

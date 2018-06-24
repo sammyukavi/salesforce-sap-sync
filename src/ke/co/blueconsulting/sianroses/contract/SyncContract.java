@@ -26,12 +26,15 @@ public class SyncContract {
     
     void performSync() throws SQLException;
     
-    void saveConnectionDetails(String serverAddress, String serverPort, String databaseName, String databaseUsername,
-                               String databasePassword, String syncPeriod, String syncPeriodUnit) throws SQLException;
+    void saveDbAuth(String serverAddress, String serverPort, String databaseName, String databaseUsername,
+                    String databasePassword, String syncPeriod, String syncPeriodUnit) throws SQLException;
     
     void getCredentials() throws SQLException;
     
-    void testSalesforceAuthentication(String salesforceClientId, String salesforceClientSecret, String salesforceUsername,
-                                      String salesforcePassword, String salesforceSecurityToken);
+    void testSalesforceAuth(String salesforceClientId, String salesforceClientSecret, String salesforceUsername,
+                            String salesforcePassword, String salesforceSecurityToken);
+    
+    void saveSalesforceAuth(String salesforceClientId, String salesforceClientSecret, String salesforceUsername,
+                            String salesforcePassword, String salesforceSecurityToken) throws SQLException;
   }
 }
