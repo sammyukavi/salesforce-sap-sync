@@ -61,6 +61,27 @@ public class SyncDashboard implements SyncContract.View {
     return string;
   }
   
+  /**
+   * The start point of the application
+   *
+   * @param args
+   */
+  public static void main(String[] args) {
+    
+    EventQueue.invokeLater(() -> {
+      try {
+        new SyncDashboard();
+      } catch (Exception e) {
+        e.printStackTrace();
+        SyncDashboard.getInstance().showErrorMessage(getString(MESSAGE_FATAL_ERROR), getString(MESSAGE_FATAL_ERROR) + e.getMessage());
+      }
+    });
+  }
+  
+  private static SyncDashboard getInstance() {
+    return new SyncDashboard(true);
+  }
+  
   private void initViews() {
     dashboardJFrame = new JFrame();
     dashboardJFrame.setResizable(false);
@@ -508,26 +529,5 @@ public class SyncDashboard implements SyncContract.View {
     }
     
     return isValid;
-  }
-  
-  /**
-   * The start point of the application
-   *
-   * @param args
-   */
-  public static void main(String[] args) {
-    
-    EventQueue.invokeLater(() -> {
-      try {
-        new SyncDashboard();
-      } catch (Exception e) {
-        e.printStackTrace();
-        SyncDashboard.getInstance().showErrorMessage(getString(MESSAGE_FATAL_ERROR), getString(MESSAGE_FATAL_ERROR) + e.getMessage());
-      }
-    });
-  }
-  
-  private static SyncDashboard getInstance() {
-    return new SyncDashboard(true);
   }
 }

@@ -48,21 +48,16 @@ public class SyncDbService extends BaseDbService {
     } catch (SQLException e) {
       e.printStackTrace();
     }
-  
   }
   
   
   public <S> List<S> getUnsyncedRecords(Class<S> sClass) throws SQLException {
-    
     String columnName = "Push_to_SAP__c";
     Dao<S, Integer> dao = createDao(sClass);
     QueryBuilder<S, Integer> queryBuilder = dao.queryBuilder();
     Where<S, Integer> where = queryBuilder.where();
-    
-    List<S> accountList =
-        dao.query(where.or(where.isNull(columnName), where.ne(columnName, "pushed"))
-            .prepare());
-    return accountList;
+    return dao.query(where.or(where.isNull(columnName), where.ne(columnName, "pushed"))
+        .prepare());
   }
 }
 

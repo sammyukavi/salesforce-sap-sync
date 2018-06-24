@@ -2,13 +2,12 @@ package ke.co.blueconsulting.sianroses.util;
 
 public class Constants {
   
-  public static String DATABASE_SERVER_URL = "http://127.0.0.1/";//With a forwardSlash. Very important!!!
-  public static String SALESFORCE_AUTH_URL = "http://127.0.0.1/";//With a forwardSlash. Very important!!!
-  
   public static final String APP_DIR_NAME = ".sianroses";
   public static final String DATABASE_SERVER_CONFIGURATION_TAB = "databaseServerConfiguration";
   public static final String SALESFORCE_CONFIGURATION_TAB = "salesforceConfiguration";
   public static final String SQLITE_DATABASE_NAME = "production.db";
+  public static String DATABASE_SERVER_URL = "http://127.0.0.1/";//With a forwardSlash. Very important!!!
+  public static String SALESFORCE_AUTH_URL = "http://127.0.0.1/";//With a forwardSlash. Very important!!!
   
   public static class Units {
     public static final int READ_TIME_OUT_SECONDS = 10;
