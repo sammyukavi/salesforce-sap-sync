@@ -2,6 +2,10 @@ package ke.co.blueconsulting.sianroses.model.app;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import ke.co.blueconsulting.sianroses.model.salesforce.Customer;
+import ke.co.blueconsulting.sianroses.model.salesforce.PriceList;
+import ke.co.blueconsulting.sianroses.model.salesforce.Product;
+import ke.co.blueconsulting.sianroses.model.salesforce.Warehouse;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -46,6 +50,18 @@ public class ServerResponse<S> implements Serializable {
   @SerializedName("error_description")
   @Expose
   private String errorDescription;
+  
+  @SerializedName("pricelist")
+  private List<PriceList> pricelist;
+  
+  @SerializedName("warehouses")
+  private List<Warehouse> warehouses;
+  
+  @SerializedName("customers")
+  private List<Customer> customers;
+  
+  @SerializedName("products")
+  private List<Product> products;
   
   public void addData(String key, List<S> value) {
     data.put(key, value);

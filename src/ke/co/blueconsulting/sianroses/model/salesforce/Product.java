@@ -1,5 +1,6 @@
 package ke.co.blueconsulting.sianroses.model.salesforce;
 
+import com.google.gson.annotations.SerializedName;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
@@ -12,25 +13,30 @@ public class Product {
   @DatabaseField(columnName = "productcode")
   private String productCode;
   
+  @SerializedName("Name")
   @DatabaseField(columnName = "Name")
   private String name;
   
+  @SerializedName("Color__c")
   @DatabaseField(columnName = "Color__c")
   private String color;
   
+  @SerializedName("Classification__c")
   @DatabaseField(columnName = "Classification__c")
   private String classification;
   
+  @SerializedName("IsActive")
   @DatabaseField(columnName = "IsActive")
   private String isActive;
   
   @DatabaseField(columnName = "Breeder__c")
   private String breeder;
   
+  @SerializedName("Family")
   @DatabaseField(columnName = "Family")
   private String family;
   
-  @DatabaseField(columnName = "Product_Type__c", canBeNull = false)
+  @DatabaseField(columnName = "Product_Type__c")
   private String productType;
   
   @DatabaseField(columnName = "Parent_Product__c")

@@ -1,5 +1,6 @@
 package ke.co.blueconsulting.sianroses.model.salesforce;
 
+import com.google.gson.annotations.SerializedName;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
@@ -9,9 +10,14 @@ public class PriceList {
   @DatabaseField(generatedId = true, columnName = "AUTOID")
   private int autoId;
   
+  @SerializedName("Id")
+  private String id;
+  
+  @SerializedName("Pricebook2Id")
   @DatabaseField(columnName = "Pricebook2Id")
   private String pricebook2Id;
   
+  @SerializedName("Product2Id")
   @DatabaseField(columnName = "Product2Id")
   private String product2Id;
   
@@ -21,12 +27,15 @@ public class PriceList {
   @DatabaseField(columnName = "productCode")
   private String productCode;
   
+  @SerializedName("UnitPrice")
   @DatabaseField(columnName = "UnitPrice")
   private boolean unitPrice;
   
   @DatabaseField(columnName = "CurrencyISOCode")
+  @SerializedName("CurrencyIsoCode")
   private String currencyISOCode;
   
+  @SerializedName("IsActive")
   @DatabaseField(columnName = "isActive")
   private String isActive;
   
@@ -93,4 +102,5 @@ public class PriceList {
   public void setIsActive(String isActive) {
     this.isActive = isActive;
   }
+  
 }
