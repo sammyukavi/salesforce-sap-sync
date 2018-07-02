@@ -3,6 +3,7 @@ package ke.co.blueconsulting.sianroses.model.salesforce;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+//Flower Variety
 @DatabaseTable(tableName = "PRODUCTSCHILD")
 public class ProductChild {
   

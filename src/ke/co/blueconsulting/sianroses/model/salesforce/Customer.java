@@ -4,6 +4,7 @@ import com.google.gson.annotations.SerializedName;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+//Accounts @ salesforce
 @DatabaseTable(tableName = "CUSTOMERS")
 public class Customer {
   
