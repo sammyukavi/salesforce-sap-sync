@@ -1,7 +1,7 @@
 package ke.co.blueconsulting.sianroses;
 
 import ke.co.blueconsulting.sianroses.contract.SyncContract;
-import ke.co.blueconsulting.sianroses.model.app.AuthCredentials;
+import ke.co.blueconsulting.sianroses.model.app.AppAuthCredentials;
 import ke.co.blueconsulting.sianroses.presenter.SyncPresenter;
 import ke.co.blueconsulting.sianroses.util.StringUtils;
 
@@ -12,11 +12,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.MissingResourceException;
 
 import static ke.co.blueconsulting.sianroses.util.Constants.BundleKeys.*;
 import static ke.co.blueconsulting.sianroses.util.Constants.DATABASE_SERVER_CONFIGURATION_TAB;
 import static ke.co.blueconsulting.sianroses.util.Constants.SALESFORCE_CONFIGURATION_TAB;
+import static ke.co.blueconsulting.sianroses.util.StringUtils.getString;
 
 public class SyncDashboard implements SyncContract.View {
 	
@@ -35,7 +35,7 @@ public class SyncDashboard implements SyncContract.View {
 	/**
 	 * @wbp.parser.entryPoint
 	 */
-	private SyncDashboard() throws SQLException, ClassNotFoundException {
+	SyncDashboard() throws SQLException, ClassNotFoundException {
 		this.syncPeriodUnits = getString(SYNC_PERIOD_UNITS).split(",");
 		this.syncPresenter = new SyncPresenter(this);
 		initViews();
@@ -51,34 +51,7 @@ public class SyncDashboard implements SyncContract.View {
 		}
 	}
 	
-	public static String getString(String key) {
-		String string = null;
-		try {
-			string = java.util.ResourceBundle.getBundle("ke/co/blueconsulting/sianroses/resources/strings").getString(key);
-		} catch (MissingResourceException ignored) {
-		
-		}
-		return string;
-	}
-	
-	/**
-	 * The start point of the application
-	 *
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		
-		EventQueue.invokeLater(() -> {
-			try {
-				new SyncDashboard();
-			} catch (Exception e) {
-				e.printStackTrace();
-				SyncDashboard.getInstance().showErrorMessage(getString(MESSAGE_FATAL_ERROR), getString(MESSAGE_FATAL_ERROR) + e.getMessage());
-			}
-		});
-	}
-	
-	private static SyncDashboard getInstance() {
+	static SyncDashboard getInstance() {
 		return new SyncDashboard(true);
 	}
 	
@@ -116,7 +89,7 @@ public class SyncDashboard implements SyncContract.View {
 		tabbedPane.addTab(getString(TAB_SALESFORCE_CONFIG), null, salesforceConfigPanel);
 		
 		tabbedPane.addChangeListener(e -> {
-			updateUiButtons(tabbedPane.getSelectedIndex());
+			updateTabTitles(tabbedPane.getSelectedIndex());
 		});
 		
 		dashboardJFrame.getContentPane().add(tabbedPane);
@@ -196,7 +169,7 @@ public class SyncDashboard implements SyncContract.View {
 		
 	}
 	
-	private void updateUiButtons(int selectedIndex) {
+	private void updateTabTitles(int selectedIndex) {
 		if (selectedIndex == 0) {
 			tabOnView = DATABASE_SERVER_CONFIGURATION_TAB;
 			testConnectionButton.setText(getString(BTN_TEST_DB_CONNECTION));
@@ -370,21 +343,21 @@ public class SyncDashboard implements SyncContract.View {
 	}
 	
 	@Override
-	public void updateUiFields(AuthCredentials authCredentials) {
-		serverAddressTextField.setText(authCredentials.getServerAddress());
-		if (authCredentials.getServerPort() != 0) {
-			serverPortTextField.setText(String.valueOf(authCredentials.getServerPort()));
+	public void updateUiFields(AppAuthCredentials appAuthCredentials) {
+		serverAddressTextField.setText(appAuthCredentials.getServerAddress());
+		if (appAuthCredentials.getServerPort() != 0) {
+			serverPortTextField.setText(String.valueOf(appAuthCredentials.getServerPort()));
 		}
-		databaseNameTextField.setText(authCredentials.getDatabaseName());
-		databaseUsernameTextField.setText(authCredentials.getDatabaseUsername());
-		databasePasswordTextField.setText(authCredentials.getDatabasePassword());
-		syncPeriodTextField.setText(String.valueOf(authCredentials.getSyncPeriod()));
-		syncPeriodUnitComboBox.setSelectedItem(authCredentials.getSyncPeriodUnit());
-		salesforceClientIdTextField.setText(authCredentials.getSalesforceClientId());
-		salesforceClientSecretTextField.setText(authCredentials.getSalesforceClientSecret());
-		salesforceUsernameTextField.setText(authCredentials.getSalesforceUsername());
-		salesforcePasswordTextField.setText(authCredentials.getSalesforcePassword());
-		salesforceSecurityTokenTextField.setText(authCredentials.getSalesforceSecurityToken());
+		databaseNameTextField.setText(appAuthCredentials.getDatabaseName());
+		databaseUsernameTextField.setText(appAuthCredentials.getDatabaseUsername());
+		databasePasswordTextField.setText(appAuthCredentials.getDatabasePassword());
+		syncPeriodTextField.setText(String.valueOf(appAuthCredentials.getSyncPeriod()));
+		syncPeriodUnitComboBox.setSelectedItem(appAuthCredentials.getSyncPeriodUnit());
+		salesforceClientIdTextField.setText(appAuthCredentials.getSalesforceClientId());
+		salesforceClientSecretTextField.setText(appAuthCredentials.getSalesforceClientSecret());
+		salesforceUsernameTextField.setText(appAuthCredentials.getSalesforceUsername());
+		salesforcePasswordTextField.setText(appAuthCredentials.getSalesforcePassword());
+		salesforceSecurityTokenTextField.setText(appAuthCredentials.getSalesforceSecurityToken());
 	}
 	
 	@Override
@@ -395,6 +368,7 @@ public class SyncDashboard implements SyncContract.View {
 				salesforcePasswordTextField, salesforceSecurityTokenTextField, testConnectionButton,
 				saveConnectionButton, syncButton);
 		enableContainers(!isBusy, containerList);
+		//syncButton.setEnabled(syncPresenter.hasCredentials());
 		statusProgressBar.setVisible(isBusy);
 	}
 	
