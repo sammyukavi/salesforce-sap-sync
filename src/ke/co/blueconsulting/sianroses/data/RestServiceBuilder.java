@@ -2,6 +2,7 @@ package ke.co.blueconsulting.sianroses.data;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import ke.co.blueconsulting.sianroses.util.ErrorsDeserializer;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -13,8 +14,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
-import static ke.co.blueconsulting.sianroses.util.Constants.SALESFORCE_AUTH_BASE_URL;
 import static ke.co.blueconsulting.sianroses.util.Constants.SALESFORCE_API_BASE_URL;
+import static ke.co.blueconsulting.sianroses.util.Constants.SALESFORCE_AUTH_BASE_URL;
 import static ke.co.blueconsulting.sianroses.util.Constants.Units.CONNECT_TIME_OUT_SECONDS;
 import static ke.co.blueconsulting.sianroses.util.Constants.Units.READ_TIME_OUT_SECONDS;
 
@@ -63,7 +64,8 @@ public class RestServiceBuilder {
 	}
 	
 	private static GsonConverterFactory buildGsonConverter() {
-		Gson gson = new GsonBuilder().setLenient().create();
+		//Gson gson = new GsonBuilder().setLenient().create();
+		Gson gson = new GsonBuilder().registerTypeAdapter(ErrorsDeserializer.Errors.class, new ErrorsDeserializer()).create();
 		return GsonConverterFactory.create(gson);
 	}
 	

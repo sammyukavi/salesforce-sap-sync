@@ -1,8 +1,6 @@
 package ke.co.blueconsulting.sianroses.data;
 
 import ke.co.blueconsulting.sianroses.data.db.AuthCredentialsDbService;
-import ke.co.blueconsulting.sianroses.model.salesforce.Error;
-import ke.co.blueconsulting.sianroses.util.Console;
 import ke.co.blueconsulting.sianroses.util.ErrorUtil;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -37,9 +35,7 @@ public abstract class BaseDataService<SR, RS> implements DataService<SR> {
 					}
 				} else {
 					try {
-						Error error = ErrorUtil.parseError(response);
-						Console.dump(error);
-						Throwable t = new Throwable(error.getError() + "\n" + error.getErrorDescription());
+						Throwable t = new Throwable(ErrorUtil.parseError(response));
 						if (callback != null) {
 							callback.onError(t);
 						}

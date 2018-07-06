@@ -152,7 +152,7 @@ public class SyncPresenter extends SyncHelper implements SyncContract.Presenter 
 			public void onError(Throwable t) {
 				removePreloader();
 				syncDashboard.showErrorMessage(getString(MESSAGE_LOGIN_FAILED),
-						getString(MESSAGE_INVALID_SALESFORCE_CREDENTIALS));
+						t.getLocalizedMessage());
 			}
 		};
 		

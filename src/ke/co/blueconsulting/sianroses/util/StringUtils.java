@@ -33,7 +33,7 @@ public class StringUtils {
 	 * @param charLimit   The numbers of characters to be used to count to break the long string
 	 * @return <b>String</b> The broken concatenated string
 	 */
-	public static String breakLongString(String stringInput, int charLimit) {
+	private static String breakLongString(String stringInput, int charLimit) {
 		StringBuilder output = new StringBuilder();
 		String rest = stringInput;
 		int i = 0;

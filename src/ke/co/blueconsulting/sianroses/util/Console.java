@@ -15,25 +15,25 @@ public class Console {
 	
 	}
 	
-	public static void dump(boolean variable) {
+	public static void log(boolean variable) {
 		System.out.println("=========================== START OUTPUT OF BOOLEAN ===========================");
 		System.out.println(variable);
 		System.out.println("=========================== END OUTPUT OF BOOLEAN ===========================");
 	}
 	
-	public static void dump(Boolean variable) {
+	public static void log(Boolean variable) {
 		System.out.println("=========================== START OUTPUT OF BOOLEAN ===========================");
 		System.out.println(variable);
 		System.out.println("=========================== END OUTPUT OF BOOLEAN ===========================");
 	}
 	
-	public static void dump(int integer) {
+	public static void log(int integer) {
 		System.out.println("=========================== START OUTPUT OF INT ===========================");
 		System.out.println(integer);
 		System.out.println("=========================== END OUTPUT OF INT ===========================");
 	}
 	
-	public static void dump(Map map) {
+	public static void log(Map map) {
 		System.out.println("=========================== START OUTPUT OF MAP ===========================");
 		if (null != map) {
 			Set keys = map.keySet();
@@ -48,16 +48,16 @@ public class Console {
 		System.out.println("=========================== END OUTPUT OF MAP ===========================");
 	}
 	
-	public static void dump(Object object, Object object1) {
+	public static void log(Object object, Object object1) {
 		System.out.println("=========================== START DUMPING OF 2 OBJECTS ===========================");
 		System.out.println("=========================== OBJECT 1 ===========================");
-		dump(object);
+		log(object);
 		System.out.println("=========================== OBJECT 2 ===========================");
-		dump(object1);
+		log(object1);
 		System.out.println("=========================== END DUMPING OF 2 OBJECTS ===========================");
 	}
 	
-	public static void dump(Object object) {
+	public static void log(Object object) {
 		System.out.println("=========================== START LISTING OF OBJECT PROPERTIES ===========================");
 		if (null != object) {
 			for (Field field : object.getClass().getDeclaredFields()) {
@@ -78,25 +78,25 @@ public class Console {
 		System.out.println("=========================== END LISTING OF OBJECT PROPERTIES ===========================");
 	}
 	
-	public static void dump(Object object, Object object1, Object object2) {
+	public static void log(Object object, Object object1, Object object2) {
 		System.out.println("=========================== START DUMPING OF 3 OBJECTS ===========================");
 		System.out.println("=========================== OBJECT 1 ===========================");
-		dump(object);
+		log(object);
 		System.out.println("=========================== OBJECT 2 ===========================");
-		dump(object1);
+		log(object1);
 		System.out.println("=========================== OBJECT 3 ===========================");
-		dump(object2);
+		log(object2);
 		System.out.println("=========================== END DUMPING OF 3 OBJECTS ===========================");
 	}
 	
 	public static void dumpToJson(Object object) {
 		System.out.println("=========================== START LISTING OF OBJECT PROPERTIES ===========================");
 		Gson gson = new Gson();
-		Console.dump(gson.toJson(object));
+		Console.log(gson.toJson(object));
 		System.out.println("=========================== END LISTING OF OBJECT PROPERTIES ===========================");
 	}
 	
-	public static void dump(String string) {
+	public static void log(String string) {
 		System.out.println("=========================== START OUTPUT OF STRING ===========================");
 		System.out.println(string);
 		System.out.println("=========================== END OUTPUT OF STRING ===========================");

@@ -61,6 +61,7 @@ public class Constants {
 		public static final String MESSAGE_CONNECTION_SUCCESSFUL = "messages.connectionSuccessful";
 		public static final String MESSAGE_LOGIN_FAILED = "messages.loginFailed";
 		public static final String MESSAGE_INVALID_SALESFORCE_CREDENTIALS = "messages.invalidSalesforceCredentials";
+		public static final String MESSAGE_UNSUPPORTED_ELEMENT = "messages.unsupportedElements";
 		public static final String BTN_TEST_DB_CONNECTION = "buttons.testDbConnection";
 		public static final String BTN_TEST_SALESFORCE_AUTH = "buttons.testSalesforceAuth";
 		public static final String BTN_SAVE = "buttons.save";

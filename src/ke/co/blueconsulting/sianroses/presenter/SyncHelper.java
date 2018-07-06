@@ -66,7 +66,7 @@ class SyncHelper {
 		DataService.GetCallback<ServerResponse> getFromTheServerCallback = new DataService.GetCallback<ServerResponse>() {
 			@Override
 			public void onCompleted(ServerResponse serverResponse) {
-				System.out.println(serverResponse.toString());
+				//System.out.println(serverResponse.toString());
 			}
 			
 			@Override
@@ -82,7 +82,7 @@ class SyncHelper {
 		DataService.GetCallback<ServerResponse> postToserverCallback = new DataService.GetCallback<ServerResponse>() {
 			@Override
 			public void onCompleted(ServerResponse serverResponse) {
-				Console.dump(serverResponse);
+				Console.log(serverResponse);
 			}
 			
 			@Override
