@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 import static ke.co.blueconsulting.sianroses.util.Constants.SALESFORCE_AUTH_BASE_URL;
-import static ke.co.blueconsulting.sianroses.util.Constants.SALESFORCE_BASE_URL;
+import static ke.co.blueconsulting.sianroses.util.Constants.SALESFORCE_API_BASE_URL;
 import static ke.co.blueconsulting.sianroses.util.Constants.Units.CONNECT_TIME_OUT_SECONDS;
 import static ke.co.blueconsulting.sianroses.util.Constants.Units.READ_TIME_OUT_SECONDS;
 
@@ -75,7 +75,7 @@ public class RestServiceBuilder {
 		builder =
 				new Retrofit.Builder()
 						.addConverterFactory(buildGsonConverter())
-						.baseUrl(SALESFORCE_BASE_URL)
+						.baseUrl(SALESFORCE_API_BASE_URL)
 						.client(getHttpClient());
 	}
 	

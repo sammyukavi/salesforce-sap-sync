@@ -6,7 +6,7 @@ public class Constants {
 	public static final String DATABASE_SERVER_CONFIGURATION_TAB = "databaseServerConfiguration";
 	public static final String SALESFORCE_CONFIGURATION_TAB = "salesforceConfiguration";
 	public static final String SQLITE_DATABASE_NAME = "production.db";
-	public static final String SALESFORCE_BASE_URL = "http://127.0.0.1/";//With a forwardSlash. Very important!!!
+	public static final String SALESFORCE_API_BASE_URL = "https://sianroses--Developer.cs89.my.salesforce.com/services/apexrest/";//With a forwardSlash. Very important!!!
 	public static final String SALESFORCE_AUTH_BASE_URL = "https://test.salesforce.com/";//With a forwardSlash. Very important!!!
 	
 	public static class Units {
@@ -20,7 +20,7 @@ public class Constants {
 		public static final String GRANT_TYPE = "grant_type";
 		public static final String USERNAME = "username";
 		public static final String PASSWORD = "password";
-		public static final String TOKEN = "token";
+		public static final String AUTHORIZATION = "Authorization";
 		public static final String GRANT_TYPE_PASSWORD = "password";
 	}
 	

@@ -12,10 +12,11 @@ public class SyncDataService extends BaseDataService<ServerResponse, SyncRestSer
 	}
 	
 	public void getFromServer(GetCallback<ServerResponse> callback) {
-		executeSingleTask(callback, restService.fetch(authCredentialsDbService.getAppAuthCredentials().getSalesforceSecurityToken()));
+		executeSingleTask(callback, restService.fetch(
+				"Bearer " + authCredentialsDbService.getAppAuthCredentials().getSalesforceAccessToken()));
 	}
 	
 	public void postToServer(ServerResponse serverResponse, GetCallback<ServerResponse> callback) {
-		executeSingleTask(callback, restService.post(serverResponse));
+		//executeSingleTask(callback, restService.post(serverResponse));
 	}
 }

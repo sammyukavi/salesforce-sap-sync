@@ -4,10 +4,10 @@ import ke.co.blueconsulting.sianroses.model.app.ServerResponse;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.POST;
-import retrofit2.http.Query;
 
-import static ke.co.blueconsulting.sianroses.util.Constants.RequestKeys.TOKEN;
+import static ke.co.blueconsulting.sianroses.util.Constants.RequestKeys.AUTHORIZATION;
 
 
 /**
@@ -16,8 +16,8 @@ import static ke.co.blueconsulting.sianroses.util.Constants.RequestKeys.TOKEN;
 public interface SyncRestService {
 	
 	@GET("api/index.php")
-	Call<ServerResponse> fetch(@Query(TOKEN) String token);
+	Call<ServerResponse> fetch(@Header(AUTHORIZATION) String token);
 	
 	@POST("api/index.php")
-	Call<ServerResponse> post(@Body ServerResponse serverResponse);
+	Call<ServerResponse> post(@Header(AUTHORIZATION) String token, @Body ServerResponse serverResponse);
 }
