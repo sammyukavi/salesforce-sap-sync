@@ -152,11 +152,7 @@ public class SyncDashboard implements SyncContract.View {
 		dashboardJFrame.getContentPane().add(syncButton);
 		
 		syncButton.addActionListener(event -> {
-			try {
-				syncPresenter.performSync();
-			} catch (SQLException e) {
-				showErrorMessage(getString(MESSAGE_ERROR_OCCURRED) + e.getMessage());
-			}
+			syncPresenter.performSync();
 		});
 		
 		dashboardJFrame.setVisible(true);

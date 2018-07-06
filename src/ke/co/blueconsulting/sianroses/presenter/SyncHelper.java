@@ -11,6 +11,7 @@ import ke.co.blueconsulting.sianroses.model.app.SalesforceAuthCredentials;
 import ke.co.blueconsulting.sianroses.model.app.ServerResponse;
 import ke.co.blueconsulting.sianroses.model.salesforce.Customer;
 import ke.co.blueconsulting.sianroses.util.Console;
+import ke.co.blueconsulting.sianroses.util.Logger;
 import ke.co.blueconsulting.sianroses.util.StringUtils;
 
 import java.sql.SQLException;
@@ -22,6 +23,10 @@ class SyncHelper {
 	AuthDataService authDataService;
 	SyncDataService syncDataService;
 	SyncDbService syncDbService;
+	
+	void addPreloader() {
+		syncDashboard.setIsBusy(true);
+	}
 	
 	void removePreloader() {
 		syncDashboard.setIsBusy(false);
@@ -59,6 +64,7 @@ class SyncHelper {
 			authCredentialsDbService.save(appAuthCredentials);
 		} catch (SQLException e) {
 			//e.printStackTrace();
+			Logger.log("Failed to store salesforceCredentials. " + e.getMessage());
 		}
 	}
 	
@@ -71,7 +77,12 @@ class SyncHelper {
 			
 			@Override
 			public void onError(Throwable t) {
-				t.printStackTrace();
+				Logger.log("failed to fetch from the server. " + t.getMessage());
+			}
+			
+			@Override
+			public void always() {
+			
 			}
 		};
 		syncDataService.getFromServer(getFromTheServerCallback);
@@ -88,6 +99,11 @@ class SyncHelper {
 			@Override
 			public void onError(Throwable t) {
 				//t.printStackTrace();
+			}
+			
+			@Override
+			public void always() {
+			
 			}
 		};
 		List<Customer> customerList = syncDbService.getUnsyncedRecords(Customer.class);

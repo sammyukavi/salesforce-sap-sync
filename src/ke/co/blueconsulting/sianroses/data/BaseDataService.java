@@ -45,6 +45,7 @@ public abstract class BaseDataService<SR, RS> implements DataService<SR> {
 						}
 					}
 				}
+				callback.always();
 			}
 			
 			@Override
