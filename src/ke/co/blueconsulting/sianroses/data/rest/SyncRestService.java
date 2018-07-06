@@ -15,7 +15,7 @@ import static ke.co.blueconsulting.sianroses.util.Constants.RequestKeys.AUTHORIZ
  */
 public interface SyncRestService {
 	
-	@GET("api/index.php")
+	@GET("SyncMSSQL")
 	Call<ServerResponse> fetch(@Header(AUTHORIZATION) String token);
 	
 	@POST("api/index.php")

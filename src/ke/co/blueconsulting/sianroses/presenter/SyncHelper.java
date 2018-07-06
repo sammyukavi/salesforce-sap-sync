@@ -15,7 +15,6 @@ import ke.co.blueconsulting.sianroses.util.Logger;
 import ke.co.blueconsulting.sianroses.util.StringUtils;
 
 import java.sql.SQLException;
-import java.util.List;
 
 class SyncHelper {
 	SyncContract.View syncDashboard;
@@ -38,9 +37,23 @@ class SyncHelper {
 				!StringUtils.isBlank(credentials.getSalesforceAccessToken());
 	}
 	
-	boolean hasCredentials() {
+	public boolean hasCredentials() {
 		AppAuthCredentials credentials = authCredentialsDbService.getAppAuthCredentials();
-		return !StringUtils.isNullOrEmpty(credentials.getSalesforceClientId()) &&
+		return !StringUtils.isNullOrEmpty(credentials.getServerAddress()) &&
+				!StringUtils.isBlank(credentials.getServerAddress()) &&
+				!StringUtils.isNullOrEmpty(String.valueOf(credentials.getServerPort())) &&
+				!StringUtils.isBlank(String.valueOf(credentials.getServerPort())) &&
+				!StringUtils.isNullOrEmpty(credentials.getDatabaseName()) &&
+				!StringUtils.isBlank(credentials.getDatabaseName()) &&
+				!StringUtils.isNullOrEmpty(credentials.getDatabaseUsername()) &&
+				!StringUtils.isBlank(credentials.getDatabaseUsername()) &&
+				!StringUtils.isNullOrEmpty(credentials.getDatabasePassword()) &&
+				!StringUtils.isBlank(credentials.getDatabasePassword()) &&
+				!StringUtils.isNullOrEmpty(String.valueOf(credentials.getSyncPeriod())) &&
+				!StringUtils.isBlank(String.valueOf(credentials.getSyncPeriod())) &&
+				!StringUtils.isNullOrEmpty(credentials.getSyncPeriodUnit()) &&
+				!StringUtils.isBlank(credentials.getSyncPeriodUnit()) &&
+				!StringUtils.isNullOrEmpty(credentials.getSalesforceClientId()) &&
 				!StringUtils.isBlank(credentials.getSalesforceClientId()) &&
 				!StringUtils.isNullOrEmpty(credentials.getSalesforceClientSecret()) &&
 				!StringUtils.isBlank(credentials.getSalesforceClientSecret()) &&
@@ -72,7 +85,12 @@ class SyncHelper {
 		DataService.GetCallback<ServerResponse> getFromTheServerCallback = new DataService.GetCallback<ServerResponse>() {
 			@Override
 			public void onCompleted(ServerResponse serverResponse) {
-				//System.out.println(serverResponse.toString());
+				try {
+					syncDbService.insertRecords(Customer.class, serverResponse.getCustomers());
+				} catch (SQLException e) {
+					e.printStackTrace();
+					Logger.log("failed to save to MSSQL server. " + e.getMessage());
+				}
 			}
 			
 			@Override
@@ -106,10 +124,10 @@ class SyncHelper {
 			
 			}
 		};
-		List<Customer> customerList = syncDbService.getUnsyncedRecords(Customer.class);
-		ServerResponse serverResponse = new ServerResponse();
-		serverResponse.addData("customers", customerList);
-		syncDataService.postToServer(serverResponse, postToserverCallback);
+		//List<Customer> customerList = syncDbService.getUnsyncedRecords(Customer.class);
+		//ServerResponse serverResponse = new ServerResponse();
+		//serverResponse.addData("customers", customerList);
+		//syncDataService.postToServer(serverResponse, postToserverCallback);
 	}
 	
 }

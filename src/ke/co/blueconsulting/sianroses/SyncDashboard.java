@@ -364,7 +364,7 @@ public class SyncDashboard implements SyncContract.View {
 				salesforcePasswordTextField, salesforceSecurityTokenTextField, testConnectionButton,
 				saveConnectionButton, syncButton);
 		enableContainers(!isBusy, containerList);
-		//syncButton.setEnabled(syncPresenter.hasCredentials());
+		syncButton.setEnabled(syncPresenter.hasCredentials());
 		statusProgressBar.setVisible(isBusy);
 	}
 	

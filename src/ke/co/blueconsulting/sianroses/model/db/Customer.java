@@ -1,4 +1,4 @@
-package ke.co.blueconsulting.sianroses.model.salesforce;
+package ke.co.blueconsulting.sianroses.model.db;
 
 import com.google.gson.annotations.SerializedName;
 import com.j256.ormlite.field.DatabaseField;

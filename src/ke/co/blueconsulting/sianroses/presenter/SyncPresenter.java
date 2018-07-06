@@ -206,7 +206,7 @@ public class SyncPresenter extends SyncHelper implements SyncContract.Presenter 
 				
 				@Override
 				public void onError(Throwable t) {
-					Logger.log("Failed to get salesforce access token. " + t.getMessage());
+					Logger.log("Failed to get Salesforce access token. " + t.getMessage());
 				}
 				
 				@Override
@@ -224,7 +224,7 @@ public class SyncPresenter extends SyncHelper implements SyncContract.Presenter 
 							credentials.getSalesforcePassword(),
 							credentials.getSalesforceSecurityToken(), authCallback);
 				} catch (Exception e) {
-					Logger.log("An error occured when trying to get an access token. " + e.getMessage());
+					Logger.log("An error occurred when trying to get an access token. " + e.getMessage());
 				} finally {
 					RestServiceBuilder.switchToSalesforceBaseUrl();
 					try {

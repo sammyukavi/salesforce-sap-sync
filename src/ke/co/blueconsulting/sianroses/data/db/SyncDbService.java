@@ -6,6 +6,7 @@ import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.stmt.Where;
 import ke.co.blueconsulting.sianroses.data.BaseDbService;
 import ke.co.blueconsulting.sianroses.model.salesforce.ArCredit;
+import ke.co.blueconsulting.sianroses.util.Console;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -58,6 +59,15 @@ public class SyncDbService extends BaseDbService {
 		Where<S, Integer> where = queryBuilder.where();
 		return dao.query(where.or(where.isNull(columnName), where.ne(columnName, "pushed"))
 				.prepare());
+	}
+	
+	
+	public <S> void insertRecords(Class<S> sClass, List records) throws SQLException {
+		//Dao<S, Integer> dao = createDao(sClass);
+		//dao.create(records);
+		for (Object record : records) {
+			Console.log(record);
+		}
 	}
 }
 
