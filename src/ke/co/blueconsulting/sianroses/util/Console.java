@@ -67,7 +67,7 @@ public class Console {
 				try {
 					value = field.get(object);
 				} catch (IllegalAccessException e) {
-					e.printStackTrace();
+					//e.printStackTrace();
 				}
 				//System.out.printf("Field name: %s, Field value: %s%n", name, value);
 				System.out.printf("%s : %s%n", name, value);

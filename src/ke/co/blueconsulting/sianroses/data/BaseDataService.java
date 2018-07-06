@@ -1,7 +1,8 @@
 package ke.co.blueconsulting.sianroses.data;
 
 import ke.co.blueconsulting.sianroses.data.db.AuthCredentialsDbService;
-import ke.co.blueconsulting.sianroses.model.app.ServerResponse;
+import ke.co.blueconsulting.sianroses.model.salesforce.Error;
+import ke.co.blueconsulting.sianroses.util.Console;
 import ke.co.blueconsulting.sianroses.util.ErrorUtil;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -19,7 +20,7 @@ public abstract class BaseDataService<SR, RS> implements DataService<SR> {
 		try {
 			authCredentialsDbService = new AuthCredentialsDbService();
 		} catch (ClassNotFoundException | SQLException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 	}
 	
@@ -35,8 +36,9 @@ public abstract class BaseDataService<SR, RS> implements DataService<SR> {
 						callback.onCompleted(response.body());
 					}
 				} else {
-					ServerResponse error = ErrorUtil.parseError(response);
 					try {
+						Error error = ErrorUtil.parseError(response);
+						Console.dump(error);
 						Throwable t = new Throwable(error.getError() + "\n" + error.getErrorDescription());
 						if (callback != null) {
 							callback.onError(t);

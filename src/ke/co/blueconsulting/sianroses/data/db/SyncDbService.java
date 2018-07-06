@@ -46,7 +46,7 @@ public class SyncDbService extends BaseDbService {
 			Dao<ArCredit, Integer> dao = createDao(ArCredit.class);
 			dao.create(new ArCredit());
 		} catch (SQLException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 	}
 	

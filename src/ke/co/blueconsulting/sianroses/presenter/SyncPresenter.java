@@ -163,7 +163,7 @@ public class SyncPresenter extends SyncHelper implements SyncContract.Presenter 
 				authDataService.authenticate(salesforceClientId, salesforceClientSecret, salesforceUsername, salesforcePassword,
 						salesforceSecurityToken, authCallback);
 			} catch (Exception e) {
-				e.printStackTrace();
+				//e.printStackTrace();
 				removePreloader();
 				syncDashboard.showErrorMessage(getString(MESSAGE_LOGIN_FAILED), e.getMessage());
 			} finally {
@@ -197,7 +197,7 @@ public class SyncPresenter extends SyncHelper implements SyncContract.Presenter 
 					try {
 						performSync();
 					} catch (SQLException e) {
-						e.printStackTrace();
+						//e.printStackTrace();
 					}
 				}
 				
@@ -218,7 +218,7 @@ public class SyncPresenter extends SyncHelper implements SyncContract.Presenter 
 							credentials.getSalesforcePassword(),
 							credentials.getSalesforceSecurityToken(), authCallback);
 				} catch (Exception e) {
-					e.printStackTrace();
+					//e.printStackTrace();
 				} finally {
 					RestServiceBuilder.switchToSalesforceBaseUrl();
 					try {

@@ -19,14 +19,6 @@ import java.util.Map;
  */
 public class ServerResponse<S> implements Serializable {
 	
-	@SerializedName("error")
-	@Expose
-	private String error;
-	
-	@SerializedName("error_description")
-	@Expose
-	private String errorDescription;
-	
 	@SerializedName("data")
 	@Expose
 	private Map<String, List<S>> data = new HashMap<>();
@@ -55,31 +47,4 @@ public class ServerResponse<S> implements Serializable {
 		this.data.clear();
 		this.data.putAll(data);
 	}
-	
-	public String getError() {
-		return error;
-	}
-	
-	public void setError(String error) {
-		this.error = error;
-	}
-	
-	public String getErrorDescription() {
-		return errorDescription;
-	}
-	
-	public void setErrorDescription(String errorDescription) {
-		this.errorDescription = errorDescription;
-	}
-	
-	public ServerResponse withError(String error) {
-		this.error = error;
-		return this;
-	}
-	
-	public ServerResponse withErrorDescription(String errorDescription) {
-		this.errorDescription = errorDescription;
-		return this;
-	}
-	
 }

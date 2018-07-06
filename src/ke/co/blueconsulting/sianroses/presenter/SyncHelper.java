@@ -2,7 +2,6 @@ package ke.co.blueconsulting.sianroses.presenter;
 
 import ke.co.blueconsulting.sianroses.contract.SyncContract;
 import ke.co.blueconsulting.sianroses.data.DataService;
-import ke.co.blueconsulting.sianroses.data.RestServiceBuilder;
 import ke.co.blueconsulting.sianroses.data.db.AuthCredentialsDbService;
 import ke.co.blueconsulting.sianroses.data.db.SyncDbService;
 import ke.co.blueconsulting.sianroses.data.impl.AuthDataService;
@@ -16,10 +15,6 @@ import ke.co.blueconsulting.sianroses.util.StringUtils;
 
 import java.sql.SQLException;
 import java.util.List;
-
-import static ke.co.blueconsulting.sianroses.util.Constants.BundleKeys.MESSAGE_INVALID_SALESFORCE_CREDENTIALS;
-import static ke.co.blueconsulting.sianroses.util.Constants.BundleKeys.MESSAGE_LOGIN_FAILED;
-import static ke.co.blueconsulting.sianroses.util.StringUtils.getString;
 
 class SyncHelper {
 	SyncContract.View syncDashboard;
@@ -63,7 +58,7 @@ class SyncHelper {
 		try {
 			authCredentialsDbService.save(appAuthCredentials);
 		} catch (SQLException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 	}
 	
@@ -76,7 +71,7 @@ class SyncHelper {
 			
 			@Override
 			public void onError(Throwable t) {
-				t.printStackTrace();
+				//t.printStackTrace();
 			}
 		};
 		syncDataService.getFromServer(getFromTheServerCallback);
@@ -92,7 +87,7 @@ class SyncHelper {
 			
 			@Override
 			public void onError(Throwable t) {
-				t.printStackTrace();
+				//t.printStackTrace();
 			}
 		};
 		List<Customer> customerList = syncDbService.getUnsyncedRecords(Customer.class);

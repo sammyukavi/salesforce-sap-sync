@@ -18,7 +18,7 @@ public class MainApplication {
 				new SyncDashboard();
 				new DrawSystemTrayIcon().displayTray();
 			} catch (Exception e) {
-				e.printStackTrace();
+				//e.printStackTrace();
 				SyncDashboard.getInstance().showErrorMessage(getString(MESSAGE_FATAL_ERROR), getString(MESSAGE_FATAL_ERROR) + e.getMessage());
 			}
 		});

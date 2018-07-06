@@ -16,7 +16,7 @@ public class BaseDbService {
 		try {
 			connectionSource = new JdbcConnectionSource(getConnectionUrl());
 		} catch (SQLException | ClassNotFoundException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 	}
 	
