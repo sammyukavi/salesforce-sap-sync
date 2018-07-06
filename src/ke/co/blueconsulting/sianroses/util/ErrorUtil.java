@@ -23,13 +23,13 @@ public class ErrorUtil {
 				}
 				
 				if (!StringUtils.isBlank(error.getMessage()) && !StringUtils.isNullOrEmpty(error.getMessage())) {
-					message.append(error.getErrorDescription());
+					message.append(error.getMessage());
 				}
-				Console.log(error.getErrorDescription());
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
 		return message.toString();
 	}
 }

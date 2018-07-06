@@ -71,7 +71,7 @@ class SyncHelper {
 			
 			@Override
 			public void onError(Throwable t) {
-				//t.printStackTrace();
+				t.printStackTrace();
 			}
 		};
 		syncDataService.getFromServer(getFromTheServerCallback);

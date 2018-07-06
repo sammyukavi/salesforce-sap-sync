@@ -196,8 +196,8 @@ public class SyncPresenter extends SyncHelper implements SyncContract.Presenter 
 					removePreloader();
 					try {
 						performSync();
-					} catch (SQLException e) {
-						//e.printStackTrace();
+					} catch (Exception e) {
+						e.printStackTrace();
 					}
 				}
 				

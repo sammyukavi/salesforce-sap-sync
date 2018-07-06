@@ -89,7 +89,7 @@ public class Console {
 		System.out.println("=========================== END DUMPING OF 3 OBJECTS ===========================");
 	}
 	
-	public static void dumpToJson(Object object) {
+	public static void logToJson(Object object) {
 		System.out.println("=========================== START LISTING OF OBJECT PROPERTIES ===========================");
 		Gson gson = new Gson();
 		Console.log(gson.toJson(object));
