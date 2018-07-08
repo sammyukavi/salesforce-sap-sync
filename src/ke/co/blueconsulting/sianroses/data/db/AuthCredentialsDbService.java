@@ -43,13 +43,12 @@ public class AuthCredentialsDbService {
 	public void save(AppAuthCredentials appAuthCredentials) throws SQLException {
 		appAuthCredentials.setId(1);
 		credentialsDao.createOrUpdate(appAuthCredentials);
+		
+		//Update the current instance with the new values
+		this.appAuthCredentials = appAuthCredentials;
 	}
 	
 	public AppAuthCredentials getAppAuthCredentials() {
 		return appAuthCredentials;
-	}
-	
-	public void setAppAuthCredentials(AppAuthCredentials appAuthCredentials) {
-		this.appAuthCredentials = appAuthCredentials;
 	}
 }
