@@ -9,7 +9,7 @@ import ke.co.blueconsulting.sianroses.data.impl.SyncDataService;
 import ke.co.blueconsulting.sianroses.model.app.AppAuthCredentials;
 import ke.co.blueconsulting.sianroses.model.app.SalesforceAuthCredentials;
 import ke.co.blueconsulting.sianroses.model.app.ServerResponse;
-import ke.co.blueconsulting.sianroses.model.salesforce.Customer;
+import ke.co.blueconsulting.sianroses.model.salesforce.CustomerContacts;
 import ke.co.blueconsulting.sianroses.util.Console;
 import ke.co.blueconsulting.sianroses.util.Logger;
 import ke.co.blueconsulting.sianroses.util.StringUtils;
@@ -86,7 +86,8 @@ class SyncHelper {
 			@Override
 			public void onCompleted(ServerResponse serverResponse) {
 				try {
-					syncDbService.insertRecords(Customer.class, serverResponse.getCustomers());
+					//syncDbService.insertRecords(Customer.class, serverResponse.getCustomers());
+					syncDbService.insertRecords(CustomerContacts.class, serverResponse.getCustomerContacts());
 				} catch (SQLException e) {
 					e.printStackTrace();
 					Logger.log("failed to save to MSSQL server. " + e.getMessage());
