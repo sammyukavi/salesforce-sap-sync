@@ -9,7 +9,7 @@ import ke.co.blueconsulting.sianroses.data.impl.SyncDataService;
 import ke.co.blueconsulting.sianroses.model.app.AppAuthCredentials;
 import ke.co.blueconsulting.sianroses.model.app.SalesforceAuthCredentials;
 import ke.co.blueconsulting.sianroses.model.app.ServerResponse;
-import ke.co.blueconsulting.sianroses.model.salesforce.ProductChild;
+import ke.co.blueconsulting.sianroses.model.salesforce.*;
 import ke.co.blueconsulting.sianroses.util.Console;
 import ke.co.blueconsulting.sianroses.util.Logger;
 import ke.co.blueconsulting.sianroses.util.StringUtils;
@@ -84,16 +84,20 @@ class SyncHelper {
 	void fetchFromTheServer() {
 		DataService.GetCallback<ServerResponse> getFromTheServerCallback = new DataService.GetCallback<ServerResponse>() {
 			@Override
-			public void onCompleted(ServerResponse serverResponse) {
+			public void onCompleted(ServerResponse receivedRecords) {
+				ServerResponse insertedData = new ServerResponse();
 				try {
-					//syncDbService.insertRecords(Customer.class, serverResponse.getCustomers());
-					//syncDbService.insertRecords(CustomerContacts.class, serverResponse.getCustomerContacts());
-					//syncDbService.insertRecords(PriceList.class, serverResponse.getPriceList());
+					insertedData.setCustomers(syncDbService.insertRecords(Customer.class, receivedRecords
+							.getCustomers()));
+					insertedData.setCustomerContacts(syncDbService.insertRecords(CustomerContacts.class, receivedRecords.getCustomerContacts()));
+					insertedData.setPriceList(syncDbService.insertRecords(PriceList.class, receivedRecords.getPriceList()));
 					
 					//TODO This line results into an error Product_Type__c is missing in Salesforce. Check query
-					//syncDbService.insertRecords(Product.class, serverResponse.getProducts());
-					//syncDbService.insertRecords(ProductChild.class, serverResponse.getProductsChildren());
-					//syncDbService.insertRecords(Warehouse.class, serverResponse.getWarehouses());
+					/*insertedData.setProducts(syncDbService.insertRecords(Product.class, receivedRecords.getProducts
+							()));*/
+					insertedData.setProductsChildren(syncDbService.insertRecords(ProductChild.class, receivedRecords.getProductsChildren()));
+					insertedData.setWarehouses(syncDbService.insertRecords(Warehouse.class, receivedRecords
+							.getWarehouses()));
 					
 				} catch (Exception e) {
 					e.printStackTrace();

@@ -84,6 +84,10 @@ public class Customer {
 	@Expose
 	private String groupTypeC;
 	
+	@SerializedName("Id")
+	@Expose
+	private String salesforceId;
+	
 	@DatabaseField(columnName = "Name")
 	@SerializedName("Name")
 	@Expose
@@ -398,5 +402,13 @@ public class Customer {
 	
 	public void setWebsite(String website) {
 		this.website = website;
+	}
+	
+	public String getSalesforceId() {
+		return salesforceId;
+	}
+	
+	public void setSalesforceId(String salesforceId) {
+		this.salesforceId = salesforceId;
 	}
 }

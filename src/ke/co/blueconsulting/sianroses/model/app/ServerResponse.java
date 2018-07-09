@@ -42,7 +42,8 @@ public class ServerResponse implements Serializable {
 	}
 	
 	public void setCustomers(List<Customer> customers) {
-		this.customers = customers;
+		this.customers.clear();
+		this.customers.addAll(customers);
 	}
 	
 	public List<CustomerContacts> getCustomerContacts() {
@@ -50,7 +51,8 @@ public class ServerResponse implements Serializable {
 	}
 	
 	public void setCustomerContacts(List<CustomerContacts> customerContacts) {
-		this.customerContacts = customerContacts;
+		this.customerContacts.clear();
+		this.customerContacts.addAll(customerContacts);
 	}
 	
 	public List<PriceList> getPriceList() {
@@ -58,7 +60,8 @@ public class ServerResponse implements Serializable {
 	}
 	
 	public void setPriceList(List<PriceList> priceList) {
-		this.priceList = priceList;
+		this.priceList.clear();
+		this.priceList.addAll(priceList);
 	}
 	
 	public List<Product> getProducts() {
@@ -66,7 +69,8 @@ public class ServerResponse implements Serializable {
 	}
 	
 	public void setProducts(List<Product> products) {
-		this.products = products;
+		this.products.clear();
+		this.products.addAll(products);
 	}
 	
 	public List<Warehouse> getWarehouses() {
@@ -74,7 +78,8 @@ public class ServerResponse implements Serializable {
 	}
 	
 	public void setWarehouses(List<Warehouse> warehouses) {
-		this.warehouses = warehouses;
+		this.warehouses.clear();
+		this.warehouses.addAll(warehouses);
 	}
 	
 	public List<ProductChild> getProductsChildren() {
@@ -82,6 +87,7 @@ public class ServerResponse implements Serializable {
 	}
 	
 	public void setProductsChildren(List<ProductChild> productsChildren) {
-		this.productsChildren = productsChildren;
+		this.productsChildren.clear();
+		this.productsChildren.addAll(productsChildren);
 	}
 }

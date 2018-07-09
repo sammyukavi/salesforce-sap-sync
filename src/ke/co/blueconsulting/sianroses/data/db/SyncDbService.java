@@ -6,11 +6,11 @@ import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.stmt.Where;
 import ke.co.blueconsulting.sianroses.data.BaseDbService;
 import ke.co.blueconsulting.sianroses.model.salesforce.ArCredit;
-import ke.co.blueconsulting.sianroses.util.Console;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class SyncDbService extends BaseDbService {
@@ -57,17 +57,19 @@ public class SyncDbService extends BaseDbService {
 		Dao<S, Integer> dao = createDao(sClass);
 		QueryBuilder<S, Integer> queryBuilder = dao.queryBuilder();
 		Where<S, Integer> where = queryBuilder.where();
-		return dao.query(where.or(where.isNull(columnName), where.ne(columnName, "pushed"))
-				.prepare());
+		return dao.query(where.or(where.isNull(columnName), where.ne(columnName, "pushed")).prepare());
 	}
 	
 	
-	public <S> void insertRecords(Class<S> sClass, List records) throws SQLException {
-		for (Object record : records) {
-			Console.log(record);
-		}
+	public <S> List<S> insertRecords(Class<S> sClass, List records) throws SQLException {
+		ArrayList<S> insertedIds = new ArrayList<>();
 		Dao<S, Integer> dao = createDao(sClass);
-		dao.create(records);
+		for (Object record : records) {
+			S toInsert = (S) record;
+			dao.create(toInsert);
+			insertedIds.add(toInsert);
+		}
+		return insertedIds;
 	}
 }
 
