@@ -29,7 +29,7 @@ public class PriceList {
 	
 	@SerializedName("UnitPrice")
 	@DatabaseField(columnName = "UnitPrice")
-	private boolean unitPrice;
+	private double unitPrice;
 	
 	@DatabaseField(columnName = "CurrencyISOCode")
 	@SerializedName("CurrencyIsoCode")
@@ -37,70 +37,7 @@ public class PriceList {
 	
 	@SerializedName("IsActive")
 	@DatabaseField(columnName = "isActive")
-	private String isActive;
+	private boolean isActive;
 	
-	public int getAutoId() {
-		return autoId;
-	}
-	
-	public void setAutoId(int autoId) {
-		this.autoId = autoId;
-	}
-	
-	public String getPricebook2Id() {
-		return pricebook2Id;
-	}
-	
-	public void setPricebook2Id(String pricebook2Id) {
-		this.pricebook2Id = pricebook2Id;
-	}
-	
-	public String getProduct2Id() {
-		return product2Id;
-	}
-	
-	public void setProduct2Id(String product2Id) {
-		this.product2Id = product2Id;
-	}
-	
-	public String getCustomerCode() {
-		return customerCode;
-	}
-	
-	public void setCustomerCode(String customerCode) {
-		this.customerCode = customerCode;
-	}
-	
-	public String getProductCode() {
-		return productCode;
-	}
-	
-	public void setProductCode(String productCode) {
-		this.productCode = productCode;
-	}
-	
-	public boolean isUnitPrice() {
-		return unitPrice;
-	}
-	
-	public void setUnitPrice(boolean unitPrice) {
-		this.unitPrice = unitPrice;
-	}
-	
-	public String getCurrencyISOCode() {
-		return currencyISOCode;
-	}
-	
-	public void setCurrencyISOCode(String currencyISOCode) {
-		this.currencyISOCode = currencyISOCode;
-	}
-	
-	public String getIsActive() {
-		return isActive;
-	}
-	
-	public void setIsActive(String isActive) {
-		this.isActive = isActive;
-	}
 	
 }

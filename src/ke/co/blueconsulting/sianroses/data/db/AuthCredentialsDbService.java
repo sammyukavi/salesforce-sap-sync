@@ -16,18 +16,12 @@ import static ke.co.blueconsulting.sianroses.util.Constants.SQLITE_DATABASE_NAME
 public class AuthCredentialsDbService {
 	
 	private Dao<AppAuthCredentials, Integer> credentialsDao;
-	private AppAuthCredentials appAuthCredentials;
-	
 	
 	public AuthCredentialsDbService() throws ClassNotFoundException, SQLException {
 		Class.forName("org.sqlite.JDBC");
 		ConnectionSource connectionSource = new JdbcConnectionSource(getDatabaseUrl());
 		credentialsDao = DaoManager.createDao(connectionSource, AppAuthCredentials.class);
 		TableUtils.createTableIfNotExists(connectionSource, AppAuthCredentials.class);
-		this.appAuthCredentials = credentialsDao.queryForId(1);
-		if (appAuthCredentials == null) {
-			appAuthCredentials = new AppAuthCredentials();
-		}
 	}
 	
 	private String getDatabaseUrl() {
@@ -40,15 +34,18 @@ public class AuthCredentialsDbService {
 		return "jdbc:sqlite:" + directoryName + SQLITE_DATABASE_NAME;
 	}
 	
-	public void save(AppAuthCredentials appAuthCredentials) throws SQLException {
+	public AppAuthCredentials save(AppAuthCredentials appAuthCredentials) throws SQLException {
 		appAuthCredentials.setId(1);
 		credentialsDao.createOrUpdate(appAuthCredentials);
-		
-		//Update the current instance with the new values
-		this.appAuthCredentials = appAuthCredentials;
+		return appAuthCredentials;
 	}
 	
 	public AppAuthCredentials getAppAuthCredentials() {
-		return appAuthCredentials;
+		try {
+			return credentialsDao.queryForId(1);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return new AppAuthCredentials();
 	}
 }

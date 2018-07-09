@@ -63,6 +63,9 @@ public class SyncDbService extends BaseDbService {
 	
 	
 	public <S> void insertRecords(Class<S> sClass, List records) throws SQLException {
+		for (Object record : records) {
+			Console.log(record);
+		}
 		Dao<S, Integer> dao = createDao(sClass);
 		dao.create(records);
 	}

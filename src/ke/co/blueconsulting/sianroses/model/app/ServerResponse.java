@@ -20,9 +20,9 @@ public class ServerResponse implements Serializable {
 	@Expose
 	private List<CustomerContacts> customerContacts;
 	
-	@SerializedName("pricelist")
+	@SerializedName("price_list")
 	@Expose
-	private List<PriceList> pricelist;
+	private List<PriceList> priceList;
 	
 	@SerializedName("products")
 	@Expose
@@ -53,12 +53,12 @@ public class ServerResponse implements Serializable {
 		this.customerContacts = customerContacts;
 	}
 	
-	public List<PriceList> getPricelist() {
-		return pricelist;
+	public List<PriceList> getPriceList() {
+		return priceList;
 	}
 	
-	public void setPricelist(List<PriceList> pricelist) {
-		this.pricelist = pricelist;
+	public void setPriceList(List<PriceList> priceList) {
+		this.priceList = priceList;
 	}
 	
 	public List<Product> getProducts() {
