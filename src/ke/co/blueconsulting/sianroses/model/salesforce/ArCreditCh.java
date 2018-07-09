@@ -1,8 +1,13 @@
 package ke.co.blueconsulting.sianroses.model.salesforce;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+/**
+ * Unable to find Object on salesforce
+ */
 @DatabaseTable(tableName = "ARCREDITCH")
 public class ArCreditCh {
 	
@@ -13,103 +18,49 @@ public class ArCreditCh {
 	private int autoIdMst;
 	
 	@DatabaseField(columnName = "Flower_Code__c")
+	@SerializedName("Flower_Code__c")
+	@Expose
 	private String flowerCodeC;
 	
 	@DatabaseField(columnName = "Name")
+	@SerializedName("Name")
+	@Expose
 	private String name;
 	
 	@DatabaseField(columnName = "Quantity__c")
+	@SerializedName("Quantity__c")
+	@Expose
 	private double quantity;
 	
 	@DatabaseField(columnName = "Warehouse__c")
+	@SerializedName("Warehouse__c")
+	@Expose
 	private String warehouse;
 	
 	@DatabaseField(columnName = "UnitPrice")
+	@SerializedName("UnitPrice")
+	@Expose
 	private double unitPrice;
 	
 	@DatabaseField(columnName = "Tax__c")
+	@SerializedName("Tax__c")
+	@Expose
 	private String taxCode;
 	
 	@DatabaseField(columnName = "Invoice_Entry__c")
+	@SerializedName("Invoice_Entry__c")
+	@Expose
 	private String invoiceEntry;
 	
 	@DatabaseField(columnName = "Push_to_SAP__c")
+	@SerializedName("Push_to_SAP__c")
+	@Expose
 	private boolean pushToSap;
 	
 	@DatabaseField(columnName = "Pull_from_SAP__c")
+	@SerializedName("Pull_from_SAP__c")
+	@Expose
 	private boolean pullFromSap;
-	
-	public int getAutoId() {
-		return autoId;
-	}
-	
-	public void setAutoId(int autoId) {
-		this.autoId = autoId;
-	}
-	
-	public int getAutoIdMst() {
-		return autoIdMst;
-	}
-	
-	public void setAutoIdMst(int autoIdMst) {
-		this.autoIdMst = autoIdMst;
-	}
-	
-	public String getFlowerCodeC() {
-		return flowerCodeC;
-	}
-	
-	public void setFlowerCodeC(String flowerCodeC) {
-		this.flowerCodeC = flowerCodeC;
-	}
-	
-	public String getName() {
-		return name;
-	}
-	
-	public void setName(String name) {
-		this.name = name;
-	}
-	
-	public double getQuantity() {
-		return quantity;
-	}
-	
-	public void setQuantity(double quantity) {
-		this.quantity = quantity;
-	}
-	
-	public String getWarehouse() {
-		return warehouse;
-	}
-	
-	public void setWarehouse(String warehouse) {
-		this.warehouse = warehouse;
-	}
-	
-	public double getUnitPrice() {
-		return unitPrice;
-	}
-	
-	public void setUnitPrice(double unitPrice) {
-		this.unitPrice = unitPrice;
-	}
-	
-	public String getTaxCode() {
-		return taxCode;
-	}
-	
-	public void setTaxCode(String taxCode) {
-		this.taxCode = taxCode;
-	}
-	
-	public String getInvoiceEntry() {
-		return invoiceEntry;
-	}
-	
-	public void setInvoiceEntry(String invoiceEntry) {
-		this.invoiceEntry = invoiceEntry;
-	}
 	
 	
 }
