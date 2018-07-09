@@ -9,7 +9,7 @@ import ke.co.blueconsulting.sianroses.data.impl.SyncDataService;
 import ke.co.blueconsulting.sianroses.model.app.AppAuthCredentials;
 import ke.co.blueconsulting.sianroses.model.app.SalesforceAuthCredentials;
 import ke.co.blueconsulting.sianroses.model.app.ServerResponse;
-import ke.co.blueconsulting.sianroses.model.salesforce.Warehouse;
+import ke.co.blueconsulting.sianroses.model.salesforce.Product;
 import ke.co.blueconsulting.sianroses.util.Console;
 import ke.co.blueconsulting.sianroses.util.Logger;
 import ke.co.blueconsulting.sianroses.util.StringUtils;
@@ -88,7 +88,14 @@ class SyncHelper {
 				try {
 					//syncDbService.insertRecords(Customer.class, serverResponse.getCustomers());
 					//syncDbService.insertRecords(CustomerContacts.class, serverResponse.getCustomerContacts());
-					syncDbService.insertRecords(Warehouse.class, serverResponse.getWarehouses());
+					
+					/**
+					 * TODO This line results into an error Product_Type__c is missing in Salesforce. Check query
+					 */
+					//syncDbService.insertRecords(Product.class, serverResponse.getProducts());
+					
+					
+					//syncDbService.insertRecords(Warehouse.class, serverResponse.getWarehouses());
 				} catch (SQLException e) {
 					e.printStackTrace();
 					Logger.log("failed to save to MSSQL server. " + e.getMessage());

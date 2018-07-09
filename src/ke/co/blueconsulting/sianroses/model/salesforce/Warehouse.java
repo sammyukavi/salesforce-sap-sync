@@ -9,25 +9,27 @@ import com.j256.ormlite.table.DatabaseTable;
 public class Warehouse {
 	
 	@DatabaseField(generatedId = true, columnName = "AUTOID")
+	@SerializedName("AUTOID")
+	@Expose
 	private int autoId;
 	
 	@SerializedName("Id")
 	private String id;
 	
-	@SerializedName("Warehouse_Code__c")
-	@DatabaseField(columnName = "Warehouse_Code__c")
-	private String warehouseCodeC;
-	
-	@SerializedName("Name")
-	@DatabaseField(columnName = "Name")
-	private String name;
+	@DatabaseField(columnName = "Farm__c")
+	@SerializedName("Farm__c")
+	@Expose
+	private String farmC;
 	
 	@DatabaseField(columnName = "Farm_Code__c")
+	@SerializedName("Farm_Code__c")
+	@Expose
 	private String farmCodeC;
 	
-	@SerializedName("Farm__c")
-	@DatabaseField(columnName = "Farm__c")
-	private String farmC;
+	@DatabaseField(columnName = "Name")
+	@SerializedName("Name")
+	@Expose
+	private String name;
 	
 	@DatabaseField(columnName = "Pull_from_SAP__c")
 	@SerializedName("Pull_from_SAP__c")
@@ -38,6 +40,11 @@ public class Warehouse {
 	@SerializedName("Push_to_SAP__c")
 	@Expose
 	private boolean pushToSAPC;
+	
+	@DatabaseField(columnName = "Warehouse_Code__c")
+	@SerializedName("Warehouse_Code__c")
+	@Expose
+	private String warehouseCodeC;
 	
 	
 }
