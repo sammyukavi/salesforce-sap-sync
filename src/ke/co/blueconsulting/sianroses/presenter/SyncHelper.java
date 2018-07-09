@@ -10,6 +10,7 @@ import ke.co.blueconsulting.sianroses.model.app.AppAuthCredentials;
 import ke.co.blueconsulting.sianroses.model.app.SalesforceAuthCredentials;
 import ke.co.blueconsulting.sianroses.model.app.ServerResponse;
 import ke.co.blueconsulting.sianroses.model.salesforce.Product;
+import ke.co.blueconsulting.sianroses.model.salesforce.ProductChild;
 import ke.co.blueconsulting.sianroses.util.Console;
 import ke.co.blueconsulting.sianroses.util.Logger;
 import ke.co.blueconsulting.sianroses.util.StringUtils;
@@ -94,6 +95,7 @@ class SyncHelper {
 					 */
 					//syncDbService.insertRecords(Product.class, serverResponse.getProducts());
 					
+					syncDbService.insertRecords(ProductChild.class, serverResponse.getProductsChildren());
 					
 					//syncDbService.insertRecords(Warehouse.class, serverResponse.getWarehouses());
 				} catch (SQLException e) {

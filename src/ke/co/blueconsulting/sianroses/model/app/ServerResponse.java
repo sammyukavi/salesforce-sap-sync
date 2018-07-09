@@ -9,10 +9,8 @@ import java.util.List;
 
 /**
  * A conversion class used to send data to Salesforce server and back to the SAP server
- *
- * @param <S> Any class used for wrapping data
  */
-public class ServerResponse<S> implements Serializable {
+public class ServerResponse implements Serializable {
 	
 	@SerializedName("customers")
 	@Expose
@@ -23,13 +21,21 @@ public class ServerResponse<S> implements Serializable {
 	private List<CustomerContacts> customerContacts;
 	
 	@SerializedName("pricelist")
+	@Expose
 	private List<PriceList> pricelist;
 	
 	@SerializedName("products")
+	@Expose
 	private List<Product> products;
 	
+	@SerializedName("products_children")
+	@Expose
+	private List<ProductChild> productsChildren;
+	
 	@SerializedName("warehouses")
+	@Expose
 	private List<Warehouse> warehouses;
+	
 	
 	public List<Customer> getCustomers() {
 		return customers;
@@ -69,5 +75,13 @@ public class ServerResponse<S> implements Serializable {
 	
 	public void setWarehouses(List<Warehouse> warehouses) {
 		this.warehouses = warehouses;
+	}
+	
+	public List<ProductChild> getProductsChildren() {
+		return productsChildren;
+	}
+	
+	public void setProductsChildren(List<ProductChild> productsChildren) {
+		this.productsChildren = productsChildren;
 	}
 }
