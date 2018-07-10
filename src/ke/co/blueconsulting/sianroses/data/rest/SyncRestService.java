@@ -11,7 +11,7 @@ import static ke.co.blueconsulting.sianroses.util.Constants.RequestKeys.AUTHORIZ
 
 
 /**
- * An interface class used by retrofit to make REST calls
+ * A class used by retrofit to make synchronisation REST calls
  */
 public interface SyncRestService {
 	

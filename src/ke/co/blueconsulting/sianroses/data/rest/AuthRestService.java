@@ -10,7 +10,7 @@ import static ke.co.blueconsulting.sianroses.util.Constants.RequestKeys.*;
 
 
 /**
- * An interface class used by retrofit to make REST calls
+ * A class used by retrofit to make authentication REST calls
  */
 public interface AuthRestService {
 	

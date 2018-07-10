@@ -8,9 +8,15 @@ import retrofit2.Response;
 
 import java.sql.SQLException;
 
-public abstract class BaseDataService<SR, RS> implements DataService<SR> {
+/**
+ * A blue print used to create a data service to make REST calls
+ *
+ * @param <M> Model used to make REST request
+ * @param <R> Rest Data Service. An interface that contains the calls to be made via REST
+ */
+public abstract class BaseDataService<M, R> implements DataService<M> {
 	
-	protected RS restService;
+	protected R restService;
 	protected AuthCredentialsDbService authCredentialsDbService;
 	
 	protected BaseDataService() {
@@ -18,17 +24,28 @@ public abstract class BaseDataService<SR, RS> implements DataService<SR> {
 		try {
 			authCredentialsDbService = new AuthCredentialsDbService();
 		} catch (ClassNotFoundException | SQLException e) {
-			//e.printStackTrace();
+			e.printStackTrace();
 		}
 	}
 	
-	protected abstract Class<RS> getRestServiceClass();
+	/**
+	 * Get an instance of the Class used to make REST calls
+	 *
+	 * @return Class Instance
+	 */
+	protected abstract Class<R> getRestServiceClass();
 	
-	protected void executeSingleTask(final GetCallback<SR> callback, final Call<SR> request) {
+	/**
+	 * Method used to perform a REST task and return the results
+	 *
+	 * @param callback Method called one the transaction is done.
+	 * @param request  The REST call being performed
+	 */
+	protected void executeSingleTask(final GetCallback<M> callback, final Call<M> request) {
 		
-		request.enqueue(new Callback<SR>() {
+		request.enqueue(new Callback<M>() {
 			@Override
-			public void onResponse(Call<SR> call, Response<SR> response) {
+			public void onResponse(Call<M> call, Response<M> response) {
 				if (response.isSuccessful()) {
 					if (callback != null) {
 						callback.onCompleted(response.body());
@@ -49,12 +66,11 @@ public abstract class BaseDataService<SR, RS> implements DataService<SR> {
 			}
 			
 			@Override
-			public void onFailure(Call<SR> call, Throwable t) {
+			public void onFailure(Call<M> call, Throwable t) {
 				if (callback != null) {
 					callback.onError(t);
 				}
 			}
 		});
 	}
-	
 }

@@ -12,6 +12,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A class that is used to create a service for storing and retrieving the data in the SAP server
+ */
+
 public class SyncDbService extends BaseDbService {
 	
 	
@@ -46,7 +50,7 @@ public class SyncDbService extends BaseDbService {
 			Dao<ArCredit, Integer> dao = createDao(ArCredit.class);
 			dao.create(new ArCredit());
 		} catch (SQLException e) {
-			//e.printStackTrace();
+			e.printStackTrace();
 		}*/
 	}
 	

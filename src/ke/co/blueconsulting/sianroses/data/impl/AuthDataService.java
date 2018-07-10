@@ -6,6 +6,9 @@ import ke.co.blueconsulting.sianroses.model.app.SalesforceAuthCredentials;
 
 import static ke.co.blueconsulting.sianroses.util.Constants.RequestKeys.GRANT_TYPE_PASSWORD;
 
+/**
+ * A service that is used to authenticate the app with the Salesforce Client
+ */
 public class AuthDataService extends BaseDataService<SalesforceAuthCredentials, AuthRestService> {
 	
 	@Override

@@ -13,6 +13,10 @@ import java.sql.SQLException;
 import static ke.co.blueconsulting.sianroses.util.Constants.APP_DIR_NAME;
 import static ke.co.blueconsulting.sianroses.util.Constants.SQLITE_DATABASE_NAME;
 
+/**
+ * A class that is used to create a service for storing and retrieving the credentials used to login to the SAP server
+ * and credentials used in the Salesforce Client
+ */
 public class AuthCredentialsDbService {
 	
 	private Dao<AppAuthCredentials, Integer> credentialsDao;

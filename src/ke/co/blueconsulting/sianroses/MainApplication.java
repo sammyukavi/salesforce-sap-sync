@@ -23,7 +23,7 @@ public class MainApplication {
 				AppLogger.logInfo("Called");
 				//new DrawSystemTrayIcon().displayTray();
 			} catch (Exception e) {
-				//e.printStackTrace();
+				e.printStackTrace();
 				AppLogger.logInfo(e.getMessage());
 				SyncDashboard.getInstance().showErrorMessage(getString(MESSAGE_FATAL_ERROR), getString(MESSAGE_FATAL_ERROR) + e.getMessage());
 			}

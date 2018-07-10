@@ -76,7 +76,7 @@ class SyncHelper {
 		try {
 			authCredentialsDbService.save(appAuthCredentials);
 		} catch (SQLException e) {
-			//e.printStackTrace();
+			e.printStackTrace();
 			AppLogger.logInfo("Failed to store salesforce Credentials. " + e.getMessage());
 		}
 	}

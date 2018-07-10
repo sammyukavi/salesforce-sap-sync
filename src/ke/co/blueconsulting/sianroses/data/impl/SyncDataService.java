@@ -4,6 +4,9 @@ import ke.co.blueconsulting.sianroses.data.BaseDataService;
 import ke.co.blueconsulting.sianroses.data.rest.SyncRestService;
 import ke.co.blueconsulting.sianroses.model.app.ServerResponse;
 
+/**
+ * A data service that is used to send and receive data from Salesforce
+ */
 public class SyncDataService extends BaseDataService<ServerResponse, SyncRestService> {
 	
 	@Override

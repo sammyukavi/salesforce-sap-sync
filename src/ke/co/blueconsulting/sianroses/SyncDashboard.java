@@ -114,7 +114,7 @@ public class SyncDashboard implements SyncContract.View {
 							String.valueOf(salesforcePasswordTextField.getPassword()), salesforceSecurityTokenTextField.getText());
 				}
 			} catch (Exception e) {
-				//e.printStackTrace();
+				e.printStackTrace();
 				showErrorMessage(getString(MESSAGE_ERROR_OCCURRED) + e.getMessage());
 			}
 		});
