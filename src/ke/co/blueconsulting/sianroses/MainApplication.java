@@ -20,7 +20,6 @@ public class MainApplication {
 		EventQueue.invokeLater(() -> {
 			try {
 				new SyncDashboard();
-				AppLogger.logInfo("Called");
 				//new DrawSystemTrayIcon().displayTray();
 			} catch (Exception e) {
 				e.printStackTrace();

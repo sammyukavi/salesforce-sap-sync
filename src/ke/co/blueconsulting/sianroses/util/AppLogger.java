@@ -26,7 +26,8 @@ public class AppLogger {
 			if (!directory.exists()) {
 				directory.mkdirs();
 			}
-			FileHandler fileHandler = new FileHandler(directoryName + separator + "logInfo.txt", true);
+			FileHandler fileHandler = new FileHandler(directoryName + separator + "Log.txt",
+					true);
 			logger.addHandler(fileHandler);
 			SimpleFormatter formatter = new SimpleFormatter();
 			fileHandler.setFormatter(formatter);

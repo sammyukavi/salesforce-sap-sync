@@ -5,36 +5,37 @@ import com.google.gson.annotations.SerializedName;
 import ke.co.blueconsulting.sianroses.model.salesforce.*;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * A conversion class used to send data to Salesforce server and back to the SAP server
  */
-public class ServerResponse implements Serializable {
+public class Result implements Serializable {
 	
 	@SerializedName("customers")
 	@Expose
-	private List<Customer> customers;
+	private List<Customer> customers = new ArrayList<>();
 	
 	@SerializedName("customer_contacts")
 	@Expose
-	private List<CustomerContacts> customerContacts;
+	private List<CustomerContacts> customerContacts = new ArrayList<>();
 	
 	@SerializedName("price_list")
 	@Expose
-	private List<PriceList> priceList;
+	private List<PriceList> priceList = new ArrayList<>();
 	
 	@SerializedName("products")
 	@Expose
-	private List<Product> products;
+	private List<Product> products = new ArrayList<>();
 	
 	@SerializedName("products_children")
 	@Expose
-	private List<ProductChild> productsChildren;
+	private List<ProductChild> productsChildren = new ArrayList<>();
 	
 	@SerializedName("warehouses")
 	@Expose
-	private List<Warehouse> warehouses;
+	private List<Warehouse> warehouses = new ArrayList<>();
 	
 	
 	public List<Customer> getCustomers() {

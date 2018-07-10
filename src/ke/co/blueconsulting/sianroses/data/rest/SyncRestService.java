@@ -1,6 +1,6 @@
 package ke.co.blueconsulting.sianroses.data.rest;
 
-import ke.co.blueconsulting.sianroses.model.app.ServerResponse;
+import ke.co.blueconsulting.sianroses.model.app.Result;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -16,8 +16,8 @@ import static ke.co.blueconsulting.sianroses.util.Constants.RequestKeys.AUTHORIZ
 public interface SyncRestService {
 	
 	@GET("SyncMSSQL")
-	Call<ServerResponse> fetch(@Header(AUTHORIZATION) String token);
+	Call<Result> fetch(@Header(AUTHORIZATION) String token);
 	
-	@POST("api/index.php")
-	Call<ServerResponse> post(@Header(AUTHORIZATION) String token, @Body ServerResponse serverResponse);
+	@POST("SyncMSSQL")
+	Call<Result> post(@Header(AUTHORIZATION) String token, @Body Result result);
 }

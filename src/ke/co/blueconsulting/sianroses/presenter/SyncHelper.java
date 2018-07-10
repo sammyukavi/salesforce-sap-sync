@@ -7,14 +7,15 @@ import ke.co.blueconsulting.sianroses.data.db.SyncDbService;
 import ke.co.blueconsulting.sianroses.data.impl.AuthDataService;
 import ke.co.blueconsulting.sianroses.data.impl.SyncDataService;
 import ke.co.blueconsulting.sianroses.model.app.AppAuthCredentials;
+import ke.co.blueconsulting.sianroses.model.app.Result;
 import ke.co.blueconsulting.sianroses.model.app.SalesforceAuthCredentials;
-import ke.co.blueconsulting.sianroses.model.app.ServerResponse;
-import ke.co.blueconsulting.sianroses.model.salesforce.*;
-import ke.co.blueconsulting.sianroses.util.Console;
+import ke.co.blueconsulting.sianroses.model.salesforce.Customer;
 import ke.co.blueconsulting.sianroses.util.AppLogger;
+import ke.co.blueconsulting.sianroses.util.Console;
 import ke.co.blueconsulting.sianroses.util.StringUtils;
 
 import java.sql.SQLException;
+import java.util.List;
 
 class SyncHelper {
 	SyncContract.View syncDashboard;
@@ -82,27 +83,35 @@ class SyncHelper {
 	}
 	
 	void fetchFromTheServer() {
-		DataService.GetCallback<ServerResponse> getFromTheServerCallback = new DataService.GetCallback<ServerResponse>() {
+		DataService.GetCallback<Result> getFromTheServerCallback = new DataService.GetCallback<Result>() {
 			@Override
-			public void onCompleted(ServerResponse receivedRecords) {
-				ServerResponse insertedData = new ServerResponse();
+			public void onCompleted(Result receivedRecords) {
+				Result insertedData = new Result();
 				try {
-					insertedData.setCustomers(syncDbService.insertRecords(Customer.class, receivedRecords
+					/*insertedData.setCustomers(syncDbService.insertRecords(Customer.class, receivedRecords
 							.getCustomers()));
 					insertedData.setCustomerContacts(syncDbService.insertRecords(CustomerContacts.class, receivedRecords.getCustomerContacts()));
-					insertedData.setPriceList(syncDbService.insertRecords(PriceList.class, receivedRecords.getPriceList()));
+					insertedData.setPriceList(syncDbService.insertRecords(PriceList.class, receivedRecords
+					.getPriceList()));*/
 					
 					//TODO This line results into an error Product_Type__c is missing in Salesforce. Check query
 					/*insertedData.setProducts(syncDbService.insertRecords(Product.class, receivedRecords.getProducts
 							()));*/
-					insertedData.setProductsChildren(syncDbService.insertRecords(ProductChild.class, receivedRecords.getProductsChildren()));
+					/*insertedData.setProductsChildren(syncDbService.insertRecords(ProductChild.class, receivedRecords
+							.getProductsChildren()));
 					insertedData.setWarehouses(syncDbService.insertRecords(Warehouse.class, receivedRecords
-							.getWarehouses()));
-					
+							.getWarehouses()));*/
+					insertCustomers(receivedRecords.getCustomers());
 				} catch (Exception e) {
 					e.printStackTrace();
 					AppLogger.logInfo("failed to save to MSSQL server. " + e.getMessage());
 				}
+			}
+			
+			private void insertCustomers(List<Customer> customers) throws SQLException {
+				Result insertedData = new Result();
+				insertedData.setCustomers(syncDbService.insertRecords(Customer.class, customers));
+				sendToTheServer(insertedData);
 			}
 			
 			@Override
@@ -118,17 +127,17 @@ class SyncHelper {
 		syncDataService.getFromServer(getFromTheServerCallback);
 	}
 	
-	private void sendToTheServer() throws SQLException {
+	private void sendToTheServer(Result dataToSend) throws SQLException {
 		
-		DataService.GetCallback<ServerResponse> postToserverCallback = new DataService.GetCallback<ServerResponse>() {
+		DataService.GetCallback<Result> postToserverCallback = new DataService.GetCallback<Result>() {
 			@Override
-			public void onCompleted(ServerResponse serverResponse) {
+			public void onCompleted(Result serverResponse) {
 				Console.log(serverResponse);
 			}
 			
 			@Override
 			public void onError(Throwable t) {
-				//t.printStackTrace();
+				t.printStackTrace();
 			}
 			
 			@Override
@@ -136,10 +145,7 @@ class SyncHelper {
 			
 			}
 		};
-		//List<Customer> customerList = syncDbService.getUnsyncedRecords(Customer.class);
-		//ServerResponse serverResponse = new ServerResponse();
-		//serverResponse.addData("customers", customerList);
-		//syncDataService.postToServer(serverResponse, postToserverCallback);
+		syncDataService.postToServer(dataToSend, postToserverCallback);
 	}
 	
 }

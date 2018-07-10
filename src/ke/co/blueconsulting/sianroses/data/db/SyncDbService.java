@@ -68,9 +68,9 @@ public class SyncDbService extends BaseDbService {
 		ArrayList<S> insertedIds = new ArrayList<>();
 		Dao<S, Integer> dao = createDao(sClass);
 		for (Object record : records) {
-			S toInsert = (S) record;
-			dao.create(toInsert);
-			insertedIds.add(toInsert);
+			S recordToInsert = (S) record;
+			dao.create(recordToInsert);
+			insertedIds.add(recordToInsert);
 		}
 		return insertedIds;
 	}
