@@ -12,7 +12,7 @@ import ke.co.blueconsulting.sianroses.data.impl.AuthDataService;
 import ke.co.blueconsulting.sianroses.data.impl.SyncDataService;
 import ke.co.blueconsulting.sianroses.model.app.AppAuthCredentials;
 import ke.co.blueconsulting.sianroses.model.app.SalesforceAuthCredentials;
-import ke.co.blueconsulting.sianroses.util.Logger;
+import ke.co.blueconsulting.sianroses.util.AppLogger;
 
 import java.sql.SQLException;
 
@@ -206,7 +206,7 @@ public class SyncPresenter extends SyncHelper implements SyncContract.Presenter 
 				
 				@Override
 				public void onError(Throwable t) {
-					Logger.log("Failed to get Salesforce access token. " + t.getMessage());
+					AppLogger.logInfo("Failed to get Salesforce access token. " + t.getMessage());
 				}
 				
 				@Override
@@ -224,7 +224,7 @@ public class SyncPresenter extends SyncHelper implements SyncContract.Presenter 
 							credentials.getSalesforcePassword(),
 							credentials.getSalesforceSecurityToken(), authCallback);
 				} catch (Exception e) {
-					Logger.log("An error occurred when trying to get an access token. " + e.getMessage());
+					AppLogger.logInfo("An error occurred when trying to get an access token. " + e.getMessage());
 				} finally {
 					RestServiceBuilder.switchToSalesforceBaseUrl();
 					try {
@@ -235,7 +235,7 @@ public class SyncPresenter extends SyncHelper implements SyncContract.Presenter 
 			});
 			connectThread.start();
 		} else {
-			Logger.log("Cannot get access token from Salesforce. No Login Credentials Found");
+			AppLogger.logInfo("Cannot get access token from Salesforce. No Login Credentials Found");
 		}
 	}
 }

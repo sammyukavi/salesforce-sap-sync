@@ -11,7 +11,7 @@ import ke.co.blueconsulting.sianroses.model.app.SalesforceAuthCredentials;
 import ke.co.blueconsulting.sianroses.model.app.ServerResponse;
 import ke.co.blueconsulting.sianroses.model.salesforce.*;
 import ke.co.blueconsulting.sianroses.util.Console;
-import ke.co.blueconsulting.sianroses.util.Logger;
+import ke.co.blueconsulting.sianroses.util.AppLogger;
 import ke.co.blueconsulting.sianroses.util.StringUtils;
 
 import java.sql.SQLException;
@@ -77,7 +77,7 @@ class SyncHelper {
 			authCredentialsDbService.save(appAuthCredentials);
 		} catch (SQLException e) {
 			//e.printStackTrace();
-			Logger.log("Failed to store salesforce Credentials. " + e.getMessage());
+			AppLogger.logInfo("Failed to store salesforce Credentials. " + e.getMessage());
 		}
 	}
 	
@@ -101,13 +101,13 @@ class SyncHelper {
 					
 				} catch (Exception e) {
 					e.printStackTrace();
-					Logger.log("failed to save to MSSQL server. " + e.getMessage());
+					AppLogger.logInfo("failed to save to MSSQL server. " + e.getMessage());
 				}
 			}
 			
 			@Override
 			public void onError(Throwable t) {
-				Logger.log("failed to fetch from the server. " + t.getMessage());
+				AppLogger.logInfo("failed to fetch from the server. " + t.getMessage());
 			}
 			
 			@Override

@@ -5,7 +5,6 @@ import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.stmt.Where;
 import ke.co.blueconsulting.sianroses.data.BaseDbService;
-import ke.co.blueconsulting.sianroses.model.salesforce.ArCredit;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -43,12 +42,12 @@ public class SyncDbService extends BaseDbService {
 	
 	
 	public void attempt_save() {
-		try {
+		/*try {
 			Dao<ArCredit, Integer> dao = createDao(ArCredit.class);
 			dao.create(new ArCredit());
 		} catch (SQLException e) {
 			//e.printStackTrace();
-		}
+		}*/
 	}
 	
 	
