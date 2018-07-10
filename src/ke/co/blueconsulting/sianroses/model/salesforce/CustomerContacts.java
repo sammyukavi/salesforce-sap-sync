@@ -7,6 +7,10 @@ import com.j256.ormlite.table.DatabaseTable;
 
 import java.util.Date;
 
+/**
+ * This model maps Salesforce accounts' contacts to SAP user accounts
+ * Syncing for customer contacts is two way.
+ */
 @DatabaseTable(tableName = "CUSTOMERCONTACTS")
 public class CustomerContacts {
 	
@@ -79,9 +83,9 @@ public class CustomerContacts {
 	private Date mailingStreet;
 	
 	@DatabaseField(columnName = "Mobile")
-	@SerializedName("Mobile")
+	@SerializedName("mobilePhone")
 	@Expose
-	private String mobile;
+	private String mobilePhone;
 	
 	@DatabaseField(columnName = "Phone")
 	@SerializedName("Phone")

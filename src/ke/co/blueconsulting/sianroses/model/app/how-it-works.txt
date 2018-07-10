@@ -1,5 +1,0 @@
-//Fetch the ones that have been checked true
-//Save on db
-//Update them to false on the server
-//Update the active column to true on success at Salesforce
-//Update the ERPID with the SAP column

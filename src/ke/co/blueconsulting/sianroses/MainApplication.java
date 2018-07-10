@@ -16,7 +16,7 @@ public class MainApplication {
 		EventQueue.invokeLater(() -> {
 			try {
 				new SyncDashboard();
-				new DrawSystemTrayIcon().displayTray();
+				//new DrawSystemTrayIcon().displayTray();
 			} catch (Exception e) {
 				//e.printStackTrace();
 				SyncDashboard.getInstance().showErrorMessage(getString(MESSAGE_FATAL_ERROR), getString(MESSAGE_FATAL_ERROR) + e.getMessage());

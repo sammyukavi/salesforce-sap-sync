@@ -1,4 +1,3 @@
-
 package ke.co.blueconsulting.sianroses.model.app;
 
 import com.google.gson.annotations.Expose;

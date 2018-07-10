@@ -1,4 +1,3 @@
-
 package ke.co.blueconsulting.sianroses.model.salesforce;
 
 import com.google.gson.annotations.Expose;
@@ -6,6 +5,10 @@ import com.google.gson.annotations.SerializedName;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+/**
+ * This model maps Salesforce accounts to SAP user accounts
+ * Syncing for user accounts is two way.
+ */
 @DatabaseTable(tableName = "CUSTOMERS")
 public class Customer {
 	

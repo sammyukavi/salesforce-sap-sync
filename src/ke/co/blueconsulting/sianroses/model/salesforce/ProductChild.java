@@ -5,6 +5,10 @@ import com.google.gson.annotations.SerializedName;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+/**
+ * This model maps Products to Flower_Variety__c in Salesforce
+ * Syncing for Products is one way from the SAP server to Salesforce.
+ */
 @DatabaseTable(tableName = "PRODUCTSCHILD")
 public class ProductChild {
 	

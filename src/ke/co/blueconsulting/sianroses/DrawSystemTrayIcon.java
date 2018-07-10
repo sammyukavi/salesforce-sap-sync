@@ -10,6 +10,17 @@ import java.net.URL;
 
 class DrawSystemTrayIcon {
 	
+	//Obtain the image URL
+	private static Image createImage(String path, String description) {
+		URL imageURL = DrawSystemTrayIcon.class.getResource(path);
+		if (imageURL == null) {
+			System.err.println("Resource not found: " + path);
+			return null;
+		} else {
+			return (new ImageIcon(imageURL, description)).getImage();
+		}
+	}
+	
 	void displayTray() {
 		//Check the SystemTray support
 		if (!SystemTray.isSupported()) {
@@ -129,17 +140,6 @@ class DrawSystemTrayIcon {
 				System.exit(0);
 			}
 		});
-	}
-	
-	//Obtain the image URL
-	private static Image createImage(String path, String description) {
-		URL imageURL = DrawSystemTrayIcon.class.getResource(path);
-		if (imageURL == null) {
-			System.err.println("Resource not found: " + path);
-			return null;
-		} else {
-			return (new ImageIcon(imageURL, description)).getImage();
-		}
 	}
 }
 

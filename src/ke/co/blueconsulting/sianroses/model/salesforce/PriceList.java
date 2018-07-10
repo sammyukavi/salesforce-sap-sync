@@ -5,6 +5,12 @@ import com.google.gson.annotations.SerializedName;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+//One way push from SAP to salesforce
+
+/**
+ * This model maps price lists to PriceBookEntry in Salesforce
+ * Syncing for user accounts is two way.
+ */
 @DatabaseTable(tableName = "PRICELIST")
 public class PriceList {
 	

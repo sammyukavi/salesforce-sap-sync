@@ -4,7 +4,12 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
+//One way push to salesforce
 
+/**
+ * This model maps SAP Warehouse to Salesforce Warehouse
+ * Syncing for warehouse is a one way push from SAP to Salesforce.
+ */
 @DatabaseTable(tableName = "WAREHOUSE")
 public class Warehouse {
 	

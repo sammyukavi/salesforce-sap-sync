@@ -5,6 +5,10 @@ import com.google.gson.annotations.SerializedName;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+/**
+ * This model maps Products to Products2 in Salesforce
+ * Syncing for Products is one way from the SAP server to Salesforce.
+ */
 @DatabaseTable(tableName = "PRODUCTS")
 public class Product {
 	
@@ -52,7 +56,7 @@ public class Product {
 	private String ParentProductCode;
 	
 	@DatabaseField(columnName = "Product_Type__c")
-	@SerializedName("Product_Type__c")
+	@SerializedName("RecordTypeId")
 	@Expose
 	private String productTypeC;
 	
