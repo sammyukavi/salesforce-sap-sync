@@ -1,7 +1,5 @@
 package ke.co.blueconsulting.sianroses.presenter;
 
-
-import com.sun.istack.internal.NotNull;
 import ke.co.blueconsulting.sianroses.SyncDashboard;
 import ke.co.blueconsulting.sianroses.contract.SyncContract;
 import ke.co.blueconsulting.sianroses.data.DataService;
@@ -23,7 +21,6 @@ import static ke.co.blueconsulting.sianroses.util.StringUtils.getString;
 public class SyncPresenter extends SyncHelper implements SyncContract.Presenter {
 	
 	private Thread connectThread;
-	
 	
 	public SyncPresenter(SyncDashboard syncDashboard) throws SQLException, ClassNotFoundException {
 		this.syncDashboard = syncDashboard;
@@ -110,7 +107,7 @@ public class SyncPresenter extends SyncHelper implements SyncContract.Presenter 
 	}
 	
 	@Override
-	public void testDbConnection(@NotNull String serverAddress, String serverPort, String databaseName,
+	public void testDbConnection(String serverAddress, String serverPort, String databaseName,
 	                             String databaseUsername, String databasePassword) {
 		addPreloader();
 		
@@ -154,6 +151,7 @@ public class SyncPresenter extends SyncHelper implements SyncContract.Presenter 
 			
 			@Override
 			public void onError(Throwable t) {
+				removePreloader();
 				syncDashboard.showErrorMessage(getString(MESSAGE_LOGIN_FAILED),
 						t.getLocalizedMessage());
 			}
@@ -163,7 +161,6 @@ public class SyncPresenter extends SyncHelper implements SyncContract.Presenter 
 				removePreloader();
 			}
 		};
-		
 		
 		connectThread = new Thread(() -> {
 			try {
@@ -226,7 +223,7 @@ public class SyncPresenter extends SyncHelper implements SyncContract.Presenter 
 				} catch (Exception e) {
 					AppLogger.logInfo("An error occurred when trying to get an access token. " + e.getMessage());
 				} finally {
-					RestServiceBuilder.switchToSalesforceBaseUrl();
+					RestServiceBuilder.switchToSalesforceApiBaseUrl();
 					try {
 						connectThread.join();
 					} catch (Exception ignored) {

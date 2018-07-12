@@ -6,89 +6,88 @@ import ke.co.blueconsulting.sianroses.model.salesforce.*;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
- * A conversion class used to send data to Salesforce server and back to the SAP server
+ * A conversion class used to send data to Salesforce server and back to the SAP
+ * server
  */
 public class Result implements Serializable {
-	
-	@SerializedName("customers")
-	@Expose
-	private List<Customer> customers = new ArrayList<>();
-	
-	@SerializedName("customer_contacts")
-	@Expose
-	private List<CustomerContacts> customerContacts = new ArrayList<>();
-	
-	@SerializedName("price_list")
-	@Expose
-	private List<PriceList> priceList = new ArrayList<>();
-	
-	@SerializedName("products")
-	@Expose
-	private List<Product> products = new ArrayList<>();
-	
-	@SerializedName("products_children")
-	@Expose
-	private List<ProductChild> productsChildren = new ArrayList<>();
-	
-	@SerializedName("warehouses")
-	@Expose
-	private List<Warehouse> warehouses = new ArrayList<>();
-	
-	
-	public List<Customer> getCustomers() {
-		return customers;
-	}
-	
-	public void setCustomers(List<Customer> customers) {
-		this.customers.clear();
-		this.customers.addAll(customers);
-	}
-	
-	public List<CustomerContacts> getCustomerContacts() {
-		return customerContacts;
-	}
-	
-	public void setCustomerContacts(List<CustomerContacts> customerContacts) {
-		this.customerContacts.clear();
-		this.customerContacts.addAll(customerContacts);
-	}
-	
-	public List<PriceList> getPriceList() {
-		return priceList;
-	}
-	
-	public void setPriceList(List<PriceList> priceList) {
-		this.priceList.clear();
-		this.priceList.addAll(priceList);
-	}
-	
-	public List<Product> getProducts() {
-		return products;
-	}
-	
-	public void setProducts(List<Product> products) {
-		this.products.clear();
-		this.products.addAll(products);
-	}
-	
-	public List<Warehouse> getWarehouses() {
-		return warehouses;
-	}
-	
-	public void setWarehouses(List<Warehouse> warehouses) {
-		this.warehouses.clear();
-		this.warehouses.addAll(warehouses);
-	}
-	
-	public List<ProductChild> getProductsChildren() {
-		return productsChildren;
-	}
-	
-	public void setProductsChildren(List<ProductChild> productsChildren) {
-		this.productsChildren.clear();
-		this.productsChildren.addAll(productsChildren);
-	}
+
+    @SerializedName("customers")
+    @Expose
+    private ArrayList<Customer> customers = new ArrayList<>();
+
+    @SerializedName("customer_contacts")
+    @Expose
+    private ArrayList<CustomerContacts> customerContacts = new ArrayList<>();
+
+    @SerializedName("price_list")
+    @Expose
+    private ArrayList<PriceList> priceList = new ArrayList<>();
+
+    @SerializedName("products")
+    @Expose
+    private ArrayList<Product> products = new ArrayList<>();
+
+    @SerializedName("products_children")
+    @Expose
+    private ArrayList<ProductChild> productsChildren = new ArrayList<>();
+
+    @SerializedName("warehouses")
+    @Expose
+    private ArrayList<Warehouse> warehouses = new ArrayList<>();
+
+    public ArrayList<Customer> getCustomers() {
+        return customers;
+    }
+
+    public void setCustomers(ArrayList<Customer> customers) {
+        this.customers.clear();
+        this.customers.addAll(customers);
+    }
+
+    public ArrayList<CustomerContacts> getCustomerContacts() {
+        return customerContacts;
+    }
+
+    public void setCustomerContacts(ArrayList<CustomerContacts> customerContacts) {
+        this.customerContacts.clear();
+        this.customerContacts.addAll(customerContacts);
+    }
+
+    public ArrayList<PriceList> getPriceList() {
+        return priceList;
+    }
+
+    public void setPriceList(ArrayList<PriceList> priceList) {
+        this.priceList.clear();
+        this.priceList.addAll(priceList);
+    }
+
+    public ArrayList<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(ArrayList<Product> products) {
+        this.products.clear();
+        this.products.addAll(products);
+    }
+
+    public ArrayList<Warehouse> getWarehouses() {
+        return warehouses;
+    }
+
+    public void setWarehouses(ArrayList<Warehouse> warehouses) {
+        this.warehouses.clear();
+        this.warehouses.addAll(warehouses);
+    }
+
+    public ArrayList<ProductChild> getProductsChildren() {
+        return productsChildren;
+    }
+
+    public void setProductsChildren(ArrayList<ProductChild> productsChildren) {
+        this.productsChildren.clear();
+        this.productsChildren.addAll(productsChildren);
+    }
 }

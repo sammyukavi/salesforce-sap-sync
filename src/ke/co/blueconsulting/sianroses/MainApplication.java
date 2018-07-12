@@ -8,24 +8,23 @@ import static ke.co.blueconsulting.sianroses.util.Constants.BundleKeys.MESSAGE_F
 import static ke.co.blueconsulting.sianroses.util.StringUtils.getString;
 
 public class MainApplication {
-	
-	/**
-	 * The start point of the application
-	 *
-	 * @param args
-	 */
-	
-	public static void main(String[] args) {
-		
-		EventQueue.invokeLater(() -> {
-			try {
-				new SyncDashboard();
-				//new DrawSystemTrayIcon().displayTray();
-			} catch (Exception e) {
-				e.printStackTrace();
-				AppLogger.logInfo(e.getMessage());
-				SyncDashboard.getInstance().showErrorMessage(getString(MESSAGE_FATAL_ERROR), getString(MESSAGE_FATAL_ERROR) + e.getMessage());
-			}
-		});
-	}
+
+    /**
+     * The start point of the application
+     *
+     * @param args
+     */
+    public static void main(String[] args) {
+
+        EventQueue.invokeLater(() -> {
+            try {
+                new SyncDashboard();
+                //new DrawSystemTrayIcon().displayTray();
+            } catch (Exception e) {
+                e.printStackTrace();
+                AppLogger.logInfo(e.getMessage());
+                SyncDashboard.getInstance().showErrorMessage(getString(MESSAGE_FATAL_ERROR), getString(MESSAGE_FATAL_ERROR) + e.getMessage());
+            }
+        });
+    }
 }

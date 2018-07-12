@@ -4,3 +4,6 @@ bin/
 .classpath
 .project
 out/
+/build/
+/nbproject/
+/dist/

@@ -1,6 +1,5 @@
 package ke.co.blueconsulting.sianroses.data.db;
 
-
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.stmt.Where;
@@ -13,66 +12,61 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A class that is used to create a service for storing and retrieving the data in the SAP server
+ * A class that is used to create a service for storing and retrieving the data
+ * in the SAP server
  */
-
 public class SyncDbService extends BaseDbService {
-	
-	
-	public SyncDbService() {
-		super();
-	}
-	
-	public boolean testServerConnection(String serverAddress, String serverPort, String databaseName,
-	                                    String databaseUsername, String databasePassword) throws ClassNotFoundException, SQLException {
-		String connectionUrl = "jdbc:sqlserver://" + serverAddress + ":" + serverPort + ";" + "databaseName=" +
-				databaseName + ";user=" + databaseUsername + ";password=" + databasePassword;
-		Connection connection = null;
-		boolean status;
-		try {
-			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-			connection = DriverManager.getConnection(connectionUrl);
-			status = true;
-		} finally {
-			if (connection != null) {
-				try {
-					connection.close();
-				} catch (Exception ignored) {
-				}
-			}
-		}
-		return status;
-	}
-	
-	
-	public void attempt_save() {
-		/*try {
+
+    public SyncDbService() {
+        super();
+    }
+
+    public boolean testServerConnection(String serverAddress, String serverPort, String databaseName,
+            String databaseUsername, String databasePassword) throws ClassNotFoundException, SQLException {
+        String connectionUrl = "jdbc:sqlserver://" + serverAddress + ":" + serverPort + ";" + "databaseName="
+                + databaseName + ";user=" + databaseUsername + ";password=" + databasePassword;
+        Connection connection = null;
+        boolean status;
+        try {
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            connection = DriverManager.getConnection(connectionUrl);
+            status = true;
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (Exception ignored) {
+                }
+            }
+        }
+        return status;
+    }
+
+    public void attempt_save() {
+        /*try {
 			Dao<ArCredit, Integer> dao = createDao(ArCredit.class);
 			dao.create(new ArCredit());
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}*/
-	}
-	
-	
-	public <S> List<S> getUnsyncedRecords(Class<S> sClass) throws SQLException {
-		String columnName = "Push_to_SAP__c";
-		Dao<S, Integer> dao = createDao(sClass);
-		QueryBuilder<S, Integer> queryBuilder = dao.queryBuilder();
-		Where<S, Integer> where = queryBuilder.where();
-		return dao.query(where.or(where.isNull(columnName), where.ne(columnName, "pushed")).prepare());
-	}
-	
-	
-	public <S> List<S> insertRecords(Class<S> sClass, List records) throws SQLException {
-		ArrayList<S> insertedIds = new ArrayList<>();
-		Dao<S, Integer> dao = createDao(sClass);
-		for (Object record : records) {
-			S recordToInsert = (S) record;
-			dao.create(recordToInsert);
-			insertedIds.add(recordToInsert);
-		}
-		return insertedIds;
-	}
-}
+    }
 
+    public <S> List<S> getUnsyncedRecords(Class<S> sClass) throws SQLException {
+        String columnName = "Push_to_SAP__c";
+        Dao<S, Integer> dao = createDao(sClass);
+        QueryBuilder<S, Integer> queryBuilder = dao.queryBuilder();
+        Where<S, Integer> where = queryBuilder.where();
+        return dao.query(where.or(where.isNull(columnName), where.ne(columnName, "pushed")).prepare());
+    }
+
+    public <S> ArrayList<S> insertRecords(Class<S> sClass, ArrayList records) throws SQLException {
+        ArrayList<S> insertedIds = new ArrayList<>();
+        Dao<S, Integer> dao = createDao(sClass);
+        for (Object record : records) {
+            S recordToInsert = (S) record;
+            dao.create(recordToInsert);
+            insertedIds.add(recordToInsert);
+        }
+        return insertedIds;
+    }
+}
