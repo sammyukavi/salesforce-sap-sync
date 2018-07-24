@@ -5,12 +5,14 @@ import com.google.gson.annotations.SerializedName;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+import java.io.Serializable;
+
 /**
  * This model maps Products to Flower_Variety__c in Salesforce Syncing for
  * Products is one way from the SAP server to Salesforce.
  */
 @DatabaseTable(tableName = "PRODUCTSCHILD")
-public class ProductChild {
+public class ProductChild implements Serializable {
 
     @DatabaseField(generatedId = true, columnName = "AUTOID")
     private int autoId;

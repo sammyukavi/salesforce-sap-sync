@@ -4,6 +4,8 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
+
+import java.io.Serializable;
 //One way push to salesforce
 
 /**
@@ -11,7 +13,7 @@ import com.j256.ormlite.table.DatabaseTable;
  * is a one way push from SAP to Salesforce.
  */
 @DatabaseTable(tableName = "WAREHOUSE")
-public class Warehouse {
+public class Warehouse implements Serializable {
 
     @DatabaseField(generatedId = true, columnName = "AUTOID")
     @SerializedName("AUTOID")

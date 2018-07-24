@@ -13,6 +13,11 @@ import java.util.ArrayList;
  */
 public class Result implements Serializable {
 
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
+
     @SerializedName("customers")
     @Expose
     private ArrayList<Customer> customers = new ArrayList<>();

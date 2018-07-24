@@ -10,7 +10,7 @@ import static ke.co.blueconsulting.sianroses.util.Constants.RequestKeys.AUTHORIZ
 import static ke.co.blueconsulting.sianroses.util.Constants.RequestKeys.DATA_TYPE;
 
 /**
- * A class used by retrofit to make synchronisation REST calls
+ * A class used by retrofit to make synchronization REST calls
  */
 public interface SyncRestService {
 

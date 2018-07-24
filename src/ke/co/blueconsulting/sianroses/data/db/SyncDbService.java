@@ -59,7 +59,7 @@ public class SyncDbService extends BaseDbService {
         return dao.query(where.or(where.isNull(columnName), where.ne(columnName, "pushed")).prepare());
     }
 
-    public <S> ArrayList<S> insertRecords(Class<S> sClass, ArrayList records) throws SQLException {
+    public <S> ArrayList<S> insertRecords(Class<S> sClass, ArrayList<S> records) throws SQLException {
         ArrayList<S> insertedIds = new ArrayList<>();
         Dao<S, Integer> dao = createDao(sClass);
         for (Object record : records) {

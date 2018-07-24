@@ -1,6 +1,7 @@
 package ke.co.blueconsulting.sianroses;
 
 import ke.co.blueconsulting.sianroses.contract.SyncContract;
+import ke.co.blueconsulting.sianroses.dialogs.MessageDialogInFrame;
 import ke.co.blueconsulting.sianroses.model.app.AppAuthCredentials;
 import ke.co.blueconsulting.sianroses.presenter.SyncPresenter;
 import ke.co.blueconsulting.sianroses.util.StringUtils;
@@ -12,7 +13,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import ke.co.blueconsulting.sianroses.dialogs.MessageDialogInFrame;
 
 import static ke.co.blueconsulting.sianroses.util.Constants.BundleKeys.*;
 import static ke.co.blueconsulting.sianroses.util.Constants.DATABASE_SERVER_CONFIGURATION_TAB;
@@ -30,7 +30,7 @@ public class SyncDashboard implements SyncContract.View {
             syncPeriodTextField, salesforceClientIdTextField, salesforceClientSecretTextField,
             salesforceUsernameTextField, salesforceSecurityTokenTextField;
     private JPasswordField databasePasswordTextField, salesforcePasswordTextField;
-    private JComboBox syncPeriodUnitComboBox;
+    private JComboBox<String> syncPeriodUnitComboBox;
     private JFrame dashboardJFrame;
 
     /**
@@ -272,8 +272,8 @@ public class SyncDashboard implements SyncContract.View {
         });
         jPanel.add(syncPeriodTextField);
 
-        syncPeriodUnitComboBox = new JComboBox();
-        syncPeriodUnitComboBox.setModel(new DefaultComboBoxModel(syncPeriodUnits));
+        syncPeriodUnitComboBox = new JComboBox<>(syncPeriodUnits);
+        //syncPeriodUnitComboBox.setModel(new DefaultComboBoxModel(syncPeriodUnits));
         syncPeriodUnitComboBox.setBounds(125, 270, 98, 20);
         jPanel.add(syncPeriodUnitComboBox);
 

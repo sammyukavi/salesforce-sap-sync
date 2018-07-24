@@ -3,12 +3,14 @@ package ke.co.blueconsulting.sianroses.model.salesforce;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+import java.io.Serializable;
+
 /**
  * This model maps SAP user accounts to Salesforce user accounts Syncing for
  * user accounts is a one way push from SAP to Salesforce.
  */
 @DatabaseTable(tableName = "USERSMASTER")
-public class UserMaster {
+public class UserMaster implements Serializable {
 
     @DatabaseField(generatedId = true, columnName = "AUTOID")
     private int autoId;

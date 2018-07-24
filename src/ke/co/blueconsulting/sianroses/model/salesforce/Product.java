@@ -5,12 +5,14 @@ import com.google.gson.annotations.SerializedName;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+import java.io.Serializable;
+
 /**
  * This model maps Products to Products2 in Salesforce Syncing for Products is
  * one way from the SAP server to Salesforce.
  */
 @DatabaseTable(tableName = "PRODUCTS")
-public class Product {
+public class Product implements Serializable {
 
     @DatabaseField(generatedId = true, columnName = "AUTOID")
     private int autoId;

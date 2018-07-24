@@ -5,6 +5,7 @@ import com.google.gson.annotations.SerializedName;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -12,7 +13,7 @@ import java.util.Date;
  * for customer contacts is two way.
  */
 @DatabaseTable(tableName = "CUSTOMERCONTACTS")
-public class CustomerContacts {
+public class CustomerContacts implements Serializable {
 
     @DatabaseField(generatedId = true, columnName = "AUTOID")
     private int autoId;

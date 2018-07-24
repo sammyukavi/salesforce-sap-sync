@@ -3,12 +3,14 @@ package ke.co.blueconsulting.sianroses.model.app;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+import java.io.Serializable;
+
 /**
  * This model is used for storing the user credentials used to login to MSSQL
  * Server.
  */
 @DatabaseTable(tableName = "auth_credentials")
-public class AppAuthCredentials {
+public class AppAuthCredentials implements Serializable {
 
     @DatabaseField(generatedId = true)
     private int id;

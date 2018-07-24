@@ -7,6 +7,11 @@ import java.io.Serializable;
 
 public class SalesforceAuthCredentials implements Serializable {
 
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
+
     @SerializedName("access_token")
     private String accessToken;
 

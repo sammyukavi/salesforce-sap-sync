@@ -5,12 +5,14 @@ import com.google.gson.annotations.SerializedName;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+import java.io.Serializable;
+
 /**
  * This model maps Salesforce accounts to SAP user accounts Syncing for user
  * accounts is two way.
  */
 @DatabaseTable(tableName = "CUSTOMERS")
-public class Customer {
+public class Customer implements Serializable {
 
     @DatabaseField(columnName = "A_R_Account__c")
     @SerializedName("A_R_Account__c")
@@ -33,9 +35,14 @@ public class Customer {
     private boolean activeC;
 
     @DatabaseField(columnName = "Available_Credit_Amount")
-    @SerializedName("Available_Credit_Amount")
+    @SerializedName("Available_Credit_Amount__c")
     @Expose
     private double availableCreditAmount;
+
+    @DatabaseField(columnName = "AddressID")
+    @SerializedName("AddressID__c")
+    @Expose
+    private double addressIdC;
 
     @DatabaseField(columnName = "BillingCity")
     @SerializedName("BillingCity")
