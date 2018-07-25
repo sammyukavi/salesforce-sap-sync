@@ -12,7 +12,7 @@ import static ke.co.blueconsulting.sianroses.util.Constants.DataTypes.CONTACTS;
 /**
  * A data service that is used to send and receive data from Salesforce
  */
-public class SyncDataService extends BaseDataService<Result, SyncRestService> {
+public class FetchDataService extends BaseDataService<Result, SyncRestService> {
 
     @Override
     protected Class<SyncRestService> getRestServiceClass() {
@@ -24,15 +24,4 @@ public class SyncDataService extends BaseDataService<Result, SyncRestService> {
                 "Bearer " + authCredentialsDbService.getAppAuthCredentials().getSalesforceAccessToken()));
     }
 
-    public void pushCustomersToServer(PushCustomer customers, GetCallback<Result> callback) {
-        executeSingleTask(callback, restService.postCustomers(
-                "Bearer " + authCredentialsDbService.getAppAuthCredentials().getSalesforceAccessToken(), ACCOUNTS,
-                customers));
-    }
-
-    public void pushContactsToServer(PushContacts contacts, GetCallback<Result> callback) {
-        executeSingleTask(callback, restService.postContacts(
-                "Bearer " + authCredentialsDbService.getAppAuthCredentials().getSalesforceAccessToken(), CONTACTS,
-                contacts));
-    }
 }

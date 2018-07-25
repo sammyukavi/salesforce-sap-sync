@@ -60,13 +60,12 @@ public class SyncDbService extends BaseDbService {
     }
 
     public <S> ArrayList<S> insertRecords(Class<S> sClass, ArrayList<S> records) throws SQLException {
-        ArrayList<S> insertedIds = new ArrayList<>();
+        ArrayList<S> insertedRecords = new ArrayList<>();
         Dao<S, Integer> dao = createDao(sClass);
-        for (Object record : records) {
-            S recordToInsert = (S) record;
-            dao.create(recordToInsert);
-            insertedIds.add(recordToInsert);
+        for (S record : records) {
+            dao.create(record);
+            insertedRecords.add(record);
         }
-        return insertedIds;
+        return insertedRecords;
     }
 }

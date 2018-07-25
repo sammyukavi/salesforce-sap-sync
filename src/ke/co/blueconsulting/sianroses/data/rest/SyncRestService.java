@@ -21,8 +21,8 @@ public interface SyncRestService {
     Call<Result> post(@Header(AUTHORIZATION) String token, @Body Result result);
 
     @POST("SyncMSSQL")
-    Call<Result> postCustomers(@Header(AUTHORIZATION) String token, @Query(DATA_TYPE) String dataType, @Body PushCustomer result);
+    Call<PushCustomer> postCustomers(@Header(AUTHORIZATION) String token, @Query(DATA_TYPE) String dataType, @Body PushCustomer result);
 
     @POST("SyncMSSQL")
-    Call<Result> postContacts(@Header(AUTHORIZATION) String token, @Query(DATA_TYPE) String dataType, @Body PushContacts result);
+    Call<PushContacts> postContacts(@Header(AUTHORIZATION) String token, @Query(DATA_TYPE) String dataType, @Body PushContacts result);
 }

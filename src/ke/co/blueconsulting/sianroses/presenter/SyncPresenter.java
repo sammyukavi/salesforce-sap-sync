@@ -7,7 +7,7 @@ import ke.co.blueconsulting.sianroses.data.RestServiceBuilder;
 import ke.co.blueconsulting.sianroses.data.db.AuthCredentialsDbService;
 import ke.co.blueconsulting.sianroses.data.db.SyncDbService;
 import ke.co.blueconsulting.sianroses.data.impl.AuthDataService;
-import ke.co.blueconsulting.sianroses.data.impl.SyncDataService;
+import ke.co.blueconsulting.sianroses.data.impl.FetchDataService;
 import ke.co.blueconsulting.sianroses.model.app.AppAuthCredentials;
 import ke.co.blueconsulting.sianroses.model.app.SalesforceAuthCredentials;
 import ke.co.blueconsulting.sianroses.util.AppLogger;
@@ -26,9 +26,9 @@ public class SyncPresenter extends SyncHelper implements SyncContract.Presenter 
 		this.syncDashboard = syncDashboard;
 		this.authCredentialsDbService = new AuthCredentialsDbService();
 		this.syncDbService = new SyncDbService();
-		this.syncDataService = new SyncDataService();
+		this.fetchDataService = new FetchDataService();
 		
-		//Switch url for auth purposes...Must be put after syncDataService has been initialized
+		//Switch url for auth purposes...Must be put after fetchDataService has been initialized
 		RestServiceBuilder.switchToSalesforceAuthUrl();
 		this.authDataService = new AuthDataService();
 	}

@@ -5,7 +5,8 @@ import ke.co.blueconsulting.sianroses.data.DataService;
 import ke.co.blueconsulting.sianroses.data.db.AuthCredentialsDbService;
 import ke.co.blueconsulting.sianroses.data.db.SyncDbService;
 import ke.co.blueconsulting.sianroses.data.impl.AuthDataService;
-import ke.co.blueconsulting.sianroses.data.impl.SyncDataService;
+import ke.co.blueconsulting.sianroses.data.impl.FetchDataService;
+import ke.co.blueconsulting.sianroses.data.impl.SyncCustomersDataService;
 import ke.co.blueconsulting.sianroses.model.app.*;
 import ke.co.blueconsulting.sianroses.model.salesforce.Customer;
 import ke.co.blueconsulting.sianroses.model.salesforce.CustomerContacts;
@@ -21,7 +22,7 @@ class SyncHelper {
     SyncContract.View syncDashboard;
     AuthCredentialsDbService authCredentialsDbService;
     AuthDataService authDataService;
-    SyncDataService syncDataService;
+    FetchDataService fetchDataService;
     SyncDbService syncDbService;
 
     void addPreloader() {
@@ -101,15 +102,15 @@ class SyncHelper {
 							.getProductsChildren()));
 					insertedData.setWarehouses(syncDbService.insertRecords(Warehouse.class, receivedRecords
 							.getWarehouses()));*/
-                    insertCustomers(receivedRecords.getCustomers());
-                    insertContacts(receivedRecords.getCustomerContacts());
+                    insertSAPCustomers(receivedRecords.getCustomers());
+                    //insertContacts(receivedRecords.getCustomerContacts());
                 } catch (Exception e) {
                     e.printStackTrace();
                     AppLogger.logInfo("failed to save to MSSQL server. " + e.getMessage());
                 }
             }
 
-            private void insertCustomers(ArrayList<Customer> customers) throws SQLException {
+            private void insertSAPCustomers(ArrayList<Customer> customers) throws SQLException {
                 ArrayList<Customer> insertedCustomers = syncDbService.insertRecords(Customer.class, customers);
                 ArrayList<Customer> updatedCustomers = new ArrayList<>();
                 for (Customer customer : insertedCustomers) {
@@ -117,15 +118,22 @@ class SyncHelper {
                     updatedCustomers.add(customer);
                 }
 
-                DataService.GetCallback<Result> postToserverCallback = new DataService.GetCallback<Result>() {
+                updateSalesforceAccounts(updatedCustomers);
+            }
+
+            private void updateSalesforceAccounts(ArrayList<Customer> customers) {
+
+                SyncCustomersDataService syncCustomersDataService = new SyncCustomersDataService();
+
+                DataService.GetCallback<PushCustomer> callback = new DataService.GetCallback<PushCustomer>() {
                     @Override
-                    public void onCompleted(Result serverResponse) {
-                        Console.log(serverResponse);
+                    public void onCompleted(PushCustomer customers) {
+                        Console.log(customers);
                     }
 
                     @Override
                     public void onError(Throwable t) {
-                        t.printStackTrace();
+                        Console.log(t);
                     }
 
                     @Override
@@ -133,7 +141,9 @@ class SyncHelper {
 
                     }
                 };
-                syncDataService.pushCustomersToServer(new PushCustomer(updatedCustomers), postToserverCallback);
+
+                syncCustomersDataService.pushCustomersToServer(new PushCustomer(customers), callback);
+
             }
 
             private void insertContacts(ArrayList<CustomerContacts> customerContacts) throws SQLException {
@@ -155,7 +165,6 @@ class SyncHelper {
 
                     }
                 };
-                syncDataService.pushContactsToServer(new PushContacts(insertedContacts), postToserverCallback);
             }
 
             @Override
@@ -168,7 +177,7 @@ class SyncHelper {
 
             }
         };
-        syncDataService.getFromServer(getFromTheServerCallback);
+        fetchDataService.getFromServer(getFromTheServerCallback);
     }
 
 }
