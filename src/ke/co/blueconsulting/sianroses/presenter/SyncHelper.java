@@ -2,8 +2,9 @@ package ke.co.blueconsulting.sianroses.presenter;
 
 import ke.co.blueconsulting.sianroses.contract.SyncContract;
 import ke.co.blueconsulting.sianroses.data.DataService;
+import ke.co.blueconsulting.sianroses.data.RestServiceBuilder;
 import ke.co.blueconsulting.sianroses.data.db.AuthCredentialsDbService;
-import ke.co.blueconsulting.sianroses.data.db.SyncDbService;
+import ke.co.blueconsulting.sianroses.data.db.SAPDbService;
 import ke.co.blueconsulting.sianroses.data.impl.AuthDataService;
 import ke.co.blueconsulting.sianroses.data.impl.FetchDataService;
 import ke.co.blueconsulting.sianroses.data.impl.SyncCustomersDataService;
@@ -16,14 +17,18 @@ import ke.co.blueconsulting.sianroses.util.StringUtils;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 class SyncHelper {
-
-    SyncContract.View syncDashboard;
+	
+	SyncContract.View syncDashboard;
     AuthCredentialsDbService authCredentialsDbService;
-    AuthDataService authDataService;
-    FetchDataService fetchDataService;
-    SyncDbService syncDbService;
+	SAPDbService sapDbService;
+	
+	SyncHelper() throws SQLException, ClassNotFoundException {
+		this.authCredentialsDbService = new AuthCredentialsDbService();
+		this.sapDbService = new SAPDbService();
+	}
 
     void addPreloader() {
         syncDashboard.setIsBusy(true);
@@ -66,6 +71,11 @@ class SyncHelper {
                 && !StringUtils.isNullOrEmpty(credentials.getSalesforceSecurityToken())
                 && !StringUtils.isBlank(credentials.getSalesforceSecurityToken());
     }
+	
+	AuthDataService getAuthService(){
+	    RestServiceBuilder.switchToSalesforceAuthUrl();
+		return new AuthDataService();
+    }
 
     void saveSalesforceCredentials(SalesforceAuthCredentials salesforceAuthCredentials) {
         AppAuthCredentials appAuthCredentials = authCredentialsDbService.getAppAuthCredentials();
@@ -84,25 +94,12 @@ class SyncHelper {
     }
 
     void fetchFromTheServer() {
+		
         DataService.GetCallback<Result> getFromTheServerCallback = new DataService.GetCallback<Result>() {
             @Override
             public void onCompleted(Result receivedRecords) {
-                Result insertedData = new Result();
                 try {
-                    /*insertedData.setCustomers(syncDbService.insertRecords(Customer.class, receivedRecords
-							.getCustomers()));
-					insertedData.setCustomerContacts(syncDbService.insertRecords(CustomerContacts.class, receivedRecords.getCustomerContacts()));
-					insertedData.setPriceList(syncDbService.insertRecords(PriceList.class, receivedRecords
-					.getPriceList()));*/
-
-                    //TODO This line results into an error Product_Type__c is missing in Salesforce. Check query
-                    /*insertedData.setProducts(syncDbService.insertRecords(Product.class, receivedRecords.getProducts
-							()));*/
- /*insertedData.setProductsChildren(syncDbService.insertRecords(ProductChild.class, receivedRecords
-							.getProductsChildren()));
-					insertedData.setWarehouses(syncDbService.insertRecords(Warehouse.class, receivedRecords
-							.getWarehouses()));*/
-                    insertSAPCustomers(receivedRecords.getCustomers());
+                    insertCustomersToSAP(receivedRecords.getCustomers());
                     //insertContacts(receivedRecords.getCustomerContacts());
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -110,20 +107,30 @@ class SyncHelper {
                 }
             }
 
-            private void insertSAPCustomers(ArrayList<Customer> customers) throws SQLException {
-                ArrayList<Customer> insertedCustomers = syncDbService.insertRecords(Customer.class, customers);
-                ArrayList<Customer> updatedCustomers = new ArrayList<>();
-                for (Customer customer : insertedCustomers) {
-                    customer.setPushToSAPC(false);
-                    updatedCustomers.add(customer);
-                }
-
-                updateSalesforceAccounts(updatedCustomers);
+            private void insertCustomersToSAP(ArrayList<Customer> customers) throws SQLException {
+	            ArrayList<Customer> updatedCustomers = new ArrayList<>();
+	            
+	            for (Customer customer:customers) {
+		            customer.setPushToSAPC(false);
+		            updatedCustomers.add(customer);
+	            }
+             
+            	ArrayList<Customer> insertedAndUpdatedCustomers = sapDbService.insertRecords(Customer.class, customers);
+            	
+                updateSalesforceAccounts(insertedAndUpdatedCustomers);
             }
 
-            private void updateSalesforceAccounts(ArrayList<Customer> customers) {
+            private void updateSalesforceAccounts(ArrayList<Customer> customers) throws SQLException {
+	
+	            //get customers that exist in the SAP but not in Salesforce
+	            List<Customer> unsyncedContacts = sapDbService.getRecordsWithoutSalesforceId(Customer.class);
+	
+	            //Add the contacts to the updated contacts
+	            customers.addAll(unsyncedContacts);
+	            
+	            Console.log(customers);
 
-                SyncCustomersDataService syncCustomersDataService = new SyncCustomersDataService();
+                /*SyncCustomersDataService syncCustomersDataService = new SyncCustomersDataService();
 
                 DataService.GetCallback<PushCustomer> callback = new DataService.GetCallback<PushCustomer>() {
                     @Override
@@ -142,12 +149,13 @@ class SyncHelper {
                     }
                 };
 
-                syncCustomersDataService.pushCustomersToServer(new PushCustomer(customers), callback);
+                //syncCustomersDataService.pushCustomersToServer(new PushCustomer(customers), callback);*/
 
             }
 
             private void insertContacts(ArrayList<CustomerContacts> customerContacts) throws SQLException {
-                ArrayList<CustomerContacts> insertedContacts = syncDbService.insertRecords(CustomerContacts.class, customerContacts);
+            	
+                ArrayList<CustomerContacts> insertedContacts = sapDbService.insertRecords(CustomerContacts.class, customerContacts);
 
                 DataService.GetCallback<Result> postToserverCallback = new DataService.GetCallback<Result>() {
                     @Override
@@ -177,6 +185,8 @@ class SyncHelper {
 
             }
         };
+        RestServiceBuilder.switchToSalesforceApiBaseUrl();
+        FetchDataService fetchDataService = new FetchDataService();
         fetchDataService.getFromServer(getFromTheServerCallback);
     }
 

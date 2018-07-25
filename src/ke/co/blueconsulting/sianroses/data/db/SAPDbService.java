@@ -15,9 +15,9 @@ import java.util.List;
  * A class that is used to create a service for storing and retrieving the data
  * in the SAP server
  */
-public class SyncDbService extends BaseDbService {
+public class SAPDbService extends BaseDbService {
 
-    public SyncDbService() {
+    public SAPDbService() {
         super();
     }
 
@@ -63,9 +63,17 @@ public class SyncDbService extends BaseDbService {
         ArrayList<S> insertedRecords = new ArrayList<>();
         Dao<S, Integer> dao = createDao(sClass);
         for (S record : records) {
-            dao.create(record);
+            //dao.createOrUpdate(record);
             insertedRecords.add(record);
         }
         return insertedRecords;
     }
+	
+	public <S> List<S> getRecordsWithoutSalesforceId(Class<S> sClass) throws SQLException {
+		String columnName = "Account_Number__c";
+		Dao<S, Integer> dao = createDao(sClass);
+		QueryBuilder<S, Integer> queryBuilder = dao.queryBuilder();
+		Where<S, Integer> where = queryBuilder.where();
+		return dao.query(where.or(where.isNull(columnName), where.eq(columnName, "")).prepare());
+	}
 }

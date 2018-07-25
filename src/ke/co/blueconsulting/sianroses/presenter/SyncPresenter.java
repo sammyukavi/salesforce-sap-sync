@@ -4,10 +4,6 @@ import ke.co.blueconsulting.sianroses.SyncDashboard;
 import ke.co.blueconsulting.sianroses.contract.SyncContract;
 import ke.co.blueconsulting.sianroses.data.DataService;
 import ke.co.blueconsulting.sianroses.data.RestServiceBuilder;
-import ke.co.blueconsulting.sianroses.data.db.AuthCredentialsDbService;
-import ke.co.blueconsulting.sianroses.data.db.SyncDbService;
-import ke.co.blueconsulting.sianroses.data.impl.AuthDataService;
-import ke.co.blueconsulting.sianroses.data.impl.FetchDataService;
 import ke.co.blueconsulting.sianroses.model.app.AppAuthCredentials;
 import ke.co.blueconsulting.sianroses.model.app.SalesforceAuthCredentials;
 import ke.co.blueconsulting.sianroses.util.AppLogger;
@@ -23,14 +19,8 @@ public class SyncPresenter extends SyncHelper implements SyncContract.Presenter 
 	private Thread connectThread;
 	
 	public SyncPresenter(SyncDashboard syncDashboard) throws SQLException, ClassNotFoundException {
+		super();
 		this.syncDashboard = syncDashboard;
-		this.authCredentialsDbService = new AuthCredentialsDbService();
-		this.syncDbService = new SyncDbService();
-		this.fetchDataService = new FetchDataService();
-		
-		//Switch url for auth purposes...Must be put after fetchDataService has been initialized
-		RestServiceBuilder.switchToSalesforceAuthUrl();
-		this.authDataService = new AuthDataService();
 	}
 	
 	@Override
@@ -115,7 +105,7 @@ public class SyncPresenter extends SyncHelper implements SyncContract.Presenter 
 		
 		connectThread = new Thread(() -> {
 			try {
-				if (syncDbService.testServerConnection(serverAddress, serverPort, databaseName, databaseUsername, databasePassword)) {
+				if (sapDbService.testServerConnection(serverAddress, serverPort, databaseName, databaseUsername, databasePassword)) {
 					connectionSuccessful[0] = true;
 				}
 			} catch (ClassNotFoundException | SQLException e) {
@@ -164,8 +154,7 @@ public class SyncPresenter extends SyncHelper implements SyncContract.Presenter 
 		
 		connectThread = new Thread(() -> {
 			try {
-				authDataService = new AuthDataService();
-				authDataService.authenticate(salesforceClientId, salesforceClientSecret, salesforceUsername, salesforcePassword,
+				getAuthService().authenticate(salesforceClientId, salesforceClientSecret, salesforceUsername, salesforcePassword,
 						salesforceSecurityToken, authCallback);
 			} catch (Exception e) {
 				removePreloader();
@@ -215,8 +204,7 @@ public class SyncPresenter extends SyncHelper implements SyncContract.Presenter 
 			addPreloader();
 			connectThread = new Thread(() -> {
 				try {
-					RestServiceBuilder.switchToSalesforceAuthUrl();
-					authDataService.authenticate(credentials.getSalesforceClientId(), credentials.getSalesforceClientSecret(),
+					getAuthService().authenticate(credentials.getSalesforceClientId(), credentials.getSalesforceClientSecret(),
 							credentials.getSalesforceUsername(),
 							credentials.getSalesforcePassword(),
 							credentials.getSalesforceSecurityToken(), authCallback);
