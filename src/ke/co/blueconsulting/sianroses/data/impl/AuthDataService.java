@@ -10,16 +10,16 @@ import static ke.co.blueconsulting.sianroses.util.Constants.RequestKeys.GRANT_TY
  * A service that is used to authenticate the app with the Salesforce Client
  */
 public class AuthDataService extends BaseDataService<SalesforceAuthCredentials, AuthRestService> {
-
-    @Override
-    protected Class<AuthRestService> getRestServiceClass() {
-        return AuthRestService.class;
-    }
-
-    public void authenticate(String salesforceClientId, String salesforceClientSecret,
-            String salesforceUsername, String salesforcePassword, String salesforceSecurityToken,
-            GetCallback<SalesforceAuthCredentials> callback) {
-        executeSingleTask(callback, restService.authenticate(salesforceClientId, salesforceClientSecret,
-                GRANT_TYPE_PASSWORD, salesforceUsername, salesforcePassword + salesforceSecurityToken));
-    }
+	
+	@Override
+	protected Class<AuthRestService> getRestServiceClass() {
+		return AuthRestService.class;
+	}
+	
+	public void authenticate(String salesforceClientId, String salesforceClientSecret,
+	                         String salesforceUsername, String salesforcePassword, String salesforceSecurityToken,
+	                         GetCallback<SalesforceAuthCredentials> callback) {
+		executeSingleTask(callback, restService.authenticate(salesforceClientId, salesforceClientSecret,
+				GRANT_TYPE_PASSWORD, salesforceUsername, salesforcePassword + salesforceSecurityToken));
+	}
 }

@@ -9,27 +9,27 @@ import retrofit2.Response;
 import java.lang.annotation.Annotation;
 
 public class ErrorUtil {
-
-    public static String parseError(Response<?> response) {
-        StringBuilder message = new StringBuilder();
-        Converter<ResponseBody, ErrorsDeserializer.Errors> converter = RestServiceBuilder.retrofit()
-                .responseBodyConverter(ErrorsDeserializer.Errors.class, new Annotation[0]);
-        try {
-            ErrorsDeserializer.Errors serverResponse = converter.convert(response.errorBody());
-            for (Error error : serverResponse.getErrors()) {
-                if (!StringUtils.isBlank(error.getErrorDescription()) && !StringUtils.isNullOrEmpty(error
-                        .getErrorDescription())) {
-                    message.append(error.getErrorDescription());
-                }
-
-                if (!StringUtils.isBlank(error.getMessage()) && !StringUtils.isNullOrEmpty(error.getMessage())) {
-                    message.append(error.getMessage());
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return message.toString();
-    }
+	
+	public static String parseError(Response<?> response) {
+		StringBuilder message = new StringBuilder();
+		Converter<ResponseBody, ErrorsDeserializer.Errors> converter = RestServiceBuilder.retrofit()
+				.responseBodyConverter(ErrorsDeserializer.Errors.class, new Annotation[0]);
+		try {
+			ErrorsDeserializer.Errors serverResponse = converter.convert(response.errorBody());
+			for (Error error : serverResponse.getErrors()) {
+				if (!StringUtils.isBlank(error.getErrorDescription()) && !StringUtils.isNullOrEmpty(error
+						.getErrorDescription())) {
+					message.append(error.getErrorDescription());
+				}
+				
+				if (!StringUtils.isBlank(error.getMessage()) && !StringUtils.isNullOrEmpty(error.getMessage())) {
+					message.append(error.getMessage());
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return message.toString();
+	}
 }

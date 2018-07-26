@@ -19,41 +19,41 @@ import static ke.co.blueconsulting.sianroses.util.Constants.SQLITE_DATABASE_NAME
  * Salesforce Client
  */
 public class AuthCredentialsDbService {
-
-    private Dao<AppAuthCredentials, Integer> credentialsDao;
-
-    public AuthCredentialsDbService() throws ClassNotFoundException, SQLException {
-        Class.forName("org.sqlite.JDBC");
-        ConnectionSource connectionSource = new JdbcConnectionSource(getDatabaseUrl());
-        credentialsDao = DaoManager.createDao(connectionSource, AppAuthCredentials.class);
-        TableUtils.createTableIfNotExists(connectionSource, AppAuthCredentials.class);
-    }
-
-    private String getDatabaseUrl() {
-        String separator = File.separator;
-        String directoryName = System.getProperty("user.home") + separator + APP_DIR_NAME + separator;
-        File directory = new File(directoryName);
-        if (!directory.exists()) {
-            directory.mkdirs();
-        }
-        return "jdbc:sqlite:" + directoryName + SQLITE_DATABASE_NAME;
-    }
-
-    public AppAuthCredentials save(AppAuthCredentials appAuthCredentials) throws SQLException {
-        appAuthCredentials.setId(1);
-        credentialsDao.createOrUpdate(appAuthCredentials);
-        return appAuthCredentials;
-    }
-
-    public AppAuthCredentials getAppAuthCredentials() {
-        try {
-            AppAuthCredentials credentials = credentialsDao.queryForId(1);
-            if(credentials!=null){
-                return credentials;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return new AppAuthCredentials();
-    }
+	
+	private Dao<AppAuthCredentials, Integer> credentialsDao;
+	
+	public AuthCredentialsDbService() throws ClassNotFoundException, SQLException {
+		Class.forName("org.sqlite.JDBC");
+		ConnectionSource connectionSource = new JdbcConnectionSource(getDatabaseUrl());
+		credentialsDao = DaoManager.createDao(connectionSource, AppAuthCredentials.class);
+		TableUtils.createTableIfNotExists(connectionSource, AppAuthCredentials.class);
+	}
+	
+	private String getDatabaseUrl() {
+		String separator = File.separator;
+		String directoryName = System.getProperty("user.home") + separator + APP_DIR_NAME + separator;
+		File directory = new File(directoryName);
+		if (!directory.exists()) {
+			directory.mkdirs();
+		}
+		return "jdbc:sqlite:" + directoryName + SQLITE_DATABASE_NAME;
+	}
+	
+	public AppAuthCredentials save(AppAuthCredentials appAuthCredentials) throws SQLException {
+		appAuthCredentials.setId(1);
+		credentialsDao.createOrUpdate(appAuthCredentials);
+		return appAuthCredentials;
+	}
+	
+	public AppAuthCredentials getAppAuthCredentials() {
+		try {
+			AppAuthCredentials credentials = credentialsDao.queryForId(1);
+			if (credentials != null) {
+				return credentials;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return new AppAuthCredentials();
+	}
 }

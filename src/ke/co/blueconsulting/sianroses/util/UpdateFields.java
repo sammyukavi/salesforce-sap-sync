@@ -9,7 +9,7 @@ public class UpdateFields {
 	
 	public static ArrayList<Customer> updateCustomerPushToSAPFields(ArrayList<Customer> customers) {
 		ArrayList<Customer> updatedCustomers = new ArrayList<>();
-		for (Customer customer:customers) {
+		for (Customer customer : customers) {
 			customer.setPushToSAPC(false);
 			updatedCustomers.add(customer);
 		}
@@ -18,7 +18,7 @@ public class UpdateFields {
 	
 	public static ArrayList<CustomerContacts> updateCustomerContactsPushToSAPFields(ArrayList<CustomerContacts> customers) {
 		ArrayList<CustomerContacts> updatedCustomers = new ArrayList<>();
-		for (CustomerContacts customer:customers) {
+		for (CustomerContacts customer : customers) {
 			customer.setPushToSap(false);
 			updatedCustomers.add(customer);
 		}
