@@ -190,9 +190,9 @@ class SyncHelper {
 	
 	void fetchFromTheServer() {
 
-		DataService.GetCallback<Result> getFromTheServerCallback = new DataService.GetCallback<Result>() {
+		DataService.GetCallback<Response> getFromTheServerCallback = new DataService.GetCallback<Response>() {
 			@Override
-			public void onCompleted(Result receivedRecords) {
+			public void onCompleted(Response receivedRecords) {
 				try {
 					//insertCustomersToSAP(receivedRecords.getCustomers());
 					insertCustomerContactsToSAP(receivedRecords.getCustomerContacts());

@@ -11,7 +11,7 @@ import java.util.ArrayList;
  * A conversion class used to send data to Salesforce server and back to the SAP
  * server
  */
-public class Result implements Serializable {
+public class Response implements Serializable {
 
     /**
      *

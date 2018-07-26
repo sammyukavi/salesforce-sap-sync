@@ -2,7 +2,7 @@ package ke.co.blueconsulting.sianroses.data.rest;
 
 import ke.co.blueconsulting.sianroses.model.app.PushCustomerContacts;
 import ke.co.blueconsulting.sianroses.model.app.PushCustomer;
-import ke.co.blueconsulting.sianroses.model.app.Result;
+import ke.co.blueconsulting.sianroses.model.app.Response;
 import retrofit2.Call;
 import retrofit2.http.*;
 
@@ -15,10 +15,10 @@ import static ke.co.blueconsulting.sianroses.util.Constants.RequestKeys.DATA_TYP
 public interface SyncRestService {
 
     @GET("SyncMSSQL")
-    Call<Result> fetch(@Header(AUTHORIZATION) String token);
+    Call<Response> fetch(@Header(AUTHORIZATION) String token);
 
     @POST("SyncMSSQL")
-    Call<Result> post(@Header(AUTHORIZATION) String token, @Body Result result);
+    Call<Response> post(@Header(AUTHORIZATION) String token, @Body Response result);
 
     @POST("SyncMSSQL")
     Call<PushCustomer> postCustomers(@Header(AUTHORIZATION) String token, @Query(DATA_TYPE) String dataType, @Body PushCustomer result);
