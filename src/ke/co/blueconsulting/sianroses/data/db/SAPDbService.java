@@ -51,7 +51,8 @@ public class SAPDbService extends BaseDbService {
 		}*/
     }
 
-    public <S> List<S> getUnsyncedRecords(Class<S> sClass) throws SQLException {
+    @SuppressWarnings("unchecked")
+	public <S> List<S> getUnsyncedRecords(Class<S> sClass) throws SQLException {
         String columnName = "Push_to_SAP__c";
         Dao<S, Integer> dao = createDao(sClass);
         QueryBuilder<S, Integer> queryBuilder = dao.queryBuilder();
@@ -63,17 +64,23 @@ public class SAPDbService extends BaseDbService {
         ArrayList<S> insertedRecords = new ArrayList<>();
         Dao<S, Integer> dao = createDao(sClass);
         for (S record : records) {
-            //dao.createOrUpdate(record);
+            dao.createOrUpdate(record);
             insertedRecords.add(record);
         }
         return insertedRecords;
     }
 	
-	public <S> List<S> getRecordsWithoutSalesforceId(Class<S> sClass) throws SQLException {
-		String columnName = "Account_Number__c";
-		Dao<S, Integer> dao = createDao(sClass);
-		QueryBuilder<S, Integer> queryBuilder = dao.queryBuilder();
-		Where<S, Integer> where = queryBuilder.where();
-		return dao.query(where.or(where.isNull(columnName), where.eq(columnName, "")).prepare());
+	@SuppressWarnings("unchecked")
+	public <S> ArrayList<S> getRecordsWithoutSalesforceId(Class<S> sClass) throws SQLException {
+		String columnName = "SalesforceId";
+        return getRecordsWithoutSalesforceId(sClass,columnName);
 	}
+    
+    @SuppressWarnings("unchecked")
+    public <S> ArrayList<S> getRecordsWithoutSalesforceId(Class<S> sClass, String columnName) throws SQLException {
+        Dao<S, Integer> dao = createDao(sClass);
+        QueryBuilder<S, Integer> queryBuilder = dao.queryBuilder();
+        Where<S, Integer> where = queryBuilder.where();
+        return (ArrayList<S>) dao.query(where.or(where.isNull(columnName), where.eq(columnName, "")).prepare());
+    }
 }

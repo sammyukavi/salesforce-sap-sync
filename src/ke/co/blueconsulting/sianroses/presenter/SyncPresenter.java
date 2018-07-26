@@ -69,7 +69,7 @@ public class SyncPresenter extends SyncHelper implements SyncContract.Presenter 
 	}
 	
 	/**
-	 * Saves the salesforce authentication details in the sqlite database
+	 * Saves the Salesforce authentication details in the sqlite database
 	 *
 	 * @param salesforceClientId
 	 * @param salesforceClientSecret

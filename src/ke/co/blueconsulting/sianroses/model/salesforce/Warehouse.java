@@ -15,6 +15,8 @@ import java.io.Serializable;
 @DatabaseTable(tableName = "WAREHOUSE")
 public class Warehouse implements Serializable {
 
+	private static final long serialVersionUID = 1L;
+	
     @DatabaseField(generatedId = true, columnName = "AUTOID")
     @SerializedName("AUTOID")
     @Expose

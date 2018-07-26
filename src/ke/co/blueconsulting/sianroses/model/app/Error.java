@@ -6,7 +6,9 @@ import java.io.Serializable;
 
 public class Error implements Serializable {
 
-    @SerializedName("error")
+	private static final long serialVersionUID = 1L;
+
+	@SerializedName("error")
     private String error;
 
     @SerializedName("error_description")

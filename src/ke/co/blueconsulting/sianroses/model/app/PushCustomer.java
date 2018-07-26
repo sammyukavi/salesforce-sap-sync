@@ -11,6 +11,8 @@ import static ke.co.blueconsulting.sianroses.util.Constants.DataTypes.ACCOUNTS;
 
 public class PushCustomer implements Serializable {
 
+	private static final long serialVersionUID = 1L;
+	
     @SerializedName(ACCOUNTS)
     @Expose
     private ArrayList<Customer> accounts;
@@ -18,4 +20,9 @@ public class PushCustomer implements Serializable {
     public PushCustomer(ArrayList<Customer> accounts) {
         this.accounts = accounts;
     }
+
+	public ArrayList<Customer> getAccounts() {
+		return accounts;
+	}
+    
 }

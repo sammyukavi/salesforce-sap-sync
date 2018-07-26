@@ -12,7 +12,9 @@ import java.io.Serializable;
 @DatabaseTable(tableName = "auth_credentials")
 public class AppAuthCredentials implements Serializable {
 
-    @DatabaseField(generatedId = true)
+	private static final long serialVersionUID = 1L;
+
+	@DatabaseField(generatedId = true)
     private int id;
 
     @DatabaseField(columnName = "server_address")

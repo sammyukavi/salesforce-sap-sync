@@ -9,12 +9,13 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * This model maps Salesforce accounts' contacts to SAP user accounts Syncing
- * for customer contacts is two way.
+ * This model maps Salesforce accounts' contacts to SAP user accounts. Sync for customer contacts is two way.
  */
 @DatabaseTable(tableName = "CUSTOMERCONTACTS")
 public class CustomerContacts implements Serializable {
 
+	private static final long serialVersionUID = 1L;
+	
     @DatabaseField(generatedId = true, columnName = "AUTOID")
     private int autoId;
 
@@ -107,5 +108,8 @@ public class CustomerContacts implements Serializable {
     @Expose
     @DatabaseField(columnName = "Title")
     private String title;
-
+    
+    public void setPushToSap(boolean pushToSap) {
+        this.pushToSap = pushToSap;
+    }
 }

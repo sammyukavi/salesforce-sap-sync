@@ -33,10 +33,10 @@ public class Console {
         System.out.println("=========================== END OUTPUT OF INT ===========================");
     }
 
-    public static void log(Map map) {
+    public static <K,V>void log(Map<K,V> map) {
         System.out.println("=========================== START OUTPUT OF MAP ===========================");
         if (null != map) {
-            Set keys = map.keySet();
+            Set<K> keys = map.keySet();
             for (Object key1 : keys) {
                 String key = (String) key1;
                 String value = (String) map.get(key);

@@ -9,13 +9,19 @@ import java.util.ArrayList;
 
 import static ke.co.blueconsulting.sianroses.util.Constants.DataTypes.CONTACTS;
 
-public class PushContacts implements Serializable {
+public class PushCustomerContacts implements Serializable {
 
+	private static final long serialVersionUID = 1L;
+	
     @SerializedName(CONTACTS)
     @Expose
     private ArrayList<CustomerContacts> contacts;
 
-    public PushContacts(ArrayList<CustomerContacts> contacts) {
+    public PushCustomerContacts(ArrayList<CustomerContacts> contacts) {
         this.contacts = contacts;
+    }
+    
+    public ArrayList<CustomerContacts> getContacts() {
+        return contacts;
     }
 }

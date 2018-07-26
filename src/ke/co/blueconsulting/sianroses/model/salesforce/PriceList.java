@@ -15,6 +15,8 @@ import java.io.Serializable;
 @DatabaseTable(tableName = "PRICELIST")
 public class PriceList implements Serializable {
 
+	private static final long serialVersionUID = 1L;
+	
     @DatabaseField(generatedId = true, columnName = "AUTOID")
     private int autoId;
 

@@ -176,7 +176,7 @@ public class SyncDashboard implements SyncContract.View {
     }
 
     /**
-     * Build the MSSQL Server Config Panel UI
+     * Build the MSSQL Server Settings Panel UI
      *
      * @return JPanel
      */

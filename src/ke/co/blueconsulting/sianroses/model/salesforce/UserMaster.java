@@ -12,7 +12,9 @@ import java.io.Serializable;
 @DatabaseTable(tableName = "USERSMASTER")
 public class UserMaster implements Serializable {
 
-    @DatabaseField(generatedId = true, columnName = "AUTOID")
+	private static final long serialVersionUID = 1L;
+
+	@DatabaseField(generatedId = true, columnName = "AUTOID")
     private int autoId;
 
     @DatabaseField(columnName = "User_Code__c")

@@ -77,6 +77,7 @@ public class RestServiceBuilder {
 				.retryOnConnectionFailure(true);
 	}
 	
+	@SuppressWarnings("unused")
 	private static OkHttpClient getSafeOkHttpClient() {
 		return getOkHttpClientBuilder().build();
 	}
