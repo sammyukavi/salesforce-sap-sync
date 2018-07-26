@@ -54,10 +54,10 @@ public class PriceList implements Serializable {
 	@Expose
 	private String currencyISOCode;
 	
-	@DatabaseField(columnName = "isActive")
+	/*@DatabaseField(columnName = "isActive")
 	@SerializedName("IsActive")
 	@Expose
-	private boolean isActive;
+	private boolean isActive;*/
 	
 	@DatabaseField(columnName = "Pull_from_SAP__c")
 	@SerializedName("Pull_from_SAP__c")

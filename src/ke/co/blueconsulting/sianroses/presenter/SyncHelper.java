@@ -188,7 +188,7 @@ class SyncHelper {
 	private void updateSalesforcePriceList() throws SQLException {
 		
 		//get priceLists that exist in the SAP but not in Salesforce
-		ArrayList<PriceList> priceList = sapDbService.getRecordsWithUncheckedField(PriceList.class);
+		ArrayList<PriceList> priceList = sapDbService.getRecordsWithACheckedField(PriceList.class);
 		
 		SyncPriceListDataService syncPriceListDataService = new SyncPriceListDataService();
 		
@@ -230,12 +230,14 @@ class SyncHelper {
 					//insertCustomerContactsToSAP(receivedRecords.getCustomerContacts());
 					updateSalesforcePriceList();
 				} catch (Exception e) {
+					e.printStackTrace();
 					AppLogger.logWarning("failed to insert received records into to MSSQL server. " + e.getMessage());
 				}
 			}
 			
 			@Override
 			public void onError(Throwable t) {
+				t.printStackTrace();
 				AppLogger.logWarning("failed to fetch from the server. " + t.getMessage());
 			}
 			
@@ -246,9 +248,14 @@ class SyncHelper {
 		};
 		
 		
-		RestServiceBuilder.switchToSalesforceApiBaseUrl();
-		FetchDataService fetchDataService = new FetchDataService();
-		fetchDataService.getFromServer(getFromTheServerCallback);
+		//RestServiceBuilder.switchToSalesforceApiBaseUrl();
+		//FetchDataService fetchDataService = new FetchDataService();
+		//fetchDataService.getFromServer(getFromTheServerCallback);
+		try {
+			updateSalesforcePriceList();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 	
 }
