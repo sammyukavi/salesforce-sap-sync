@@ -18,6 +18,7 @@ public class ProductChild implements Serializable {
 	
 	@DatabaseField(generatedId = true, columnName = "AUTOID")
 	@SerializedName("ERP_ID__c")
+	@Expose
 	private int autoId;
 	
 	@DatabaseField(columnName = "Breeder__c")
@@ -25,10 +26,10 @@ public class ProductChild implements Serializable {
 	@Expose
 	private String breederC;
 	
-	@DatabaseField(columnName = "Classification__c")
+	/*@DatabaseField(columnName = "Classification__c")
 	@SerializedName("Classification__c")
 	@Expose
-	private String classificationC;
+	private String classificationC;*/
 	
 	@DatabaseField(columnName = "Color__c")
 	@SerializedName("Color__c")
@@ -50,10 +51,10 @@ public class ProductChild implements Serializable {
 	@Expose
 	private String productFamilyC;
 	
-	@DatabaseField(columnName = "Farm__c")
+	/*@DatabaseField(columnName = "Farm__c")
 	@SerializedName("Farms__c")
 	@Expose
-	private String farmC;
+	private String farmC;*/
 	
 	@DatabaseField(columnName = "Headsize__c")
 	@SerializedName("Head_size__c")

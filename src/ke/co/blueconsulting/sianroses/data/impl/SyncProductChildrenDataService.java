@@ -18,9 +18,8 @@ public class SyncProductChildrenDataService extends BaseDataService<Response, Sy
 	}
 	
 	public void pushProductsChildrenToServer(Response products, GetCallback<Response> callback) {
-		Console.logToJson(products);
-		/*executeSingleTask(callback, restService.postProductChildren(
+		executeSingleTask(callback, restService.postProductChildren(
 				"Bearer " + authCredentialsDbService.getAppAuthCredentials().getSalesforceAccessToken(), PRODUCTS,
-				products));*/
+				products));
 	}
 }

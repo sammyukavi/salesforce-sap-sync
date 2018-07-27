@@ -30,6 +30,7 @@ public interface SyncRestService {
 	@POST("SyncMSSQL")
 	Call<PushProduct> postProducts(@Header(AUTHORIZATION) String token, @Query(DATA_TYPE) String dataType, @Body PushProduct result);
 	
+	@POST("SyncMSSQL")
 	Call<Response> postProductChildren(@Header(AUTHORIZATION) String token, @Query(DATA_TYPE) String dataType, @Body Response result);
 	
 }
