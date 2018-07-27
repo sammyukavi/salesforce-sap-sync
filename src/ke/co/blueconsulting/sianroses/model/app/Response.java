@@ -15,9 +15,6 @@ import static ke.co.blueconsulting.sianroses.util.Constants.DataTypeKeys.*;
  */
 public class Response implements Serializable {
 	
-	/**
-	 *
-	 */
 	private static final long serialVersionUID = 1L;
 	
 	@SerializedName(ACCOUNTS)
@@ -32,7 +29,7 @@ public class Response implements Serializable {
 	@Expose
 	private ArrayList<PriceList> priceList = new ArrayList<>();
 	
-	@SerializedName("products")
+	@SerializedName(PRODUCTS)
 	@Expose
 	private ArrayList<Product> products = new ArrayList<>();
 	

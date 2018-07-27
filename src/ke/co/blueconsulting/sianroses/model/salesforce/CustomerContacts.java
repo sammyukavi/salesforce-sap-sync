@@ -9,7 +9,8 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * This model maps Salesforce accounts' contacts to SAP user accounts. Sync for customer contacts is two way.
+ * This model maps Salesforce accounts' contacts to SAP user accounts.
+ * Sync for customer contacts is two way.
  */
 @DatabaseTable(tableName = "CUSTOMERCONTACTS")
 public class CustomerContacts implements Serializable {

@@ -10,6 +10,7 @@ import ke.co.blueconsulting.sianroses.model.app.*;
 import ke.co.blueconsulting.sianroses.model.salesforce.Customer;
 import ke.co.blueconsulting.sianroses.model.salesforce.CustomerContacts;
 import ke.co.blueconsulting.sianroses.model.salesforce.PriceList;
+import ke.co.blueconsulting.sianroses.model.salesforce.Product;
 import ke.co.blueconsulting.sianroses.util.AppLogger;
 import ke.co.blueconsulting.sianroses.util.Console;
 import ke.co.blueconsulting.sianroses.util.StringUtils;
@@ -195,9 +196,7 @@ class SyncHelper {
 		DataService.GetCallback<PushPriceList> callback = new DataService.GetCallback<PushPriceList>() {
 			@Override
 			public void onCompleted(PushPriceList priceList) {
-				Console.logToJson(priceList);
 				try {
-					//sapDbService.insertRecords(PriceList.class, priceLists.getPriceList());
 					AppLogger.logInfo("Sync of PriceList Object Successful");
 				} catch (Exception e) {
 					AppLogger.logWarning("Failed to insert pushed priceLists from salesforce for updating. " + e.getMessage());
@@ -219,6 +218,39 @@ class SyncHelper {
 		
 	}
 	
+	private void updateSalesforceProducts() throws SQLException {
+		
+		//get products that exist in the SAP but not in Salesforce
+		ArrayList<Product> products = sapDbService.getRecordsWithACheckedField(Product.class);
+		
+		SyncProductDataService syncProductDataService = new SyncProductDataService();
+		
+		DataService.GetCallback<PushProduct> callback = new DataService.GetCallback<PushProduct>() {
+			@Override
+			public void onCompleted(PushProduct products) {
+				Console.logToJson(products);
+				try {
+					AppLogger.logInfo("Sync of Product Object Successful");
+				} catch (Exception e) {
+					AppLogger.logWarning("Failed to insert pushed products from salesforce for updating. " + e.getMessage());
+				}
+			}
+			
+			@Override
+			public void onError(Throwable t) {
+				AppLogger.logWarning("Failed to push products to salesforce. " + t.getMessage());
+			}
+			
+			@Override
+			public void always() {
+				
+			}
+		};
+		
+		syncProductDataService.pushProductToServer(new PushProduct(products), callback);
+		
+	}
+	
 	
 	void fetchFromTheServer() {
 		
@@ -228,7 +260,8 @@ class SyncHelper {
 				try {
 					//insertCustomersToSAP(receivedRecords.getCustomers());
 					//insertCustomerContactsToSAP(receivedRecords.getCustomerContacts());
-					updateSalesforcePriceList();
+					//updateSalesforcePriceList();
+					updateSalesforceProducts();
 				} catch (Exception e) {
 					e.printStackTrace();
 					AppLogger.logWarning("failed to insert received records into to MSSQL server. " + e.getMessage());
@@ -249,8 +282,15 @@ class SyncHelper {
 		
 		
 		RestServiceBuilder.switchToSalesforceApiBaseUrl();
-		FetchDataService fetchDataService = new FetchDataService();
-		fetchDataService.getFromServer(getFromTheServerCallback);
+		//FetchDataService fetchDataService = new FetchDataService();
+		//fetchDataService.getFromServer(getFromTheServerCallback);
+		
+		try {
+			updateSalesforceProducts();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
 	}
 	
 }

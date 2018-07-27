@@ -8,8 +8,8 @@ import com.j256.ormlite.table.DatabaseTable;
 import java.io.Serializable;
 
 /**
- * This model maps Products to Flower_Variety__c in Salesforce Syncing for
- * Products is one way from the SAP server to Salesforce.
+ * This model maps Products to Flower_Variety__c in Salesforce.
+ * Syncing for products is one way from the SAP server to Salesforce.
  */
 @DatabaseTable(tableName = "PRODUCTSCHILD")
 public class ProductChild implements Serializable {

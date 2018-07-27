@@ -8,8 +8,8 @@ import com.j256.ormlite.table.DatabaseTable;
 import java.io.Serializable;
 
 /**
- * This model maps Products to Products2 in Salesforce. Syncing for Products is
- * one way from the SAP server to Salesforce.
+ * This model maps Products to Products2 in Salesforce.
+ * Syncing for Products is one way from the SAP server to Salesforce.
  */
 @DatabaseTable(tableName = "PRODUCTS")
 public class Product implements Serializable {
@@ -17,7 +17,13 @@ public class Product implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@DatabaseField(generatedId = true, columnName = "AUTOID")
+	@SerializedName("ERP_ID__c")
+	@Expose
 	private int autoId;
+	
+	/*@SerializedName("Id")
+	@Expose
+	private int Id;*/
 	
 	@DatabaseField(columnName = "Breeder__c")
 	@SerializedName("Breeder__c")
@@ -39,10 +45,10 @@ public class Product implements Serializable {
 	@Expose
 	private String family;
 	
-	@DatabaseField(columnName = "IsActive")
+	/*@DatabaseField(columnName = "IsActive")
 	@SerializedName("IsActive")
 	@Expose
-	private String isActive;
+	private String isActive;*/
 	
 	@DatabaseField(columnName = "Name")
 	@SerializedName("Name")
@@ -60,7 +66,7 @@ public class Product implements Serializable {
 	private String ParentProductCode;
 	
 	@DatabaseField(columnName = "Product_Type__c")
-	@SerializedName("RecordTypeId")
+	@SerializedName("Product_Type__c")
 	@Expose
 	private String productTypeC;
 	

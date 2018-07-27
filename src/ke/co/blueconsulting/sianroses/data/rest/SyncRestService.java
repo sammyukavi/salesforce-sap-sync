@@ -1,9 +1,6 @@
 package ke.co.blueconsulting.sianroses.data.rest;
 
-import ke.co.blueconsulting.sianroses.model.app.PushCustomer;
-import ke.co.blueconsulting.sianroses.model.app.PushCustomerContacts;
-import ke.co.blueconsulting.sianroses.model.app.PushPriceList;
-import ke.co.blueconsulting.sianroses.model.app.Response;
+import ke.co.blueconsulting.sianroses.model.app.*;
 import retrofit2.Call;
 import retrofit2.http.*;
 
@@ -30,5 +27,7 @@ public interface SyncRestService {
 	@POST("SyncMSSQL")
 	Call<PushPriceList> postPriceList(@Header(AUTHORIZATION) String token, @Query(DATA_TYPE) String dataType, @Body PushPriceList result);
 	
+	@POST("SyncMSSQL")
+	Call<PushProduct> postProduct(@Header(AUTHORIZATION) String token, @Query(DATA_TYPE) String dataType, @Body PushProduct result);
 	
 }

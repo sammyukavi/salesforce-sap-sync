@@ -10,7 +10,8 @@ import java.io.Serializable;
 //One way push from SAP to salesforce
 
 /**
- * This model maps price lists to PriceBookEntry in Salesforce. Syncing is one way.
+ * This model maps price lists to PriceBookEntry in Salesforce.
+ * Syncing is one way.
  */
 @DatabaseTable(tableName = "PRICELIST")
 public class PriceList implements Serializable {

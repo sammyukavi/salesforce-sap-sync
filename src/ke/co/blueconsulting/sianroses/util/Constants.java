@@ -33,6 +33,7 @@ public class Constants {
 		public static final String ACCOUNTS = "accounts";
 		public static final String CONTACTS = "contacts";
 		public static final String PRICElIST = "priceList";
+		public static final String PRODUCTS = "products";
 	}
 	
 	public static class BundleKeys {
@@ -72,7 +73,7 @@ public class Constants {
 		public static final String MESSAGE_SALESFORCE_SECURITY_TOKEN_REQUIRED = "messages.salesforceSecurityTokenRequired";
 		public static final String MESSAGE_CONNECTION_SUCCESSFUL = "messages.connectionSuccessful";
 		public static final String MESSAGE_LOGIN_FAILED = "messages.loginFailed";
-		public static final String MESSAGE_INVALID_SALESFORCE_CREDENTIALS = "messages.invalidSalesforceCredentials";
+		//public static final String MESSAGE_INVALID_SALESFORCE_CREDENTIALS = "messages.invalidSalesforceCredentials";
 		public static final String MESSAGE_UNSUPPORTED_ELEMENT = "messages.unsupportedElements";
 		public static final String BTN_TEST_DB_CONNECTION = "buttons.testDbConnection";
 		public static final String BTN_TEST_SALESFORCE_AUTH = "buttons.testSalesforceAuth";
