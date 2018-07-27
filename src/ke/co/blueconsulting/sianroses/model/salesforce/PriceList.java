@@ -10,7 +10,7 @@ import java.io.Serializable;
 //One way push from SAP to salesforce
 
 /**
- * This model maps price lists to PriceBookEntry in Salesforce Syncing is one way.
+ * This model maps price lists to PriceBookEntry in Salesforce. Syncing is one way.
  */
 @DatabaseTable(tableName = "PRICELIST")
 public class PriceList implements Serializable {
@@ -18,13 +18,15 @@ public class PriceList implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@DatabaseField(generatedId = true, columnName = "AUTOID")
+	@SerializedName("ERP_ID__c")
+	@Expose
 	private int autoId;
 	
 	@SerializedName("Id")
 	@Expose
 	private String id;
 	
-	@DatabaseField(columnName = "Pricebook2Id")
+	/*@DatabaseField(columnName = "Pricebook2Id")
 	@SerializedName("Pricebook2Id")
 	@Expose
 	private String pricebook2Id;
@@ -32,20 +34,20 @@ public class PriceList implements Serializable {
 	@DatabaseField(columnName = "Product2Id")
 	@SerializedName("Product2Id")
 	@Expose
-	private String product2Id;
+	private String product2Id;*/
 	
 	@DatabaseField(columnName = "CustomerCode")
-	@SerializedName("CustomerCode")
+	@SerializedName("CustomerCode__c")
 	@Expose
 	private String customerCode;
 	
 	@DatabaseField(columnName = "productCode")
-	@SerializedName("ProductCode")
+	@SerializedName("ProductCode__c")
 	@Expose
 	private String productCode;
 	
 	@DatabaseField(columnName = "UnitPrice")
-	@SerializedName("UnitPrice")
+	@SerializedName("UnitPrice__c")
 	@Expose
 	private double unitPrice;
 	

@@ -17,8 +17,7 @@ import java.util.concurrent.TimeUnit;
 
 import static ke.co.blueconsulting.sianroses.util.Constants.SALESFORCE_API_BASE_URL;
 import static ke.co.blueconsulting.sianroses.util.Constants.SALESFORCE_AUTH_BASE_URL;
-import static ke.co.blueconsulting.sianroses.util.Constants.Units.CONNECT_TIME_OUT_MINUTES;
-import static ke.co.blueconsulting.sianroses.util.Constants.Units.READ_TIME_OUT_MINUTES;
+import static ke.co.blueconsulting.sianroses.util.Constants.Units.*;
 
 public class RestServiceBuilder {
 	
@@ -73,6 +72,7 @@ public class RestServiceBuilder {
 		return new OkHttpClient.Builder().addInterceptor(acceptHeader)
 				.addInterceptor(httpLoggingInterceptor)
 				.readTimeout(READ_TIME_OUT_MINUTES, TimeUnit.MINUTES)
+				.writeTimeout(WRITE_TIME_OUT_MINUTES, TimeUnit.MINUTES)
 				.connectTimeout(CONNECT_TIME_OUT_MINUTES, TimeUnit.MINUTES)
 				.retryOnConnectionFailure(true);
 	}

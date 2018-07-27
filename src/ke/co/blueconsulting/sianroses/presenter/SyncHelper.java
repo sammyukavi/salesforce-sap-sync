@@ -194,7 +194,7 @@ class SyncHelper {
 		
 		DataService.GetCallback<PushPriceList> callback = new DataService.GetCallback<PushPriceList>() {
 			@Override
-			public void onCompleted(PushPriceList priceLists) {
+			public void onCompleted(PushPriceList priceList) {
 				Console.logToJson(priceList);
 				try {
 					//sapDbService.insertRecords(PriceList.class, priceLists.getPriceList());
@@ -248,14 +248,9 @@ class SyncHelper {
 		};
 		
 		
-		//RestServiceBuilder.switchToSalesforceApiBaseUrl();
-		//FetchDataService fetchDataService = new FetchDataService();
-		//fetchDataService.getFromServer(getFromTheServerCallback);
-		try {
-			updateSalesforcePriceList();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		RestServiceBuilder.switchToSalesforceApiBaseUrl();
+		FetchDataService fetchDataService = new FetchDataService();
+		fetchDataService.getFromServer(getFromTheServerCallback);
 	}
 	
 }

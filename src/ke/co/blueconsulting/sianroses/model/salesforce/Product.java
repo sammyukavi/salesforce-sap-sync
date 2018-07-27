@@ -8,7 +8,7 @@ import com.j256.ormlite.table.DatabaseTable;
 import java.io.Serializable;
 
 /**
- * This model maps Products to Products2 in Salesforce Syncing for Products is
+ * This model maps Products to Products2 in Salesforce. Syncing for Products is
  * one way from the SAP server to Salesforce.
  */
 @DatabaseTable(tableName = "PRODUCTS")
