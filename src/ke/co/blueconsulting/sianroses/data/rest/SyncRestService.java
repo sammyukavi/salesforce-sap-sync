@@ -28,6 +28,8 @@ public interface SyncRestService {
 	Call<PushPriceList> postPriceList(@Header(AUTHORIZATION) String token, @Query(DATA_TYPE) String dataType, @Body PushPriceList result);
 	
 	@POST("SyncMSSQL")
-	Call<PushProduct> postProduct(@Header(AUTHORIZATION) String token, @Query(DATA_TYPE) String dataType, @Body PushProduct result);
+	Call<PushProduct> postProducts(@Header(AUTHORIZATION) String token, @Query(DATA_TYPE) String dataType, @Body PushProduct result);
+	
+	Call<Response> postProductChildren(@Header(AUTHORIZATION) String token, @Query(DATA_TYPE) String dataType, @Body Response result);
 	
 }

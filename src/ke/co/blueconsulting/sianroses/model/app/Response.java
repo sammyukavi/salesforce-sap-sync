@@ -33,7 +33,7 @@ public class Response implements Serializable {
 	@Expose
 	private ArrayList<Product> products = new ArrayList<>();
 	
-	@SerializedName("products_children")
+	@SerializedName(PRODUCTSCHILDREN)
 	@Expose
 	private ArrayList<ProductChild> productsChildren = new ArrayList<>();
 	
@@ -41,57 +41,32 @@ public class Response implements Serializable {
 	@Expose
 	private ArrayList<Warehouse> warehouses = new ArrayList<>();
 	
-	public ArrayList<Customer> getCustomers() {
-		return customers;
+	public Response(ArrayList<ProductChild> productsChildren) {
+		this.productsChildren.clear();
+		this.productsChildren.addAll(productsChildren);
 	}
 	
-	public void setCustomers(ArrayList<Customer> customers) {
-		this.customers.clear();
-		this.customers.addAll(customers);
+	public ArrayList<Customer> getCustomers() {
+		return customers;
 	}
 	
 	public ArrayList<CustomerContacts> getCustomerContacts() {
 		return customerContacts;
 	}
 	
-	public void setCustomerContacts(ArrayList<CustomerContacts> customerContacts) {
-		this.customerContacts.clear();
-		this.customerContacts.addAll(customerContacts);
-	}
 	
-	public ArrayList<PriceList> getPriceList() {
-		return priceList;
-	}
 	
-	public void setPriceList(ArrayList<PriceList> priceList) {
-		this.priceList.clear();
-		this.priceList.addAll(priceList);
-	}
 	
-	public ArrayList<Product> getProducts() {
-		return products;
-	}
 	
-	public void setProducts(ArrayList<Product> products) {
-		this.products.clear();
-		this.products.addAll(products);
-	}
 	
-	public ArrayList<Warehouse> getWarehouses() {
-		return warehouses;
-	}
 	
-	public void setWarehouses(ArrayList<Warehouse> warehouses) {
-		this.warehouses.clear();
-		this.warehouses.addAll(warehouses);
-	}
 	
-	public ArrayList<ProductChild> getProductsChildren() {
-		return productsChildren;
-	}
 	
-	public void setProductsChildren(ArrayList<ProductChild> productsChildren) {
-		this.productsChildren.clear();
-		this.productsChildren.addAll(productsChildren);
-	}
+	
+	
+	
+	
+	
+	
+	
 }

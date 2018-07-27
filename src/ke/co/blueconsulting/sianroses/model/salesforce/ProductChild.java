@@ -17,6 +17,7 @@ public class ProductChild implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@DatabaseField(generatedId = true, columnName = "AUTOID")
+	@SerializedName("ERP_ID__c")
 	private int autoId;
 	
 	@DatabaseField(columnName = "Breeder__c")
@@ -59,10 +60,10 @@ public class ProductChild implements Serializable {
 	@Expose
 	private double headSizeC;
 	
-	@DatabaseField(columnName = "Is_Active__c")
+	/*@DatabaseField(columnName = "Is_Active__c")
 	@SerializedName("Is_Active__c")
 	@Expose
-	private boolean isActiveC;
+	private boolean isActiveC;*/
 	
 	@DatabaseField(columnName = "Length__c")
 	@SerializedName("Length__c")

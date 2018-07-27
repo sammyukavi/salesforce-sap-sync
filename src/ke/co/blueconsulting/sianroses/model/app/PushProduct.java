@@ -21,7 +21,7 @@ public class PushProduct implements Serializable {
 		this.Product = Product;
 	}
 	
-	public ArrayList<Product> getProduct() {
+	public ArrayList<Product> getProducts() {
 		return Product;
 	}
 	

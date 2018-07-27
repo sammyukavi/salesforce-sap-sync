@@ -21,9 +21,9 @@ public class Product implements Serializable {
 	@Expose
 	private int autoId;
 	
-	/*@SerializedName("Id")
+	@SerializedName("Id")
 	@Expose
-	private int Id;*/
+	private String Id;
 	
 	@DatabaseField(columnName = "Breeder__c")
 	@SerializedName("Breeder__c")

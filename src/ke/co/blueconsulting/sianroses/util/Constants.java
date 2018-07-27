@@ -34,6 +34,7 @@ public class Constants {
 		public static final String CONTACTS = "contacts";
 		public static final String PRICElIST = "priceList";
 		public static final String PRODUCTS = "products";
+		public static final String PRODUCTSCHILDREN = "productsChildren";
 	}
 	
 	public static class BundleKeys {
