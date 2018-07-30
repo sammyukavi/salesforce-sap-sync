@@ -5,6 +5,7 @@ public class Constants {
 	public static final String APP_DIR_NAME = ".sianroses";
 	public static final String DATABASE_SERVER_CONFIGURATION_TAB = "databaseServerConfiguration";
 	public static final String SALESFORCE_CONFIGURATION_TAB = "salesforceConfiguration";
+	public static final String LOG_VIEW_TAB = "logViewTab";
 	public static final String SQLITE_DATABASE_NAME = "production.db";
 	public static final String SALESFORCE_API_BASE_URL = "https://sianroses--Developer.cs89.my.salesforce.com/services/apexrest/";//With a forwardSlash. Very important!!!
 	public static final String SALESFORCE_AUTH_BASE_URL = "https://test.salesforce.com/";//With a forwardSlash. Very important!!!
@@ -43,6 +44,7 @@ public class Constants {
 		
 		public static final String TAB_DATABASE_SERVER_CONFIG = "tab.databaseServerConfiguration";
 		public static final String TAB_SALESFORCE_CONFIG = "tab.salesforceConfiguration";
+		public static final String TAB_APP_LOGVIEW = "tab.appLogView";
 		public static final String LABEL_APP_NAME = "labels.appName";
 		public static final String LABEL_SERVER_ADDRESS = "labels.serverAddress";
 		public static final String LABEL_SERVER_PORT = "labels.serverPort";

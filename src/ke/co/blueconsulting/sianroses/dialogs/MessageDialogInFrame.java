@@ -6,20 +6,17 @@ import javax.swing.text.Document;
 import javax.swing.text.SimpleAttributeSet;
 import java.awt.*;
 
-/**
- * @author sukavi
- */
 public class MessageDialogInFrame {
 	
 	public static void showMessageDialog(JFrame frame, String message, String title, int ERROR_MESSAGE) {
-		JTextPane jtp = new JTextPane();
-		jtp.setBackground(frame.getBackground());
-		Document doc = jtp.getDocument();
+		JTextPane jTextPane = new JTextPane();
+		jTextPane.setBackground(frame.getBackground());
+		Document doc = jTextPane.getDocument();
 		try {
 			doc.insertString(doc.getLength(), message, new SimpleAttributeSet());
-			jtp.setSize(new Dimension(480, 10));
-			jtp.setPreferredSize(new Dimension(480, jtp.getPreferredSize().height));
-			JOptionPane.showMessageDialog(frame, jtp, title, ERROR_MESSAGE);
+			jTextPane.setSize(new Dimension(480, 10));
+			jTextPane.setPreferredSize(new Dimension(480, jTextPane.getPreferredSize().height));
+			JOptionPane.showMessageDialog(frame, jTextPane, title, ERROR_MESSAGE);
 		} catch (BadLocationException ex) {
 			//Logger.getLogger(MessageDialogInFrame.class.getName()).log(Level.SEVERE, null, ex);
 		}
