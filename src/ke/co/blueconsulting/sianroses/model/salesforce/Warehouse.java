@@ -9,8 +9,8 @@ import java.io.Serializable;
 //One way push to salesforce
 
 /**
- * This model maps SAP Warehouse to Salesforce Warehouse Syncing for warehouse
- * is a one way push from SAP to Salesforce.
+ * This model maps SAP Warehouse to Salesforce Warehouse.
+ * Syncing for warehouses is a one way push from SAP to Salesforce.
  */
 @DatabaseTable(tableName = "WAREHOUSE")
 public class Warehouse implements Serializable {

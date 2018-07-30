@@ -26,15 +26,17 @@ public class Constants {
 		public static final String AUTHORIZATION = "Authorization";
 		public static final String GRANT_TYPE_PASSWORD = "password";
 		public static final String DATA_TYPE = "dataType";
+		public static final String BEARER = "Bearer ";
 	}
 	
 	public static class DataTypeKeys {
 		
 		public static final String ACCOUNTS = "accounts";
 		public static final String CONTACTS = "contacts";
-		public static final String PRICElIST = "priceList";
+		public static final String PRICE_LIST = "priceList";
 		public static final String PRODUCTS = "products";
-		public static final String PRODUCTSCHILDREN = "productsChildren";
+		public static final String PRODUCTS_CHILDREN = "productsChildren";
+		public static final String WAREHOUSES = "warehouses";
 	}
 	
 	public static class BundleKeys {

@@ -27,7 +27,7 @@ public class Response implements Serializable {
 	@Expose
 	private ArrayList<CustomerContacts> customerContacts = new ArrayList<>();
 	
-	@SerializedName(PRICElIST)
+	@SerializedName(PRICE_LIST)
 	@Expose
 	private ArrayList<PriceList> priceList = new ArrayList<>();
 	
@@ -35,11 +35,11 @@ public class Response implements Serializable {
 	@Expose
 	private ArrayList<Product> products = new ArrayList<>();
 	
-	@SerializedName(PRODUCTSCHILDREN)
+	@SerializedName(PRODUCTS_CHILDREN)
 	@Expose
 	private ArrayList<ProductChild> productsChildren = new ArrayList<>();
 	
-	@SerializedName("warehouses")
+	@SerializedName(WAREHOUSES)
 	@Expose
 	private ArrayList<Warehouse> warehouses = new ArrayList<>();
 	
@@ -73,6 +73,11 @@ public class Response implements Serializable {
 	
 	public static Response setProducts(ArrayList<Product> products) {
 		instance.products = products;
+		return instance;
+	}
+	
+	public static Response setWarehouses(ArrayList<Warehouse> warehouses) {
+		instance.warehouses = warehouses;
 		return instance;
 	}
 	

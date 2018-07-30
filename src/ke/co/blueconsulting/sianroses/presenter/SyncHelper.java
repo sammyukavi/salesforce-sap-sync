@@ -5,8 +5,11 @@ import ke.co.blueconsulting.sianroses.data.DataService;
 import ke.co.blueconsulting.sianroses.data.RestServiceBuilder;
 import ke.co.blueconsulting.sianroses.data.db.AuthCredentialsDbService;
 import ke.co.blueconsulting.sianroses.data.db.SAPDbService;
-import ke.co.blueconsulting.sianroses.data.impl.*;
-import ke.co.blueconsulting.sianroses.model.app.*;
+import ke.co.blueconsulting.sianroses.data.impl.AuthDataService;
+import ke.co.blueconsulting.sianroses.data.impl.SyncDataService;
+import ke.co.blueconsulting.sianroses.model.app.AppAuthCredentials;
+import ke.co.blueconsulting.sianroses.model.app.Response;
+import ke.co.blueconsulting.sianroses.model.app.SalesforceAuthCredentials;
 import ke.co.blueconsulting.sianroses.model.salesforce.*;
 import ke.co.blueconsulting.sianroses.util.AppLogger;
 import ke.co.blueconsulting.sianroses.util.Console;
@@ -23,6 +26,7 @@ class SyncHelper {
 	SyncContract.View syncDashboard;
 	AuthCredentialsDbService authCredentialsDbService;
 	SAPDbService sapDbService;
+	private SyncDataService syncDataService;
 	
 	SyncHelper() throws SQLException, ClassNotFoundException {
 		this.authCredentialsDbService = new AuthCredentialsDbService();
@@ -108,8 +112,6 @@ class SyncHelper {
 		//Add the unsynced customers to the salesforce customers
 		customers.addAll(unsyncedContacts);
 		
-		SyncCustomersDataService syncCustomersDataService = new SyncCustomersDataService();
-		
 		DataService.GetCallback<Response> callback = new DataService.GetCallback<Response>() {
 			@Override
 			public void onCompleted(Response response) {
@@ -132,7 +134,7 @@ class SyncHelper {
 			}
 		};
 		
-		syncCustomersDataService.pushCustomersToServer(Response.setCustomers(customers), callback);
+		syncDataService.pushCustomersToSalsesforce(Response.setCustomers(customers), callback);
 		
 	}
 	
@@ -156,9 +158,6 @@ class SyncHelper {
 		//Add the contacts to the updated contacts
 		customerContacts.addAll(unsyncedContacts);
 		
-		SyncContactsDataService contactsDataService = new SyncContactsDataService();
-		
-		
 		DataService.GetCallback<Response> callback = new DataService.GetCallback<Response>() {
 			@Override
 			public void onCompleted(Response response) {
@@ -180,15 +179,13 @@ class SyncHelper {
 			
 			}
 		};
-		contactsDataService.pushContactsToServer(Response.setCustomerContacts(customerContacts), callback);
+		syncDataService.pushCustomersContactsToSalesforce(Response.setCustomerContacts(customerContacts), callback);
 	}
 	
 	private void updateSalesforcePriceList() throws SQLException {
 		
 		//get priceLists that exist in the SAP but not in Salesforce
 		ArrayList<PriceList> priceList = sapDbService.getRecordsWithACheckedField(PriceList.class);
-		
-		SyncPriceListDataService syncPriceListDataService = new SyncPriceListDataService();
 		
 		DataService.GetCallback<Response> callback = new DataService.GetCallback<Response>() {
 			@Override
@@ -211,7 +208,7 @@ class SyncHelper {
 			}
 		};
 		
-		//syncPriceListDataService.pushPriceListToServer(Response.setPriceList(priceList), callback);
+		syncDataService.pushPriceListToSalesforce(Response.setPriceList(priceList), callback);
 		
 	}
 	
@@ -219,8 +216,6 @@ class SyncHelper {
 		
 		//get products that exist in the SAP but not in Salesforce
 		ArrayList<Product> products = sapDbService.getRecordsWithACheckedField(Product.class);
-		
-		SyncProductDataService syncProductDataService = new SyncProductDataService();
 		
 		DataService.GetCallback<Response> callback = new DataService.GetCallback<Response>() {
 			@Override
@@ -244,7 +239,7 @@ class SyncHelper {
 			}
 		};
 		
-		syncProductDataService.pushProductToServer(Response.setProducts(products), callback);
+		syncDataService.pushProductsToSalesforce(Response.setProducts(products), callback);
 		
 	}
 	
@@ -252,8 +247,6 @@ class SyncHelper {
 		
 		//get productsChildren that exist in the SAP but not in Salesforce
 		ArrayList<ProductChild> productsChildren = sapDbService.getRecordsWithACheckedField(ProductChild.class);
-		
-		SyncProductChildrenDataService syncProductChildDataService = new SyncProductChildrenDataService();
 		
 		DataService.GetCallback<Response> callback = new DataService.GetCallback<Response>() {
 			@Override
@@ -277,16 +270,14 @@ class SyncHelper {
 			}
 		};
 		
-		syncProductChildDataService.pushProductsChildrenToServer(Response.setProductsChildren(productsChildren), callback);
+		syncDataService.pushProductsChildrenToSalesforce(Response.setProductsChildren(productsChildren), callback);
 		
 	}
 	
 	
-	
-	
 	void fetchFromTheServer() {
 		
-		DataService.GetCallback<Response> getFromTheServerCallback = new DataService.GetCallback<Response>() {
+		DataService.GetCallback<Response> getFromSalesforceCallback = new DataService.GetCallback<Response>() {
 			@Override
 			public void onCompleted(Response receivedRecords) {
 				try {
@@ -313,10 +304,9 @@ class SyncHelper {
 			}
 		};
 		
-		
 		RestServiceBuilder.switchToSalesforceApiBaseUrl();
-		//FetchDataService fetchDataService = new FetchDataService();
-		//fetchDataService.getFromServer(getFromTheServerCallback);
+		this.syncDataService = new SyncDataService();
+		syncDataService.getFromSalesforce(getFromSalesforceCallback);
 		
 		try {
 			updateSalesforceProductsChildren();

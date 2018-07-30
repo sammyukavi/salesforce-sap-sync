@@ -41,15 +41,6 @@ public class SAPDbService extends BaseDbService {
 		return status;
 	}
 	
-	public void attempt_save() {
-        /*try {
-			Dao<ArCredit, Integer> dao = createDao(ArCredit.class);
-			dao.create(new ArCredit());
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}*/
-	}
-	
 	public <S> ArrayList<S> insertRecords(Class<S> sClass, ArrayList<S> records) throws SQLException {
 		ArrayList<S> insertedRecords = new ArrayList<>();
 		Dao<S, Integer> dao = createDao(sClass);

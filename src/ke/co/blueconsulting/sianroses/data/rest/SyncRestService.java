@@ -1,6 +1,6 @@
 package ke.co.blueconsulting.sianroses.data.rest;
 
-import ke.co.blueconsulting.sianroses.model.app.*;
+import ke.co.blueconsulting.sianroses.model.app.Response;
 import retrofit2.Call;
 import retrofit2.http.*;
 
@@ -16,12 +16,9 @@ public interface SyncRestService {
 	Call<Response> fetch(@Header(AUTHORIZATION) String token);
 	
 	@POST("SyncMSSQL")
-	Call<Response> post(@Header(AUTHORIZATION) String token, @Body Response response);
+	Call<Response> post(@Header(AUTHORIZATION) String token, @Query(DATA_TYPE) String dataType, @Body Response response);
 	
-	@POST("SyncMSSQL")
-	Call<Response> postCustomers(@Header(AUTHORIZATION) String token, @Query(DATA_TYPE) String dataType, @Body Response response);
-	
-	@POST("SyncMSSQL")
+	/*@POST("SyncMSSQL")
 	Call<Response> postContacts(@Header(AUTHORIZATION) String token, @Query(DATA_TYPE) String dataType, @Body Response response);
 	
 	@POST("SyncMSSQL")
@@ -32,5 +29,9 @@ public interface SyncRestService {
 	
 	@POST("SyncMSSQL")
 	Call<Response> postProductChildren(@Header(AUTHORIZATION) String token, @Query(DATA_TYPE) String dataType, @Body Response response);
+	
+	@POST("SyncMSSQL")
+	Call<Response> postWarehouses(@Header(AUTHORIZATION) String token, @Query(DATA_TYPE) String dataType, @Body Response response);
+	*/
 	
 }
