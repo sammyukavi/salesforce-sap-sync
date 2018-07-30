@@ -12,7 +12,6 @@ import ke.co.blueconsulting.sianroses.model.app.Response;
 import ke.co.blueconsulting.sianroses.model.app.SalesforceAuthCredentials;
 import ke.co.blueconsulting.sianroses.model.salesforce.*;
 import ke.co.blueconsulting.sianroses.util.AppLogger;
-import ke.co.blueconsulting.sianroses.util.Console;
 import ke.co.blueconsulting.sianroses.util.StringUtils;
 
 import java.sql.SQLException;
@@ -91,7 +90,7 @@ class SyncHelper {
 		try {
 			authCredentialsDbService.save(appAuthCredentials);
 		} catch (SQLException e) {
-			AppLogger.logWarning("Failed to store salesforce Credentials. " + e.getMessage());
+			AppLogger.logError("Failed to store salesforce Credentials. " + e.getLocalizedMessage());
 		}
 	}
 	
@@ -119,13 +118,13 @@ class SyncHelper {
 					sapDbService.insertRecords(Customer.class, response.getCustomers());
 					AppLogger.logInfo("Sync of Customer Object Successful");
 				} catch (SQLException e) {
-					AppLogger.logWarning("Failed to insert pushed response from salesforce for updating. " + e.getMessage());
+					AppLogger.logError("Failed to insert pushed response from salesforce for updating. " + e.getLocalizedMessage());
 				}
 			}
 			
 			@Override
 			public void onError(Throwable t) {
-				AppLogger.logWarning("Failed to push customers to salesforce. " + t.getMessage());
+				AppLogger.logError("Failed to push customers to salesforce. " + t.getLocalizedMessage());
 			}
 			
 			@Override
@@ -165,13 +164,13 @@ class SyncHelper {
 					sapDbService.insertRecords(CustomerContacts.class, response.getCustomerContacts());
 					AppLogger.logInfo("Sync of CustomerContacts Object Successful");
 				} catch (SQLException e) {
-					AppLogger.logWarning("Failed to insert pushed customers' contacts from salesforce for updating. " + e.getMessage());
+					AppLogger.logError("Failed to insert pushed customers' contacts from salesforce for updating. " + e.getLocalizedMessage());
 				}
 			}
 			
 			@Override
 			public void onError(Throwable t) {
-				AppLogger.logWarning("Failed to push customers' contacts to salesforce. " + t.getMessage());
+				AppLogger.logError("Failed to push customers' contacts to salesforce. " + t.getLocalizedMessage());
 			}
 			
 			@Override
@@ -193,13 +192,13 @@ class SyncHelper {
 				try {
 					AppLogger.logInfo("Sync of PriceList Object Successful");
 				} catch (Exception e) {
-					AppLogger.logWarning("Failed to insert pushed priceLists from salesforce for updating. " + e.getMessage());
+					AppLogger.logError("Failed to insert pushed priceLists from salesforce for updating. " + e.getLocalizedMessage());
 				}
 			}
 			
 			@Override
 			public void onError(Throwable t) {
-				AppLogger.logWarning("Failed to push priceLists to salesforce. " + t.getMessage());
+				AppLogger.logError("Failed to push priceLists to salesforce. " + t.getLocalizedMessage());
 			}
 			
 			@Override
@@ -220,17 +219,16 @@ class SyncHelper {
 		DataService.GetCallback<Response> callback = new DataService.GetCallback<Response>() {
 			@Override
 			public void onCompleted(Response products) {
-				Console.logToJson(products);
 				try {
 					AppLogger.logInfo("Sync of Product Object Successful");
 				} catch (Exception e) {
-					AppLogger.logWarning("Failed to insert pushed products from salesforce for updating. " + e.getMessage());
+					AppLogger.logError("Failed to insert pushed products from salesforce for updating. " + e.getLocalizedMessage());
 				}
 			}
 			
 			@Override
 			public void onError(Throwable t) {
-				AppLogger.logWarning("Failed to push products to salesforce. " + t.getMessage());
+				AppLogger.logError("Failed to push products to salesforce. " + t.getLocalizedMessage());
 			}
 			
 			@Override
@@ -254,13 +252,13 @@ class SyncHelper {
 				try {
 					AppLogger.logInfo("Sync of ProductChild Object Successful");
 				} catch (Exception e) {
-					AppLogger.logWarning("Failed to insert pushed productsChildren from salesforce for updating. " + e.getMessage());
+					AppLogger.logError("Failed to insert pushed productsChildren from salesforce for updating. " + e.getLocalizedMessage());
 				}
 			}
 			
 			@Override
 			public void onError(Throwable t) {
-				AppLogger.logWarning("Failed to push productsChildren to salesforce. " + t.getMessage());
+				AppLogger.logError("Failed to push productsChildren to salesforce. " + t.getLocalizedMessage());
 			}
 			
 			@Override
@@ -281,17 +279,16 @@ class SyncHelper {
 		DataService.GetCallback<Response> callback = new DataService.GetCallback<Response>() {
 			@Override
 			public void onCompleted(Response response) {
-				Console.logToJson(response);
 				try {
 					AppLogger.logInfo("Sync of Warehouse Object Successful");
 				} catch (Exception e) {
-					AppLogger.logWarning("Failed to insert pushed warehouses from salesforce for updating. " + e.getMessage());
+					AppLogger.logError("Failed to insert pushed warehouses from salesforce for updating. " + e.getLocalizedMessage());
 				}
 			}
 			
 			@Override
 			public void onError(Throwable t) {
-				AppLogger.logWarning("Failed to push warehouses to salesforce. " + t.getMessage());
+				AppLogger.logError("Failed to push warehouses to salesforce. " + t.getLocalizedMessage());
 			}
 			
 			@Override
@@ -319,14 +316,14 @@ class SyncHelper {
 					updateSalesforceWarehouses();
 				} catch (Exception e) {
 					e.printStackTrace();
-					AppLogger.logWarning("failed to insert received records into to MSSQL server. " + e.getMessage());
+					AppLogger.logError("failed to insert received records into to MSSQL server. " + e.getLocalizedMessage());
 				}
 			}
 			
 			@Override
 			public void onError(Throwable t) {
-				t.printStackTrace();
-				AppLogger.logWarning("failed to fetch from the server. " + t.getMessage());
+				//t.printStackTrace();
+				AppLogger.logError("failed to fetch from the server. " + t.getLocalizedMessage());
 			}
 			
 			@Override

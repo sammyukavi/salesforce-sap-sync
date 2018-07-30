@@ -38,9 +38,6 @@ public class ErrorsDeserializer implements JsonDeserializer<ErrorsDeserializer.E
 			return errors;
 		}
 		
-		public void setErrors(List<Error> errors) {
-			this.errors = errors;
-		}
 	}
 	
 }
