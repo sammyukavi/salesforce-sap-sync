@@ -33,7 +33,7 @@ public class ArInvoiceCh implements Serializable {
 	private String flowerCodeC;
 	
 	@DatabaseField(columnName = "Name")
-	@SerializedName("Name")
+	@SerializedName("Flower_Name__c")
 	@Expose
 	private String name;
 	
@@ -48,7 +48,7 @@ public class ArInvoiceCh implements Serializable {
 	private String warehouseC;
 	
 	@DatabaseField(columnName = "UnitPrice")
-	@SerializedName("UnitPrice")
+	@SerializedName("List_Price__c")
 	@Expose
 	private String unitPrice;
 	

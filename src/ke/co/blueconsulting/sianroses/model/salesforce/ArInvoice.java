@@ -7,6 +7,11 @@ import com.j256.ormlite.table.DatabaseTable;
 
 import java.io.Serializable;
 
+/**
+ * 
+ * @author sukavi
+ * This model maps Salesforce Packing List to SAP ARINVOICE Table
+ */
 @DatabaseTable(tableName = "ARINVOICE")
 public class ArInvoice implements Serializable {
 	
@@ -23,12 +28,12 @@ public class ArInvoice implements Serializable {
 	private String salesforceId;
 	
 	@DatabaseField(columnName = "AccountID")
-	@SerializedName("AccountID")
+	@SerializedName("Customer_Name__c")
 	@Expose
 	private String AccountID;
 	
 	@DatabaseField(columnName = "Posting_Date__c")
-	@SerializedName("Posting_Date__c")
+	@SerializedName("CreatedDate")
 	@Expose
 	private String postingDateC;
 	
@@ -42,10 +47,10 @@ public class ArInvoice implements Serializable {
 	@Expose
 	private String pONumberC;
 	
-	@DatabaseField(columnName = "Farm_Order_Number__c")
-	@SerializedName("Farm_Order_Number__c")
+	/*@DatabaseField(columnName = "Farm_Order_Number__c")
+	@SerializedName("Consignment_No__c")
 	@Expose
-	private String farmOrderNumberC;
+	private String farmOrderNumberC;*/
 	
 	@DatabaseField(columnName = "Invoice_Number__c")
 	@SerializedName("Invoice_Number__c")
