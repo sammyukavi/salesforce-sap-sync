@@ -17,6 +17,8 @@ public class Response implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
+	private static Response instance;
+	
 	@SerializedName(ACCOUNTS)
 	@Expose
 	private ArrayList<Customer> customers = new ArrayList<>();
@@ -41,9 +43,37 @@ public class Response implements Serializable {
 	@Expose
 	private ArrayList<Warehouse> warehouses = new ArrayList<>();
 	
-	public Response(ArrayList<ProductChild> productsChildren) {
-		this.productsChildren.clear();
-		this.productsChildren.addAll(productsChildren);
+	static {
+		instance = new Response();
+	}
+	
+	public Response() {
+	
+	}
+	
+	public static Response setPriceList(ArrayList<PriceList> priceList) {
+		instance.priceList = priceList;
+		return instance;
+	}
+	
+	public static Response setProductsChildren(ArrayList<ProductChild> productsChildren) {
+		instance.productsChildren = productsChildren;
+		return instance;
+	}
+	
+	public static Response setCustomers(ArrayList<Customer> customers) {
+		instance.customers = customers;
+		return instance;
+	}
+	
+	public static Response setCustomerContacts(ArrayList<CustomerContacts> customerContacts) {
+		instance.customerContacts = customerContacts;
+		return instance;
+	}
+	
+	public static Response setProducts(ArrayList<Product> products) {
+		instance.products = products;
+		return instance;
 	}
 	
 	public ArrayList<Customer> getCustomers() {
@@ -53,19 +83,6 @@ public class Response implements Serializable {
 	public ArrayList<CustomerContacts> getCustomerContacts() {
 		return customerContacts;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	
 	

@@ -16,21 +16,21 @@ public interface SyncRestService {
 	Call<Response> fetch(@Header(AUTHORIZATION) String token);
 	
 	@POST("SyncMSSQL")
-	Call<Response> post(@Header(AUTHORIZATION) String token, @Body Response result);
+	Call<Response> post(@Header(AUTHORIZATION) String token, @Body Response response);
 	
 	@POST("SyncMSSQL")
-	Call<PushCustomer> postCustomers(@Header(AUTHORIZATION) String token, @Query(DATA_TYPE) String dataType, @Body PushCustomer result);
+	Call<Response> postCustomers(@Header(AUTHORIZATION) String token, @Query(DATA_TYPE) String dataType, @Body Response response);
 	
 	@POST("SyncMSSQL")
-	Call<PushCustomerContacts> postContacts(@Header(AUTHORIZATION) String token, @Query(DATA_TYPE) String dataType, @Body PushCustomerContacts result);
+	Call<Response> postContacts(@Header(AUTHORIZATION) String token, @Query(DATA_TYPE) String dataType, @Body Response response);
 	
 	@POST("SyncMSSQL")
-	Call<PushPriceList> postPriceList(@Header(AUTHORIZATION) String token, @Query(DATA_TYPE) String dataType, @Body PushPriceList result);
+	Call<Response> postPriceList(@Header(AUTHORIZATION) String token, @Query(DATA_TYPE) String dataType, @Body Response response);
 	
 	@POST("SyncMSSQL")
-	Call<PushProduct> postProducts(@Header(AUTHORIZATION) String token, @Query(DATA_TYPE) String dataType, @Body PushProduct result);
+	Call<Response> postProducts(@Header(AUTHORIZATION) String token, @Query(DATA_TYPE) String dataType, @Body Response response);
 	
 	@POST("SyncMSSQL")
-	Call<Response> postProductChildren(@Header(AUTHORIZATION) String token, @Query(DATA_TYPE) String dataType, @Body Response result);
+	Call<Response> postProductChildren(@Header(AUTHORIZATION) String token, @Query(DATA_TYPE) String dataType, @Body Response response);
 	
 }

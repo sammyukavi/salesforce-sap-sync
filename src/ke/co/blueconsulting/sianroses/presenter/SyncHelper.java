@@ -110,14 +110,14 @@ class SyncHelper {
 		
 		SyncCustomersDataService syncCustomersDataService = new SyncCustomersDataService();
 		
-		DataService.GetCallback<PushCustomer> callback = new DataService.GetCallback<PushCustomer>() {
+		DataService.GetCallback<Response> callback = new DataService.GetCallback<Response>() {
 			@Override
-			public void onCompleted(PushCustomer customers) {
+			public void onCompleted(Response response) {
 				try {
-					sapDbService.insertRecords(Customer.class, customers.getAccounts());
+					sapDbService.insertRecords(Customer.class, response.getCustomers());
 					AppLogger.logInfo("Sync of Customer Object Successful");
 				} catch (SQLException e) {
-					AppLogger.logWarning("Failed to insert pushed customers from salesforce for updating. " + e.getMessage());
+					AppLogger.logWarning("Failed to insert pushed response from salesforce for updating. " + e.getMessage());
 				}
 			}
 			
@@ -132,7 +132,7 @@ class SyncHelper {
 			}
 		};
 		
-		syncCustomersDataService.pushCustomersToServer(new PushCustomer(customers), callback);
+		syncCustomersDataService.pushCustomersToServer(Response.setCustomers(customers), callback);
 		
 	}
 	
@@ -159,11 +159,11 @@ class SyncHelper {
 		SyncContactsDataService contactsDataService = new SyncContactsDataService();
 		
 		
-		DataService.GetCallback<PushCustomerContacts> callback = new DataService.GetCallback<PushCustomerContacts>() {
+		DataService.GetCallback<Response> callback = new DataService.GetCallback<Response>() {
 			@Override
-			public void onCompleted(PushCustomerContacts customerContacts) {
+			public void onCompleted(Response response) {
 				try {
-					sapDbService.insertRecords(CustomerContacts.class, customerContacts.getContacts());
+					sapDbService.insertRecords(CustomerContacts.class, response.getCustomerContacts());
 					AppLogger.logInfo("Sync of CustomerContacts Object Successful");
 				} catch (SQLException e) {
 					AppLogger.logWarning("Failed to insert pushed customers' contacts from salesforce for updating. " + e.getMessage());
@@ -180,7 +180,7 @@ class SyncHelper {
 			
 			}
 		};
-		contactsDataService.pushContactsToServer(new PushCustomerContacts(customerContacts), callback);
+		contactsDataService.pushContactsToServer(Response.setCustomerContacts(customerContacts), callback);
 	}
 	
 	private void updateSalesforcePriceList() throws SQLException {
@@ -190,9 +190,9 @@ class SyncHelper {
 		
 		SyncPriceListDataService syncPriceListDataService = new SyncPriceListDataService();
 		
-		DataService.GetCallback<PushPriceList> callback = new DataService.GetCallback<PushPriceList>() {
+		DataService.GetCallback<Response> callback = new DataService.GetCallback<Response>() {
 			@Override
-			public void onCompleted(PushPriceList priceList) {
+			public void onCompleted(Response priceList) {
 				try {
 					AppLogger.logInfo("Sync of PriceList Object Successful");
 				} catch (Exception e) {
@@ -211,7 +211,7 @@ class SyncHelper {
 			}
 		};
 		
-		syncPriceListDataService.pushPriceListToServer(new PushPriceList(priceList), callback);
+		//syncPriceListDataService.pushPriceListToServer(Response.setPriceList(priceList), callback);
 		
 	}
 	
@@ -222,9 +222,9 @@ class SyncHelper {
 		
 		SyncProductDataService syncProductDataService = new SyncProductDataService();
 		
-		DataService.GetCallback<PushProduct> callback = new DataService.GetCallback<PushProduct>() {
+		DataService.GetCallback<Response> callback = new DataService.GetCallback<Response>() {
 			@Override
-			public void onCompleted(PushProduct products) {
+			public void onCompleted(Response products) {
 				Console.logToJson(products);
 				try {
 					AppLogger.logInfo("Sync of Product Object Successful");
@@ -244,7 +244,7 @@ class SyncHelper {
 			}
 		};
 		
-		syncProductDataService.pushProductToServer(new PushProduct(products), callback);
+		syncProductDataService.pushProductToServer(Response.setProducts(products), callback);
 		
 	}
 	
@@ -277,7 +277,7 @@ class SyncHelper {
 			}
 		};
 		
-		syncProductChildDataService.pushProductsChildrenToServer(new Response(productsChildren), callback);
+		syncProductChildDataService.pushProductsChildrenToServer(Response.setProductsChildren(productsChildren), callback);
 		
 	}
 	

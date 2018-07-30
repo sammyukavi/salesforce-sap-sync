@@ -21,6 +21,10 @@ public class ProductChild implements Serializable {
 	@Expose
 	private int autoId;
 	
+	@SerializedName("Id")
+	@Expose
+	private String Id;
+	
 	@DatabaseField(columnName = "Breeder__c")
 	@SerializedName("Breeder__c")
 	@Expose
