@@ -21,9 +21,10 @@ public class Product implements Serializable {
 	@Expose
 	private int autoId;
 	
+	@DatabaseField(columnName = "SalesforceId")
 	@SerializedName("Id")
 	@Expose
-	private String Id;
+	private String salesforceId;
 	
 	@DatabaseField(columnName = "Breeder__c")
 	@SerializedName("Breeder__c")

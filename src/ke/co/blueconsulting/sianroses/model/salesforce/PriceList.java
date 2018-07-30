@@ -23,9 +23,10 @@ public class PriceList implements Serializable {
 	@Expose
 	private int autoId;
 	
+	@DatabaseField(columnName = "SalesforceId")
 	@SerializedName("Id")
 	@Expose
-	private String id;
+	private String salesforceId;
 	
 	/*@DatabaseField(columnName = "Pricebook2Id")
 	@SerializedName("Pricebook2Id")

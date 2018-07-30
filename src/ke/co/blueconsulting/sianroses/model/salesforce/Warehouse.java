@@ -22,8 +22,10 @@ public class Warehouse implements Serializable {
 	@Expose
 	private int autoId;
 	
+	@DatabaseField(columnName = "SalesforceId")
 	@SerializedName("Id")
-	private String id;
+	@Expose
+	private String salesforceId;
 	
 	@DatabaseField(columnName = "Farm__c")
 	//@SerializedName("Farm__c")
