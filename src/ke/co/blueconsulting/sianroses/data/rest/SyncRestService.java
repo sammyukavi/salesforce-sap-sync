@@ -18,20 +18,4 @@ public interface SyncRestService {
 	@POST("SyncMSSQL")
 	Call<Response> post(@Header(AUTHORIZATION) String token, @Query(DATA_TYPE) String dataType, @Body Response response);
 	
-	/*@POST("SyncMSSQL")
-	Call<Response> postContacts(@Header(AUTHORIZATION) String token, @Query(DATA_TYPE) String dataType, @Body Response response);
-	
-	@POST("SyncMSSQL")
-	Call<Response> postPriceList(@Header(AUTHORIZATION) String token, @Query(DATA_TYPE) String dataType, @Body Response response);
-	
-	@POST("SyncMSSQL")
-	Call<Response> postProducts(@Header(AUTHORIZATION) String token, @Query(DATA_TYPE) String dataType, @Body Response response);
-	
-	@POST("SyncMSSQL")
-	Call<Response> postProductChildren(@Header(AUTHORIZATION) String token, @Query(DATA_TYPE) String dataType, @Body Response response);
-	
-	@POST("SyncMSSQL")
-	Call<Response> postWarehouses(@Header(AUTHORIZATION) String token, @Query(DATA_TYPE) String dataType, @Body Response response);
-	*/
-	
 }

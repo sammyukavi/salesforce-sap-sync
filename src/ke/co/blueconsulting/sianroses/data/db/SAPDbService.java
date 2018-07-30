@@ -64,13 +64,13 @@ public class SAPDbService extends BaseDbService {
 		return (ArrayList<S>) dao.query(where.or(where.isNull(columnName), where.eq(columnName, "")).prepare());
 	}
 	
-	public <S> ArrayList<S> getRecordsWithACheckedField(Class<S> sClass) throws SQLException {
+	public <S> ArrayList<S> getRecordsWithAFieldCheckedTrue(Class<S> sClass) throws SQLException {
 		String columnName = "Pull_from_SAP__c";
-		return getRecordsWithACheckedField(sClass, columnName);
+		return getRecordsWithAFieldCheckedTrue(sClass, columnName);
 	}
 	
 	@SuppressWarnings("unchecked")
-	public <S> ArrayList<S> getRecordsWithACheckedField(Class<S> sClass, String columnName) throws SQLException {
+	public <S> ArrayList<S> getRecordsWithAFieldCheckedTrue(Class<S> sClass, String columnName) throws SQLException {
 		Dao<S, Integer> dao = createDao(sClass);
 		QueryBuilder<S, Integer> queryBuilder = dao.queryBuilder();
 		Where<S, Integer> where = queryBuilder.where();

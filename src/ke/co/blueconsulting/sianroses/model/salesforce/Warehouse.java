@@ -18,7 +18,7 @@ public class Warehouse implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@DatabaseField(generatedId = true, columnName = "AUTOID")
-	@SerializedName("AUTOID")
+	@SerializedName("ERP_ID__c")
 	@Expose
 	private int autoId;
 	
@@ -26,7 +26,8 @@ public class Warehouse implements Serializable {
 	private String id;
 	
 	@DatabaseField(columnName = "Farm__c")
-	@SerializedName("Farm__c")
+	//@SerializedName("Farm__c")
+	@SerializedName("Farm_SAP__c")
 	@Expose
 	private String farmC;
 	

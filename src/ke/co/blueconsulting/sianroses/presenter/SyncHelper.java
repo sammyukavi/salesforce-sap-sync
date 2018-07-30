@@ -185,7 +185,7 @@ class SyncHelper {
 	private void updateSalesforcePriceList() throws SQLException {
 		
 		//get priceLists that exist in the SAP but not in Salesforce
-		ArrayList<PriceList> priceList = sapDbService.getRecordsWithACheckedField(PriceList.class);
+		ArrayList<PriceList> priceList = sapDbService.getRecordsWithAFieldCheckedTrue(PriceList.class);
 		
 		DataService.GetCallback<Response> callback = new DataService.GetCallback<Response>() {
 			@Override
@@ -215,7 +215,7 @@ class SyncHelper {
 	private void updateSalesforceProducts() throws SQLException {
 		
 		//get products that exist in the SAP but not in Salesforce
-		ArrayList<Product> products = sapDbService.getRecordsWithACheckedField(Product.class);
+		ArrayList<Product> products = sapDbService.getRecordsWithAFieldCheckedTrue(Product.class);
 		
 		DataService.GetCallback<Response> callback = new DataService.GetCallback<Response>() {
 			@Override
@@ -246,12 +246,11 @@ class SyncHelper {
 	private void updateSalesforceProductsChildren() throws SQLException {
 		
 		//get productsChildren that exist in the SAP but not in Salesforce
-		ArrayList<ProductChild> productsChildren = sapDbService.getRecordsWithACheckedField(ProductChild.class);
+		ArrayList<ProductChild> productsChildren = sapDbService.getRecordsWithAFieldCheckedTrue(ProductChild.class);
 		
 		DataService.GetCallback<Response> callback = new DataService.GetCallback<Response>() {
 			@Override
 			public void onCompleted(Response productChildren) {
-				Console.logToJson(productChildren);
 				try {
 					AppLogger.logInfo("Sync of ProductChild Object Successful");
 				} catch (Exception e) {
@@ -274,6 +273,37 @@ class SyncHelper {
 		
 	}
 	
+	private void updateSalesforceWarehouses() throws SQLException {
+		
+		//get warehouses that exist in the SAP but not in Salesforce
+		ArrayList<Warehouse> warehouses = sapDbService.getRecordsWithAFieldCheckedTrue(Warehouse.class);
+		
+		DataService.GetCallback<Response> callback = new DataService.GetCallback<Response>() {
+			@Override
+			public void onCompleted(Response response) {
+				Console.logToJson(response);
+				try {
+					AppLogger.logInfo("Sync of Warehouse Object Successful");
+				} catch (Exception e) {
+					AppLogger.logWarning("Failed to insert pushed warehouses from salesforce for updating. " + e.getMessage());
+				}
+			}
+			
+			@Override
+			public void onError(Throwable t) {
+				AppLogger.logWarning("Failed to push warehouses to salesforce. " + t.getMessage());
+			}
+			
+			@Override
+			public void always() {
+				
+			}
+		};
+		
+		syncDataService.pushWarehousesToSalesforce(Response.setWarehouses(warehouses), callback);
+		
+	}
+	
 	
 	void fetchFromTheServer() {
 		
@@ -286,6 +316,7 @@ class SyncHelper {
 					updateSalesforcePriceList();
 					updateSalesforceProducts();
 					updateSalesforceProductsChildren();
+					updateSalesforceWarehouses();
 				} catch (Exception e) {
 					e.printStackTrace();
 					AppLogger.logWarning("failed to insert received records into to MSSQL server. " + e.getMessage());
@@ -308,11 +339,11 @@ class SyncHelper {
 		this.syncDataService = new SyncDataService();
 		syncDataService.getFromSalesforce(getFromSalesforceCallback);
 		
-		try {
-			updateSalesforceProductsChildren();
+		/*try {
+			updateSalesforceWarehouses();
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}
+		}*/
 		
 	}
 	

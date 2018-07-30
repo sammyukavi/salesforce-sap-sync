@@ -19,33 +19,28 @@ public class Response implements Serializable {
 	
 	private static Response instance;
 	
-	@SerializedName(ACCOUNTS)
-	@Expose
-	private ArrayList<Customer> customers = new ArrayList<>();
-	
-	@SerializedName(CONTACTS)
-	@Expose
-	private ArrayList<CustomerContacts> customerContacts = new ArrayList<>();
-	
-	@SerializedName(PRICE_LIST)
-	@Expose
-	private ArrayList<PriceList> priceList = new ArrayList<>();
-	
-	@SerializedName(PRODUCTS)
-	@Expose
-	private ArrayList<Product> products = new ArrayList<>();
-	
-	@SerializedName(PRODUCTS_CHILDREN)
-	@Expose
-	private ArrayList<ProductChild> productsChildren = new ArrayList<>();
-	
-	@SerializedName(WAREHOUSES)
-	@Expose
-	private ArrayList<Warehouse> warehouses = new ArrayList<>();
-	
 	static {
 		instance = new Response();
 	}
+	
+	@SerializedName(ACCOUNTS)
+	@Expose
+	private ArrayList<Customer> customers = new ArrayList<>();
+	@SerializedName(CONTACTS)
+	@Expose
+	private ArrayList<CustomerContacts> customerContacts = new ArrayList<>();
+	@SerializedName(PRICE_LIST)
+	@Expose
+	private ArrayList<PriceList> priceList = new ArrayList<>();
+	@SerializedName(PRODUCTS)
+	@Expose
+	private ArrayList<Product> products = new ArrayList<>();
+	@SerializedName(PRODUCTS_CHILDREN)
+	@Expose
+	private ArrayList<ProductChild> productsChildren = new ArrayList<>();
+	@SerializedName(WAREHOUSES)
+	@Expose
+	private ArrayList<Warehouse> warehouses = new ArrayList<>();
 	
 	public Response() {
 	
@@ -58,16 +53,6 @@ public class Response implements Serializable {
 	
 	public static Response setProductsChildren(ArrayList<ProductChild> productsChildren) {
 		instance.productsChildren = productsChildren;
-		return instance;
-	}
-	
-	public static Response setCustomers(ArrayList<Customer> customers) {
-		instance.customers = customers;
-		return instance;
-	}
-	
-	public static Response setCustomerContacts(ArrayList<CustomerContacts> customerContacts) {
-		instance.customerContacts = customerContacts;
 		return instance;
 	}
 	
@@ -85,10 +70,19 @@ public class Response implements Serializable {
 		return customers;
 	}
 	
+	public static Response setCustomers(ArrayList<Customer> customers) {
+		instance.customers = customers;
+		return instance;
+	}
+	
 	public ArrayList<CustomerContacts> getCustomerContacts() {
 		return customerContacts;
 	}
 	
+	public static Response setCustomerContacts(ArrayList<CustomerContacts> customerContacts) {
+		instance.customerContacts = customerContacts;
+		return instance;
+	}
 	
 	
 }
