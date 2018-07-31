@@ -4,9 +4,11 @@ import ke.co.blueconsulting.sianroses.contract.SyncContract;
 import ke.co.blueconsulting.sianroses.dialogs.MessageDialogInFrame;
 import ke.co.blueconsulting.sianroses.model.app.AppAuthCredentials;
 import ke.co.blueconsulting.sianroses.presenter.SyncPresenter;
+import ke.co.blueconsulting.sianroses.util.ErrorLogFileWatcher;
 import ke.co.blueconsulting.sianroses.util.StringUtils;
 
 import javax.swing.*;
+import javax.swing.text.DefaultCaret;
 import java.awt.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -14,9 +16,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static ke.co.blueconsulting.sianroses.util.Constants.BundleKeys.*;
-import static ke.co.blueconsulting.sianroses.util.Constants.DATABASE_SERVER_CONFIGURATION_TAB;
-import static ke.co.blueconsulting.sianroses.util.Constants.LOG_VIEW_TAB;
-import static ke.co.blueconsulting.sianroses.util.Constants.SALESFORCE_CONFIGURATION_TAB;
+import static ke.co.blueconsulting.sianroses.util.Constants.*;
 import static ke.co.blueconsulting.sianroses.util.StringUtils.getString;
 
 public class SyncDashboard implements SyncContract.View {
@@ -366,7 +366,18 @@ public class SyncDashboard implements SyncContract.View {
 		JTextArea errorLogTextView = new JTextArea();
 		errorLogTextView.setLineWrap(true);
 		errorLogTextView.setWrapStyleWord(true);
+		errorLogTextView.setEditable(false);
+		
+		DefaultCaret caret = (DefaultCaret) errorLogTextView.getCaret();
+		caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
+		
 		scrollPane.setViewportView(errorLogTextView);
+		
+		Thread watchErrorLogFileThread = new Thread(() -> {
+			new ErrorLogFileWatcher(errorLogTextView);
+		});
+		
+		watchErrorLogFileThread.start();
 		
 		return jPanel;
 	}

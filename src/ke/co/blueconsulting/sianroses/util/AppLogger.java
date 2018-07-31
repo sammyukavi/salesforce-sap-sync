@@ -9,6 +9,7 @@ import java.util.logging.SimpleFormatter;
 
 import static ke.co.blueconsulting.sianroses.util.Constants.APP_DIR_NAME;
 import static ke.co.blueconsulting.sianroses.util.Constants.BundleKeys.LABEL_APP_NAME;
+import static ke.co.blueconsulting.sianroses.util.Constants.LOG_FILE_NAME;
 
 /**
  * A class that is used to write logs on the app as events occur
@@ -27,7 +28,7 @@ public class AppLogger {
 			if (!directory.exists()) {
 				directory.mkdirs();
 			}
-			FileHandler fileHandler = new FileHandler(directoryName + separator + "Log.txt",
+			FileHandler fileHandler = new FileHandler(directoryName + separator + LOG_FILE_NAME,
 					true);
 			logger.addHandler(fileHandler);
 			SimpleFormatter formatter = new SimpleFormatter();

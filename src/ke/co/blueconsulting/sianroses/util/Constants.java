@@ -3,6 +3,7 @@ package ke.co.blueconsulting.sianroses.util;
 public class Constants {
 	
 	public static final String APP_DIR_NAME = ".sianroses";
+	public static final String LOG_FILE_NAME = "Log.txt";
 	public static final String DATABASE_SERVER_CONFIGURATION_TAB = "databaseServerConfiguration";
 	public static final String SALESFORCE_CONFIGURATION_TAB = "salesforceConfiguration";
 	public static final String LOG_VIEW_TAB = "logViewTab";
