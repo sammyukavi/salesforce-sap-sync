@@ -310,10 +310,6 @@ class SyncHelper {
 				try {
 					insertCustomersToSAP(receivedRecords.getCustomers());
 					insertCustomerContactsToSAP(receivedRecords.getCustomerContacts());
-					updateSalesforcePriceList();
-					updateSalesforceProducts();
-					updateSalesforceProductsChildren();
-					updateSalesforceWarehouses();
 				} catch (Exception e) {
 					e.printStackTrace();
 					AppLogger.logError("failed to insert received records into to MSSQL server. " + e.getLocalizedMessage());
@@ -337,10 +333,14 @@ class SyncHelper {
 		syncDataService.getFromSalesforce(getFromSalesforceCallback);
 		
 		/*try {
-			updateSalesforceWarehouses();
+			//updateSalesforcePriceList();
+			//updateSalesforceProducts();
+			//updateSalesforceProductsChildren();
+			//updateSalesforceWarehouses();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}*/
+		
 		
 	}
 	

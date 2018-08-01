@@ -8,6 +8,7 @@ import ke.co.blueconsulting.sianroses.util.ErrorLogFileWatcher;
 import ke.co.blueconsulting.sianroses.util.StringUtils;
 
 import javax.swing.*;
+import javax.swing.plaf.basic.BasicTabbedPaneUI;
 import javax.swing.text.DefaultCaret;
 import java.awt.*;
 import java.sql.SQLException;
@@ -30,7 +31,6 @@ public class SyncDashboard implements SyncContract.View {
 			syncPeriodTextField, salesforceClientIdTextField, salesforceClientSecretTextField,
 			salesforceUsernameTextField, salesforceSecurityTokenTextField;
 	private JPasswordField databasePasswordTextField, salesforcePasswordTextField;
-	//private JComboBox<String> syncPeriodUnitComboBox;
 	private JComboBox syncPeriodUnitComboBox;
 	private JFrame dashboardJFrame;
 	
@@ -69,7 +69,6 @@ public class SyncDashboard implements SyncContract.View {
 		dashboardJFrame.getContentPane().setLayout(null);
 		
 		JTabbedPane tabbedPane = new JTabbedPane();
-		/*
 		tabbedPane.setUI(new BasicTabbedPaneUI() {
 			private final Insets borderInsets = new Insets(0, 0, 0, 0);
 			
@@ -81,7 +80,7 @@ public class SyncDashboard implements SyncContract.View {
 			protected Insets getContentBorderInsets(int tabPlacement) {
 				return borderInsets;
 			}
-		});*/
+		});
 		tabbedPane.setBounds(0, 0, 598, 320);
 		tabbedPane.setAlignmentY(Component.BOTTOM_ALIGNMENT);
 		tabbedPane.setAlignmentX(Component.RIGHT_ALIGNMENT);
@@ -177,7 +176,7 @@ public class SyncDashboard implements SyncContract.View {
 		} else if (selectedIndex == 1) {
 			tabOnView = SALESFORCE_CONFIGURATION_TAB;
 			testConnectionButton.setText(getString(BTN_TEST_SALESFORCE_AUTH));
-		}else {
+		} else {
 			tabOnView = LOG_VIEW_TAB;
 			testConnectionButton.setVisible(false);
 			saveConnectionButton.setVisible(false);
@@ -281,8 +280,7 @@ public class SyncDashboard implements SyncContract.View {
 		});
 		jPanel.add(syncPeriodTextField);
 		
-		//syncPeriodUnitComboBox = new JComboBox<>(syncPeriodUnits);
-		syncPeriodUnitComboBox = new JComboBox();
+		syncPeriodUnitComboBox = new JComboBox<>(syncPeriodUnits);
 		//syncPeriodUnitComboBox.setModel(new DefaultComboBoxModel(syncPeriodUnits));
 		syncPeriodUnitComboBox.setBounds(125, 270, 98, 20);
 		jPanel.add(syncPeriodUnitComboBox);
