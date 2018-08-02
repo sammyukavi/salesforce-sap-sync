@@ -2,6 +2,8 @@ package ke.co.blueconsulting.sianroses.data;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import ke.co.blueconsulting.sianroses.model.salesforce.Customer;
+import ke.co.blueconsulting.sianroses.util.CustomerAdapter;
 import ke.co.blueconsulting.sianroses.util.ErrorsDeserializer;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -45,7 +47,10 @@ public class RestServiceBuilder {
 	}
 	
 	private static GsonConverterFactory buildGsonConverter() {
-		Gson gson = new GsonBuilder().registerTypeAdapter(ErrorsDeserializer.Errors.class, new ErrorsDeserializer()).create();
+		Gson gson = new GsonBuilder()
+				.registerTypeAdapter(ErrorsDeserializer.Errors.class, new ErrorsDeserializer())
+				.registerTypeAdapter(Customer.class, new CustomerAdapter())
+				.create();
 		return GsonConverterFactory.create(gson);
 	}
 	

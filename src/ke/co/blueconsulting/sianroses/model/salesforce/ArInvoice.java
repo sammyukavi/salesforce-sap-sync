@@ -8,7 +8,6 @@ import com.j256.ormlite.table.DatabaseTable;
 import java.io.Serializable;
 
 /**
- * 
  * @author sukavi
  * This model maps Salesforce Packing List to SAP ARINVOICE Table
  */

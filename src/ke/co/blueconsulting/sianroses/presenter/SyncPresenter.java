@@ -18,7 +18,7 @@ public class SyncPresenter extends SyncHelper implements SyncContract.Presenter 
 	
 	private Thread connectThread;
 	
-	public SyncPresenter(SyncDashboard syncDashboard) throws SQLException, ClassNotFoundException {
+	public SyncPresenter(SyncDashboard syncDashboard) throws Exception {
 		super();
 		this.syncDashboard = syncDashboard;
 	}

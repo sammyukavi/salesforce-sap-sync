@@ -11,7 +11,6 @@ import javax.swing.*;
 import javax.swing.plaf.basic.BasicTabbedPaneUI;
 import javax.swing.text.DefaultCaret;
 import java.awt.*;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -38,7 +37,7 @@ public class SyncDashboard implements SyncContract.View {
 	/**
 	 * @wbp.parser.entryPoint
 	 */
-	SyncDashboard() throws SQLException, ClassNotFoundException {
+	SyncDashboard() throws Exception, ClassNotFoundException {
 		this.syncPeriodUnits = getString(SYNC_PERIOD_UNITS).split(",");
 		this.syncPresenter = new SyncPresenter(this);
 		initViews();
@@ -48,7 +47,7 @@ public class SyncDashboard implements SyncContract.View {
 		if (!blankNewInstance) {
 			try {
 				new SyncDashboard();
-			} catch (SQLException | ClassNotFoundException ignored) {
+			} catch (Exception ignored) {
 			
 			}
 		}
@@ -281,7 +280,6 @@ public class SyncDashboard implements SyncContract.View {
 		jPanel.add(syncPeriodTextField);
 		
 		syncPeriodUnitComboBox = new JComboBox<>(syncPeriodUnits);
-		//syncPeriodUnitComboBox.setModel(new DefaultComboBoxModel(syncPeriodUnits));
 		syncPeriodUnitComboBox.setBounds(125, 270, 98, 20);
 		jPanel.add(syncPeriodUnitComboBox);
 		

@@ -32,9 +32,9 @@ public class Customer implements Serializable {
 	private String accountPaymentTermsC;
 	
 	@DatabaseField(columnName = "Active__c")
-	//@SerializedName("Active__c")
+	@SerializedName("Active__c")
 	@Expose
-	private String activeC;
+	private boolean activeC;
 	
 	@DatabaseField(columnName = "Available_Credit_Amount")
 	@SerializedName("Available_Credit_Amount__c")
@@ -184,4 +184,252 @@ public class Customer implements Serializable {
 		this.pushToSAPC = pushToSAPC;
 	}
 	
+	
+	public String getSalesforceId() {
+		return salesforceId;
+	}
+	
+	public String getName() {
+		return name;
+	}
+	
+	public String getaRAccountC() {
+		return aRAccountC;
+	}
+	
+	public void setaRAccountC(String aRAccountC) {
+		this.aRAccountC = aRAccountC;
+	}
+	
+	public String getAccountNumber() {
+		return accountNumber;
+	}
+	
+	public void setAccountNumber(String accountNumber) {
+		this.accountNumber = accountNumber;
+	}
+	
+	public String getAccountPaymentTermsC() {
+		return accountPaymentTermsC;
+	}
+	
+	public void setAccountPaymentTermsC(String accountPaymentTermsC) {
+		this.accountPaymentTermsC = accountPaymentTermsC;
+	}
+	
+	public boolean getActiveC() {
+		return activeC;
+	}
+	
+	public void setActiveC(boolean activeC) {
+		this.activeC = activeC;
+	}
+	
+	public double getAvailableCreditAmount() {
+		return availableCreditAmount;
+	}
+	
+	public void setAvailableCreditAmount(double availableCreditAmount) {
+		this.availableCreditAmount = availableCreditAmount;
+	}
+	
+	public String getAddressIdC() {
+		return addressIdC;
+	}
+	
+	public void setAddressIdC(String addressIdC) {
+		this.addressIdC = addressIdC;
+	}
+	
+	public String getBillingCity() {
+		return billingCity;
+	}
+	
+	public void setBillingCity(String billingCity) {
+		this.billingCity = billingCity;
+	}
+	
+	public String getBillingCountry() {
+		return billingCountry;
+	}
+	
+	public void setBillingCountry(String billingCountry) {
+		this.billingCountry = billingCountry;
+	}
+	
+	public String getBillingPostalCode() {
+		return billingPostalCode;
+	}
+	
+	public void setBillingPostalCode(String billingPostalCode) {
+		this.billingPostalCode = billingPostalCode;
+	}
+	
+	public String getBillingState() {
+		return billingState;
+	}
+	
+	public void setBillingState(String billingState) {
+		this.billingState = billingState;
+	}
+	
+	public double getCreditLimitC() {
+		return creditLimitC;
+	}
+	
+	public void setCreditLimitC(double creditLimitC) {
+		this.creditLimitC = creditLimitC;
+	}
+	
+	public String getCurrencyIsoCode() {
+		return currencyIsoCode;
+	}
+	
+	public void setCurrencyIsoCode(String currencyIsoCode) {
+		this.currencyIsoCode = currencyIsoCode;
+	}
+	
+	public String getDescription() {
+		return description;
+	}
+	
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	
+	public String getEmailC() {
+		return emailC;
+	}
+	
+	public void setEmailC(String emailC) {
+		this.emailC = emailC;
+	}
+	
+	public int geteRPIdC() {
+		return eRPIdC;
+	}
+	
+	public void seteRPIdC(int eRPIdC) {
+		this.eRPIdC = eRPIdC;
+	}
+	
+	public String getGroupTypeC() {
+		return groupTypeC;
+	}
+	
+	public void setGroupTypeC(String groupTypeC) {
+		this.groupTypeC = groupTypeC;
+	}
+	
+	public void setSalesforceId(String salesforceId) {
+		this.salesforceId = salesforceId;
+	}
+	
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	public double getOutstandingBalanceC() {
+		return outstandingBalanceC;
+	}
+	
+	public void setOutstandingBalanceC(double outstandingBalanceC) {
+		this.outstandingBalanceC = outstandingBalanceC;
+	}
+	
+	public String getOwnerId() {
+		return ownerId;
+	}
+	
+	public void setOwnerId(String ownerId) {
+		this.ownerId = ownerId;
+	}
+	
+	public String getParentId() {
+		return ParentId;
+	}
+	
+	public void setParentId(String parentId) {
+		ParentId = parentId;
+	}
+	
+	public String getPaymentDeliveryConsolidationC() {
+		return paymentDeliveryConsolidationC;
+	}
+	
+	public void setPaymentDeliveryConsolidationC(String paymentDeliveryConsolidationC) {
+		this.paymentDeliveryConsolidationC = paymentDeliveryConsolidationC;
+	}
+	
+	public String getPaymentTermsC() {
+		return paymentTermsC;
+	}
+	
+	public void setPaymentTermsC(String paymentTermsC) {
+		this.paymentTermsC = paymentTermsC;
+	}
+	
+	public String getPhone() {
+		return phone;
+	}
+	
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+	
+	public double getPrepaidAmountC() {
+		return prepaidAmountC;
+	}
+	
+	public void setPrepaidAmountC(double prepaidAmountC) {
+		this.prepaidAmountC = prepaidAmountC;
+	}
+	
+	public boolean isPullFromSAPC() {
+		return pullFromSAPC;
+	}
+	
+	public void setPullFromSAPC(boolean pullFromSAPC) {
+		this.pullFromSAPC = pullFromSAPC;
+	}
+	
+	public String getShippingCity() {
+		return shippingCity;
+	}
+	
+	public void setShippingCity(String shippingCity) {
+		this.shippingCity = shippingCity;
+	}
+	
+	public String getShippingCountry() {
+		return shippingCountry;
+	}
+	
+	public void setShippingCountry(String shippingCountry) {
+		this.shippingCountry = shippingCountry;
+	}
+	
+	public String getShippingPostalCode() {
+		return shippingPostalCode;
+	}
+	
+	public void setShippingPostalCode(String shippingPostalCode) {
+		this.shippingPostalCode = shippingPostalCode;
+	}
+	
+	public String getShippingState() {
+		return shippingState;
+	}
+	
+	public void setShippingState(String shippingState) {
+		this.shippingState = shippingState;
+	}
+	
+	public String getWebsite() {
+		return website;
+	}
+	
+	public void setWebsite(String website) {
+		this.website = website;
+	}
 }

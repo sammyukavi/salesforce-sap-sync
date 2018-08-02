@@ -12,9 +12,9 @@ import ke.co.blueconsulting.sianroses.model.app.Response;
 import ke.co.blueconsulting.sianroses.model.app.SalesforceAuthCredentials;
 import ke.co.blueconsulting.sianroses.model.salesforce.*;
 import ke.co.blueconsulting.sianroses.util.AppLogger;
+import ke.co.blueconsulting.sianroses.util.Console;
 import ke.co.blueconsulting.sianroses.util.StringUtils;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 import static ke.co.blueconsulting.sianroses.util.UpdateFields.updateCustomerContactsPushToSAPFields;
@@ -27,7 +27,7 @@ class SyncHelper {
 	SAPDbService sapDbService;
 	private SyncDataService syncDataService;
 	
-	SyncHelper() throws SQLException, ClassNotFoundException {
+	SyncHelper() throws Exception, ClassNotFoundException {
 		this.authCredentialsDbService = new AuthCredentialsDbService();
 		this.sapDbService = new SAPDbService();
 	}
@@ -89,37 +89,38 @@ class SyncHelper {
 		appAuthCredentials.setSignature(salesforceAuthCredentials.getSignature());
 		try {
 			authCredentialsDbService.save(appAuthCredentials);
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			AppLogger.logError("Failed to store salesforce Credentials. " + e.getLocalizedMessage());
 		}
 	}
 	
-	private void insertCustomersToSAP(ArrayList<Customer> customers) throws SQLException {
+	private void insertCustomersToSAP(ArrayList<Customer> customers) throws Exception {
 		
 		customers = updateCustomerPushToSAPFields(customers);
 		
 		ArrayList<Customer> insertedAndUpdatedCustomers = sapDbService.insertRecords(Customer.class, customers);
 		
-		updateSalesforceAccounts(insertedAndUpdatedCustomers);
+		updateSalesforceCustomers(insertedAndUpdatedCustomers);
 	}
 	
-	private void updateSalesforceAccounts(ArrayList<Customer> customers) throws SQLException {
+	private void updateSalesforceCustomers(ArrayList<Customer> customers) throws Exception {
 		
 		//get customers that exist in the SAP but not in Salesforce
-		ArrayList<Customer> unsyncedContacts = updateCustomerPushToSAPFields(sapDbService.getRecordsWithoutSalesforceId(Customer.class));
+		ArrayList<Customer> unsyncedCustomers = updateCustomerPushToSAPFields(sapDbService.getRecordsWithoutSalesforceId(Customer.class));
 		
 		//Add the unsynced customers to the salesforce customers
-		customers.addAll(unsyncedContacts);
+		customers.addAll(unsyncedCustomers);
 		
 		DataService.GetCallback<Response> callback = new DataService.GetCallback<Response>() {
 			@Override
 			public void onCompleted(Response response) {
-				try {
+				/*try {
 					sapDbService.insertRecords(Customer.class, response.getCustomers());
 					AppLogger.logInfo("Sync of Customer Object Successful");
-				} catch (SQLException e) {
+				} catch (Exception e) {
 					AppLogger.logError("Failed to insert pushed response from salesforce for updating. " + e.getLocalizedMessage());
-				}
+				}*/
+				Console.logToJson(response);
 			}
 			
 			@Override
@@ -137,7 +138,7 @@ class SyncHelper {
 		
 	}
 	
-	private void insertCustomerContactsToSAP(ArrayList<CustomerContacts> customerContacts) throws SQLException {
+	private void insertCustomerContactsToSAP(ArrayList<CustomerContacts> customerContacts) throws Exception {
 		
 		customerContacts = updateCustomerContactsPushToSAPFields(customerContacts);
 		
@@ -147,7 +148,7 @@ class SyncHelper {
 		
 	}
 	
-	private void updateSalesforceContacts(ArrayList<CustomerContacts> customerContacts) throws SQLException {
+	private void updateSalesforceContacts(ArrayList<CustomerContacts> customerContacts) throws Exception {
 		
 		//get customers that exist in the SAP but not in Salesforce
 		ArrayList<CustomerContacts> unsyncedContacts = updateCustomerContactsPushToSAPFields(
@@ -163,7 +164,7 @@ class SyncHelper {
 				try {
 					sapDbService.insertRecords(CustomerContacts.class, response.getCustomerContacts());
 					AppLogger.logInfo("Sync of CustomerContacts Object Successful");
-				} catch (SQLException e) {
+				} catch (Exception e) {
 					AppLogger.logError("Failed to insert pushed customers' contacts from salesforce for updating. " + e.getLocalizedMessage());
 				}
 			}
@@ -181,7 +182,7 @@ class SyncHelper {
 		syncDataService.pushCustomersContactsToSalesforce(Response.setCustomerContacts(customerContacts), callback);
 	}
 	
-	private void updateSalesforcePriceList() throws SQLException {
+	private void updateSalesforcePriceList() throws Exception {
 		
 		//get priceLists that exist in the SAP but not in Salesforce
 		ArrayList<PriceList> priceList = sapDbService.getRecordsWithAFieldCheckedTrue(PriceList.class);
@@ -211,7 +212,7 @@ class SyncHelper {
 		
 	}
 	
-	private void updateSalesforceProducts() throws SQLException {
+	private void updateSalesforceProducts() throws Exception {
 		
 		//get products that exist in the SAP but not in Salesforce
 		ArrayList<Product> products = sapDbService.getRecordsWithAFieldCheckedTrue(Product.class);
@@ -241,7 +242,7 @@ class SyncHelper {
 		
 	}
 	
-	private void updateSalesforceProductsChildren() throws SQLException {
+	private void updateSalesforceProductsChildren() throws Exception {
 		
 		//get productsChildren that exist in the SAP but not in Salesforce
 		ArrayList<ProductChild> productsChildren = sapDbService.getRecordsWithAFieldCheckedTrue(ProductChild.class);
@@ -271,7 +272,7 @@ class SyncHelper {
 		
 	}
 	
-	private void updateSalesforceWarehouses() throws SQLException {
+	private void updateSalesforceWarehouses() throws Exception {
 		
 		//get warehouses that exist in the SAP but not in Salesforce
 		ArrayList<Warehouse> warehouses = sapDbService.getRecordsWithAFieldCheckedTrue(Warehouse.class);
@@ -309,7 +310,7 @@ class SyncHelper {
 			public void onCompleted(Response receivedRecords) {
 				try {
 					insertCustomersToSAP(receivedRecords.getCustomers());
-					insertCustomerContactsToSAP(receivedRecords.getCustomerContacts());
+					//insertCustomerContactsToSAP(receivedRecords.getCustomerContacts());
 				} catch (Exception e) {
 					e.printStackTrace();
 					AppLogger.logError("failed to insert received records into to MSSQL server. " + e.getLocalizedMessage());
@@ -337,7 +338,7 @@ class SyncHelper {
 			//updateSalesforceProducts();
 			//updateSalesforceProductsChildren();
 			//updateSalesforceWarehouses();
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}*/
 		

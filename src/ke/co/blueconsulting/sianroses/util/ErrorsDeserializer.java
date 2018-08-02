@@ -26,6 +26,7 @@ public class ErrorsDeserializer implements JsonDeserializer<ErrorsDeserializer.E
 		}
 	}
 	
+	
 	public static class Errors {
 		
 		private List<Error> errors;
