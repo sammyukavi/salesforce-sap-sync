@@ -6,6 +6,7 @@ import ke.co.blueconsulting.sianroses.model.salesforce.*;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 import static ke.co.blueconsulting.sianroses.util.Constants.DataTypeKeys.*;
 
@@ -26,21 +27,30 @@ public class Response implements Serializable {
 	@SerializedName(ACCOUNTS)
 	@Expose
 	private ArrayList<Customer> customers = new ArrayList<>();
+	
 	@SerializedName(CONTACTS)
 	@Expose
 	private ArrayList<CustomerContacts> customerContacts = new ArrayList<>();
+	
 	@SerializedName(PRICE_LIST)
 	@Expose
 	private ArrayList<PriceList> priceList = new ArrayList<>();
+	
 	@SerializedName(PRODUCTS)
 	@Expose
 	private ArrayList<Product> products = new ArrayList<>();
+	
 	@SerializedName(PRODUCTS_CHILDREN)
 	@Expose
 	private ArrayList<ProductChild> productsChildren = new ArrayList<>();
+	
 	@SerializedName(WAREHOUSES)
 	@Expose
 	private ArrayList<Warehouse> warehouses = new ArrayList<>();
+	
+	@SerializedName(PACKING_LIST)
+	@Expose
+	private List<PackingList> packingList = new ArrayList<>();
 	
 	public Response() {
 	
@@ -81,6 +91,11 @@ public class Response implements Serializable {
 	
 	public static Response setCustomerContacts(ArrayList<CustomerContacts> customerContacts) {
 		instance.customerContacts = customerContacts;
+		return instance;
+	}
+	
+	public static Response setPackingList(ArrayList<PackingList> packingList) {
+		instance.packingList = packingList;
 		return instance;
 	}
 	

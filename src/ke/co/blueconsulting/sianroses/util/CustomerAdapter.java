@@ -290,7 +290,7 @@ public class CustomerAdapter extends TypeAdapter<Customer> {
 			}
 			jsonReader.endObject();
 		} catch (IOException e) {
-			e.printStackTrace();
+			AppLogger.logError("An error occurred while trying to write a customer object. " + e.getLocalizedMessage());
 		}
 		
 		return customer;

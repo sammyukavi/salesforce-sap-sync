@@ -6,6 +6,7 @@ import com.j256.ormlite.jdbc.JdbcConnectionSource;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 import ke.co.blueconsulting.sianroses.model.app.AppAuthCredentials;
+import ke.co.blueconsulting.sianroses.util.AppLogger;
 
 import java.io.File;
 import java.sql.SQLException;
@@ -52,7 +53,7 @@ public class AuthCredentialsDbService {
 				return credentials;
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			AppLogger.logError("An error occured when fetching AppAuthCredentials. " + e.getLocalizedMessage());
 		}
 		return new AppAuthCredentials();
 	}

@@ -4,6 +4,7 @@ import ke.co.blueconsulting.sianroses.contract.SyncContract;
 import ke.co.blueconsulting.sianroses.dialogs.MessageDialogInFrame;
 import ke.co.blueconsulting.sianroses.model.app.AppAuthCredentials;
 import ke.co.blueconsulting.sianroses.presenter.SyncPresenter;
+import ke.co.blueconsulting.sianroses.util.AppLogger;
 import ke.co.blueconsulting.sianroses.util.ErrorLogFileWatcher;
 import ke.co.blueconsulting.sianroses.util.StringUtils;
 
@@ -37,7 +38,7 @@ public class SyncDashboard implements SyncContract.View {
 	/**
 	 * @wbp.parser.entryPoint
 	 */
-	SyncDashboard() throws Exception, ClassNotFoundException {
+	SyncDashboard() throws Exception {
 		this.syncPeriodUnits = getString(SYNC_PERIOD_UNITS).split(",");
 		this.syncPresenter = new SyncPresenter(this);
 		initViews();
@@ -116,7 +117,7 @@ public class SyncDashboard implements SyncContract.View {
 							String.valueOf(salesforcePasswordTextField.getPassword()), salesforceSecurityTokenTextField.getText());
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
+				AppLogger.logError("Some error occured. " + e.getLocalizedMessage());
 				showErrorMessage(getString(MESSAGE_ERROR_OCCURRED) + e.getMessage());
 			}
 		});

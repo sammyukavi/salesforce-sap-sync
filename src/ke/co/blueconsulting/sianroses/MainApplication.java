@@ -21,7 +21,7 @@ public class MainApplication {
 				new SyncDashboard();
 				//new DrawSystemTrayIcon().displayTray();
 			} catch (Exception e) {
-				e.printStackTrace();
+				AppLogger.logError("An error occured while trying to start the application. " + e.getLocalizedMessage());
 				AppLogger.logInfo(e.getMessage());
 				SyncDashboard.getInstance().showErrorMessage(getString(MESSAGE_FATAL_ERROR), getString(MESSAGE_FATAL_ERROR) + e.getMessage());
 			}

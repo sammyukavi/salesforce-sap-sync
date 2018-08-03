@@ -5,6 +5,7 @@ import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
 import ke.co.blueconsulting.sianroses.data.db.AuthCredentialsDbService;
 import ke.co.blueconsulting.sianroses.model.app.AppAuthCredentials;
+import ke.co.blueconsulting.sianroses.util.AppLogger;
 
 import java.sql.SQLException;
 
@@ -16,7 +17,7 @@ public class BaseDbService {
 		try {
 			connectionSource = new JdbcConnectionSource(getConnectionUrl());
 		} catch (SQLException | ClassNotFoundException e) {
-			e.printStackTrace();
+			AppLogger.logError("An error occured in the BaseDbService Constructor " + e.getLocalizedMessage());
 		}
 	}
 	

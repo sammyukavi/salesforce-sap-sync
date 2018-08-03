@@ -34,7 +34,7 @@ public class AppLogger {
 			SimpleFormatter formatter = new SimpleFormatter();
 			fileHandler.setFormatter(formatter);
 		} catch (SecurityException | IOException e) {
-			e.printStackTrace();
+			AppLogger.logError("An error occured while trying to create/access the error log. " + e.getLocalizedMessage());
 		}
 	}
 	

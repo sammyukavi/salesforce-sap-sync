@@ -1,6 +1,7 @@
 package ke.co.blueconsulting.sianroses.data;
 
 import ke.co.blueconsulting.sianroses.data.db.AuthCredentialsDbService;
+import ke.co.blueconsulting.sianroses.util.AppLogger;
 import ke.co.blueconsulting.sianroses.util.ErrorUtil;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -25,7 +26,7 @@ public abstract class BaseDataService<M, R> implements DataService<M> {
 		try {
 			authCredentialsDbService = new AuthCredentialsDbService();
 		} catch (ClassNotFoundException | SQLException e) {
-			e.printStackTrace();
+			AppLogger.logError("An error occured in the BaseDataService Constructor. " + e.getLocalizedMessage());
 		}
 	}
 	

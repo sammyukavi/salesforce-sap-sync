@@ -20,7 +20,7 @@ public class ErrorLogFileWatcher extends FileWatcher {
 			FileWatcher fileWatcher = new ErrorLogFileWatcher(errorLogTextView, fileName);
 			fileWatcher.watchFile();
 		} catch (Exception e) {
-			e.printStackTrace();
+			AppLogger.logError("An error occured while trying to watch the error log. " + e.getLocalizedMessage());
 		}
 	}
 	
@@ -44,7 +44,7 @@ public class ErrorLogFileWatcher extends FileWatcher {
 				errorLogTextView.append(String.valueOf((char) b));
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
+			AppLogger.logError("An error occured when trying to update the error log view. " + e.getLocalizedMessage());
 		}
 	}
 	

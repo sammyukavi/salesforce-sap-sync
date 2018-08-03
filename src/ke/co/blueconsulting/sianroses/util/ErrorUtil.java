@@ -27,7 +27,7 @@ public class ErrorUtil {
 				}
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			AppLogger.logError("An error occurred when trying to desirialize the returned server error. " + e.getLocalizedMessage());
 		}
 		
 		return message.toString();

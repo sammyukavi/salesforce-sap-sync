@@ -12,7 +12,6 @@ import ke.co.blueconsulting.sianroses.model.app.Response;
 import ke.co.blueconsulting.sianroses.model.app.SalesforceAuthCredentials;
 import ke.co.blueconsulting.sianroses.model.salesforce.*;
 import ke.co.blueconsulting.sianroses.util.AppLogger;
-import ke.co.blueconsulting.sianroses.util.Console;
 import ke.co.blueconsulting.sianroses.util.StringUtils;
 
 import java.util.ArrayList;
@@ -27,7 +26,7 @@ class SyncHelper {
 	SAPDbService sapDbService;
 	private SyncDataService syncDataService;
 	
-	SyncHelper() throws Exception, ClassNotFoundException {
+	SyncHelper() throws Exception {
 		this.authCredentialsDbService = new AuthCredentialsDbService();
 		this.sapDbService = new SAPDbService();
 	}
@@ -114,13 +113,12 @@ class SyncHelper {
 		DataService.GetCallback<Response> callback = new DataService.GetCallback<Response>() {
 			@Override
 			public void onCompleted(Response response) {
-				/*try {
+				try {
 					sapDbService.insertRecords(Customer.class, response.getCustomers());
 					AppLogger.logInfo("Sync of Customer Object Successful");
 				} catch (Exception e) {
 					AppLogger.logError("Failed to insert pushed response from salesforce for updating. " + e.getLocalizedMessage());
-				}*/
-				Console.logToJson(response);
+				}
 			}
 			
 			@Override
@@ -310,16 +308,14 @@ class SyncHelper {
 			public void onCompleted(Response receivedRecords) {
 				try {
 					insertCustomersToSAP(receivedRecords.getCustomers());
-					//insertCustomerContactsToSAP(receivedRecords.getCustomerContacts());
+					insertCustomerContactsToSAP(receivedRecords.getCustomerContacts());
 				} catch (Exception e) {
-					e.printStackTrace();
 					AppLogger.logError("failed to insert received records into to MSSQL server. " + e.getLocalizedMessage());
 				}
 			}
 			
 			@Override
 			public void onError(Throwable t) {
-				//t.printStackTrace();
 				AppLogger.logError("failed to fetch from the server. " + t.getLocalizedMessage());
 			}
 			
@@ -333,14 +329,16 @@ class SyncHelper {
 		this.syncDataService = new SyncDataService();
 		syncDataService.getFromSalesforce(getFromSalesforceCallback);
 		
-		/*try {
-			//updateSalesforcePriceList();
-			//updateSalesforceProducts();
-			//updateSalesforceProductsChildren();
-			//updateSalesforceWarehouses();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}*/
+		//TODO if a db query returns no results, write that on the logs
+		
+		try {
+			updateSalesforcePriceList();
+			updateSalesforceProducts();
+			updateSalesforceProductsChildren();
+			updateSalesforceWarehouses();
+		} catch (Exception t) {
+			AppLogger.logError("failed to fetch from the server. " + t.getLocalizedMessage());
+		}
 		
 		
 	}
