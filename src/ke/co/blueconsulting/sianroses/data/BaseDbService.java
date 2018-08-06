@@ -11,7 +11,7 @@ import java.sql.SQLException;
 
 public class BaseDbService {
 	
-	private JdbcConnectionSource connectionSource;
+	protected JdbcConnectionSource connectionSource;
 	
 	public BaseDbService() {
 		try {

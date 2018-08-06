@@ -1,6 +1,5 @@
 package ke.co.blueconsulting.sianroses;
 
-import com.j256.ormlite.logger.LocalLog;
 import ke.co.blueconsulting.sianroses.util.AppLogger;
 
 import java.awt.*;
@@ -17,7 +16,7 @@ public class MainApplication {
 	 */
 	public static void main(String[] args) {
 		
-AppLogger appLogger = 		AppLogger.getInstance();
+		AppLogger appLogger = AppLogger.getInstance();
 		
 		EventQueue.invokeLater(() -> {
 			try {

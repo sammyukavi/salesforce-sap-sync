@@ -2,6 +2,8 @@ package ke.co.blueconsulting.sianroses.util;
 
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class StringUtils {
 	
@@ -85,5 +87,16 @@ public class StringUtils {
 		
 		}
 		return string;
+	}
+	
+	public static boolean isValidEmailAddress(String emailAddress) {
+		
+		Pattern regexPattern = Pattern.compile("^[(a-zA-Z-0-9-\\_\\+\\.)]+@[(a-z-A-z)]+\\.[(a-zA-z)]{2,3}$");
+		Matcher regMatcher = regexPattern.matcher(emailAddress);
+		if (regMatcher.matches()) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 }

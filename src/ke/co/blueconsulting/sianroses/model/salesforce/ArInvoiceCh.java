@@ -22,10 +22,10 @@ public class ArInvoiceCh implements Serializable {
 	@Expose
 	private int autoIdMst;
 	
-	@DatabaseField(columnName = "SalesforceId")
+	@DatabaseField(columnName = "SalesForceId")
 	@SerializedName("Id")
 	@Expose
-	private String salesforceId;
+	private String SalesForceId;
 	
 	@DatabaseField(columnName = "Flower_Code__c")
 	@SerializedName("Flower_Code__c")

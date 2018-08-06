@@ -50,6 +50,7 @@ public class RestServiceBuilder {
 		Gson gson = new GsonBuilder()
 				.registerTypeAdapter(ErrorsDeserializer.Errors.class, new ErrorsDeserializer())
 				.registerTypeAdapter(Customer.class, new CustomerAdapter())
+				.excludeFieldsWithoutExposeAnnotation()
 				.create();
 		return GsonConverterFactory.create(gson);
 	}

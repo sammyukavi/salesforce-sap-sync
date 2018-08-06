@@ -1,7 +1,5 @@
 package ke.co.blueconsulting.sianroses.util;
 
-import com.j256.ormlite.logger.LocalLog;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.FileHandler;
@@ -10,9 +8,8 @@ import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
 import static ke.co.blueconsulting.sianroses.util.Constants.APP_DIR_NAME;
-import static ke.co.blueconsulting.sianroses.util.Constants.BundleKeys.LABEL_APP_NAME;
 import static ke.co.blueconsulting.sianroses.util.Constants.APP_LOG_FILE_NAME;
-import static ke.co.blueconsulting.sianroses.util.Constants.SQL_LOG_FILE_NAME;
+import static ke.co.blueconsulting.sianroses.util.Constants.BundleKeys.LABEL_APP_NAME;
 
 /**
  * A class that is used to write logs on the app as events occur
@@ -20,7 +17,7 @@ import static ke.co.blueconsulting.sianroses.util.Constants.SQL_LOG_FILE_NAME;
 public class AppLogger {
 	
 	private static Logger logger;
-	private static  AppLogger instance;
+	private static AppLogger instance;
 	
 	static {
 		instance = new AppLogger();

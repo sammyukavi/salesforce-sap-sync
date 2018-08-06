@@ -408,9 +408,9 @@ public class SyncDashboard implements SyncContract.View {
 		//syncButton.setEnabled(syncPresenter.hasCredentials());
 		boolean hasCredentials = syncPresenter.hasCredentials();
 		
-		if(!isBusy && hasCredentials){
+		if (!isBusy && hasCredentials) {
 			syncButton.setEnabled(true);
-		}else {
+		} else {
 			syncButton.setEnabled(false);
 		}
 		statusProgressBar.setVisible(isBusy);

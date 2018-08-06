@@ -16,6 +16,9 @@ public class Customer implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
+	@DatabaseField(columnName = "AUTOID", generatedId = true)
+	private long autoId;
+	
 	@DatabaseField(columnName = "A_R_Account__c")
 	@SerializedName("A_R_Account__c")
 	@Expose
@@ -86,20 +89,20 @@ public class Customer implements Serializable {
 	@Expose
 	private String emailC;
 	
-	@DatabaseField(columnName = "AUTOID", generatedId = true)
+	@DatabaseField(columnName = "ERP_ID__c")
 	@SerializedName("ERP_ID__c")
 	@Expose
-	private int eRPIdC;
+	private String eRPIdC;
 	
 	@DatabaseField(columnName = "Group_Type__c")
 	@SerializedName("Group_Type__c")
 	@Expose
 	private String groupTypeC;
 	
-	@DatabaseField(columnName = "SalesforceId")
+	@DatabaseField(columnName = "SalesForceId")
 	@SerializedName("Id")
 	@Expose
-	private String salesforceId;
+	private String SalesForceId;
 	
 	@DatabaseField(columnName = "Name")
 	@SerializedName("Name")
@@ -176,6 +179,18 @@ public class Customer implements Serializable {
 	@Expose
 	private String website;
 	
+	public long getAutoId() {
+		return autoId;
+	}
+	
+	public void setAutoId(long autoId) {
+		this.autoId = autoId;
+	}
+	
+	public boolean isActiveC() {
+		return activeC;
+	}
+	
 	public boolean isPushToSAPC() {
 		return pushToSAPC;
 	}
@@ -185,12 +200,12 @@ public class Customer implements Serializable {
 	}
 	
 	
-	public String getSalesforceId() {
-		return salesforceId;
+	public String getSalesForceId() {
+		return SalesForceId;
 	}
 	
-	public void setSalesforceId(String salesforceId) {
-		this.salesforceId = salesforceId;
+	public void setSalesForceId(String SalesForceId) {
+		this.SalesForceId = SalesForceId;
 	}
 	
 	public String getName() {
@@ -313,11 +328,11 @@ public class Customer implements Serializable {
 		this.emailC = emailC;
 	}
 	
-	public int geteRPIdC() {
+	public String geteRPIdC() {
 		return eRPIdC;
 	}
 	
-	public void seteRPIdC(int eRPIdC) {
+	public void seteRPIdC(String eRPIdC) {
 		this.eRPIdC = eRPIdC;
 	}
 	

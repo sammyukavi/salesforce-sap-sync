@@ -12,9 +12,9 @@ import ke.co.blueconsulting.sianroses.model.app.Response;
 import ke.co.blueconsulting.sianroses.model.app.SalesforceAuthCredentials;
 import ke.co.blueconsulting.sianroses.model.salesforce.*;
 import ke.co.blueconsulting.sianroses.util.AppLogger;
-import ke.co.blueconsulting.sianroses.util.Console;
 import ke.co.blueconsulting.sianroses.util.StringUtils;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import static ke.co.blueconsulting.sianroses.util.UpdateFields.updateCustomerContactsPushToSAPFields;
@@ -27,7 +27,7 @@ class SyncHelper {
 	SAPDbService sapDbService;
 	private SyncDataService syncDataService;
 	
-	SyncHelper() throws Exception {
+	SyncHelper() throws SQLException, ClassNotFoundException {
 		this.authCredentialsDbService = new AuthCredentialsDbService();
 		this.sapDbService = new SAPDbService();
 	}
@@ -83,62 +83,73 @@ class SyncHelper {
 		AppAuthCredentials appAuthCredentials = authCredentialsDbService.getAppAuthCredentials();
 		appAuthCredentials.setSalesforceAccessToken(salesforceAuthCredentials.getAccessToken());
 		appAuthCredentials.setInstanceUrl(salesforceAuthCredentials.getInstanceUrl());
-		appAuthCredentials.setSalesforceId(salesforceAuthCredentials.getId());
+		appAuthCredentials.setSalesForceId(salesforceAuthCredentials.getId());
 		appAuthCredentials.setTokenType(salesforceAuthCredentials.getTokenType());
 		appAuthCredentials.setIssuedAt(salesforceAuthCredentials.getIssuedAt());
 		appAuthCredentials.setSignature(salesforceAuthCredentials.getSignature());
 		try {
 			authCredentialsDbService.save(appAuthCredentials);
 			AppLogger.logInfo("Salesforce Credentials Successfully Stored");
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			AppLogger.logError("Failed to store Salesforce Credentials. " + e.getLocalizedMessage());
 		}
 	}
 	
-	private void insertCustomersToSAP(ArrayList<Customer> customers) throws Exception {
-		
-		customers = updateCustomerPushToSAPFields(customers);
-		
-		ArrayList<Customer> insertedAndUpdatedCustomers = sapDbService.insertRecords(Customer.class, customers);
-		
+	private void insertCustomersToSAP(ArrayList<Customer> customers) throws SQLException {
+		ArrayList<Customer> insertedAndUpdatedCustomers = new ArrayList<>();
+		if (customers.size() > 0) {
+			customers = updateCustomerPushToSAPFields(customers);
+			insertedAndUpdatedCustomers = sapDbService.insertRecords(Customer.class, customers);
+		} else {
+			AppLogger.logInfo("Received no customers from salesforce");
+		}
 		updateSalesforceCustomers(insertedAndUpdatedCustomers);
 	}
 	
-	private void updateSalesforceCustomers(ArrayList<Customer> customers) throws Exception {
+	private void updateSalesforceCustomers(ArrayList<Customer> customers) throws SQLException {
 		
 		//get customers that exist in the SAP but not in Salesforce
-		ArrayList<Customer> unsyncedCustomers = updateCustomerPushToSAPFields(sapDbService.getRecordsWithoutSalesforceId(Customer.class));
+		ArrayList<Customer> unsyncedCustomers = updateCustomerPushToSAPFields(sapDbService.getRecordsWithoutNullOrEmptyColumn(Customer.class));
 		
-		//Add the unsynced customers to the salesforce customers
-		customers.addAll(unsyncedCustomers);
+		if (unsyncedCustomers.size() > 0) {
+			//Add the unsynced customers to the salesforce customers
+			customers.addAll(unsyncedCustomers);
+		} else {
+			AppLogger.logInfo("Found 0 customers that need to be pushed to Salesforce");
+		}
 		
-		DataService.GetCallback<Response> callback = new DataService.GetCallback<Response>() {
-			@Override
-			public void onCompleted(Response response) {
-				try {
-					sapDbService.insertRecords(Customer.class, response.getCustomers());
-					AppLogger.logInfo("Sync of Customer Object Successful");
-				} catch (Exception e) {
-					AppLogger.logError("Failed to insert pushed response from salesforce for updating. " + e.getLocalizedMessage());
+		if (customers.size() > 0) {
+			DataService.GetCallback<Response> callback = new DataService.GetCallback<Response>() {
+				@Override
+				public void onCompleted(Response response) {
+					try {
+						sapDbService.updateCustomerRecords(response.getCustomers());
+						AppLogger.logInfo("Sync of Customer Object Successful");
+					} catch (SQLException e) {
+						AppLogger.logError("Failed to insert pushed response from salesforce for updating. " + e.getLocalizedMessage());
+					}
 				}
-			}
+				
+				@Override
+				public void onError(Throwable t) {
+					AppLogger.logError("Failed to push customers to salesforce. " + t.getLocalizedMessage());
+				}
+				
+				@Override
+				public void always() {
+				
+				}
+			};
 			
-			@Override
-			public void onError(Throwable t) {
-				AppLogger.logError("Failed to push customers to salesforce. " + t.getLocalizedMessage());
-			}
-			
-			@Override
-			public void always() {
-			
-			}
-		};
-		
-		syncDataService.pushCustomersToSalsesforce(Response.setCustomers(customers), callback);
+			AppLogger.logInfo("Attempting to push " + customers.size() + " customers to salesforce");
+			syncDataService.pushCustomersToSalsesforce(Response.setCustomers(customers), callback);
+		} else {
+			AppLogger.logInfo("Found 0 customers that need syncronization");
+		}
 		
 	}
 	
-	private void insertCustomerContactsToSAP(ArrayList<CustomerContacts> customerContacts) throws Exception {
+	private void insertCustomerContactsToSAP(ArrayList<CustomerContacts> customerContacts) throws SQLException {
 		
 		customerContacts = updateCustomerContactsPushToSAPFields(customerContacts);
 		
@@ -148,11 +159,11 @@ class SyncHelper {
 		
 	}
 	
-	private void updateSalesforceContacts(ArrayList<CustomerContacts> customerContacts) throws Exception {
+	private void updateSalesforceContacts(ArrayList<CustomerContacts> customerContacts) throws SQLException {
 		
 		//get customers that exist in the SAP but not in Salesforce
 		ArrayList<CustomerContacts> unsyncedContacts = updateCustomerContactsPushToSAPFields(
-				sapDbService.getRecordsWithoutSalesforceId(CustomerContacts.class, "CONTACTID")
+				sapDbService.getRecordsWithoutNullOrEmptyColumn(CustomerContacts.class, "CONTACTID")
 		);
 		
 		//Add the contacts to the updated contacts
@@ -162,7 +173,7 @@ class SyncHelper {
 			@Override
 			public void onCompleted(Response response) {
 				try {
-					sapDbService.insertRecords(CustomerContacts.class, response.getCustomerContacts());
+					sapDbService.updateCustomerContactsRecords(response.getCustomerContacts());
 					AppLogger.logInfo("Sync of CustomerContacts Object Successful");
 				} catch (Exception e) {
 					AppLogger.logError("Failed to insert pushed customers' contacts from salesforce for updating. " + e.getLocalizedMessage());
@@ -182,7 +193,7 @@ class SyncHelper {
 		syncDataService.pushCustomersContactsToSalesforce(Response.setCustomerContacts(customerContacts), callback);
 	}
 	
-	private void updateSalesforcePriceList() throws Exception {
+	private void updateSalesforcePriceList() throws SQLException {
 		
 		//get priceLists that exist in the SAP but not in Salesforce
 		ArrayList<PriceList> priceList = sapDbService.getRecordsWithAFieldCheckedTrue(PriceList.class);
@@ -212,7 +223,7 @@ class SyncHelper {
 		
 	}
 	
-	private void updateSalesforceProducts() throws Exception {
+	private void updateSalesforceProducts() throws SQLException {
 		
 		//get products that exist in the SAP but not in Salesforce
 		ArrayList<Product> products = sapDbService.getRecordsWithAFieldCheckedTrue(Product.class);
@@ -242,7 +253,7 @@ class SyncHelper {
 		
 	}
 	
-	private void updateSalesforceProductsChildren() throws Exception {
+	private void updateSalesforceProductsChildren() throws SQLException {
 		
 		//get productsChildren that exist in the SAP but not in Salesforce
 		ArrayList<ProductChild> productsChildren = sapDbService.getRecordsWithAFieldCheckedTrue(ProductChild.class);
@@ -272,7 +283,7 @@ class SyncHelper {
 		
 	}
 	
-	private void updateSalesforceWarehouses() throws Exception {
+	private void updateSalesforceWarehouses() throws SQLException {
 		
 		//get warehouses that exist in the SAP but not in Salesforce
 		ArrayList<Warehouse> warehouses = sapDbService.getRecordsWithAFieldCheckedTrue(Warehouse.class);
@@ -308,15 +319,12 @@ class SyncHelper {
 		DataService.GetCallback<Response> getFromSalesforceCallback = new DataService.GetCallback<Response>() {
 			@Override
 			public void onCompleted(Response receivedRecords) {
-				
-				Console.logToJson(receivedRecords);
-				
-				/*try {
-					insertCustomersToSAP(receivedRecords.getCustomers());
-					insertCustomerContactsToSAP(receivedRecords.getCustomerContacts());
+				try {
+					//insertCustomersToSAP(receivedRecords.getCustomers());
+					//insertCustomerContactsToSAP(receivedRecords.getCustomerContacts());
 				} catch (Exception e) {
 					AppLogger.logError("failed to insert received records into to MSSQL server. " + e.getLocalizedMessage());
-				}*/
+				}
 			}
 			
 			@Override
@@ -332,7 +340,7 @@ class SyncHelper {
 		
 		RestServiceBuilder.switchToSalesforceApiBaseUrl();
 		this.syncDataService = new SyncDataService();
-		syncDataService.getFromSalesforce(getFromSalesforceCallback);
+		//syncDataService.getFromSalesforce(getFromSalesforceCallback);
 		
 		//TODO if a db query returns no results, write that on the logs
 		
@@ -343,6 +351,26 @@ class SyncHelper {
 			updateSalesforceWarehouses();
 		} catch (Exception t) {
 			AppLogger.logError("failed to fetch from the server. " + t.getLocalizedMessage());
+		}*/
+		
+		/*String json = "[{\"autoId\":0,\"A_R_Account__c\":\"C100018\",\"AccountNumber\":\"_SYS00000000314\",\"Active__c\":true,\"Available_Credit_Amount__c\":0.0,\"AddressID__c\":\"FLOWER AUCTION JAPN INC\",\"BillingCity\":\"TOKYO\",\"BillingCountry\":\"JP\",\"Credit_Limit__c\":0.0,\"CurrencyIsoCode\":\"EUR\",\"Description\":\"FLOWER AUCTION JAPAN Inc.(NEW)\",\"Email__c\":\"johnvermasen@floraholand.nl\",\"Group_Type__c\":\"Direct\",\"Id\":\"0010E00000NwTxmQAF\",\"Name\":\"FLOWER AUCTION JAPAN Inc.(NEW)\",\"Outstanding_Balance__c\":0.0,\"OwnerId\":\"0050N000007Ks77QAC\",\"Prepaid_Amount__c\":0.0,\"Pull_from_SAP__c\":false,\"Push_to_SAP__c\":false,\"ShippingCity\":\"TOKYO\",\"ShippingCountry\":\"JP\"}]";
+		
+		GsonBuilder builder = new GsonBuilder();
+		builder.registerTypeAdapter(Customer.class, new CustomerAdapter());
+		builder.setPrettyPrinting();
+		Gson gson = builder.create();
+		
+		
+		Type listType = new TypeToken<ArrayList<Customer>>() {
+		}.getType();
+		ArrayList<Customer> customers = gson.fromJson(json, listType);
+		
+		try {
+			//sapDbService.updateCustomerRecords(customers);
+			ArrayList<Customer> t = sapDbService.getRecordsWithoutNullOrEmptyColumn(Customer.class);
+			sapDbService.updateCustomerRecords(t);
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}*/
 		
 		

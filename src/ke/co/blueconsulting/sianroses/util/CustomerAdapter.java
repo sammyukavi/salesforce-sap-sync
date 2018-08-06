@@ -34,7 +34,7 @@ public class CustomerAdapter extends TypeAdapter<Customer> {
 			jsonWriter.value(customer.getActiveC());
 		}
 		
-		if (StringUtils.isNullOrEmpty(customer.getAvailableCreditAmount())) {
+		if (!StringUtils.isNullOrEmpty(customer.getAvailableCreditAmount())) {
 			jsonWriter.name("Available_Credit_Amount__c");
 			jsonWriter.value(customer.getAvailableCreditAmount());
 		}
@@ -64,13 +64,18 @@ public class CustomerAdapter extends TypeAdapter<Customer> {
 			jsonWriter.value(customer.getBillingState());
 		}
 		
-		if (StringUtils.isNullOrEmpty(customer.getCreditLimitC())) {
+		if (!StringUtils.isNullOrEmpty(customer.getCreditLimitC())) {
 			jsonWriter.name("Credit_Limit__c");
 			jsonWriter.value(customer.getCreditLimitC());
 		}
 		
+		/**
+		 * TODO When you fix the commented lines below. Also fix those in SAPDbService for updating customers
+		 */
+		
 		if (!StringUtils.isNullOrEmpty(customer.getCurrencyIsoCode())) {
-			jsonWriter.name("CurrencyIsoCode");
+			//jsonWriter.name("CurrencyIsoCode");
+			jsonWriter.name("Currency__c");
 			jsonWriter.value(customer.getCurrencyIsoCode());
 		}
 		
@@ -79,12 +84,12 @@ public class CustomerAdapter extends TypeAdapter<Customer> {
 			jsonWriter.value(customer.getDescription());
 		}
 		
-		if (!StringUtils.isNullOrEmpty(customer.getEmailC())) {
+		if (!StringUtils.isNullOrEmpty(customer.getEmailC()) && StringUtils.isValidEmailAddress(customer.getEmailC())) {
 			jsonWriter.name("Email__c");
 			jsonWriter.value(customer.getEmailC());
 		}
 		
-		if (StringUtils.isNullOrEmpty(customer.geteRPIdC())) {
+		if (!StringUtils.isNullOrEmpty(customer.geteRPIdC())) {
 			jsonWriter.name("ERP_ID__c");
 			jsonWriter.value(customer.geteRPIdC());
 		}
@@ -94,9 +99,9 @@ public class CustomerAdapter extends TypeAdapter<Customer> {
 			jsonWriter.value(customer.getGroupTypeC());
 		}
 		
-		if (!StringUtils.isNullOrEmpty(customer.getSalesforceId())) {
+		if (!StringUtils.isNullOrEmpty(customer.getSalesForceId())) {
 			jsonWriter.name("Id");
-			jsonWriter.value(customer.getSalesforceId());
+			jsonWriter.value(customer.getSalesForceId());
 		}
 		
 		if (!StringUtils.isNullOrEmpty(customer.getName())) {
@@ -104,18 +109,20 @@ public class CustomerAdapter extends TypeAdapter<Customer> {
 			jsonWriter.value(customer.getName());
 		}
 		
-		if (StringUtils.isNullOrEmpty(customer.getOutstandingBalanceC())) {
+		if (!StringUtils.isNullOrEmpty(customer.getOutstandingBalanceC())) {
 			jsonWriter.name("Outstanding_Balance__c");
 			jsonWriter.value(customer.getOutstandingBalanceC());
 		}
 		
 		if (!StringUtils.isNullOrEmpty(customer.getOwnerId())) {
-			jsonWriter.name("OwnerId");
+			//jsonWriter.name("OwnerId");
+			jsonWriter.name("SAP_OwnerId__c");
 			jsonWriter.value(customer.getOwnerId());
 		}
 		
 		if (!StringUtils.isNullOrEmpty(customer.getParentId())) {
-			jsonWriter.name("ParentId");
+			//jsonWriter.name("ParentId");
+			jsonWriter.name("Parent_Id__c");
 			jsonWriter.value(customer.getParentId());
 		}
 		
@@ -125,7 +132,8 @@ public class CustomerAdapter extends TypeAdapter<Customer> {
 		}
 		
 		if (!StringUtils.isNullOrEmpty(customer.getPaymentTermsC())) {
-			jsonWriter.name("Payment_Terms__c");
+			//jsonWriter.name("Payment_Terms__c");
+			jsonWriter.name("Payment_Terms_Code__c");
 			jsonWriter.value(customer.getPaymentTermsC());
 		}
 		
@@ -134,17 +142,17 @@ public class CustomerAdapter extends TypeAdapter<Customer> {
 			jsonWriter.value(customer.getPhone());
 		}
 		
-		if (StringUtils.isNullOrEmpty(customer.getPrepaidAmountC())) {
+		if (!StringUtils.isNullOrEmpty(customer.getPrepaidAmountC())) {
 			jsonWriter.name("Prepaid_Amount__c");
 			jsonWriter.value(customer.getPrepaidAmountC());
 		}
 		
-		if (StringUtils.isNullOrEmpty(customer.isPullFromSAPC())) {
+		if (!StringUtils.isNullOrEmpty(customer.isPullFromSAPC())) {
 			jsonWriter.name("Pull_from_SAP__c");
 			jsonWriter.value(customer.isPullFromSAPC());
 		}
 		
-		if (StringUtils.isNullOrEmpty(customer.isPushToSAPC())) {
+		if (!StringUtils.isNullOrEmpty(customer.isPushToSAPC())) {
 			jsonWriter.name("Push_to_SAP__c");
 			jsonWriter.value(customer.isPushToSAPC());
 		}
@@ -190,7 +198,7 @@ public class CustomerAdapter extends TypeAdapter<Customer> {
 				}
 				if ("Id".equals(fieldname)) {
 					jsonReader.peek();
-					customer.setSalesforceId(jsonReader.nextString());
+					customer.setSalesForceId(jsonReader.nextString());
 				} else if ("A_R_Account__c".equals(fieldname)) {
 					jsonReader.peek();
 					customer.setaRAccountC(jsonReader.nextString());
@@ -235,7 +243,7 @@ public class CustomerAdapter extends TypeAdapter<Customer> {
 					customer.setEmailC(jsonReader.nextString());
 				} else if ("ERP_ID__c".equals(fieldname)) {
 					jsonReader.peek();
-					customer.seteRPIdC(jsonReader.nextInt());
+					customer.seteRPIdC(jsonReader.nextString());
 				} else if ("Group_Type__c".equals(fieldname)) {
 					jsonReader.peek();
 					customer.setGroupTypeC(jsonReader.nextString());
@@ -292,7 +300,6 @@ public class CustomerAdapter extends TypeAdapter<Customer> {
 		} catch (IOException e) {
 			AppLogger.logError("An error occurred while trying to write a customer object. " + e.getLocalizedMessage());
 		}
-		
 		return customer;
 	}
 	

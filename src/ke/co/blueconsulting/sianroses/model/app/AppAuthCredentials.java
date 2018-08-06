@@ -57,7 +57,7 @@ public class AppAuthCredentials implements Serializable {
 	private String salesforceAccessToken;
 	
 	@DatabaseField(columnName = "salesforce_id")
-	private String salesforceId;
+	private String SalesForceId;
 	
 	@DatabaseField(columnName = "instance_url")
 	private String instanceUrl;
@@ -183,12 +183,12 @@ public class AppAuthCredentials implements Serializable {
 		this.salesforceAccessToken = salesforceAccessToken;
 	}
 	
-	public String getSalesforceId() {
-		return salesforceId;
+	public String getSalesForceId() {
+		return SalesForceId;
 	}
 	
-	public void setSalesforceId(String salesforceId) {
-		this.salesforceId = salesforceId;
+	public void setSalesForceId(String SalesForceId) {
+		this.SalesForceId = SalesForceId;
 	}
 	
 	public String getInstanceUrl() {
