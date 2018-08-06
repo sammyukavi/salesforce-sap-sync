@@ -189,8 +189,16 @@ public class Customer implements Serializable {
 		return salesforceId;
 	}
 	
+	public void setSalesforceId(String salesforceId) {
+		this.salesforceId = salesforceId;
+	}
+	
 	public String getName() {
 		return name;
+	}
+	
+	public void setName(String name) {
+		this.name = name;
 	}
 	
 	public String getaRAccountC() {
@@ -319,14 +327,6 @@ public class Customer implements Serializable {
 	
 	public void setGroupTypeC(String groupTypeC) {
 		this.groupTypeC = groupTypeC;
-	}
-	
-	public void setSalesforceId(String salesforceId) {
-		this.salesforceId = salesforceId;
-	}
-	
-	public void setName(String name) {
-		this.name = name;
 	}
 	
 	public double getOutstandingBalanceC() {
