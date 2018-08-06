@@ -9,7 +9,8 @@ public class Constants {
 	public static final String SQLITE_DATABASE_NAME = "production.db";
 	public static final String SALESFORCE_API_BASE_URL = "https://sianroses--Developer.cs89.my.salesforce.com/services/apexrest/";//With a forwardSlash. Very important!!!
 	public static final String SALESFORCE_AUTH_BASE_URL = "https://test.salesforce.com/";//With a forwardSlash. Very important!!!
-	static final String LOG_FILE_NAME = "Log.txt";
+	static final String APP_LOG_FILE_NAME = "Log.txt";
+	static final String SQL_LOG_FILE_NAME = "SQL_logs.txt";
 	
 	public static class Units {
 		

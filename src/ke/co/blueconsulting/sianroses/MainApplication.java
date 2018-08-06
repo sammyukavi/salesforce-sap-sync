@@ -1,5 +1,6 @@
 package ke.co.blueconsulting.sianroses;
 
+import com.j256.ormlite.logger.LocalLog;
 import ke.co.blueconsulting.sianroses.util.AppLogger;
 
 import java.awt.*;
@@ -16,13 +17,15 @@ public class MainApplication {
 	 */
 	public static void main(String[] args) {
 		
+AppLogger appLogger = 		AppLogger.getInstance();
+		
 		EventQueue.invokeLater(() -> {
 			try {
 				new SyncDashboard();
 				//new DrawSystemTrayIcon().displayTray();
 			} catch (Exception e) {
-				AppLogger.logError("An error occured while trying to start the application. " + e.getLocalizedMessage());
-				AppLogger.logInfo(e.getMessage());
+				appLogger.logError("An error occured while trying to start the application. " + e.getLocalizedMessage());
+				appLogger.logInfo(e.getMessage());
 				SyncDashboard.getInstance().showErrorMessage(getString(MESSAGE_FATAL_ERROR), getString(MESSAGE_FATAL_ERROR) + e.getMessage());
 			}
 		});

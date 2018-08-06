@@ -6,12 +6,12 @@ import java.io.IOException;
 import java.nio.file.Files;
 
 import static ke.co.blueconsulting.sianroses.util.Constants.APP_DIR_NAME;
-import static ke.co.blueconsulting.sianroses.util.Constants.LOG_FILE_NAME;
+import static ke.co.blueconsulting.sianroses.util.Constants.APP_LOG_FILE_NAME;
 
 public class ErrorLogFileWatcher extends FileWatcher {
 	
 	private String separator = File.separator;
-	private String fileName = System.getProperty("user.home") + separator + APP_DIR_NAME + separator + LOG_FILE_NAME;
+	private String fileName = System.getProperty("user.home") + separator + APP_DIR_NAME + separator + APP_LOG_FILE_NAME;
 	private JTextArea errorLogTextView;
 	
 	

@@ -403,9 +403,16 @@ public class SyncDashboard implements SyncContract.View {
 				databaseUsernameTextField, databasePasswordTextField, syncPeriodTextField, syncPeriodUnitComboBox,
 				salesforceClientIdTextField, salesforceClientSecretTextField, salesforceUsernameTextField,
 				salesforcePasswordTextField, salesforceSecurityTokenTextField, testConnectionButton,
-				saveConnectionButton, syncButton);
+				saveConnectionButton);
 		enableContainers(!isBusy, containerList);
-		syncButton.setEnabled(syncPresenter.hasCredentials());
+		//syncButton.setEnabled(syncPresenter.hasCredentials());
+		boolean hasCredentials = syncPresenter.hasCredentials();
+		
+		if(!isBusy && hasCredentials){
+			syncButton.setEnabled(true);
+		}else {
+			syncButton.setEnabled(false);
+		}
 		statusProgressBar.setVisible(isBusy);
 	}
 	
