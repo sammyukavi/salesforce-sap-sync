@@ -12,6 +12,7 @@ import ke.co.blueconsulting.sianroses.model.app.Response;
 import ke.co.blueconsulting.sianroses.model.app.SalesforceAuthCredentials;
 import ke.co.blueconsulting.sianroses.model.salesforce.*;
 import ke.co.blueconsulting.sianroses.util.AppLogger;
+import ke.co.blueconsulting.sianroses.util.Console;
 import ke.co.blueconsulting.sianroses.util.StringUtils;
 
 import java.sql.SQLException;
@@ -95,29 +96,48 @@ class SyncHelper {
 		}
 	}
 	
-	private void insertCustomersToSAP(ArrayList<Customer> customers) throws SQLException {
+	private void insertCustomersToSAP(ArrayList<Customer> customers) {
+		
 		ArrayList<Customer> insertedAndUpdatedCustomers = new ArrayList<>();
+		
 		if (customers.size() > 0) {
+			
 			customers = updateCustomerPushToSAPFields(customers);
-			insertedAndUpdatedCustomers = sapDbService.insertRecords(Customer.class, customers);
+			
+			try {
+				insertedAndUpdatedCustomers = sapDbService.insertRecords(Customer.class, customers);
+			
+			} catch (SQLException e) {
+			
+				AppLogger.logError("failed to insert received records into to MSSQL server. " + e.getLocalizedMessage());
+			
+			}
 		} else {
+			
 			AppLogger.logInfo("Received no customers from salesforce");
+		
 		}
+		
 		updateSalesforceCustomers(insertedAndUpdatedCustomers);
 	}
 	
-	private void updateSalesforceCustomers(ArrayList<Customer> customers) throws SQLException {
+	private void updateSalesforceCustomers(ArrayList<Customer> customers) {
 		
 		//get customers that exist in the SAP but not in Salesforce
-		ArrayList<Customer> unsyncedCustomers = updateCustomerPushToSAPFields(sapDbService.getRecordsWithoutNullOrEmptyColumn(Customer.class));
-		
-		if (unsyncedCustomers.size() > 0) {
-			//Add the unsynced customers to the salesforce customers
-			customers.addAll(unsyncedCustomers);
-		} else {
-			AppLogger.logInfo("Found 0 customers that need to be pushed to Salesforce");
+		ArrayList<Customer> unsyncedCustomers = null;
+		try {
+			unsyncedCustomers = updateCustomerPushToSAPFields(sapDbService.getRecordsWithoutNullOrEmptyColumn(Customer.class));
+			
+			if (unsyncedCustomers.size() > 0) {
+				//Add the unsynced customers to the salesforce customers
+				customers.addAll(unsyncedCustomers);
+			} else {
+				AppLogger.logInfo("Found 0 customers that need to be pushed to Salesforce");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			AppLogger.logError("Error fetching unsynced customers from SAP. "+e.getLocalizedMessage());
 		}
-		
 		if (customers.size() > 0) {
 			DataService.GetCallback<Response> callback = new DataService.GetCallback<Response>() {
 				@Override
@@ -149,22 +169,38 @@ class SyncHelper {
 		
 	}
 	
-	private void insertCustomerContactsToSAP(ArrayList<CustomerContacts> customerContacts) throws SQLException {
+	private void insertCustomerContactsToSAP(ArrayList<CustomerContacts> customerContacts) {
 		
-		customerContacts = updateCustomerContactsPushToSAPFields(customerContacts);
+		ArrayList<CustomerContacts> insertedAndUpdatedCustomers = new ArrayList<>();
 		
-		ArrayList<CustomerContacts> insertedAndUpdatedCustomers = sapDbService.insertRecords(CustomerContacts.class, customerContacts);
+		if(customerContacts.size()>0){
+			
+			customerContacts = updateCustomerContactsPushToSAPFields(customerContacts);
+			
+			try {
+				insertedAndUpdatedCustomers = sapDbService.insertRecords(CustomerContacts.class, customerContacts);
+			} catch (SQLException e) {
+				AppLogger.logError("Failed to insert customer contacts into the SAP: "+e.getLocalizedMessage());
+			}
+			
+		}else{
+			AppLogger.logInfo("Received no customers' contacts from salesforce");
+		}
 		
 		updateSalesforceContacts(insertedAndUpdatedCustomers);
-		
 	}
 	
-	private void updateSalesforceContacts(ArrayList<CustomerContacts> customerContacts) throws SQLException {
+	private void updateSalesforceContacts(ArrayList<CustomerContacts> customerContacts) {
 		
-		//get customers that exist in the SAP but not in Salesforce
-		ArrayList<CustomerContacts> unsyncedContacts = updateCustomerContactsPushToSAPFields(
-				sapDbService.getRecordsWithoutNullOrEmptyColumn(CustomerContacts.class, "CONTACTID")
-		);
+		ArrayList<CustomerContacts> unsyncedContacts = new ArrayList<>();
+		
+		try {
+			unsyncedContacts = updateCustomerContactsPushToSAPFields(
+					sapDbService.getRecordsWithoutNullOrEmptyColumn(CustomerContacts.class, "CONTACTID")
+			);
+		} catch (SQLException e) {
+			AppLogger.logError("Error fetching Contacts from SAP: "+e.getLocalizedMessage());
+		}
 		
 		//Add the contacts to the updated contacts
 		customerContacts.addAll(unsyncedContacts);
@@ -319,12 +355,8 @@ class SyncHelper {
 		DataService.GetCallback<Response> getFromSalesforceCallback = new DataService.GetCallback<Response>() {
 			@Override
 			public void onCompleted(Response receivedRecords) {
-				try {
 					//insertCustomersToSAP(receivedRecords.getCustomers());
-					//insertCustomerContactsToSAP(receivedRecords.getCustomerContacts());
-				} catch (Exception e) {
-					AppLogger.logError("failed to insert received records into to MSSQL server. " + e.getLocalizedMessage());
-				}
+					insertCustomerContactsToSAP(receivedRecords.getCustomerContacts());
 			}
 			
 			@Override
@@ -340,7 +372,7 @@ class SyncHelper {
 		
 		RestServiceBuilder.switchToSalesforceApiBaseUrl();
 		this.syncDataService = new SyncDataService();
-		//syncDataService.getFromSalesforce(getFromSalesforceCallback);
+		syncDataService.getFromSalesforce(getFromSalesforceCallback);
 		
 		//TODO if a db query returns no results, write that on the logs
 		

@@ -3,10 +3,8 @@ package ke.co.blueconsulting.sianroses.presenter;
 import ke.co.blueconsulting.sianroses.SyncDashboard;
 import ke.co.blueconsulting.sianroses.contract.SyncContract;
 import ke.co.blueconsulting.sianroses.data.DataService;
-import ke.co.blueconsulting.sianroses.data.RestServiceBuilder;
 import ke.co.blueconsulting.sianroses.model.app.AppAuthCredentials;
 import ke.co.blueconsulting.sianroses.model.app.SalesforceAuthCredentials;
-import ke.co.blueconsulting.sianroses.util.AppLogger;
 
 import java.sql.SQLException;
 
@@ -134,8 +132,8 @@ public class SyncPresenter extends SyncHelper implements SyncContract.Presenter 
 		
 		DataService.GetCallback<SalesforceAuthCredentials> authCallback = new DataService.GetCallback<SalesforceAuthCredentials>() {
 			@Override
-			public void onCompleted(SalesforceAuthCredentials serverResponse) {
-				saveSalesforceCredentials(serverResponse);
+			public void onCompleted(SalesforceAuthCredentials salesforceAuthCredentials) {
+				saveSalesforceCredentials(salesforceAuthCredentials);
 				syncDashboard.showSuccessMessage(getString(MESSAGE_CONNECTION_SUCCESSFUL));
 			}
 			
@@ -175,52 +173,7 @@ public class SyncPresenter extends SyncHelper implements SyncContract.Presenter 
 		if (hasAccessToken()) {
 			fetchFromTheServer();
 		} else {
-			requestAccessToken();
-		}
-	}
-	
-	private void requestAccessToken() {
-		addPreloader();
-		if (hasCredentials()) {
-			AppAuthCredentials credentials = authCredentialsDbService.getAppAuthCredentials();
-			DataService.GetCallback<SalesforceAuthCredentials> authCallback = new DataService.GetCallback<SalesforceAuthCredentials>() {
-				@Override
-				public void onCompleted(SalesforceAuthCredentials serverResponse) {
-					saveSalesforceCredentials(serverResponse);
-					performSync();
-				}
-				
-				@Override
-				public void onError(Throwable t) {
-					AppLogger.logInfo("Failed to get Salesforce access token. " + t.getMessage());
-				}
-				
-				@Override
-				public void always() {
-					removePreloader();
-				}
-			};
-			
-			addPreloader();
-			connectThread = new Thread(() -> {
-				try {
-					getAuthService().authenticate(credentials.getSalesforceClientId(), credentials.getSalesforceClientSecret(),
-							credentials.getSalesforceUsername(),
-							credentials.getSalesforcePassword(),
-							credentials.getSalesforceSecurityToken(), authCallback);
-				} catch (Exception e) {
-					AppLogger.logInfo("An error occurred when trying to get an access token. " + e.getMessage());
-				} finally {
-					RestServiceBuilder.switchToSalesforceApiBaseUrl();
-					try {
-						connectThread.join();
-					} catch (Exception ignored) {
-					}
-				}
-			});
-			connectThread.start();
-		} else {
-			AppLogger.logInfo("Cannot get access token from Salesforce. No Login Credentials Found");
+			syncDashboard.showSuccessMessage("Cannot get access token from Salesforce. No Login Credentials Found");
 		}
 	}
 }

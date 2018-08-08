@@ -7,28 +7,30 @@ import java.io.Serializable;
 
 public class SalesforceAuthCredentials implements Serializable {
 	
-	/**
-	 *
-	 */
 	private static final long serialVersionUID = 1L;
 	
 	@SerializedName("access_token")
+	@Expose
 	private String accessToken;
 	
-	@Expose
 	@SerializedName("id")
+	@Expose
 	private String id;
 	
 	@SerializedName("instance_url")
+	@Expose
 	private String instanceUrl;
 	
 	@SerializedName("issued_at")
+	@Expose
 	private String issuedAt;
 	
+	@SerializedName("signature")
 	@Expose
 	private String signature;
 	
 	@SerializedName("token_type")
+	@Expose
 	private String tokenType;
 	
 	public String getAccessToken() {

@@ -3,6 +3,7 @@ package ke.co.blueconsulting.sianroses.data.impl;
 import ke.co.blueconsulting.sianroses.data.BaseDataService;
 import ke.co.blueconsulting.sianroses.data.rest.SyncRestService;
 import ke.co.blueconsulting.sianroses.model.app.Response;
+import ke.co.blueconsulting.sianroses.util.Console;
 
 import static ke.co.blueconsulting.sianroses.util.Constants.DataTypeKeys.*;
 import static ke.co.blueconsulting.sianroses.util.Constants.RequestKeys.BEARER;
@@ -30,7 +31,8 @@ public class SyncDataService extends BaseDataService<Response, SyncRestService> 
 	}
 	
 	public void pushCustomersContactsToSalesforce(Response response, GetCallback<Response> callback) {
-		executeSingleTask(callback, restService.post(getToken(), CONTACTS, response));
+		Console.log(response);
+		//executeSingleTask(callback, restService.post(getToken(), CONTACTS, response));
 	}
 	
 	public void pushPriceListToSalesforce(Response response, GetCallback<Response> callback) {
