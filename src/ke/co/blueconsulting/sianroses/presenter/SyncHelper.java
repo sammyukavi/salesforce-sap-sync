@@ -126,7 +126,7 @@ class SyncHelper {
 		//get customers that exist in the SAP but not in Salesforce
 		ArrayList<Customer> unsyncedCustomers = null;
 		try {
-			unsyncedCustomers = updateCustomerPushToSAPFields(sapDbService.getRecordsWithoutNullOrEmptyColumn(Customer.class));
+			unsyncedCustomers = updateCustomerPushToSAPFields(sapDbService.getRecordsWithoutSalesforceId(Customer.class));
 			
 			if (unsyncedCustomers.size() > 0) {
 				//Add the unsynced customers to the salesforce customers
@@ -196,7 +196,7 @@ class SyncHelper {
 		
 		try {
 			unsyncedContacts = updateCustomerContactsPushToSAPFields(
-					sapDbService.getRecordsWithoutNullOrEmptyColumn(CustomerContacts.class, "CONTACTID")
+					sapDbService.getRecordsWithNullOrEmptyColumn(CustomerContacts.class, "SalesForceID")
 			);
 		} catch (SQLException e) {
 			AppLogger.logError("Error fetching Contacts from SAP: "+e.getLocalizedMessage());
@@ -399,7 +399,7 @@ class SyncHelper {
 		
 		try {
 			//sapDbService.updateCustomerRecords(customers);
-			ArrayList<Customer> t = sapDbService.getRecordsWithoutNullOrEmptyColumn(Customer.class);
+			ArrayList<Customer> t = sapDbService.getRecordsWithNullOrEmptyColumn(Customer.class);
 			sapDbService.updateCustomerRecords(t);
 		} catch (SQLException e) {
 			e.printStackTrace();

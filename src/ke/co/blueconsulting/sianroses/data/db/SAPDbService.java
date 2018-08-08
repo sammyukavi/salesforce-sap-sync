@@ -57,13 +57,13 @@ public class SAPDbService extends BaseDbService {
 		return insertedRecords;
 	}
 	
-	public <S> ArrayList<S> getRecordsWithoutNullOrEmptyColumn(Class<S> sClass) throws SQLException {
+	public <S> ArrayList<S> getRecordsWithoutSalesforceId(Class<S> sClass) throws SQLException {
 		String columnName = "SalesForceId";
-		return getRecordsWithoutNullOrEmptyColumn(sClass, columnName);
+		return getRecordsWithNullOrEmptyColumn(sClass, columnName);
 	}
 	
 	@SuppressWarnings("unchecked")
-	public <S> ArrayList<S> getRecordsWithoutNullOrEmptyColumn(Class<S> sClass, String columnName) throws SQLException {
+	public <S> ArrayList<S> getRecordsWithNullOrEmptyColumn(Class<S> sClass, String columnName) throws SQLException {
 		Dao<S, Integer> dao = createDao(sClass);
 		QueryBuilder<S, Integer> queryBuilder = dao.queryBuilder();
 		Where<S, Integer> where = queryBuilder.where();
@@ -250,9 +250,9 @@ public class SAPDbService extends BaseDbService {
 								updateBuilder.updateColumnValue("BIRTHDATE", customerContact.getBirthDate());
 							}
 							
-							if (!StringUtils.isNullOrEmpty(customerContact.getContactId())) {
+							/*if (!StringUtils.isNullOrEmpty(customerContact.getContactId())) {
 								updateBuilder.updateColumnValue("CONTACTID", customerContact.getContactId());
-							}
+							}*/
 							
 							if (!StringUtils.isNullOrEmpty(customerContact.getEmail())) {
 								updateBuilder.updateColumnValue("Email", customerContact.getEmail());

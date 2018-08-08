@@ -82,7 +82,7 @@ public class StringUtils {
 	public static String getString(String key) {
 		String string = null;
 		try {
-			string = ResourceBundle.getBundle("ke/co/blueconsulting/sianroses/resources/strings").getString(key);
+			string = ResourceBundle.getBundle("ke/co/blueconsulting/sianroses/resource/strings").getString(key);
 		} catch (MissingResourceException ignored) {
 		
 		}

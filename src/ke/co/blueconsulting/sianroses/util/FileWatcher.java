@@ -34,7 +34,7 @@ public abstract class FileWatcher {
 		// We obtain the file system of the Path
 		FileSystem fileSystem = folderPath.getFileSystem();
 		
-		// We create the new WatchService using the try-with-resources block
+		// We create the new WatchService using the try-with-resource block
 		try (WatchService service = fileSystem.newWatchService()) {
 			// We watch for modification events
 			folderPath.register(service, ENTRY_MODIFY);

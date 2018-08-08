@@ -1,10 +1,12 @@
-package ke.co.blueconsulting.sianroses.util;
+package ke.co.blueconsulting.sianroses.data.adapter;
 
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
 import ke.co.blueconsulting.sianroses.model.salesforce.Customer;
+import ke.co.blueconsulting.sianroses.util.AppLogger;
+import ke.co.blueconsulting.sianroses.util.StringUtils;
 
 import java.io.IOException;
 

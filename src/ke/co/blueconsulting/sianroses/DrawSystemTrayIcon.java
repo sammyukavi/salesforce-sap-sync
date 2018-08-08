@@ -29,7 +29,7 @@ class DrawSystemTrayIcon {
 		}
 		final PopupMenu popup = new PopupMenu();
 		final TrayIcon trayIcon
-				= new TrayIcon(createImage("/ke/co/blueconsulting/sianroses/resources/tray_icon.jpg", "tray icon"));
+				= new TrayIcon(createImage("/ke/co/blueconsulting/sianroses/resource/tray_icon.jpg", "tray icon"));
 		final SystemTray tray = SystemTray.getSystemTray();
 		
 		// Create a popup menu components

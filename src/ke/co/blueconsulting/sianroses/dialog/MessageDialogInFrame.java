@@ -1,4 +1,4 @@
-package ke.co.blueconsulting.sianroses.dialogs;
+package ke.co.blueconsulting.sianroses.dialog;
 
 import javax.swing.*;
 import javax.swing.text.BadLocationException;

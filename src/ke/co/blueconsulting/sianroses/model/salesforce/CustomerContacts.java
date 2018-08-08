@@ -2,16 +2,18 @@ package ke.co.blueconsulting.sianroses.model.salesforce;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.util.Calendar;
 
 /**
  * This model maps Salesforce accounts' contacts to SAP user accounts.
  * Sync for customer contacts is two way.
  */
+
 @DatabaseTable(tableName = "CUSTOMERCONTACTS")
 public class CustomerContacts implements Serializable {
 	
@@ -30,15 +32,20 @@ public class CustomerContacts implements Serializable {
 	@Expose
 	private String accountNumber;
 	
-	@DatabaseField(columnName = "BIRTHDATE")
+	@DatabaseField(columnName = "BIRTHDATE", dataType = DataType.SERIALIZABLE)
 	@SerializedName("Birthdate")
 	@Expose
-	private Date birthDate;
+	private java.util.Calendar birthDate;
 	
-	@DatabaseField(columnName = "CONTACTID")
+	/*@DatabaseField(columnName = "CONTACTID")
+	@SerializedName("CONTACTID")
+	@Expose
+	private String contactId;*/
+	
+	@DatabaseField(columnName = "SalesForceId")
 	@SerializedName("Id")
 	@Expose
-	private String contactId;
+	private String salesforceId;
 	
 	@DatabaseField(columnName = "Department")
 	@SerializedName("Department")
@@ -68,27 +75,27 @@ public class CustomerContacts implements Serializable {
 	@DatabaseField(columnName = "MailingCity")
 	@SerializedName("MailingCity")
 	@Expose
-	private Date mailingCity;
+	private String mailingCity;
 	
 	@DatabaseField(columnName = "MailingCountry")
 	@SerializedName("MailingCountry")
 	@Expose
-	private Date mailingCountry;
+	private String mailingCountry;
 	
 	@DatabaseField(columnName = "MailingPostalCode")
 	@SerializedName("MailingPostalCode")
 	@Expose
-	private Date mailingPostalCode;
+	private String mailingPostalCode;
 	
 	@DatabaseField(columnName = "MailingState")
 	@SerializedName("MailingState")
 	@Expose
-	private Date mailingState;
+	private String mailingState;
 	
 	@DatabaseField(columnName = "MailingStreet")
 	@SerializedName("MailingStreet")
 	@Expose
-	private Date mailingStreet;
+	private String mailingStreet;
 	
 	@DatabaseField(columnName = "Mobile")
 	@SerializedName("mobilePhone")
@@ -115,10 +122,6 @@ public class CustomerContacts implements Serializable {
 	@DatabaseField(columnName = "Title")
 	private String title;
 	
-	public void setPushToSap(boolean pushToSap) {
-		this.pushToSap = pushToSap;
-	}
-	
 	public int getAutoId() {
 		return autoId;
 	}
@@ -135,20 +138,20 @@ public class CustomerContacts implements Serializable {
 		this.accountId = accountId;
 	}
 	
-	public Date getBirthDate() {
+	public String getAccountNumber() {
+		return accountNumber;
+	}
+	
+	public void setAccountNumber(String accountNumber) {
+		this.accountNumber = accountNumber;
+	}
+	
+	public Calendar getBirthDate() {
 		return birthDate;
 	}
 	
-	public void setBirthDate(Date birthDate) {
+	public void setBirthDate(Calendar birthDate) {
 		this.birthDate = birthDate;
-	}
-	
-	public String getContactId() {
-		return contactId;
-	}
-	
-	public void setContactId(String contactId) {
-		this.contactId = contactId;
 	}
 	
 	public String getDepartment() {
@@ -191,43 +194,43 @@ public class CustomerContacts implements Serializable {
 		this.lastName = lastName;
 	}
 	
-	public Date getMailingCity() {
+	public String getMailingCity() {
 		return mailingCity;
 	}
 	
-	public void setMailingCity(Date mailingCity) {
+	public void setMailingCity(String mailingCity) {
 		this.mailingCity = mailingCity;
 	}
 	
-	public Date getMailingCountry() {
+	public String getMailingCountry() {
 		return mailingCountry;
 	}
 	
-	public void setMailingCountry(Date mailingCountry) {
+	public void setMailingCountry(String mailingCountry) {
 		this.mailingCountry = mailingCountry;
 	}
 	
-	public Date getMailingPostalCode() {
+	public String getMailingPostalCode() {
 		return mailingPostalCode;
 	}
 	
-	public void setMailingPostalCode(Date mailingPostalCode) {
+	public void setMailingPostalCode(String mailingPostalCode) {
 		this.mailingPostalCode = mailingPostalCode;
 	}
 	
-	public Date getMailingState() {
+	public String getMailingState() {
 		return mailingState;
 	}
 	
-	public void setMailingState(Date mailingState) {
+	public void setMailingState(String mailingState) {
 		this.mailingState = mailingState;
 	}
 	
-	public Date getMailingStreet() {
+	public String getMailingStreet() {
 		return mailingStreet;
 	}
 	
-	public void setMailingStreet(Date mailingStreet) {
+	public void setMailingStreet(String mailingStreet) {
 		this.mailingStreet = mailingStreet;
 	}
 	
@@ -251,6 +254,10 @@ public class CustomerContacts implements Serializable {
 		return pushToSap;
 	}
 	
+	public void setPushToSap(boolean pushToSap) {
+		this.pushToSap = pushToSap;
+	}
+	
 	public boolean isPullFromSap() {
 		return pullFromSap;
 	}
@@ -267,11 +274,11 @@ public class CustomerContacts implements Serializable {
 		this.title = title;
 	}
 	
-	public String getAccountNumber() {
-		return accountNumber;
+	public String getSalesforceId() {
+		return salesforceId;
 	}
 	
-	public void setAccountNumber(String accountNumber) {
-		this.accountNumber = accountNumber;
+	public void setSalesforceId(String salesforceId) {
+		this.salesforceId = salesforceId;
 	}
 }

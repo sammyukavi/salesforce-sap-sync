@@ -1,7 +1,7 @@
 package ke.co.blueconsulting.sianroses;
 
 import ke.co.blueconsulting.sianroses.contract.SyncContract;
-import ke.co.blueconsulting.sianroses.dialogs.MessageDialogInFrame;
+import ke.co.blueconsulting.sianroses.dialog.MessageDialogInFrame;
 import ke.co.blueconsulting.sianroses.model.app.AppAuthCredentials;
 import ke.co.blueconsulting.sianroses.presenter.SyncPresenter;
 import ke.co.blueconsulting.sianroses.util.AppLogger;

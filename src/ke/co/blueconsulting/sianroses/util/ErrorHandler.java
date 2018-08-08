@@ -1,6 +1,7 @@
 package ke.co.blueconsulting.sianroses.util;
 
 import ke.co.blueconsulting.sianroses.data.RestServiceBuilder;
+import ke.co.blueconsulting.sianroses.data.deserializer.ErrorsDeserializer;
 import ke.co.blueconsulting.sianroses.model.app.Error;
 import okhttp3.ResponseBody;
 import retrofit2.Converter;
@@ -8,7 +9,7 @@ import retrofit2.Response;
 
 import java.lang.annotation.Annotation;
 
-public class ErrorUtil {
+public class ErrorHandler {
 	
 	public static String parseError(Response<?> response) {
 		StringBuilder message = new StringBuilder();

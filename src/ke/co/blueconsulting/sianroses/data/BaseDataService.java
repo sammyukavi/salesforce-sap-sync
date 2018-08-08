@@ -2,7 +2,7 @@ package ke.co.blueconsulting.sianroses.data;
 
 import ke.co.blueconsulting.sianroses.data.db.AuthCredentialsDbService;
 import ke.co.blueconsulting.sianroses.util.AppLogger;
-import ke.co.blueconsulting.sianroses.util.ErrorUtil;
+import ke.co.blueconsulting.sianroses.util.ErrorHandler;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -59,7 +59,7 @@ public abstract class BaseDataService<M, R> implements DataService<M> {
 					}
 				} else {
 					try {
-						Throwable t = new Throwable(ErrorUtil.parseError(response));
+						Throwable t = new Throwable(ErrorHandler.parseError(response));
 						if (callback != null) {
 							callback.onError(t);
 						}

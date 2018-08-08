@@ -51,10 +51,6 @@ public class Response implements Serializable {
 	@Expose
 	private ArrayList<PackingList> packingList = new ArrayList<>();
 	
-	public Response() {
-	
-	}
-	
 	public static Response setPriceList(ArrayList<PriceList> priceList) {
 		instance.priceList = priceList;
 		return instance;

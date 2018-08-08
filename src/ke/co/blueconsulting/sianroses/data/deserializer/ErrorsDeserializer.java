@@ -1,10 +1,11 @@
-package ke.co.blueconsulting.sianroses.util;
+package ke.co.blueconsulting.sianroses.data.deserializer;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 import ke.co.blueconsulting.sianroses.model.app.Error;
+import ke.co.blueconsulting.sianroses.util.StringUtils;
 
 import java.lang.reflect.Type;
 import java.util.Arrays;
@@ -35,7 +36,7 @@ public class ErrorsDeserializer implements JsonDeserializer<ErrorsDeserializer.E
 			this.errors = Arrays.asList(errors);
 		}
 		
-		List<Error> getErrors() {
+		public List<Error> getErrors() {
 			return errors;
 		}
 		
