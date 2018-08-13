@@ -361,6 +361,8 @@ class SyncHelper {
 			@Override
 			public void onError(Throwable t) {
 				AppLogger.logError("failed to fetch from the server. " + t.getLocalizedMessage());
+				//syncDashboard.showToolTip(t.getLocalizedMessage(), Constants.MESSAGE_CODES.ERROR);
+				//Console.log();
 			}
 			
 			@Override

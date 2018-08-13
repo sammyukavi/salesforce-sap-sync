@@ -19,6 +19,14 @@ public class Constants {
 		public static final int CONNECT_TIME_OUT_MINUTES = 10;
 	}
 	
+	public static class MESSAGE_CODES {
+		
+		public static final int NONE = 0;
+		public static final int INFO = 1;
+		public static final int WARNING = 2;
+		public static final int ERROR = 3;
+	}
+	
 	public static class RequestKeys {
 		
 		public static final String CLIENT_ID = "client_id";

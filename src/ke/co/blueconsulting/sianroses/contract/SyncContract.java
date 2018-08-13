@@ -17,6 +17,8 @@ public class SyncContract {
 		void updateUiFields(AppAuthCredentials appAuthCredentialsData);
 		
 		void showSuccessMessage(String message);
+		
+		void showToolTip(String message, int code);
 	}
 	
 	public interface Presenter {

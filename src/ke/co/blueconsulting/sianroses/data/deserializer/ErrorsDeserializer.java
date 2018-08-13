@@ -13,26 +13,26 @@ import java.util.List;
 
 import static ke.co.blueconsulting.sianroses.util.Constants.BundleKeys.MESSAGE_UNSUPPORTED_ELEMENT;
 
-public class ErrorsDeserializer implements JsonDeserializer<ErrorsDeserializer.Errors> {
+public class ErrorsDeserializer implements JsonDeserializer<ErrorsDeserializer.Parser> {
 	
 	@Override
-	public Errors deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws
+	public Parser deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws
 			JsonParseException {
 		if (json.isJsonArray()) {
-			return new Errors((Error[]) context.deserialize(json.getAsJsonArray(), Error[].class));
+			return new Parser((Error[]) context.deserialize(json.getAsJsonArray(), Error[].class));
 		} else if (json.isJsonObject()) {
-			return new Errors((Error) context.deserialize(json.getAsJsonObject(), Error.class));
+			return new Parser((Error) context.deserialize(json.getAsJsonObject(), Error.class));
 		} else {
 			throw new JsonParseException(StringUtils.getString(MESSAGE_UNSUPPORTED_ELEMENT));
 		}
 	}
 	
 	
-	public static class Errors {
+	public static class Parser {
 		
 		private List<Error> errors;
 		
-		Errors(Error... errors) {
+		Parser(Error... errors) {
 			this.errors = Arrays.asList(errors);
 		}
 		

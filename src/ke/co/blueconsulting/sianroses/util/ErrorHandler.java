@@ -13,11 +13,12 @@ public class ErrorHandler {
 	
 	public static String parseError(Response<?> response) {
 		StringBuilder message = new StringBuilder();
-		Converter<ResponseBody, ErrorsDeserializer.Errors> converter = RestServiceBuilder.retrofit()
-				.responseBodyConverter(ErrorsDeserializer.Errors.class, new Annotation[0]);
+		Converter<ResponseBody, ErrorsDeserializer.Parser> converter = RestServiceBuilder.retrofit()
+				.responseBodyConverter(ErrorsDeserializer.Parser.class, new Annotation[0]);
 		try {
-			ErrorsDeserializer.Errors serverResponse = converter.convert(response.errorBody());
+			ErrorsDeserializer.Parser serverResponse = converter.convert(response.errorBody());
 			for (Error error : serverResponse.getErrors()) {
+				
 				if (!StringUtils.isBlank(error.getErrorDescription()) && !StringUtils.isNullOrEmpty(error
 						.getErrorDescription())) {
 					message.append(error.getErrorDescription());
@@ -30,7 +31,6 @@ public class ErrorHandler {
 		} catch (Exception e) {
 			AppLogger.logError("An error occurred when trying to desirialize the returned server error. " + e.getLocalizedMessage());
 		}
-		
 		return message.toString();
 	}
 }

@@ -551,4 +551,22 @@ public class SyncDashboard implements SyncContract.View {
 		}
 		return isValid;
 	}
+	
+	@Override
+	public void showToolTip(String message, int code) {
+		switch (code) {
+			case MESSAGE_CODES.INFO:
+				SianRosesApp.displayInfoMessage(message);
+				break;
+			case MESSAGE_CODES.WARNING:
+				SianRosesApp.displayWarningMessage(message);
+				break;
+			case MESSAGE_CODES.ERROR:
+				SianRosesApp.displayErrorMessage(message);
+				break;
+			default:
+				SianRosesApp.displayOrdinaryMessage(message);
+				break;
+		}
+	}
 }

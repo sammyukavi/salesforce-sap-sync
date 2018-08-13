@@ -58,15 +58,9 @@ public abstract class BaseDataService<M, R> implements DataService<M> {
 						callback.onCompleted(response.body());
 					}
 				} else {
-					try {
-						Throwable t = new Throwable(ErrorHandler.parseError(response));
-						if (callback != null) {
-							callback.onError(t);
-						}
-					} catch (Exception t) {
-						if (callback != null) {
-							callback.onError(t);
-						}
+					Throwable t = new Throwable(ErrorHandler.parseError(response));
+					if (callback != null) {
+						callback.onError(t);
 					}
 				}
 			}
