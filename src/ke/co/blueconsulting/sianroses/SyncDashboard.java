@@ -12,6 +12,7 @@ import javax.swing.*;
 import javax.swing.plaf.basic.BasicTabbedPaneUI;
 import javax.swing.text.DefaultCaret;
 import java.awt.*;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -32,30 +33,22 @@ public class SyncDashboard implements SyncContract.View {
 			salesforceUsernameTextField, salesforceSecurityTokenTextField;
 	private JPasswordField databasePasswordTextField, salesforcePasswordTextField;
 	private JComboBox syncPeriodUnitComboBox;
-	private JFrame dashboardJFrame;
+	static JFrame dashboardJFrame;
+	private SianRosesApp application;
 	
 	
 	/**
 	 * @wbp.parser.entryPoint
 	 */
-	SyncDashboard() throws Exception {
+	SyncDashboard() {
+	
+	}
+	
+	SyncDashboard(SianRosesApp application) throws SQLException, ClassNotFoundException {
+		this.application = application;
 		this.syncPeriodUnits = getString(SYNC_PERIOD_UNITS).split(",");
 		this.syncPresenter = new SyncPresenter(this);
 		initViews();
-	}
-	
-	private SyncDashboard(boolean blankNewInstance) {
-		if (!blankNewInstance) {
-			try {
-				new SyncDashboard();
-			} catch (Exception ignored) {
-			
-			}
-		}
-	}
-	
-	static SyncDashboard getInstance() {
-		return new SyncDashboard(true);
 	}
 	
 	private void initViews() {
@@ -63,7 +56,9 @@ public class SyncDashboard implements SyncContract.View {
 		dashboardJFrame.setResizable(false);
 		dashboardJFrame.setTitle(getString(LABEL_APP_NAME));
 		dashboardJFrame.setBounds(100, 100, 600, 410);
-		dashboardJFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		//dashboardJFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		dashboardJFrame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
+		dashboardJFrame.setIconImage(application.getSianRosesIcon().getImage());
 		dashboardJFrame.getContentPane().setLayout(null);
 		dashboardJFrame.setLocationRelativeTo(null);
 		dashboardJFrame.getContentPane().setLayout(null);

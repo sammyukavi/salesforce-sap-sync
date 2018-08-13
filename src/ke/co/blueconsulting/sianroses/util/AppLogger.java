@@ -17,10 +17,8 @@ import static ke.co.blueconsulting.sianroses.util.Constants.BundleKeys.LABEL_APP
 public class AppLogger {
 	
 	private static Logger logger;
-	private static AppLogger instance;
 	
 	static {
-		instance = new AppLogger();
 		logger = Logger.getLogger(StringUtils.getString(LABEL_APP_NAME));
 		logger.setUseParentHandlers(false);
 		try {
@@ -54,7 +52,5 @@ public class AppLogger {
 		logger.log(Level.SEVERE, message);
 	}
 	
-	public static AppLogger getInstance() {
-		return instance;
-	}
+	
 }

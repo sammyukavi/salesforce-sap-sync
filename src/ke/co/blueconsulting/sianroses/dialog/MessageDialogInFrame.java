@@ -8,17 +8,26 @@ import java.awt.*;
 
 public class MessageDialogInFrame {
 	
-	public static void showMessageDialog(JFrame frame, String message, String title, int ERROR_MESSAGE) {
+	private static JTextPane getTextPane(String message) {
 		JTextPane jTextPane = new JTextPane();
-		jTextPane.setBackground(frame.getBackground());
+		jTextPane.setBackground(new Color(0, 255, 0, 0));
+		jTextPane.setEditable(false);
 		Document doc = jTextPane.getDocument();
 		try {
 			doc.insertString(doc.getLength(), message, new SimpleAttributeSet());
-			jTextPane.setSize(new Dimension(480, 10));
-			jTextPane.setPreferredSize(new Dimension(480, jTextPane.getPreferredSize().height));
-			JOptionPane.showMessageDialog(frame, jTextPane, title, ERROR_MESSAGE);
-		} catch (BadLocationException ex) {
-			//Logger.getLogger(MessageDialogInFrame.class.getName()).log(Level.SEVERE, null, ex);
+		} catch (BadLocationException e) {
+			e.printStackTrace();
 		}
+		jTextPane.setSize(new Dimension(480, 10));
+		jTextPane.setPreferredSize(new Dimension(480, jTextPane.getPreferredSize().height));
+		return jTextPane;
+	}
+	
+	public static void showMessageDialog(JFrame frame, String message, String title, int ERROR_MESSAGE) {
+		JOptionPane.showMessageDialog(frame, getTextPane(message), title, ERROR_MESSAGE);
+	}
+	
+	public static void showMessageDialog(JFrame frame, String message, String title, int ERROR_MESSAGE, ImageIcon icon) {
+		JOptionPane.showMessageDialog(frame, getTextPane(message), title, ERROR_MESSAGE, icon);
 	}
 }

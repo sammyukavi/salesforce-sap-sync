@@ -2,10 +2,10 @@ package ke.co.blueconsulting.sianroses.data;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import ke.co.blueconsulting.sianroses.data.adapter.CustomerContactsAdapter;
-import ke.co.blueconsulting.sianroses.model.salesforce.Customer;
 import ke.co.blueconsulting.sianroses.data.adapter.CustomerAdapter;
+import ke.co.blueconsulting.sianroses.data.adapter.CustomerContactsAdapter;
 import ke.co.blueconsulting.sianroses.data.deserializer.ErrorsDeserializer;
+import ke.co.blueconsulting.sianroses.model.salesforce.Customer;
 import ke.co.blueconsulting.sianroses.model.salesforce.CustomerContacts;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -61,7 +61,7 @@ public class RestServiceBuilder {
 	private static Retrofit.Builder getRetrofitBuilder() {
 		return new Retrofit.Builder()
 				.addConverterFactory(buildGsonConverter())
-				.client(getUnsafeOkHttpClient());
+				.client(getSafeOkHttpClient());
 	}
 	
 	private static OkHttpClient.Builder getOkHttpClientBuilder() {

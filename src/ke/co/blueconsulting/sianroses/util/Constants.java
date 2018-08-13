@@ -86,6 +86,7 @@ public class Constants {
 		public static final String BTN_SAVE = "buttons.save";
 		public static final String BTN_SYNC = "button.sync";
 		public static final String SYNC_PERIOD_UNITS = "units.sync_period";
+		public static final String TITLE_ABOUT = "title.about";
 	}
 	
 }
