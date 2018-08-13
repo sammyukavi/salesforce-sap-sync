@@ -23,6 +23,7 @@ import static ke.co.blueconsulting.sianroses.util.StringUtils.getString;
 
 public class SyncDashboard implements SyncContract.View {
 	
+	static JFrame dashboardJFrame;
 	private JButton testConnectionButton, saveConnectionButton, syncButton;
 	private JProgressBar statusProgressBar;
 	private String tabOnView = DATABASE_SERVER_CONFIGURATION_TAB;
@@ -33,22 +34,27 @@ public class SyncDashboard implements SyncContract.View {
 			salesforceUsernameTextField, salesforceSecurityTokenTextField;
 	private JPasswordField databasePasswordTextField, salesforcePasswordTextField;
 	private JComboBox syncPeriodUnitComboBox;
-	static JFrame dashboardJFrame;
-	private SianRosesApp application;
+	private JTabbedPane tabsContainer;
 	
 	
 	/**
 	 * @wbp.parser.entryPoint
 	 */
-	SyncDashboard() {
-	
-	}
-	
-	SyncDashboard(SianRosesApp application) throws SQLException, ClassNotFoundException {
-		this.application = application;
+	SyncDashboard() throws SQLException, ClassNotFoundException {
 		this.syncPeriodUnits = getString(SYNC_PERIOD_UNITS).split(",");
 		this.syncPresenter = new SyncPresenter(this);
 		initViews();
+	}
+	
+	static void bringToFront() {
+		dashboardJFrame.setVisible(true);
+		dashboardJFrame.setFocusable(true);
+		dashboardJFrame.requestFocus();
+	}
+	
+	void switchToLogsTab() {
+		bringToFront();
+		tabsContainer.setSelectedIndex(2);
 	}
 	
 	private void initViews() {
@@ -58,13 +64,13 @@ public class SyncDashboard implements SyncContract.View {
 		dashboardJFrame.setBounds(100, 100, 600, 410);
 		//dashboardJFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		dashboardJFrame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
-		dashboardJFrame.setIconImage(application.getSianRosesIcon().getImage());
+		dashboardJFrame.setIconImage(SianRosesApp.getSianRosesIcon().getImage());
 		dashboardJFrame.getContentPane().setLayout(null);
 		dashboardJFrame.setLocationRelativeTo(null);
 		dashboardJFrame.getContentPane().setLayout(null);
 		
-		JTabbedPane tabbedPane = new JTabbedPane();
-		tabbedPane.setUI(new BasicTabbedPaneUI() {
+		tabsContainer = new JTabbedPane();
+		tabsContainer.setUI(new BasicTabbedPaneUI() {
 			private final Insets borderInsets = new Insets(0, 0, 0, 0);
 			
 			@Override
@@ -76,21 +82,21 @@ public class SyncDashboard implements SyncContract.View {
 				return borderInsets;
 			}
 		});
-		tabbedPane.setBounds(0, 0, 598, 320);
-		tabbedPane.setAlignmentY(Component.BOTTOM_ALIGNMENT);
-		tabbedPane.setAlignmentX(Component.RIGHT_ALIGNMENT);
+		tabsContainer.setBounds(0, 0, 598, 320);
+		tabsContainer.setAlignmentY(Component.BOTTOM_ALIGNMENT);
+		tabsContainer.setAlignmentX(Component.RIGHT_ALIGNMENT);
 		
-		tabbedPane.addTab(getString(TAB_DATABASE_SERVER_CONFIG), null, makeDbServerConfigPanel());
+		tabsContainer.addTab(getString(TAB_DATABASE_SERVER_CONFIG), null, makeDbServerConfigPanel());
 		
-		tabbedPane.addTab(getString(TAB_SALESFORCE_CONFIG), null, makeSalesforceConfigPanel());
+		tabsContainer.addTab(getString(TAB_SALESFORCE_CONFIG), null, makeSalesforceConfigPanel());
 		
-		tabbedPane.addTab(getString(TAB_APP_LOGVIEW), null, makeAppLogViewPanel());
+		tabsContainer.addTab(getString(TAB_APP_LOGVIEW), null, makeAppLogViewPanel());
 		
-		tabbedPane.addChangeListener(e -> {
-			updateTabButtons(tabbedPane.getSelectedIndex());
+		tabsContainer.addChangeListener(e -> {
+			updateTabButtons(tabsContainer.getSelectedIndex());
 		});
 		
-		dashboardJFrame.getContentPane().add(tabbedPane);
+		dashboardJFrame.getContentPane().add(tabsContainer);
 		
 		statusProgressBar = new JProgressBar();
 		statusProgressBar.setBounds(12, 324, 574, 20);

@@ -14,20 +14,15 @@ import static ke.co.blueconsulting.sianroses.util.StringUtils.getString;
 
 public class SianRosesApp {
 	
-	private static SianRosesApp application;
-	private TrayIcon trayIcon;
-	private boolean systemTrayIsSupported = false;
-	
-	private SianRosesApp() {
-		drawSystemTrayIcon();
-	}
+	//private static SianRosesApp application;
+	private static SyncDashboard syncDashboard;
+	private static TrayIcon trayIcon;
+	private static boolean systemTrayIsSupported = false;
 	
 	/**
 	 * The start point of the application
 	 */
 	public static void main(String[] args) {
-		
-		application = new SianRosesApp();
 		
 		try {
 			for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -43,24 +38,17 @@ public class SianRosesApp {
 		
 		EventQueue.invokeLater(() -> {
 			try {
-				new SyncDashboard(application);
+				drawSystemTrayIcon();
+				syncDashboard = new SyncDashboard();
 			} catch (Exception e) {
 				AppLogger.logError("An error occured while trying to start the application. " + e.getLocalizedMessage());
 			}
 		});
 	}
 	
-	private static ImageIcon createIcon(String fileName, String description) {
-		URL imageURL = SyncDashboard.class.getResource("/ke/co/blueconsulting/sianroses/resource/" + fileName);
-		if (imageURL == null) {
-			AppLogger.logError("Resource not found: " + fileName);
-			return null;
-		} else {
-			return (new ImageIcon(imageURL, description));
-		}
-	}
 	
-	private void drawSystemTrayIcon() {
+	
+	private static void drawSystemTrayIcon() {
 		
 		systemTrayIsSupported = SystemTray.isSupported();
 		
@@ -74,11 +62,14 @@ public class SianRosesApp {
 		trayIcon.setToolTip(getString(LABEL_APP_NAME));
 		
 		MenuItem bringToFrontMenuItem = new MenuItem("Show The Dashboard");
+		MenuItem showLogsMenuItem = new MenuItem("View Log");
 		MenuItem aboutMenuItem = new MenuItem("About");
 		MenuItem exitMenuItem = new MenuItem("Exit");
 		
 		PopupMenu popup = new PopupMenu();
 		popup.add(bringToFrontMenuItem);
+		popup.addSeparator();
+		popup.add(showLogsMenuItem);
 		popup.addSeparator();
 		popup.add(aboutMenuItem);
 		popup.addSeparator();
@@ -90,20 +81,24 @@ public class SianRosesApp {
 		try {
 			systemTray.add(trayIcon);
 		} catch (AWTException e) {
-			System.out.println("TrayIcon could not be added.");
+			AppLogger.logInfo("TrayIcon could not be added.");
 			return;
 		}
 		
+		trayIcon.addActionListener(e -> {
+			SyncDashboard.bringToFront();
+		});
+		
 		bringToFrontMenuItem.addActionListener(e -> {
-			if (SyncDashboard.dashboardJFrame != null) {
-				SyncDashboard.dashboardJFrame.setVisible(true);
-				SyncDashboard.dashboardJFrame.setFocusable(true);
-				SyncDashboard.dashboardJFrame.requestFocus();
-			}
+			SyncDashboard.bringToFront();
 		});
 		
 		aboutMenuItem.addActionListener(e -> {
 			MessageDialogInFrame.showMessageDialog(SyncDashboard.dashboardJFrame, breakLongString("Sian Roses Salesforce Integration App.\n\nv 1.0\n\nPowered by Blue Consulting"), getString(TITLE_ABOUT), JOptionPane.INFORMATION_MESSAGE, getSianRosesIcon());
+		});
+		
+		showLogsMenuItem.addActionListener(e -> {
+			syncDashboard.switchToLogsTab();
 		});
 		
 		
@@ -117,35 +112,45 @@ public class SianRosesApp {
 		});
 	}
 	
-	void displayErrorMessage(String message) {
+	static 	void displayErrorMessage(String message) {
 		if (systemTrayIsSupported) {
 			trayIcon.displayMessage(getString(LABEL_APP_NAME), message, TrayIcon.MessageType.ERROR);
 		}
 	}
 	
-	void displayWarningMessage(String message) {
+	static 	void displayWarningMessage(String message) {
 		if (systemTrayIsSupported) {
 			trayIcon.displayMessage(getString(LABEL_APP_NAME), message, TrayIcon.MessageType.WARNING);
 		}
 	}
 	
-	void displayInfoMessage(String message) {
+	static 	void displayInfoMessage(String message) {
 		if (systemTrayIsSupported) {
 			trayIcon.displayMessage(getString(LABEL_APP_NAME), message, TrayIcon.MessageType.INFO);
 		}
 	}
 	
-	void displayOrdinaryMessage(String message) {
+	static 	void displayOrdinaryMessage(String message) {
 		if (systemTrayIsSupported) {
 			trayIcon.displayMessage(getString(LABEL_APP_NAME), message, TrayIcon.MessageType.NONE);
 		}
 	}
 	
-	ImageIcon getSianRosesIcon() {
-		return createIcon("sian_roses_icon.jpg", "Sian Roses App Tray Icon");
+	private static ImageIcon createIcon(String fileName, String description) {
+		URL imageURL = SyncDashboard.class.getResource("/ke/co/blueconsulting/sianroses/resource/" + fileName);
+		if (imageURL == null) {
+			AppLogger.logError("Resource not found: " + fileName);
+			return null;
+		} else {
+			return (new ImageIcon(imageURL, description));
+		}
 	}
 	
-	public ImageIcon getBlueConsultingIcon() {
+	static ImageIcon getBlueConsultingIcon() {
 		return createIcon("blue_consulting_icon.jpg", "Blue Consulting Icon");
+	}
+	
+	static ImageIcon getSianRosesIcon() {
+		return createIcon("sian_roses_icon.jpg", "Sian Roses App Tray Icon");
 	}
 }

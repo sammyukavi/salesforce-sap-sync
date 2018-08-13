@@ -5,8 +5,6 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
 import ke.co.blueconsulting.sianroses.model.salesforce.CustomerContacts;
-import ke.co.blueconsulting.sianroses.model.salesforce.CustomerContacts;
-import ke.co.blueconsulting.sianroses.model.salesforce.CustomerContacts;
 import ke.co.blueconsulting.sianroses.util.AppLogger;
 import ke.co.blueconsulting.sianroses.util.StringUtils;
 

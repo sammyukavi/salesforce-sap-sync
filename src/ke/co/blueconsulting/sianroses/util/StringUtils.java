@@ -60,7 +60,7 @@ public class StringUtils {
 				if (i > rest.length()) {
 					i = rest.length();
 				}
-				output.append(rest.substring(0, i)).append("\n");
+				output.append(rest, 0, i).append("\n");
 				rest = rest.substring(i);
 			} while ((rest.length() > charLimit));
 			output.append(rest);
@@ -93,10 +93,6 @@ public class StringUtils {
 		
 		Pattern regexPattern = Pattern.compile("^[(a-zA-Z-0-9-\\_\\+\\.)]+@[(a-z-A-z)]+\\.[(a-zA-z)]{2,3}$");
 		Matcher regMatcher = regexPattern.matcher(emailAddress);
-		if (regMatcher.matches()) {
-			return true;
-		} else {
-			return false;
-		}
+		return regMatcher.matches();
 	}
 }

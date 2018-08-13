@@ -12,7 +12,6 @@ import ke.co.blueconsulting.sianroses.model.app.Response;
 import ke.co.blueconsulting.sianroses.model.app.SalesforceAuthCredentials;
 import ke.co.blueconsulting.sianroses.model.salesforce.*;
 import ke.co.blueconsulting.sianroses.util.AppLogger;
-import ke.co.blueconsulting.sianroses.util.Console;
 import ke.co.blueconsulting.sianroses.util.StringUtils;
 
 import java.sql.SQLException;
@@ -106,16 +105,16 @@ class SyncHelper {
 			
 			try {
 				insertedAndUpdatedCustomers = sapDbService.insertRecords(Customer.class, customers);
-			
+				
 			} catch (SQLException e) {
-			
+				
 				AppLogger.logError("failed to insert received records into to MSSQL server. " + e.getLocalizedMessage());
-			
+				
 			}
 		} else {
 			
 			AppLogger.logInfo("Received no customers from salesforce");
-		
+			
 		}
 		
 		updateSalesforceCustomers(insertedAndUpdatedCustomers);
@@ -136,7 +135,7 @@ class SyncHelper {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-			AppLogger.logError("Error fetching unsynced customers from SAP. "+e.getLocalizedMessage());
+			AppLogger.logError("Error fetching unsynced customers from SAP. " + e.getLocalizedMessage());
 		}
 		if (customers.size() > 0) {
 			DataService.GetCallback<Response> callback = new DataService.GetCallback<Response>() {
@@ -173,17 +172,17 @@ class SyncHelper {
 		
 		ArrayList<CustomerContacts> insertedAndUpdatedCustomers = new ArrayList<>();
 		
-		if(customerContacts.size()>0){
+		if (customerContacts.size() > 0) {
 			
 			customerContacts = updateCustomerContactsPushToSAPFields(customerContacts);
 			
 			try {
 				insertedAndUpdatedCustomers = sapDbService.insertRecords(CustomerContacts.class, customerContacts);
 			} catch (SQLException e) {
-				AppLogger.logError("Failed to insert customer contacts into the SAP: "+e.getLocalizedMessage());
+				AppLogger.logError("Failed to insert customer contacts into the SAP: " + e.getLocalizedMessage());
 			}
 			
-		}else{
+		} else {
 			AppLogger.logInfo("Received no customers' contacts from salesforce");
 		}
 		
@@ -199,7 +198,7 @@ class SyncHelper {
 					sapDbService.getRecordsWithNullOrEmptyColumn(CustomerContacts.class, "SalesForceID")
 			);
 		} catch (SQLException e) {
-			AppLogger.logError("Error fetching Contacts from SAP: "+e.getLocalizedMessage());
+			AppLogger.logError("Error fetching Contacts from SAP: " + e.getLocalizedMessage());
 		}
 		
 		//Add the contacts to the updated contacts
@@ -355,8 +354,8 @@ class SyncHelper {
 		DataService.GetCallback<Response> getFromSalesforceCallback = new DataService.GetCallback<Response>() {
 			@Override
 			public void onCompleted(Response receivedRecords) {
-					//insertCustomersToSAP(receivedRecords.getCustomers());
-					insertCustomerContactsToSAP(receivedRecords.getCustomerContacts());
+				//insertCustomersToSAP(receivedRecords.getCustomers());
+				insertCustomerContactsToSAP(receivedRecords.getCustomerContacts());
 			}
 			
 			@Override
