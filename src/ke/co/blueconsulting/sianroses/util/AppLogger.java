@@ -41,15 +41,15 @@ public class AppLogger {
 	}
 	
 	public static void logInfo(String message) {
-		logger.info(message);
+		logger.info(message + "\n");
 	}
 	
 	public static void logWarning(String message) {
-		logger.log(Level.WARNING, message);
+		logger.log(Level.WARNING, message + "\n");
 	}
 	
 	public static void logError(String message) {
-		logger.log(Level.SEVERE, message);
+		logger.log(Level.SEVERE, message + "\n");
 	}
 	
 	

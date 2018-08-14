@@ -9,7 +9,6 @@ import ke.co.blueconsulting.sianroses.util.ErrorLogFileWatcher;
 import ke.co.blueconsulting.sianroses.util.StringUtils;
 
 import javax.swing.*;
-import javax.swing.plaf.basic.BasicTabbedPaneUI;
 import javax.swing.text.DefaultCaret;
 import java.awt.*;
 import java.sql.SQLException;
@@ -21,6 +20,7 @@ import static ke.co.blueconsulting.sianroses.util.Constants.BundleKeys.*;
 import static ke.co.blueconsulting.sianroses.util.Constants.*;
 import static ke.co.blueconsulting.sianroses.util.StringUtils.getString;
 
+@SuppressWarnings("unused")
 public class SyncDashboard implements SyncContract.View {
 	
 	static JFrame dashboardJFrame;
@@ -33,7 +33,7 @@ public class SyncDashboard implements SyncContract.View {
 			syncPeriodTextField, salesforceClientIdTextField, salesforceClientSecretTextField,
 			salesforceUsernameTextField, salesforceSecurityTokenTextField;
 	private JPasswordField databasePasswordTextField, salesforcePasswordTextField;
-	private JComboBox syncPeriodUnitComboBox;
+	private JComboBox<String> syncPeriodUnitComboBox;
 	private JTabbedPane tabsContainer;
 	
 	
@@ -70,7 +70,7 @@ public class SyncDashboard implements SyncContract.View {
 		dashboardJFrame.getContentPane().setLayout(null);
 		
 		tabsContainer = new JTabbedPane();
-		tabsContainer.setUI(new BasicTabbedPaneUI() {
+		/*tabsContainer.setUI(new BasicTabbedPaneUI() {
 			private final Insets borderInsets = new Insets(0, 0, 0, 0);
 			
 			@Override
@@ -81,8 +81,8 @@ public class SyncDashboard implements SyncContract.View {
 			protected Insets getContentBorderInsets(int tabPlacement) {
 				return borderInsets;
 			}
-		});
-		tabsContainer.setBounds(0, 0, 598, 320);
+		});*/
+		tabsContainer.setBounds(0, 0, 598, 324);
 		tabsContainer.setAlignmentY(Component.BOTTOM_ALIGNMENT);
 		tabsContainer.setAlignmentX(Component.RIGHT_ALIGNMENT);
 		
@@ -99,7 +99,7 @@ public class SyncDashboard implements SyncContract.View {
 		dashboardJFrame.getContentPane().add(tabsContainer);
 		
 		statusProgressBar = new JProgressBar();
-		statusProgressBar.setBounds(12, 324, 574, 20);
+		statusProgressBar.setBounds(12, 324, 574, 24);
 		statusProgressBar.setIndeterminate(true);
 		statusProgressBar.setVisible(false);
 		dashboardJFrame.getContentPane().add(statusProgressBar);
@@ -194,20 +194,20 @@ public class SyncDashboard implements SyncContract.View {
 		jPanel.setBorder(null);
 		jPanel.setLayout(null);
 		JLabel lblServerAddress = new JLabel(getString(LABEL_SERVER_ADDRESS));
-		lblServerAddress.setBounds(10, 10, 559, 15);
+		lblServerAddress.setBounds(12, 10, 559, 15);
 		jPanel.add(lblServerAddress);
 		
 		serverAddressTextField = new JTextField();
-		serverAddressTextField.setBounds(10, 30, 559, 20);
+		serverAddressTextField.setBounds(10, 30, 559, 24);
 		jPanel.add(serverAddressTextField);
 		serverAddressTextField.setColumns(10);
 		
 		JLabel lblServerPort = new JLabel(getString(LABEL_SERVER_PORT));
-		lblServerPort.setBounds(10, 55, 559, 15);
+		lblServerPort.setBounds(12, 55, 559, 15);
 		jPanel.add(lblServerPort);
 		
 		serverPortTextField = new JTextField();
-		serverPortTextField.setBounds(10, 75, 559, 20);
+		serverPortTextField.setBounds(10, 75, 559, 24);
 		serverPortTextField.setInputVerifier(new InputVerifier() {
 			@Override
 			public boolean verify(JComponent input) {
@@ -230,37 +230,37 @@ public class SyncDashboard implements SyncContract.View {
 		serverPortTextField.setColumns(10);
 		
 		JLabel lblDatabaseName = new JLabel(getString(LABEL_DATABASE_NAME));
-		lblDatabaseName.setBounds(10, 100, 559, 15);
+		lblDatabaseName.setBounds(12, 100, 559, 15);
 		jPanel.add(lblDatabaseName);
 		
 		databaseNameTextField = new JTextField();
 		databaseNameTextField.setColumns(10);
-		databaseNameTextField.setBounds(10, 120, 559, 20);
+		databaseNameTextField.setBounds(10, 124, 559, 24);
 		jPanel.add(databaseNameTextField);
 		
 		JLabel lblDatabaseUsername = new JLabel(getString(LABEL_DATABASE_USERNAME));
-		lblDatabaseUsername.setBounds(10, 150, 559, 15);
+		lblDatabaseUsername.setBounds(12, 150, 559, 15);
 		jPanel.add(lblDatabaseUsername);
 		
 		databaseUsernameTextField = new JTextField();
 		databaseUsernameTextField.setColumns(10);
-		databaseUsernameTextField.setBounds(10, 170, 559, 20);
+		databaseUsernameTextField.setBounds(10, 170, 559, 24);
 		jPanel.add(databaseUsernameTextField);
 		
 		JLabel lblDatabasePassword = new JLabel(getString(LABEL_DATABASE_PASSWORD));
-		lblDatabasePassword.setBounds(10, 200, 559, 15);
+		lblDatabasePassword.setBounds(12, 204, 559, 15);
 		jPanel.add(lblDatabasePassword);
 		
 		databasePasswordTextField = new JPasswordField();
-		databasePasswordTextField.setBounds(10, 220, 559, 20);
+		databasePasswordTextField.setBounds(10, 224, 559, 24);
 		jPanel.add(databasePasswordTextField);
 		
 		JLabel lblSyncPeriod = new JLabel(getString(LABEL_SYNC_PERIOD));
-		lblSyncPeriod.setBounds(10, 250, 559, 15);
+		lblSyncPeriod.setBounds(12, 250, 559, 15);
 		jPanel.add(lblSyncPeriod);
 		
 		syncPeriodTextField = new JTextField();
-		syncPeriodTextField.setBounds(10, 270, 107, 20);
+		syncPeriodTextField.setBounds(10, 270, 107, 24);
 		syncPeriodTextField.setInputVerifier(new InputVerifier() {
 			@Override
 			public boolean verify(JComponent input) {
@@ -281,8 +281,9 @@ public class SyncDashboard implements SyncContract.View {
 		});
 		jPanel.add(syncPeriodTextField);
 		
-		syncPeriodUnitComboBox = new JComboBox<>(syncPeriodUnits);
-		syncPeriodUnitComboBox.setBounds(125, 270, 98, 20);
+		syncPeriodUnitComboBox = new JComboBox<>();
+		syncPeriodUnitComboBox.setModel(new DefaultComboBoxModel<>(syncPeriodUnits));
+		syncPeriodUnitComboBox.setBounds(125, 270, 98, 24);
 		jPanel.add(syncPeriodUnitComboBox);
 		
 		return jPanel;
@@ -299,48 +300,48 @@ public class SyncDashboard implements SyncContract.View {
 		jPanel.setLayout(null);
 		
 		JLabel clientId = new JLabel(getString(LABEL_SALESFORCE_CLIENT_ID));
-		clientId.setBounds(10, 10, 559, 15);
+		clientId.setBounds(12, 10, 559, 15);
 		jPanel.add(clientId);
 		
 		salesforceClientIdTextField = new JTextField();
 		salesforceClientIdTextField.setColumns(10);
-		salesforceClientIdTextField.setBounds(10, 30, 559, 20);
+		salesforceClientIdTextField.setBounds(10, 30, 559, 24);
 		jPanel.add(salesforceClientIdTextField);
 		
 		JLabel lblClientSecret = new JLabel(getString(LABEL_SALESFORCE_CLIENT_SECRET));
-		lblClientSecret.setBounds(10, 55, 559, 15);
+		lblClientSecret.setBounds(12, 55, 559, 15);
 		jPanel.add(lblClientSecret);
 		
 		salesforceClientSecretTextField = new JTextField();
 		salesforceClientSecretTextField.setColumns(10);
-		salesforceClientSecretTextField.setBounds(10, 75, 559, 20);
+		salesforceClientSecretTextField.setBounds(10, 75, 559, 24);
 		jPanel.add(salesforceClientSecretTextField);
 		
 		JLabel lblUsername = new JLabel(getString(LABEL_SALESFORCE_USERNAME));
-		lblUsername.setBounds(10, 100, 559, 15);
+		lblUsername.setBounds(12, 100, 559, 15);
 		jPanel.add(lblUsername);
 		
 		salesforceUsernameTextField = new JTextField();
 		salesforceUsernameTextField.setColumns(10);
-		salesforceUsernameTextField.setBounds(10, 120, 559, 20);
+		salesforceUsernameTextField.setBounds(10, 124, 559, 24);
 		jPanel.add(salesforceUsernameTextField);
 		
 		JLabel lblSalesforcePassword = new JLabel(getString(LABEL_SALESFORCE_PASSWORD));
-		lblSalesforcePassword.setBounds(10, 150, 559, 15);
+		lblSalesforcePassword.setBounds(12, 150, 559, 15);
 		jPanel.add(lblSalesforcePassword);
 		
 		salesforcePasswordTextField = new JPasswordField();
 		salesforcePasswordTextField.setColumns(10);
-		salesforcePasswordTextField.setBounds(10, 170, 559, 20);
+		salesforcePasswordTextField.setBounds(10, 170, 559, 24);
 		jPanel.add(salesforcePasswordTextField);
 		
 		JLabel lblSecurityToken = new JLabel(getString(LABEL_SALESFORCE_SECURITY_TOKEN));
-		lblSecurityToken.setBounds(10, 200, 559, 15);
+		lblSecurityToken.setBounds(12, 200, 559, 15);
 		jPanel.add(lblSecurityToken);
 		
 		salesforceSecurityTokenTextField = new JTextField();
 		salesforceSecurityTokenTextField.setColumns(10);
-		salesforceSecurityTokenTextField.setBounds(10, 220, 559, 20);
+		salesforceSecurityTokenTextField.setBounds(10, 224, 559, 24);
 		jPanel.add(salesforceSecurityTokenTextField);
 		
 		return jPanel;

@@ -10,7 +10,7 @@ public abstract class FileWatcher {
 	private Path folderPath;
 	private String watchFile;
 	
-	public FileWatcher(String watchFile) {
+	FileWatcher(String watchFile) {
 		Path filePath = Paths.get(watchFile);
 		
 		boolean isRegularFile = Files.isRegularFile(filePath);
@@ -27,10 +27,10 @@ public abstract class FileWatcher {
 		this.watchFile = watchFile.replace(folderPath.toString() + File.separator, "");
 	}
 	
-	protected FileWatcher() {
+	FileWatcher() {
 	}
 	
-	public void watchFile() throws Exception {
+	void watchFile() throws Exception {
 		// We obtain the file system of the Path
 		FileSystem fileSystem = folderPath.getFileSystem();
 		
