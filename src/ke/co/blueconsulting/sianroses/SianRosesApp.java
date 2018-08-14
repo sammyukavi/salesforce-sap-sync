@@ -47,7 +47,6 @@ public class SianRosesApp {
 	}
 	
 	
-	
 	private static void drawSystemTrayIcon() {
 		
 		systemTrayIsSupported = SystemTray.isSupported();
@@ -112,25 +111,25 @@ public class SianRosesApp {
 		});
 	}
 	
-	static 	void displayErrorMessage(String message) {
+	static void displayErrorMessage(String message) {
 		if (systemTrayIsSupported) {
 			trayIcon.displayMessage(getString(LABEL_APP_NAME), message, TrayIcon.MessageType.ERROR);
 		}
 	}
 	
-	static 	void displayWarningMessage(String message) {
+	static void displayWarningMessage(String message) {
 		if (systemTrayIsSupported) {
 			trayIcon.displayMessage(getString(LABEL_APP_NAME), message, TrayIcon.MessageType.WARNING);
 		}
 	}
 	
-	static 	void displayInfoMessage(String message) {
+	static void displayInfoMessage(String message) {
 		if (systemTrayIsSupported) {
 			trayIcon.displayMessage(getString(LABEL_APP_NAME), message, TrayIcon.MessageType.INFO);
 		}
 	}
 	
-	static 	void displayOrdinaryMessage(String message) {
+	static void displayOrdinaryMessage(String message) {
 		if (systemTrayIsSupported) {
 			trayIcon.displayMessage(getString(LABEL_APP_NAME), message, TrayIcon.MessageType.NONE);
 		}

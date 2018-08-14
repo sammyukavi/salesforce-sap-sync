@@ -7,9 +7,9 @@ public interface DataService<SR> {
 		/**
 		 * Called if the operation completes successfully.
 		 *
-		 * @param serverResponse The returned serverResponse
+		 * @param response The returned response
 		 */
-		void onCompleted(SR serverResponse);
+		void onCompleted(SR response);
 		
 		/**
 		 * Called if the operation fails.

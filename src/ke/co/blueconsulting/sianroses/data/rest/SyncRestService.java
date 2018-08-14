@@ -13,7 +13,7 @@ import static ke.co.blueconsulting.sianroses.util.Constants.RequestKeys.DATA_TYP
 public interface SyncRestService {
 	
 	@GET("SyncMSSQL")
-	Call<Response> fetch(@Header(AUTHORIZATION) String token);
+	Call<Response> fetch(@Header(AUTHORIZATION) String token, @Query(DATA_TYPE) String dataType);
 	
 	@POST("SyncMSSQL")
 	Call<Response> post(@Header(AUTHORIZATION) String token, @Query(DATA_TYPE) String dataType, @Body Response response);

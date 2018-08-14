@@ -21,8 +21,8 @@ public class SyncDataService extends BaseDataService<Response, SyncRestService> 
 		return BEARER + authCredentialsDbService.getAppAuthCredentials().getSalesforceAccessToken();
 	}
 	
-	public void getFromSalesforce(GetCallback<Response> callback) {
-		executeSingleTask(callback, restService.fetch(getToken()));
+	public void getUserAccounts(GetCallback<Response> callback) {
+		executeSingleTask(callback, restService.fetch(getToken(), ACCOUNTS));
 	}
 	
 	public void pushCustomersToSalsesforce(Response response, GetCallback<Response> callback) {
