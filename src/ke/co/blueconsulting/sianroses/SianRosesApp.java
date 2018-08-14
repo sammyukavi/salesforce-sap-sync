@@ -1,6 +1,6 @@
 package ke.co.blueconsulting.sianroses;
 
-import ke.co.blueconsulting.sianroses.dialog.MessageDialogInFrame;
+import ke.co.blueconsulting.sianroses.dialog.MessageDialog;
 import ke.co.blueconsulting.sianroses.util.AppLogger;
 
 import javax.swing.*;
@@ -94,7 +94,7 @@ public class SianRosesApp {
 		});
 		
 		aboutMenuItem.addActionListener(e -> {
-			MessageDialogInFrame.showMessageDialog(SyncDashboard.dashboardJFrame, breakLongString("Sian Roses Salesforce Integration App.\n\nv 1.0\n\nPowered by Blue Consulting"), getString(TITLE_ABOUT), JOptionPane.INFORMATION_MESSAGE, getSianRosesIcon());
+			MessageDialog.showMessageDialog(SyncDashboard.dashboardJFrame, breakLongString("Sian Roses Salesforce Integration App.\n\nv 1.0\n\nPowered by Blue Consulting"), getString(TITLE_ABOUT), JOptionPane.INFORMATION_MESSAGE, getSianRosesIcon());
 		});
 		
 		showLogsMenuItem.addActionListener(e -> {

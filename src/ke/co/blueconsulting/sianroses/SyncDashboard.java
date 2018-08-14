@@ -1,7 +1,7 @@
 package ke.co.blueconsulting.sianroses;
 
 import ke.co.blueconsulting.sianroses.contract.SyncContract;
-import ke.co.blueconsulting.sianroses.dialog.MessageDialogInFrame;
+import ke.co.blueconsulting.sianroses.dialog.MessageDialog;
 import ke.co.blueconsulting.sianroses.model.app.AppAuthCredentials;
 import ke.co.blueconsulting.sianroses.presenter.SyncPresenter;
 import ke.co.blueconsulting.sianroses.util.AppLogger;
@@ -427,19 +427,19 @@ public class SyncDashboard implements SyncContract.View {
 	@Override
 	public void showSuccessMessage(String message) {
 		message = StringUtils.breakLongString(message);
-		MessageDialogInFrame.showMessageDialog(dashboardJFrame, message, getString(MESSAGE), JOptionPane.INFORMATION_MESSAGE);
+		MessageDialog.showMessageDialog(dashboardJFrame, message, getString(MESSAGE), JOptionPane.INFORMATION_MESSAGE);
 	}
 	
 	@Override
 	public void showErrorMessage(String title, String message) {
 		message = StringUtils.breakLongString(message);
-		MessageDialogInFrame.showMessageDialog(dashboardJFrame, message, title, JOptionPane.ERROR_MESSAGE);
+		MessageDialog.showMessageDialog(dashboardJFrame, message, title, JOptionPane.ERROR_MESSAGE);
 	}
 	
 	@Override
 	public void showErrorMessage(String message) {
 		message = StringUtils.breakLongString(message);
-		MessageDialogInFrame.showMessageDialog(dashboardJFrame, message, getString(MESSAGE_ERROR_OCCURRED), JOptionPane.ERROR_MESSAGE);
+		MessageDialog.showMessageDialog(dashboardJFrame, message, getString(MESSAGE_ERROR_OCCURRED), JOptionPane.ERROR_MESSAGE);
 	}
 	
 	private boolean serverConfigFieldsAreValid() {

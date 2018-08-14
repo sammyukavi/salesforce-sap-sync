@@ -6,7 +6,7 @@ import javax.swing.text.Document;
 import javax.swing.text.SimpleAttributeSet;
 import java.awt.*;
 
-public class MessageDialogInFrame {
+public class MessageDialog {
 	
 	private static JTextPane getTextPane(String message) {
 		JTextPane jTextPane = new JTextPane();
