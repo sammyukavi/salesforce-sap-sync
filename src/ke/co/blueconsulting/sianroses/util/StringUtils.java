@@ -31,10 +31,6 @@ public class StringUtils {
 		return stringInput == null || stringInput.isEmpty();
 	}
 	
-	public static boolean isNullOrEmpty(Object stringInput) {
-		return isNullOrEmpty(String.valueOf(stringInput));
-	}
-	
 	/**
 	 * Insert line breaks into long string.
 	 *

@@ -7,11 +7,11 @@ import ke.co.blueconsulting.sianroses.data.impl.SyncDataService;
 import ke.co.blueconsulting.sianroses.model.app.Response;
 import ke.co.blueconsulting.sianroses.model.salesforce.Customer;
 import ke.co.blueconsulting.sianroses.util.AppLogger;
-import ke.co.blueconsulting.sianroses.util.Console;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import static ke.co.blueconsulting.sianroses.util.UpdateFields.updateCustomerPullFromSAPFields;
 import static ke.co.blueconsulting.sianroses.util.UpdateFields.updateCustomerPushToSAPFields;
 
 public class Accounts {
@@ -30,6 +30,7 @@ public class Accounts {
 		syncDashboard.setIsBusy(true);
 		
 		DataService.GetCallback<Response> getFromSalesforceCallback = new DataService.GetCallback<Response>() {
+			
 			@Override
 			public void onCompleted(Response response) {
 				
@@ -37,20 +38,22 @@ public class Accounts {
 				
 				ArrayList<Customer> insertedCustomers = new ArrayList<>();
 				
-				if (customers.size() > 0) {
+				int customersCount = customers.size();
+				
+				AppLogger.logInfo("Received " + customersCount + " customers from Salesforce");
+				
+				if (customersCount > 0) {
 					
 					customers = updateCustomerPushToSAPFields(customers);
 					
 					try {
 						insertedCustomers = sapDbService.insertCustomerRecords(customers);
 					} catch (SQLException e) {
-						e.printStackTrace();
-						AppLogger.logError(e.getMessage() + "\n" + e.getCause());
+						AppLogger.logError(e.getMessage());
 						
 					}
-				} else {
-					AppLogger.logInfo("Received no customers from Salesforce");
 				}
+				
 				updateSalesforceCustomers(insertedCustomers);
 			}
 			
@@ -73,35 +76,58 @@ public class Accounts {
 	private static void updateSalesforceCustomers(ArrayList<Customer> customers) {
 		
 		syncDashboard.setIsBusy(true);
-		//get customers that exist in the SAP but not in Salesforce
+		
 		ArrayList<Customer> unsyncedCustomers = new ArrayList<>();
 		
 		try {
+			
 			ArrayList<Long> customerIds = new ArrayList<>();
+			
 			for (Customer customer : customers) {
 				customerIds.add(customer.getAutoId());
 			}
+			
 			unsyncedCustomers = updateCustomerPushToSAPFields(sapDbService.getUnsyncedCustomers(customerIds));
+			
 		} catch (SQLException e) {
-			e.printStackTrace();
-			AppLogger.logError("Error fetching unsynced customers. " + e.getMessage() + "\n" + e.getCause());
+			AppLogger.logError(e.getMessage());
 		}
 		
 		customers.addAll(unsyncedCustomers);
 		
-		if (customers.isEmpty()) {
-			AppLogger.logInfo("Found 0 customers that need to be pushed to Salesforce");
-		} else {
+		int customersCount = customers.size();
+		
+		AppLogger.logInfo("Found " + customersCount + " customers that need to be pushed to Salesforce." + (customersCount > 0 ? "Attempting to push." : ""));
+		
+		if (customersCount > 0) {
 			
 			DataService.GetCallback<Response> pushToSalesforce = new DataService.GetCallback<Response>() {
 				@Override
 				public void onCompleted(Response response) {
-					Console.logToJson(response.getCustomers());
+					
+					ArrayList<Customer> customers = response.getCustomers();
+					
+					int customersCount = customers.size();
+					
+					AppLogger.logInfo("Push To Salesforce Successful. " +
+							"Received " + customersCount + " customers from Salesforce for updating");
+					
+					if (customersCount > 0) {
+						
+						customers = updateCustomerPullFromSAPFields(customers);
+						
+						try {
+							sapDbService.updateCustomerRecords(customers);
+							AppLogger.logInfo("Sync Complete");
+						} catch (SQLException e) {
+							AppLogger.logError(e.getMessage());
+						}
+					}
 				}
 				
 				@Override
-				public void onError(Throwable t) {
-				
+				public void onError(Throwable e) {
+					AppLogger.logError("Error pushing customers to Salesforce. " + e.getMessage());
 				}
 				
 				@Override
@@ -111,6 +137,8 @@ public class Accounts {
 			};
 			
 			syncDataService.pushCustomersToSalsesforce(Response.setCustomers(customers), pushToSalesforce);
+		} else {
+			AppLogger.logInfo("Sync Complete");
 		}
 		
 	}

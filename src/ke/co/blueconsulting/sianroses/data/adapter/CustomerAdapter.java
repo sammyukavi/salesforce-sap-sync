@@ -31,15 +31,14 @@ public class CustomerAdapter extends TypeAdapter<Customer> {
 			jsonWriter.value(customer.getAccountPaymentTermsC());
 		}
 		
-		if (!StringUtils.isNullOrEmpty(customer.getActiveC())) {
-			jsonWriter.name("Active__c");
-			jsonWriter.value(customer.getActiveC());
-		}
 		
-		if (!StringUtils.isNullOrEmpty(customer.getAvailableCreditAmount())) {
-			jsonWriter.name("Available_Credit_Amount__c");
-			jsonWriter.value(customer.getAvailableCreditAmount());
-		}
+		jsonWriter.name("Active__c");
+		jsonWriter.value(customer.getActiveC());
+		
+		
+		jsonWriter.name("Available_Credit_Amount__c");
+		jsonWriter.value(customer.getAvailableCreditAmount());
+		
 		
 		if (!StringUtils.isNullOrEmpty(customer.getAddressIdC())) {
 			jsonWriter.name("AddressID__c");
@@ -66,10 +65,10 @@ public class CustomerAdapter extends TypeAdapter<Customer> {
 			jsonWriter.value(customer.getBillingState());
 		}
 		
-		if (!StringUtils.isNullOrEmpty(customer.getCreditLimitC())) {
-			jsonWriter.name("Credit_Limit__c");
-			jsonWriter.value(customer.getCreditLimitC());
-		}
+		
+		jsonWriter.name("Credit_Limit__c");
+		jsonWriter.value(customer.getCreditLimitC());
+		
 		
 		/**
 		 * TODO When you fix the commented lines below. Also fix those in SAPDbService for updating customers
@@ -111,10 +110,10 @@ public class CustomerAdapter extends TypeAdapter<Customer> {
 			jsonWriter.value(customer.getName());
 		}
 		
-		if (!StringUtils.isNullOrEmpty(customer.getOutstandingBalanceC())) {
-			jsonWriter.name("Outstanding_Balance__c");
-			jsonWriter.value(customer.getOutstandingBalanceC());
-		}
+		
+		jsonWriter.name("Outstanding_Balance__c");
+		jsonWriter.value(customer.getOutstandingBalanceC());
+		
 		
 		if (!StringUtils.isNullOrEmpty(customer.getOwnerId())) {
 			//jsonWriter.name("OwnerId");
@@ -144,20 +143,17 @@ public class CustomerAdapter extends TypeAdapter<Customer> {
 			jsonWriter.value(customer.getPhone());
 		}
 		
-		if (!StringUtils.isNullOrEmpty(customer.getPrepaidAmountC())) {
-			jsonWriter.name("Prepaid_Amount__c");
-			jsonWriter.value(customer.getPrepaidAmountC());
-		}
 		
-		if (!StringUtils.isNullOrEmpty(customer.isPullFromSAPC())) {
-			jsonWriter.name("Pull_from_SAP__c");
-			jsonWriter.value(customer.isPullFromSAPC());
-		}
+		jsonWriter.name("Prepaid_Amount__c");
+		jsonWriter.value(customer.getPrepaidAmountC());
 		
-		if (!StringUtils.isNullOrEmpty(customer.isPushToSAPC())) {
-			jsonWriter.name("Push_to_SAP__c");
-			jsonWriter.value(customer.isPushToSAPC());
-		}
+		
+		jsonWriter.name("Pull_from_SAP__c");
+		jsonWriter.value(customer.isPullFromSAPC());
+		
+		jsonWriter.name("Push_to_SAP__c");
+		jsonWriter.value(customer.isPushToSAPC());
+		
 		
 		if (!StringUtils.isNullOrEmpty(customer.getShippingCity())) {
 			jsonWriter.name("ShippingCity");

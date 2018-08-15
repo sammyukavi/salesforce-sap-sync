@@ -225,7 +225,6 @@ public class SyncPresenter implements SyncContract.Presenter {
 	}
 	
 	
-	
 	@Override
 	public void performSync() {
 		if (hasAccessToken()) {

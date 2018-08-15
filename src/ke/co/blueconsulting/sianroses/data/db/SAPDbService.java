@@ -86,14 +86,20 @@ public class SAPDbService extends BaseDbService {
 	}
 	
 	public ArrayList<Customer> getUnsyncedCustomers(ArrayList<Long> ids) throws SQLException {
+		
 		Dao<Customer, Integer> dao = createDao(Customer.class);
+		
 		Where<Customer, Integer> where = dao.queryBuilder().where();
-		return (ArrayList<Customer>) dao.query(
-				where.or(where.isNull("SalesForceId"),
-						where.eq("SalesForceId", ""),
-						where.eq("Pull_from_SAP__c", true)
-				).and().notIn("AUTOID", ids)
-						.prepare());
+		
+		where.or(where.isNull("SalesForceId"), where.eq("SalesForceId", ""),
+				where.eq("Pull_from_SAP__c", true));
+		
+		if (!ids.isEmpty()) {
+			where.and().notIn("AUTOID", ids);
+		}
+		
+		return (ArrayList<Customer>) dao.query(where.prepare());
+		
 	}
 	
 	public ArrayList<Customer> insertCustomerRecords(ArrayList<Customer> customers) throws SQLException {
@@ -123,13 +129,12 @@ public class SAPDbService extends BaseDbService {
 						updateBuilder.updateColumnValue("Account_Payment_Terms__c", customer.getAccountPaymentTermsC());
 					}
 					
-					if (!StringUtils.isNullOrEmpty(customer.getActiveC())) {
-						updateBuilder.updateColumnValue("Active__c", customer.getActiveC());
-					}
 					
-					if (StringUtils.isNullOrEmpty(customer.getAvailableCreditAmount())) {
-						updateBuilder.updateColumnValue("Available_Credit_Amount", customer.getAvailableCreditAmount());
-					}
+					updateBuilder.updateColumnValue("Active__c", customer.getActiveC());
+					
+					
+					updateBuilder.updateColumnValue("Available_Credit_Amount", customer.getAvailableCreditAmount());
+					
 					
 					if (!StringUtils.isNullOrEmpty(customer.getAddressIdC())) {
 						updateBuilder.updateColumnValue("AddressID", customer.getAddressIdC());
@@ -151,9 +156,9 @@ public class SAPDbService extends BaseDbService {
 						updateBuilder.updateColumnValue("BillingState", customer.getBillingState());
 					}
 					
-					if (StringUtils.isNullOrEmpty(customer.getCreditLimitC())) {
-						updateBuilder.updateColumnValue("Credit_Limit__c", customer.getCreditLimitC());
-					}
+					
+					updateBuilder.updateColumnValue("Credit_Limit__c", customer.getCreditLimitC());
+					
 					
 					if (!StringUtils.isNullOrEmpty(customer.getCurrencyIsoCode())) {
 						updateBuilder.updateColumnValue("CurrencyIsoCode", customer.getCurrencyIsoCode());
@@ -183,9 +188,9 @@ public class SAPDbService extends BaseDbService {
 						updateBuilder.updateColumnValue("Name", customer.getName());
 					}
 					
-					if (StringUtils.isNullOrEmpty(customer.getOutstandingBalanceC())) {
-						updateBuilder.updateColumnValue("Outstanding_Balance__c", customer.getOutstandingBalanceC());
-					}
+					
+					updateBuilder.updateColumnValue("Outstanding_Balance__c", customer.getOutstandingBalanceC());
+					
 					
 					if (!StringUtils.isNullOrEmpty(customer.getOwnerId())) {
 						updateBuilder.updateColumnValue("OwnerId", customer.getOwnerId());
@@ -207,17 +212,14 @@ public class SAPDbService extends BaseDbService {
 						updateBuilder.updateColumnValue("Phone", customer.getPhone());
 					}
 					
-					if (StringUtils.isNullOrEmpty(customer.getPrepaidAmountC())) {
-						updateBuilder.updateColumnValue("Prepaid_Amount__c", customer.getPrepaidAmountC());
-					}
 					
-					if (StringUtils.isNullOrEmpty(customer.isPullFromSAPC())) {
-						updateBuilder.updateColumnValue("Pull_from_SAP__c", customer.isPullFromSAPC());
-					}
+					updateBuilder.updateColumnValue("Prepaid_Amount__c", customer.getPrepaidAmountC());
 					
-					if (StringUtils.isNullOrEmpty(customer.isPushToSAPC())) {
-						updateBuilder.updateColumnValue("Push_to_SAP__c", customer.isPushToSAPC());
-					}
+					
+					updateBuilder.updateColumnValue("Pull_from_SAP__c", customer.isPullFromSAPC());
+					
+					updateBuilder.updateColumnValue("Push_to_SAP__c", customer.isPushToSAPC());
+					
 					
 					if (!StringUtils.isNullOrEmpty(customer.getShippingCity())) {
 						updateBuilder.updateColumnValue("ShippingCity", customer.getShippingCity());
@@ -280,13 +282,12 @@ public class SAPDbService extends BaseDbService {
 						updateBuilder.updateColumnValue("Account_Payment_Terms__c", customer.getAccountPaymentTermsC());
 					}
 					
-					if (!StringUtils.isNullOrEmpty(customer.getActiveC())) {
-						updateBuilder.updateColumnValue("Active__c", customer.getActiveC());
-					}
 					
-					if (StringUtils.isNullOrEmpty(customer.getAvailableCreditAmount())) {
-						updateBuilder.updateColumnValue("Available_Credit_Amount", customer.getAvailableCreditAmount());
-					}
+					updateBuilder.updateColumnValue("Active__c", customer.getActiveC());
+					
+					
+					updateBuilder.updateColumnValue("Available_Credit_Amount", customer.getAvailableCreditAmount());
+					
 					
 					if (!StringUtils.isNullOrEmpty(customer.getAddressIdC())) {
 						updateBuilder.updateColumnValue("AddressID", customer.getAddressIdC());
@@ -308,9 +309,9 @@ public class SAPDbService extends BaseDbService {
 						updateBuilder.updateColumnValue("BillingState", customer.getBillingState());
 					}
 					
-					if (StringUtils.isNullOrEmpty(customer.getCreditLimitC())) {
-						updateBuilder.updateColumnValue("Credit_Limit__c", customer.getCreditLimitC());
-					}
+					
+					updateBuilder.updateColumnValue("Credit_Limit__c", customer.getCreditLimitC());
+					
 					
 					if (!StringUtils.isNullOrEmpty(customer.getCurrencyIsoCode())) {
 						updateBuilder.updateColumnValue("CurrencyIsoCode", customer.getCurrencyIsoCode());
@@ -340,9 +341,9 @@ public class SAPDbService extends BaseDbService {
 						updateBuilder.updateColumnValue("Name", customer.getName());
 					}
 					
-					if (StringUtils.isNullOrEmpty(customer.getOutstandingBalanceC())) {
-						updateBuilder.updateColumnValue("Outstanding_Balance__c", customer.getOutstandingBalanceC());
-					}
+					
+					updateBuilder.updateColumnValue("Outstanding_Balance__c", customer.getOutstandingBalanceC());
+					
 					
 					if (!StringUtils.isNullOrEmpty(customer.getOwnerId())) {
 						updateBuilder.updateColumnValue("OwnerId", customer.getOwnerId());
@@ -364,17 +365,14 @@ public class SAPDbService extends BaseDbService {
 						updateBuilder.updateColumnValue("Phone", customer.getPhone());
 					}
 					
-					if (StringUtils.isNullOrEmpty(customer.getPrepaidAmountC())) {
-						updateBuilder.updateColumnValue("Prepaid_Amount__c", customer.getPrepaidAmountC());
-					}
 					
-					if (StringUtils.isNullOrEmpty(customer.isPullFromSAPC())) {
-						updateBuilder.updateColumnValue("Pull_from_SAP__c", customer.isPullFromSAPC());
-					}
+					updateBuilder.updateColumnValue("Prepaid_Amount__c", customer.getPrepaidAmountC());
 					
-					if (StringUtils.isNullOrEmpty(customer.isPushToSAPC())) {
-						updateBuilder.updateColumnValue("Push_to_SAP__c", customer.isPushToSAPC());
-					}
+					
+					updateBuilder.updateColumnValue("Pull_from_SAP__c", customer.isPullFromSAPC());
+					
+					updateBuilder.updateColumnValue("Push_to_SAP__c", customer.isPushToSAPC());
+					
 					
 					if (!StringUtils.isNullOrEmpty(customer.getShippingCity())) {
 						updateBuilder.updateColumnValue("ShippingCity", customer.getShippingCity());
@@ -423,9 +421,9 @@ public class SAPDbService extends BaseDbService {
 								updateBuilder.updateColumnValue("AccountID", customerContact.getAccountId());
 							}
 							
-							if (!StringUtils.isNullOrEmpty(customerContact.getBirthDate())) {
-								updateBuilder.updateColumnValue("BIRTHDATE", customerContact.getBirthDate());
-							}
+							
+							updateBuilder.updateColumnValue("BIRTHDATE", customerContact.getBirthDate());
+							
 							
 							/*if (!StringUtils.isNullOrEmpty(customerContact.getContactId())) {
 								updateBuilder.updateColumnValue("CONTACTID", customerContact.getContactId());
@@ -475,13 +473,11 @@ public class SAPDbService extends BaseDbService {
 								updateBuilder.updateColumnValue("Phone", customerContact.getPhone());
 							}
 							
-							if (StringUtils.isNullOrEmpty(customerContact.isPullFromSap())) {
-								updateBuilder.updateColumnValue("Pull_from_SAP__c", customerContact.isPullFromSap());
-							}
 							
-							if (StringUtils.isNullOrEmpty(customerContact.isPushToSap())) {
-								updateBuilder.updateColumnValue("Push_to_SAP__c", customerContact.isPushToSap());
-							}
+							updateBuilder.updateColumnValue("Pull_from_SAP__c", customerContact.isPullFromSap());
+							
+							updateBuilder.updateColumnValue("Push_to_SAP__c", customerContact.isPushToSap());
+							
 							
 							if (StringUtils.isNullOrEmpty(customerContact.getTitle())) {
 								updateBuilder.updateColumnValue("Title", customerContact.getTitle());

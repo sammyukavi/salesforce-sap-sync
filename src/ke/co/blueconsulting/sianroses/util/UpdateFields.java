@@ -10,7 +10,16 @@ public class UpdateFields {
 	public static ArrayList<Customer> updateCustomerPushToSAPFields(ArrayList<Customer> customers) {
 		ArrayList<Customer> updatedCustomers = new ArrayList<>();
 		for (Customer customer : customers) {
-			//customer.setPushToSAPC(false);
+			customer.setPushToSAPC(false);
+			updatedCustomers.add(customer);
+		}
+		return updatedCustomers;
+	}
+	
+	public static ArrayList<Customer> updateCustomerPullFromSAPFields(ArrayList<Customer> customers) {
+		ArrayList<Customer> updatedCustomers = new ArrayList<>();
+		for (Customer customer : customers) {
+			customer.setPullFromSAPC(false);
 			updatedCustomers.add(customer);
 		}
 		return updatedCustomers;
