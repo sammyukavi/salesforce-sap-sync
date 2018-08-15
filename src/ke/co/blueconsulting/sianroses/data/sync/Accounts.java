@@ -11,8 +11,7 @@ import ke.co.blueconsulting.sianroses.util.AppLogger;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import static ke.co.blueconsulting.sianroses.util.UpdateFields.updateCustomerPullFromSAPFields;
-import static ke.co.blueconsulting.sianroses.util.UpdateFields.updateCustomerPushToSAPFields;
+import static ke.co.blueconsulting.sianroses.util.UpdateFields.updateCustomerSyncFields;
 
 public class Accounts {
 	
@@ -44,13 +43,12 @@ public class Accounts {
 				
 				if (customersCount > 0) {
 					
-					customers = updateCustomerPushToSAPFields(customers);
+					customers = updateCustomerSyncFields(customers, false, false);
 					
 					try {
-						insertedCustomers = sapDbService.insertCustomerRecords(customers);
+						insertedCustomers = sapDbService.upsertCustomerRecords(customers);
 					} catch (SQLException e) {
 						AppLogger.logError(e.getMessage());
-						
 					}
 				}
 				
@@ -87,7 +85,7 @@ public class Accounts {
 				customerIds.add(customer.getAutoId());
 			}
 			
-			unsyncedCustomers = updateCustomerPushToSAPFields(sapDbService.getUnsyncedCustomers(customerIds));
+			unsyncedCustomers = updateCustomerSyncFields(sapDbService.getUnsyncedCustomers(customerIds), false, false);
 			
 		} catch (SQLException e) {
 			AppLogger.logError(e.getMessage());
@@ -114,10 +112,10 @@ public class Accounts {
 					
 					if (customersCount > 0) {
 						
-						customers = updateCustomerPullFromSAPFields(customers);
+						customers = updateCustomerSyncFields(customers, false, false);
 						
 						try {
-							sapDbService.updateCustomerRecords(customers);
+							sapDbService.upsertCustomerRecords(customers);
 							AppLogger.logInfo("Sync Complete");
 						} catch (SQLException e) {
 							AppLogger.logError(e.getMessage());
