@@ -111,7 +111,8 @@ public class SyncDashboard implements SyncContract.View {
 				if (tabOnView.equals(DATABASE_SERVER_CONFIGURATION_TAB) && serverConfigFieldsAreValid()) {
 					syncPresenter.testDbConnection(serverAddressTextField.getText(), serverPortTextField.getText(),
 							databaseNameTextField.getText(), databaseUsernameTextField.getText(),
-							String.valueOf(databasePasswordTextField.getPassword()));
+							String.valueOf(databasePasswordTextField.getPassword()), syncPeriodTextField.getText(),
+							syncPeriodUnitComboBox.getSelectedItem().toString());
 				} else if (tabOnView.equals(SALESFORCE_CONFIGURATION_TAB) && salesforceConfigFieldsAreValid()) {
 					syncPresenter.testSalesforceAuth(salesforceClientIdTextField.getText(),
 							salesforceClientSecretTextField.getText(), salesforceUsernameTextField.getText(),
@@ -131,7 +132,7 @@ public class SyncDashboard implements SyncContract.View {
 			try {
 				if (tabOnView.equals(DATABASE_SERVER_CONFIGURATION_TAB)) {
 					if (serverConfigFieldsAreValid()) {
-						syncPresenter.saveDbAuth(serverAddressTextField.getText(), serverPortTextField.getText(),
+						syncPresenter.saveSAPAuthCredentials(serverAddressTextField.getText(), serverPortTextField.getText(),
 								databaseNameTextField.getText(), databaseUsernameTextField.getText(), String.valueOf(databasePasswordTextField.getPassword()),
 								syncPeriodTextField.getText(), syncPeriodUnitComboBox.getSelectedItem().toString());
 					}

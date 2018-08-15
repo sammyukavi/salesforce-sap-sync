@@ -18,11 +18,16 @@ public class Accounts {
 	
 	private static SyncDataService syncDataService;
 	private static SAPDbService sapDbService;
+	private static SyncContract.View syncDashboard;
 	
-	public static <T> void sync(SyncContract.View syncDashboard, SyncDataService dataService, SAPDbService dbService) {
+	
+	public static <T> void sync(SyncContract.View view, SyncDataService dataService, SAPDbService dbService) {
 		
+		syncDashboard = view;
 		syncDataService = dataService;
 		sapDbService = dbService;
+		
+		syncDashboard.setIsBusy(true);
 		
 		DataService.GetCallback<Response> getFromSalesforceCallback = new DataService.GetCallback<Response>() {
 			@Override
@@ -57,15 +62,17 @@ public class Accounts {
 			
 			@Override
 			public void always() {
-			
+				syncDashboard.setIsBusy(false);
 			}
 		};
 		
 		syncDataService.getUserAccounts(getFromSalesforceCallback);
 	}
 	
+	
 	private static void updateSalesforceCustomers(ArrayList<Customer> customers) {
 		
+		syncDashboard.setIsBusy(true);
 		//get customers that exist in the SAP but not in Salesforce
 		ArrayList<Customer> unsyncedCustomers = new ArrayList<>();
 		
@@ -86,7 +93,7 @@ public class Accounts {
 			AppLogger.logInfo("Found 0 customers that need to be pushed to Salesforce");
 		} else {
 			
-			DataService.GetCallback<Response> callback = new DataService.GetCallback<Response>() {
+			DataService.GetCallback<Response> pushToSalesforce = new DataService.GetCallback<Response>() {
 				@Override
 				public void onCompleted(Response response) {
 					Console.logToJson(response.getCustomers());
@@ -99,11 +106,11 @@ public class Accounts {
 				
 				@Override
 				public void always() {
-				
+					syncDashboard.setIsBusy(false);
 				}
 			};
 			
-			syncDataService.pushCustomersToSalsesforce(Response.setCustomers(customers), callback);
+			syncDataService.pushCustomersToSalsesforce(Response.setCustomers(customers), pushToSalesforce);
 		}
 		
 	}

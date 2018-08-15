@@ -24,12 +24,13 @@ public class SyncContract {
 	public interface Presenter {
 		
 		void testDbConnection(String serverAddress, String serverPort, String databaseName,
-		                      String databaseUsername, String databasePassword) throws InterruptedException;
+		                      String databaseUsername, String databasePassword, String syncPeriod, String syncPeriodUnit)
+				throws InterruptedException;
 		
 		void performSync() throws SQLException;
 		
-		void saveDbAuth(String serverAddress, String serverPort, String databaseName, String databaseUsername,
-		                String databasePassword, String syncPeriod, String syncPeriodUnit) throws SQLException;
+		void saveSAPAuthCredentials(String serverAddress, String serverPort, String databaseName, String databaseUsername,
+		                            String databasePassword, String syncPeriod, String syncPeriodUnit) throws SQLException;
 		
 		void getCredentials() throws SQLException;
 		
