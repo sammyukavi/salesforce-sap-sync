@@ -31,19 +31,19 @@ public class RestServiceBuilder {
 	private static Retrofit retrofit;
 	
 	static {
-		switchToSalesforceApiBaseUrl();
+		switchToApiBaseUrl();
 	}
 	
 	public static Retrofit retrofit() {
 		return retrofit;
 	}
 	
-	public static void switchToSalesforceApiBaseUrl() {
+	public static void switchToApiBaseUrl() {
 		builder = getRetrofitBuilder().baseUrl(SALESFORCE_API_BASE_URL);
 		retrofit = builder.build();
 	}
 	
-	public static void switchToSalesforceAuthUrl() {
+	public static void switchToAuthUrl() {
 		builder = getRetrofitBuilder().baseUrl(SALESFORCE_AUTH_BASE_URL);
 		retrofit = builder.build();
 	}

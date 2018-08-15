@@ -300,7 +300,7 @@ public class CustomerAdapter extends TypeAdapter<Customer> {
 			}
 			jsonReader.endObject();
 		} catch (IOException e) {
-			AppLogger.logError("An error occurred while trying to write a customer object. " + e.getLocalizedMessage());
+			AppLogger.logError("An error occurred while trying to write a customer object. " + e.getMessage());
 		}
 		return customer;
 	}

@@ -1,5 +1,6 @@
 package ke.co.blueconsulting.sianroses.data.sync;
 
+import ke.co.blueconsulting.sianroses.contract.SyncContract;
 import ke.co.blueconsulting.sianroses.data.DataService;
 import ke.co.blueconsulting.sianroses.data.db.SAPDbService;
 import ke.co.blueconsulting.sianroses.data.impl.SyncDataService;
@@ -18,7 +19,7 @@ public class Accounts {
 	private static SyncDataService syncDataService;
 	private static SAPDbService sapDbService;
 	
-	public static void sync(SyncDataService dataService, SAPDbService dbService) {
+	public static <T> void sync(SyncContract.View syncDashboard, SyncDataService dataService, SAPDbService dbService) {
 		
 		syncDataService = dataService;
 		sapDbService = dbService;
@@ -50,7 +51,7 @@ public class Accounts {
 			
 			@Override
 			public void onError(Throwable t) {
-				AppLogger.logError("Failed to fetch from the server. " + t.getLocalizedMessage());
+				AppLogger.logError("Failed to fetch from the server. " + t.getMessage());
 				//TODO show the error here if the Dashboard UI is hidden
 			}
 			

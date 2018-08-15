@@ -17,7 +17,7 @@ public class BaseDbService {
 		try {
 			connectionSource = new JdbcConnectionSource(getConnectionUrl());
 		} catch (SQLException | ClassNotFoundException e) {
-			AppLogger.logError("An error occured in the BaseDbService Constructor " + e.getLocalizedMessage());
+			AppLogger.logError("An error occured in the BaseDbService Constructor " + e.getMessage());
 		}
 	}
 	

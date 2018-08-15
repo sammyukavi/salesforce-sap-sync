@@ -36,14 +36,14 @@ public class SyncPresenter implements SyncContract.Presenter {
 	
 	@Override
 	public void getCredentials() {
-		addPreloader();
+		syncDashboard.setIsBusy(true);
 		try {
 			AppAuthCredentials connectionData = authCredentialsDbService.getAppAuthCredentials();
 			if (connectionData != null) {
 				syncDashboard.updateUiFields(connectionData);
 			}
 		} finally {
-			removePreloader();
+			syncDashboard.setIsBusy(false);
 		}
 	}
 	
@@ -54,7 +54,7 @@ public class SyncPresenter implements SyncContract.Presenter {
 	public void saveDbAuth(String serverAddress, String serverPort, String databaseName,
 	                       String databaseUsername, String databasePassword, String syncPeriod,
 	                       String syncPeriodUnit) throws SQLException {
-		addPreloader();
+		syncDashboard.setIsBusy(true);
 		try {
 			AppAuthCredentials appAuthCredentials = authCredentialsDbService.getAppAuthCredentials();
 			appAuthCredentials.setServerAddress(serverAddress);
@@ -66,7 +66,7 @@ public class SyncPresenter implements SyncContract.Presenter {
 			appAuthCredentials.setSyncPeriodUnit(syncPeriodUnit);
 			authCredentialsDbService.save(appAuthCredentials);
 		} finally {
-			removePreloader();
+			syncDashboard.setIsBusy(false);
 		}
 	}
 	
@@ -77,7 +77,7 @@ public class SyncPresenter implements SyncContract.Presenter {
 	public void saveSalesforceAuth(String salesforceClientId, String salesforceClientSecret,
 	                               String salesforceUsername, String salesforcePassword,
 	                               String salesforceSecurityToken) throws SQLException {
-		addPreloader();
+		syncDashboard.setIsBusy(true);
 		try {
 			AppAuthCredentials appAuthCredentials = authCredentialsDbService.getAppAuthCredentials();
 			appAuthCredentials.setSalesforceClientId(salesforceClientId);
@@ -87,14 +87,14 @@ public class SyncPresenter implements SyncContract.Presenter {
 			appAuthCredentials.setSalesforceSecurityToken(salesforceSecurityToken);
 			authCredentialsDbService.save(appAuthCredentials);
 		} finally {
-			removePreloader();
+			syncDashboard.setIsBusy(false);
 		}
 	}
 	
 	@Override
 	public void testDbConnection(String serverAddress, String serverPort, String databaseName,
 	                             String databaseUsername, String databasePassword) {
-		addPreloader();
+		syncDashboard.setIsBusy(true);
 		
 		final boolean[] connectionSuccessful = {false};
 		
@@ -104,12 +104,11 @@ public class SyncPresenter implements SyncContract.Presenter {
 					connectionSuccessful[0] = true;
 				}
 			} catch (ClassNotFoundException | SQLException e) {
-				syncDashboard.showErrorMessage(e.getMessage() + "\n" + e.getCause());
+				syncDashboard.showErrorMessage(e.getMessage());
 			} finally {
-				removePreloader();
+				syncDashboard.setIsBusy(false);
 				if (connectionSuccessful[0]) {
-					syncDashboard.showSuccessMessage(
-							getString(MESSAGE_CONNECTION_SUCCESSFUL));
+					syncDashboard.showSuccessMessage(getString(MESSAGE_CONNECTION_SUCCESSFUL));
 				}
 				try {
 					connectThread.join();
@@ -125,7 +124,7 @@ public class SyncPresenter implements SyncContract.Presenter {
 	                               String salesforceUsername, String salesforcePassword,
 	                               String salesforceSecurityToken) {
 		
-		addPreloader();
+		syncDashboard.setIsBusy(true);
 		
 		DataService.GetCallback<SalesforceAuthCredentials> authCallback = new DataService.GetCallback<SalesforceAuthCredentials>() {
 			@Override
@@ -136,14 +135,12 @@ public class SyncPresenter implements SyncContract.Presenter {
 			
 			@Override
 			public void onError(Throwable t) {
-				removePreloader();
-				syncDashboard.showErrorMessage(getString(MESSAGE_LOGIN_FAILED),
-						t.getMessage() + "\n" + t.getCause());
+				syncDashboard.showErrorMessage(getString(MESSAGE_LOGIN_FAILED), t.getMessage());
 			}
 			
 			@Override
 			public void always() {
-				removePreloader();
+				syncDashboard.setIsBusy(false);
 			}
 		};
 		
@@ -152,8 +149,8 @@ public class SyncPresenter implements SyncContract.Presenter {
 				getAuthService().authenticate(salesforceClientId, salesforceClientSecret, salesforceUsername, salesforcePassword,
 						salesforceSecurityToken, authCallback);
 			} catch (Exception e) {
-				removePreloader();
-				syncDashboard.showErrorMessage(getString(MESSAGE_LOGIN_FAILED), e.getMessage() + "\n" + e.getCause());
+				syncDashboard.setIsBusy(false);
+				syncDashboard.showErrorMessage(getString(MESSAGE_LOGIN_FAILED), e.getMessage());
 			} finally {
 				try {
 					connectThread.join();
@@ -164,13 +161,6 @@ public class SyncPresenter implements SyncContract.Presenter {
 		connectThread.start();
 	}
 	
-	private void addPreloader() {
-		syncDashboard.setIsBusy(true);
-	}
-	
-	private void removePreloader() {
-		syncDashboard.setIsBusy(false);
-	}
 	
 	private boolean hasAccessToken() {
 		AppAuthCredentials credentials = authCredentialsDbService.getAppAuthCredentials();
@@ -207,7 +197,7 @@ public class SyncPresenter implements SyncContract.Presenter {
 	}
 	
 	private AuthDataService getAuthService() {
-		RestServiceBuilder.switchToSalesforceAuthUrl();
+		RestServiceBuilder.switchToAuthUrl();
 		return new AuthDataService();
 	}
 	
@@ -223,17 +213,17 @@ public class SyncPresenter implements SyncContract.Presenter {
 			authCredentialsDbService.save(appAuthCredentials);
 			AppLogger.logInfo("Salesforce Credentials Successfully Stored");
 		} catch (SQLException e) {
-			AppLogger.logError("Failed to store Salesforce Credentials. " + e.getLocalizedMessage() + "\n" + e.getCause());
+			AppLogger.logError("Failed to store Salesforce Credentials. " + e.getMessage());
 		}
 	}
 	
 	@Override
 	public void performSync() {
 		if (hasAccessToken()) {
-			RestServiceBuilder.switchToSalesforceApiBaseUrl();
+			RestServiceBuilder.switchToApiBaseUrl();
 			SyncDataService syncDataService = new SyncDataService();
 			SAPDbService sapDbService = new SAPDbService();
-			Accounts.sync(syncDataService, sapDbService);
+			Accounts.sync(syncDashboard, syncDataService, sapDbService);
 		} else {
 			syncDashboard.showSuccessMessage("Cannot get access token from Salesforce. No Login Credentials Found");
 		}

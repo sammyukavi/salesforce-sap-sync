@@ -41,7 +41,7 @@ public class SianRosesApp {
 				drawSystemTrayIcon();
 				syncDashboard = new SyncDashboard();
 			} catch (Exception e) {
-				AppLogger.logError("An error occured while trying to start the application. " + e.getLocalizedMessage());
+				AppLogger.logError("An error occured while trying to start the application. " + e.getMessage());
 			}
 		});
 	}

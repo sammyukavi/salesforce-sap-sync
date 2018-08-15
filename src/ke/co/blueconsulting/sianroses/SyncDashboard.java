@@ -118,7 +118,7 @@ public class SyncDashboard implements SyncContract.View {
 							String.valueOf(salesforcePasswordTextField.getPassword()), salesforceSecurityTokenTextField.getText());
 				}
 			} catch (Exception e) {
-				AppLogger.logError("Some error occured. " + e.getLocalizedMessage());
+				AppLogger.logError("Some error occured. " + e.getMessage());
 				showErrorMessage(getString(MESSAGE_ERROR_OCCURRED) + e.getMessage());
 			}
 		});

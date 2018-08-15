@@ -53,7 +53,7 @@ public class AuthCredentialsDbService {
 				return credentials;
 			}
 		} catch (SQLException e) {
-			AppLogger.logError("An error occured when fetching AppAuthCredentials. " + e.getLocalizedMessage());
+			AppLogger.logError("An error occured when fetching AppAuthCredentials. " + e.getMessage());
 		}
 		return new AppAuthCredentials();
 	}

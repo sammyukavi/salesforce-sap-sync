@@ -26,7 +26,7 @@ public abstract class BaseDataService<M, R> implements DataService<M> {
 		try {
 			authCredentialsDbService = new AuthCredentialsDbService();
 		} catch (ClassNotFoundException | SQLException e) {
-			AppLogger.logError("An error occured in the BaseDataService Constructor. " + e.getLocalizedMessage());
+			AppLogger.logError("An error occured in the BaseDataService Constructor. " + e.getMessage());
 		}
 	}
 	
@@ -49,10 +49,6 @@ public abstract class BaseDataService<M, R> implements DataService<M> {
 			@Override
 			public void onResponse(Call<M> call, Response<M> response) {
 				
-				if (callback != null) {
-					callback.always();
-				}
-				
 				if (response.isSuccessful()) {
 					if (callback != null) {
 						callback.onCompleted(response.body());
@@ -63,12 +59,20 @@ public abstract class BaseDataService<M, R> implements DataService<M> {
 						callback.onError(t);
 					}
 				}
+				
+				if (callback != null) {
+					callback.always();
+				}
 			}
 			
 			@Override
 			public void onFailure(Call<M> call, Throwable t) {
 				if (callback != null) {
 					callback.onError(t);
+				}
+				
+				if (callback != null) {
+					callback.always();
 				}
 			}
 		});

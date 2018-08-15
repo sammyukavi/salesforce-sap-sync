@@ -29,7 +29,7 @@ public class ErrorHandler {
 				}
 			}
 		} catch (Exception e) {
-			AppLogger.logError("An error occurred when trying to desirialize the returned server error. " + e.getLocalizedMessage());
+			AppLogger.logError("An error occurred when trying to desirialize the returned server error. " + e.getMessage());
 		}
 		return message.toString();
 	}
