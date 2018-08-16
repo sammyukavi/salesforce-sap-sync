@@ -2,7 +2,7 @@ package ke.co.blueconsulting.sianroses.data.sync;
 
 import ke.co.blueconsulting.sianroses.contract.SyncContract;
 import ke.co.blueconsulting.sianroses.data.DataService;
-import ke.co.blueconsulting.sianroses.data.db.SAPDbService;
+import ke.co.blueconsulting.sianroses.data.db.CustomerDbService;
 import ke.co.blueconsulting.sianroses.data.impl.SyncDataService;
 import ke.co.blueconsulting.sianroses.model.app.Response;
 import ke.co.blueconsulting.sianroses.model.salesforce.Customer;
@@ -16,15 +16,15 @@ import static ke.co.blueconsulting.sianroses.util.UpdateFields.updateCustomerSyn
 public class Accounts {
 	
 	private static SyncDataService syncDataService;
-	private static SAPDbService sapDbService;
+	private static CustomerDbService customerDbService;
 	private static SyncContract.View syncDashboard;
 	
 	
-	public static <T> void sync(SyncContract.View view, SyncDataService dataService, SAPDbService dbService) {
+	public static <T> void sync(SyncContract.View view, SyncDataService dataService, CustomerDbService dbService) {
 		
 		syncDashboard = view;
 		syncDataService = dataService;
-		sapDbService = dbService;
+		customerDbService = dbService;
 		
 		syncDashboard.setIsBusy(true);
 		
@@ -46,7 +46,7 @@ public class Accounts {
 					customers = updateCustomerSyncFields(customers, false, false);
 					
 					try {
-						insertedCustomers = sapDbService.upsertCustomerRecords(customers);
+						insertedCustomers = customerDbService.upsertCustomerRecords(customers);
 					} catch (SQLException e) {
 						AppLogger.logError(e.getMessage());
 					}
@@ -85,7 +85,7 @@ public class Accounts {
 				customerIds.add(customer.getAutoId());
 			}
 			
-			unsyncedCustomers = updateCustomerSyncFields(sapDbService.getUnsyncedCustomers(customerIds), false, false);
+			unsyncedCustomers = updateCustomerSyncFields(customerDbService.getUnsyncedCustomers(customerIds), false, false);
 			
 		} catch (SQLException e) {
 			AppLogger.logError(e.getMessage());
@@ -115,7 +115,7 @@ public class Accounts {
 						customers = updateCustomerSyncFields(customers, false, false);
 						
 						try {
-							sapDbService.upsertCustomerRecords(customers);
+							customerDbService.upsertCustomerRecords(customers);
 							AppLogger.logInfo("Sync Complete");
 						} catch (SQLException e) {
 							AppLogger.logError(e.getMessage());

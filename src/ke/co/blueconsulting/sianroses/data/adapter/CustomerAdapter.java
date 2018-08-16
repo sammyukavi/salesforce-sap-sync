@@ -71,7 +71,7 @@ public class CustomerAdapter extends TypeAdapter<Customer> {
 		
 		
 		/**
-		 * TODO When you fix the commented lines below. Also fix those in SAPDbService for updating customers
+		 * TODO When you fix the commented lines below. Also fix those in CustomerDbService for updating customers
 		 */
 		
 		if (!StringUtils.isNullOrEmpty(customer.getCurrencyIsoCode())) {

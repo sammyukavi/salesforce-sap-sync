@@ -5,7 +5,7 @@ import ke.co.blueconsulting.sianroses.contract.SyncContract;
 import ke.co.blueconsulting.sianroses.data.DataService;
 import ke.co.blueconsulting.sianroses.data.RestServiceBuilder;
 import ke.co.blueconsulting.sianroses.data.db.AuthCredentialsDbService;
-import ke.co.blueconsulting.sianroses.data.db.SAPDbService;
+import ke.co.blueconsulting.sianroses.data.db.CustomerDbService;
 import ke.co.blueconsulting.sianroses.data.impl.AuthDataService;
 import ke.co.blueconsulting.sianroses.data.impl.SyncDataService;
 import ke.co.blueconsulting.sianroses.data.sync.Accounts;
@@ -20,7 +20,7 @@ import static ke.co.blueconsulting.sianroses.util.StringUtils.getString;
 
 public class SyncPresenter implements SyncContract.Presenter {
 	
-	private final SAPDbService sapDbService;
+	private final CustomerDbService customerDbService;
 	private Thread connectThread;
 	private SyncContract.View syncDashboard;
 	private AuthCredentialsDbService authCredentialsDbService;
@@ -29,7 +29,7 @@ public class SyncPresenter implements SyncContract.Presenter {
 	public SyncPresenter(SyncDashboard syncDashboard) throws SQLException, ClassNotFoundException {
 		this.syncDashboard = syncDashboard;
 		this.authCredentialsDbService = new AuthCredentialsDbService();
-		this.sapDbService = new SAPDbService();
+		this.customerDbService = new CustomerDbService();
 	}
 	
 	private boolean hasAccessToken() {
@@ -95,7 +95,7 @@ public class SyncPresenter implements SyncContract.Presenter {
 		
 		connectThread = new Thread(() -> {
 			try {
-				if (sapDbService.testServerConnection(serverAddress, serverPort, databaseName, databaseUsername,
+				if (customerDbService.testServerConnection(serverAddress, serverPort, databaseName, databaseUsername,
 						databasePassword)) {
 					connectionSuccessful[0] = true;
 				}
@@ -230,8 +230,8 @@ public class SyncPresenter implements SyncContract.Presenter {
 		if (hasAccessToken()) {
 			RestServiceBuilder.switchToApiBaseUrl();
 			SyncDataService syncDataService = new SyncDataService();
-			SAPDbService sapDbService = new SAPDbService();
-			Accounts.sync(syncDashboard, syncDataService, sapDbService);
+			CustomerDbService customerDbService = new CustomerDbService();
+			Accounts.sync(syncDashboard, syncDataService, customerDbService);
 		} else {
 			syncDashboard.showSuccessMessage("Cannot get access token from Salesforce. No Login Credentials Found");
 		}

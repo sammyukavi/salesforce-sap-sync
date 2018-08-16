@@ -10,8 +10,6 @@ import ke.co.blueconsulting.sianroses.model.salesforce.Customer;
 import ke.co.blueconsulting.sianroses.model.salesforce.CustomerContacts;
 import ke.co.blueconsulting.sianroses.util.StringUtils;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,68 +19,10 @@ import java.util.concurrent.Callable;
  * A class that is used to create a service for storing and retrieving the data
  * in the SAP server
  */
-public class SAPDbService extends BaseDbService {
+public class CustomerDbService extends BaseDbService {
 	
-	public SAPDbService() {
+	public CustomerDbService() {
 		super();
-	}
-	
-	public boolean testServerConnection(String serverAddress, String serverPort, String databaseName,
-	                                    String databaseUsername, String databasePassword) throws ClassNotFoundException, SQLException {
-		String connectionUrl = "jdbc:sqlserver://" + serverAddress + ":" + serverPort + ";" + "databaseName="
-				+ databaseName + ";user=" + databaseUsername + ";password=" + databasePassword;
-		Connection connection = null;
-		boolean status;
-		try {
-			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-			connection = DriverManager.getConnection(connectionUrl);
-			status = true;
-		} finally {
-			if (connection != null) {
-				try {
-					connection.close();
-				} catch (Exception ignored) {
-				}
-			}
-		}
-		return status;
-	}
-	
-	public <S> ArrayList<S> insertRecords(Class<S> sClass, ArrayList<S> records) throws SQLException {
-		ArrayList<S> insertedRecords = new ArrayList<>();
-		Dao<S, Integer> dao = createDao(sClass);
-		for (S record : records) {
-			dao.createOrUpdate(record);
-			insertedRecords.add(record);
-		}
-		return insertedRecords;
-	}
-	
-	public <S> ArrayList<S> getRecordsWithoutSalesforceId(Class<S> sClass) throws SQLException {
-		String columnName = "SalesForceId";
-		return getRecordsWithNullOrEmptyColumn(sClass, columnName);
-	}
-	
-	
-	private <S> ArrayList<S> getRecordsWithNullOrEmptyColumn(Class<S> sClass, String columnName) throws SQLException {
-		Dao<S, Integer> dao = createDao(sClass);
-		QueryBuilder<S, Integer> queryBuilder = dao.queryBuilder();
-		Where<S, Integer> where = queryBuilder.where();
-		return (ArrayList<S>) dao.query(where.or(where.isNull(columnName), where.eq(columnName, "")).prepare());
-	}
-	
-	
-	public <S> ArrayList<S> getRecordsWithAFieldCheckedTrue(Class<S> sClass) throws SQLException {
-		String columnName = "Pull_from_SAP__c";
-		return getRecordsWithAFieldCheckedTrue(sClass, columnName);
-	}
-	
-	@SuppressWarnings("unchecked")
-	public <S> ArrayList<S> getRecordsWithAFieldCheckedTrue(Class<S> sClass, String columnName) throws SQLException {
-		Dao<S, Integer> dao = createDao(sClass);
-		QueryBuilder<S, Integer> queryBuilder = dao.queryBuilder();
-		Where<S, Integer> where = queryBuilder.where();
-		return (ArrayList<S>) dao.query(where.or(where.isNull(columnName), where.eq(columnName, true)).prepare());
 	}
 	
 	public ArrayList<Customer> getUnsyncedCustomers(ArrayList<Long> ids) throws SQLException {
