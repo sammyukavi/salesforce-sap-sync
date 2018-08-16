@@ -53,7 +53,7 @@ public class CustomerContacts {
 					}
 				}
 				
-				//updateSalesforceCustomers(insertedCustomers);
+				updateSalesforceCustomers(insertedCustomers);
 			}
 			
 			@Override

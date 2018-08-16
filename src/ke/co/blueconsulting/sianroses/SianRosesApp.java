@@ -14,7 +14,6 @@ import static ke.co.blueconsulting.sianroses.util.StringUtils.getString;
 
 public class SianRosesApp {
 	
-	//private static SianRosesApp application;
 	private static SyncDashboard syncDashboard;
 	private static TrayIcon trayIcon;
 	private static boolean systemTrayIsSupported = false;
@@ -93,7 +92,8 @@ public class SianRosesApp {
 		});
 		
 		aboutMenuItem.addActionListener(e -> {
-			MessageDialog.showMessageDialog(SyncDashboard.dashboardJFrame, breakLongString("Sian Roses Salesforce Integration App.\n\nv 1.0\n\nPowered by Blue Consulting"), getString(TITLE_ABOUT), JOptionPane.INFORMATION_MESSAGE, getSianRosesIcon());
+			//TODO resize and use blue consulting icon
+			MessageDialog.showMessageDialog(SyncDashboard.dashboardJFrame, breakLongString("Sian Roses Salesforce Integration App.\n\nv 1.0\n\nPowered by Blue Consulting"), getString(TITLE_ABOUT), JOptionPane.INFORMATION_MESSAGE, getBlueConsultingIcon());
 		});
 		
 		showLogsMenuItem.addActionListener(e -> {

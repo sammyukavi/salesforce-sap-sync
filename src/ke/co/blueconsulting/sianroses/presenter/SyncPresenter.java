@@ -106,7 +106,7 @@ public class SyncPresenter implements SyncContract.Presenter {
 				if (connectionSuccessful[0]) {
 					saveSAPAuthCredentials(serverAddress, serverPort, databaseName, databaseUsername, databasePassword, syncPeriod,
 							syncPeriodUnit);
-					syncDashboard.showSuccessMessage("SAP connection successful. Credentials Successfully Stored");
+					syncDashboard.showSuccessMessage("SAP connection successful. Credentials Successfully Stored.");
 				}
 				try {
 					connectThread.join();
@@ -124,6 +124,13 @@ public class SyncPresenter implements SyncContract.Presenter {
 	public void saveSAPAuthCredentials(String serverAddress, String serverPort, String databaseName,
 	                                   String databaseUsername, String databasePassword, String syncPeriod,
 	                                   String syncPeriodUnit) {
+		saveSAPAuthCredentials(false, serverAddress, serverPort, databaseName, databaseUsername,
+				databasePassword, syncPeriod, syncPeriodUnit);
+	}
+	
+	public void saveSAPAuthCredentials(boolean showalert, String serverAddress, String serverPort, String databaseName,
+	                                   String databaseUsername, String databasePassword, String syncPeriod,
+	                                   String syncPeriodUnit) {
 		syncDashboard.setIsBusy(true);
 		try {
 			AppAuthCredentials appAuthCredentials = authCredentialsDbService.getAppAuthCredentials();
@@ -135,8 +142,11 @@ public class SyncPresenter implements SyncContract.Presenter {
 			appAuthCredentials.setSyncPeriod(Integer.parseInt(syncPeriod));
 			appAuthCredentials.setSyncPeriodUnit(syncPeriodUnit);
 			authCredentialsDbService.save(appAuthCredentials);
+			if (showalert) {
+				syncDashboard.showSuccessMessage("Saved");
+			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			syncDashboard.showErrorMessage("Failed to store SAP Credentials. " + e.getMessage());
 		} finally {
 			syncDashboard.setIsBusy(false);
 		}
@@ -201,8 +211,9 @@ public class SyncPresenter implements SyncContract.Presenter {
 			appAuthCredentials.setSalesforcePassword(salesforcePassword);
 			appAuthCredentials.setSalesforceSecurityToken(salesforceSecurityToken);
 			authCredentialsDbService.save(appAuthCredentials);
+			syncDashboard.showSuccessMessage("Saved");
 		} catch (SQLException e) {
-			syncDashboard.showSuccessMessage("Failed to store Salesforce Credentials. " + e.getMessage());
+			syncDashboard.showErrorMessage("Failed to store Salesforce Credentials. " + e.getMessage());
 		} finally {
 			syncDashboard.setIsBusy(false);
 		}
@@ -220,7 +231,7 @@ public class SyncPresenter implements SyncContract.Presenter {
 			authCredentialsDbService.save(appAuthCredentials);
 			syncDashboard.showSuccessMessage("Salesforce authentication successful. Credentials Successfully Stored");
 		} catch (SQLException e) {
-			syncDashboard.showSuccessMessage("Failed to store Salesforce Credentials. " + e.getMessage());
+			syncDashboard.showErrorMessage("Failed to store Salesforce Credentials. " + e.getMessage());
 		}
 	}
 	

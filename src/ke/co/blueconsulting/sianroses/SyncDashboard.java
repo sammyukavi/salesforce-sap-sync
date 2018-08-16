@@ -9,6 +9,7 @@ import ke.co.blueconsulting.sianroses.util.ErrorLogFileWatcher;
 import ke.co.blueconsulting.sianroses.util.StringUtils;
 
 import javax.swing.*;
+import javax.swing.plaf.basic.BasicTabbedPaneUI;
 import javax.swing.text.DefaultCaret;
 import java.awt.*;
 import java.sql.SQLException;
@@ -70,7 +71,7 @@ public class SyncDashboard implements SyncContract.View {
 		dashboardJFrame.getContentPane().setLayout(null);
 		
 		tabsContainer = new JTabbedPane();
-		/*tabsContainer.setUI(new BasicTabbedPaneUI() {
+		tabsContainer.setUI(new BasicTabbedPaneUI() {
 			private final Insets borderInsets = new Insets(0, 0, 0, 0);
 			
 			@Override
@@ -81,7 +82,7 @@ public class SyncDashboard implements SyncContract.View {
 			protected Insets getContentBorderInsets(int tabPlacement) {
 				return borderInsets;
 			}
-		});*/
+		});
 		tabsContainer.setBounds(0, 0, 598, 324);
 		tabsContainer.setAlignmentY(Component.BOTTOM_ALIGNMENT);
 		tabsContainer.setAlignmentX(Component.RIGHT_ALIGNMENT);
@@ -132,7 +133,7 @@ public class SyncDashboard implements SyncContract.View {
 			try {
 				if (tabOnView.equals(DATABASE_SERVER_CONFIGURATION_TAB)) {
 					if (serverConfigFieldsAreValid()) {
-						syncPresenter.saveSAPAuthCredentials(serverAddressTextField.getText(), serverPortTextField.getText(),
+						syncPresenter.saveSAPAuthCredentials(true, serverAddressTextField.getText(), serverPortTextField.getText(),
 								databaseNameTextField.getText(), databaseUsernameTextField.getText(), String.valueOf(databasePasswordTextField.getPassword()),
 								syncPeriodTextField.getText(), syncPeriodUnitComboBox.getSelectedItem().toString());
 					}

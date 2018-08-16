@@ -7,7 +7,6 @@ import com.j256.ormlite.stmt.UpdateBuilder;
 import com.j256.ormlite.stmt.Where;
 import ke.co.blueconsulting.sianroses.data.BaseDbService;
 import ke.co.blueconsulting.sianroses.model.salesforce.CustomerContact;
-import ke.co.blueconsulting.sianroses.util.Console;
 import ke.co.blueconsulting.sianroses.util.StringUtils;
 
 import java.sql.SQLException;
@@ -50,9 +49,8 @@ public class CustomerContactDbService extends BaseDbService {
 			
 			for (CustomerContact customerContact : customerContacts) {
 				
-				Console.log(customerContact);
-				
 				boolean recordExists;
+				
 				boolean isUsingSalesforceIdColumn = (!StringUtils.isNullOrEmpty(customerContact.getSalesforceId()));
 				
 				if (isUsingSalesforceIdColumn) {
