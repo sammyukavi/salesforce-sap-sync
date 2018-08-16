@@ -2,12 +2,10 @@ package ke.co.blueconsulting.sianroses.model.salesforce;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 import java.io.Serializable;
-import java.util.Calendar;
 
 /**
  * This model maps Salesforce accounts' contacts to SAP user accounts.
@@ -32,15 +30,15 @@ public class CustomerContact implements Serializable {
 	@Expose
 	private String accountNumber;
 	
-	@DatabaseField(columnName = "BIRTHDATE", dataType = DataType.SERIALIZABLE)
+	@DatabaseField(columnName = "BIRTHDATE")
 	@SerializedName("Birthdate")
 	@Expose
-	private java.util.Calendar birthDate;
+	private String birthDate;
 	
-	/*@DatabaseField(columnName = "CONTACTID")
-	@SerializedName("CONTACTID")
+	@DatabaseField(columnName = "CONTACTID")
+	@SerializedName("Id")
 	@Expose
-	private String contactId;*/
+	private String contactId;
 	
 	@DatabaseField(columnName = "SalesForceId")
 	@SerializedName("Id")
@@ -98,7 +96,7 @@ public class CustomerContact implements Serializable {
 	private String mailingStreet;
 	
 	@DatabaseField(columnName = "Mobile")
-	@SerializedName("mobilePhone")
+	@SerializedName("MobilePhone")
 	@Expose
 	private String mobilePhone;
 	
@@ -122,6 +120,13 @@ public class CustomerContact implements Serializable {
 	@DatabaseField(columnName = "Title")
 	private String title;
 	
+	public Long getAutoId() {
+		return autoId;
+	}
+	
+	public void setAutoId(Long autoId) {
+		this.autoId = autoId;
+	}
 	
 	public String getAccountId() {
 		return accountId;
@@ -139,12 +144,20 @@ public class CustomerContact implements Serializable {
 		this.accountNumber = accountNumber;
 	}
 	
-	public Calendar getBirthDate() {
+	public String getBirthDate() {
 		return birthDate;
 	}
 	
-	public void setBirthDate(Calendar birthDate) {
+	public void setBirthDate(String birthDate) {
 		this.birthDate = birthDate;
+	}
+	
+	public String getSalesforceId() {
+		return salesforceId;
+	}
+	
+	public void setSalesforceId(String salesforceId) {
+		this.salesforceId = salesforceId;
 	}
 	
 	public String getDepartment() {
@@ -267,19 +280,11 @@ public class CustomerContact implements Serializable {
 		this.title = title;
 	}
 	
-	public String getSalesforceId() {
-		return salesforceId;
+	public String getContactId() {
+		return contactId;
 	}
 	
-	public void setSalesforceId(String salesforceId) {
-		this.salesforceId = salesforceId;
-	}
-	
-	public Long getAutoId() {
-		return autoId;
-	}
-	
-	public void setAutoId(Long autoId) {
-		this.autoId = autoId;
+	public void setContactId(String contactId) {
+		this.contactId = contactId;
 	}
 }

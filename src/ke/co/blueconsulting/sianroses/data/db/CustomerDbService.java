@@ -116,7 +116,7 @@ public class CustomerDbService extends BaseDbService {
 						updateBuilder.updateColumnValue("Email__c", customer.getEmailC());
 					}
 					
-					if (StringUtils.isNullOrEmpty(customer.geteRPIdC())) {
+					if (!StringUtils.isNullOrEmpty(customer.geteRPIdC())) {
 						updateBuilder.updateColumnValue("ERP_ID__c", customer.geteRPIdC());
 					}
 					

@@ -48,11 +48,12 @@ public class CustomerContacts {
 					try {
 						insertedCustomers = dbService.upsertCustomerRecords(customerContacts);
 					} catch (SQLException e) {
+						e.printStackTrace();
 						AppLogger.logError(e.getMessage());
 					}
 				}
 				
-				updateSalesforceCustomers(insertedCustomers);
+				//updateSalesforceCustomers(insertedCustomers);
 			}
 			
 			@Override

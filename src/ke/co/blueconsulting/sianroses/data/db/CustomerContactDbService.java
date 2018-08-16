@@ -7,6 +7,7 @@ import com.j256.ormlite.stmt.UpdateBuilder;
 import com.j256.ormlite.stmt.Where;
 import ke.co.blueconsulting.sianroses.data.BaseDbService;
 import ke.co.blueconsulting.sianroses.model.salesforce.CustomerContact;
+import ke.co.blueconsulting.sianroses.util.Console;
 import ke.co.blueconsulting.sianroses.util.StringUtils;
 
 import java.sql.SQLException;
@@ -49,6 +50,8 @@ public class CustomerContactDbService extends BaseDbService {
 			
 			for (CustomerContact customerContact : customerContacts) {
 				
+				Console.log(customerContact);
+				
 				boolean recordExists;
 				boolean isUsingSalesforceIdColumn = (!StringUtils.isNullOrEmpty(customerContact.getSalesforceId()));
 				
@@ -69,16 +72,20 @@ public class CustomerContactDbService extends BaseDbService {
 					}
 					
 					updateBuilder.updateColumnValue("BIRTHDATE", customerContact.getBirthDate());
-							
-							/*if (!StringUtils.isNullOrEmpty(customerContact.getContactId())) {
-								updateBuilder.updateColumnValue("CONTACTID", customerContact.getContactId());
-							}*/
+					
+					if (!StringUtils.isNullOrEmpty(customerContact.getContactId())) {
+						updateBuilder.updateColumnValue("CONTACTID", customerContact.getContactId());
+					}
+					
+					if (!StringUtils.isNullOrEmpty(customerContact.getDepartment())) {
+						updateBuilder.updateColumnValue("Department", customerContact.getDepartment());
+					}
 					
 					if (!StringUtils.isNullOrEmpty(customerContact.getEmail())) {
 						updateBuilder.updateColumnValue("Email", customerContact.getEmail());
 					}
 					
-					if (StringUtils.isNullOrEmpty(customerContact.getFax())) {
+					if (!StringUtils.isNullOrEmpty(customerContact.getFax())) {
 						updateBuilder.updateColumnValue("Fax", customerContact.getFax());
 					}
 					
@@ -99,10 +106,10 @@ public class CustomerContactDbService extends BaseDbService {
 					}
 					
 					if (!StringUtils.isNullOrEmpty(customerContact.getMailingPostalCode())) {
-						updateBuilder.updateColumnValue("BillingState", customerContact.getMailingPostalCode());
+						updateBuilder.updateColumnValue("MailingPostalCode", customerContact.getMailingPostalCode());
 					}
 					
-					if (StringUtils.isNullOrEmpty(customerContact.getMailingState())) {
+					if (!StringUtils.isNullOrEmpty(customerContact.getMailingState())) {
 						updateBuilder.updateColumnValue("MailingState", customerContact.getMailingState());
 					}
 					
