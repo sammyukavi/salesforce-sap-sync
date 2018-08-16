@@ -29,7 +29,7 @@ public class CustomerContactDbService extends BaseDbService {
 		Where<CustomerContact, Integer> where = dao.queryBuilder().where();
 		
 		where = where.or(where.isNull("SalesForceId"), where.eq("SalesForceId", ""),
-				where.eq("Pull_from_SAP__c", true));
+				where.eq("Pull_from_SAP__c", true)).and().isNotNull("LastName");
 		
 		if (!ids.isEmpty()) {
 			where = where.and().notIn("AUTOID", ids);
@@ -67,6 +67,10 @@ public class CustomerContactDbService extends BaseDbService {
 					
 					if (!StringUtils.isNullOrEmpty(customerContact.getAccountId())) {
 						updateBuilder.updateColumnValue("AccountID", customerContact.getAccountId());
+					}
+					
+					if (!StringUtils.isNullOrEmpty(customerContact.getAccountNumber())) {
+						updateBuilder.updateColumnValue("Account_Number", customerContact.getAccountNumber());
 					}
 					
 					updateBuilder.updateColumnValue("BIRTHDATE", customerContact.getBirthDate());

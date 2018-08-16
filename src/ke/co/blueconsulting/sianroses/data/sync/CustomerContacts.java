@@ -48,7 +48,6 @@ public class CustomerContacts {
 					try {
 						insertedCustomers = dbService.upsertCustomerRecords(customerContacts);
 					} catch (SQLException e) {
-						e.printStackTrace();
 						AppLogger.logError(e.getMessage());
 					}
 				}
@@ -120,6 +119,7 @@ public class CustomerContacts {
 							dbService.upsertCustomerRecords(customers);
 							AppLogger.logInfo("Contacts sync complete");
 						} catch (SQLException e) {
+							e.printStackTrace();
 							AppLogger.logError(e.getMessage());
 						}
 					}

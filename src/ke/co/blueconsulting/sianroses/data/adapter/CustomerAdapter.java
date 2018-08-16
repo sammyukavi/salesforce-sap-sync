@@ -31,14 +31,11 @@ public class CustomerAdapter extends TypeAdapter<Customer> {
 			jsonWriter.value(customer.getAccountPaymentTermsC());
 		}
 		
-		
 		jsonWriter.name("Active__c");
 		jsonWriter.value(customer.getActiveC());
 		
-		
 		jsonWriter.name("Available_Credit_Amount__c");
 		jsonWriter.value(customer.getAvailableCreditAmount());
-		
 		
 		if (!StringUtils.isNullOrEmpty(customer.getAddressIdC())) {
 			jsonWriter.name("AddressID__c");
@@ -65,13 +62,12 @@ public class CustomerAdapter extends TypeAdapter<Customer> {
 			jsonWriter.value(customer.getBillingState());
 		}
 		
-		
 		jsonWriter.name("Credit_Limit__c");
 		jsonWriter.value(customer.getCreditLimitC());
 		
-		
 		/**
-		 * TODO When you fix the commented lines below. Also fix those in CustomerDbService for updating customers
+		 * In case you have come here to fix the commented lines below,
+		 * also fix those in CustomerDbService for updating customers
 		 */
 		
 		if (!StringUtils.isNullOrEmpty(customer.getCurrencyIsoCode())) {
@@ -110,10 +106,8 @@ public class CustomerAdapter extends TypeAdapter<Customer> {
 			jsonWriter.value(customer.getName());
 		}
 		
-		
 		jsonWriter.name("Outstanding_Balance__c");
 		jsonWriter.value(customer.getOutstandingBalanceC());
-		
 		
 		if (!StringUtils.isNullOrEmpty(customer.getOwnerId())) {
 			//jsonWriter.name("OwnerId");
@@ -143,17 +137,14 @@ public class CustomerAdapter extends TypeAdapter<Customer> {
 			jsonWriter.value(customer.getPhone());
 		}
 		
-		
 		jsonWriter.name("Prepaid_Amount__c");
 		jsonWriter.value(customer.getPrepaidAmountC());
-		
 		
 		jsonWriter.name("Pull_from_SAP__c");
 		jsonWriter.value(customer.isPullFromSAPC());
 		
 		jsonWriter.name("Push_to_SAP__c");
 		jsonWriter.value(customer.isPushToSAPC());
-		
 		
 		if (!StringUtils.isNullOrEmpty(customer.getShippingCity())) {
 			jsonWriter.name("ShippingCity");
