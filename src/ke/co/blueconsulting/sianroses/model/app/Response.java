@@ -29,7 +29,7 @@ public class Response implements Serializable {
 	
 	@SerializedName(CONTACTS)
 	@Expose
-	private ArrayList<CustomerContacts> customerContacts = new ArrayList<>();
+	private ArrayList<CustomerContact> customerContacts = new ArrayList<>();
 	
 	@SerializedName(PRICE_LIST)
 	@Expose
@@ -80,11 +80,11 @@ public class Response implements Serializable {
 		return instance;
 	}
 	
-	public ArrayList<CustomerContacts> getCustomerContacts() {
+	public ArrayList<CustomerContact> getCustomerContacts() {
 		return customerContacts;
 	}
 	
-	public static Response setCustomerContacts(ArrayList<CustomerContacts> customerContacts) {
+	public static Response setCustomerContacts(ArrayList<CustomerContact> customerContacts) {
 		instance.customerContacts = customerContacts;
 		return instance;
 	}

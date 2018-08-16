@@ -4,29 +4,29 @@ import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
-import ke.co.blueconsulting.sianroses.model.salesforce.CustomerContacts;
+import ke.co.blueconsulting.sianroses.model.salesforce.CustomerContact;
 import ke.co.blueconsulting.sianroses.util.AppLogger;
 import ke.co.blueconsulting.sianroses.util.StringUtils;
 
 import java.io.IOException;
 
-public class CustomerContactsAdapter extends TypeAdapter<CustomerContacts> {
+public class CustomerContactsAdapter extends TypeAdapter<CustomerContact> {
 	
 	@Override
-	public void write(JsonWriter jsonWriter, CustomerContacts CustomerContacts) throws IOException {
+	public void write(JsonWriter jsonWriter, CustomerContact CustomerContact) throws IOException {
 		jsonWriter.beginObject();
 		
-		if (!StringUtils.isNullOrEmpty(CustomerContacts.getSalesforceId())) {
+		if (!StringUtils.isNullOrEmpty(CustomerContact.getSalesforceId())) {
 			jsonWriter.name("Id");
-			jsonWriter.value(CustomerContacts.getSalesforceId());
+			jsonWriter.value(CustomerContact.getSalesforceId());
 		}
 		
 		jsonWriter.endObject();
 	}
 	
 	@Override
-	public CustomerContacts read(JsonReader jsonReader) {
-		CustomerContacts CustomerContacts = new CustomerContacts();
+	public CustomerContact read(JsonReader jsonReader) {
+		CustomerContact CustomerContact = new CustomerContact();
 		try {
 			jsonReader.beginObject();
 			String fieldname = null;
@@ -37,16 +37,16 @@ public class CustomerContactsAdapter extends TypeAdapter<CustomerContacts> {
 				}
 				if ("Id".equals(fieldname)) {
 					jsonReader.peek();
-					CustomerContacts.setSalesforceId(jsonReader.nextString());
+					CustomerContact.setSalesforceId(jsonReader.nextString());
 				} else {
 					jsonReader.skipValue();
 				}
 			}
 			jsonReader.endObject();
 		} catch (IOException e) {
-			AppLogger.logError("An error occurred while trying to write a CustomerContacts object. " + e.getMessage());
+			AppLogger.logError("An error occurred while trying to write a contact object. " + e.getMessage());
 		}
-		return CustomerContacts;
+		return CustomerContact;
 	}
 	
 }

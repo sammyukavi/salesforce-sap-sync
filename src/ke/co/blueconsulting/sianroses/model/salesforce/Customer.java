@@ -99,10 +99,10 @@ public class Customer implements Serializable {
 	@Expose
 	private String groupTypeC;
 	
-	@DatabaseField(columnName = "SalesForceId")
+	@DatabaseField(columnName = "salesforceId")
 	@SerializedName("Id")
 	@Expose
-	private String SalesForceId;
+	private String salesforceId;
 	
 	@DatabaseField(columnName = "Name")
 	@SerializedName("Name")
@@ -200,12 +200,12 @@ public class Customer implements Serializable {
 	}
 	
 	
-	public String getSalesForceId() {
-		return SalesForceId;
+	public String getSalesforceId() {
+		return salesforceId;
 	}
 	
-	public void setSalesForceId(String SalesForceId) {
-		this.SalesForceId = SalesForceId;
+	public void setSalesforceId(String SalesForceId) {
+		this.salesforceId = SalesForceId;
 	}
 	
 	public String getName() {

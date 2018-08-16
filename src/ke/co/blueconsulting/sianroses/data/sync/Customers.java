@@ -13,18 +13,18 @@ import java.util.ArrayList;
 
 import static ke.co.blueconsulting.sianroses.util.UpdateFields.updateCustomerSyncFields;
 
-public class Accounts {
+public class Customers {
 	
 	private static SyncDataService syncDataService;
-	private static CustomerDbService customerDbService;
+	private static CustomerDbService dbService;
 	private static SyncContract.View syncDashboard;
 	
 	
-	public static <T> void sync(SyncContract.View view, SyncDataService dataService, CustomerDbService dbService) {
+	public static <T> void sync(SyncContract.View view, SyncDataService dataService) {
 		
 		syncDashboard = view;
 		syncDataService = dataService;
-		customerDbService = dbService;
+		dbService = new CustomerDbService();
 		
 		syncDashboard.setIsBusy(true);
 		
@@ -46,7 +46,7 @@ public class Accounts {
 					customers = updateCustomerSyncFields(customers, false, false);
 					
 					try {
-						insertedCustomers = customerDbService.upsertCustomerRecords(customers);
+						insertedCustomers = dbService.upsertCustomerRecords(customers);
 					} catch (SQLException e) {
 						AppLogger.logError(e.getMessage());
 					}
@@ -67,7 +67,7 @@ public class Accounts {
 			}
 		};
 		
-		syncDataService.getUserAccounts(getFromSalesforceCallback);
+		syncDataService.getCustomers(getFromSalesforceCallback);
 	}
 	
 	
@@ -85,7 +85,7 @@ public class Accounts {
 				customerIds.add(customer.getAutoId());
 			}
 			
-			unsyncedCustomers = updateCustomerSyncFields(customerDbService.getUnsyncedCustomers(customerIds), false, false);
+			unsyncedCustomers = updateCustomerSyncFields(dbService.getUnsyncedCustomers(customerIds), false, false);
 			
 		} catch (SQLException e) {
 			AppLogger.logError(e.getMessage());
@@ -95,7 +95,7 @@ public class Accounts {
 		
 		int customersCount = customers.size();
 		
-		AppLogger.logInfo("Found " + customersCount + " customers that need to be pushed to Salesforce." + (customersCount > 0 ? "Attempting to push." : ""));
+		AppLogger.logInfo("Found " + customersCount + " customers that need to be pushed to Salesforce. " + (customersCount > 0 ? "Attempting to push." : ""));
 		
 		if (customersCount > 0) {
 			
@@ -115,8 +115,8 @@ public class Accounts {
 						customers = updateCustomerSyncFields(customers, false, false);
 						
 						try {
-							customerDbService.upsertCustomerRecords(customers);
-							AppLogger.logInfo("Sync Complete");
+							dbService.upsertCustomerRecords(customers);
+							AppLogger.logInfo("Customers sync complete");
 						} catch (SQLException e) {
 							AppLogger.logError(e.getMessage());
 						}
@@ -136,7 +136,7 @@ public class Accounts {
 			
 			syncDataService.pushCustomersToSalsesforce(Response.setCustomers(customers), pushToSalesforce);
 		} else {
-			AppLogger.logInfo("Sync Complete");
+			AppLogger.logInfo("Customers sync complete");
 		}
 		
 	}

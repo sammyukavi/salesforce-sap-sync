@@ -88,7 +88,6 @@ public class BaseDbService {
 		return getRecordsWithAFieldCheckedTrue(sClass, columnName);
 	}
 	
-	@SuppressWarnings("unchecked")
 	public <S> ArrayList<S> getRecordsWithAFieldCheckedTrue(Class<S> sClass, String columnName) throws SQLException {
 		Dao<S, Integer> dao = createDao(sClass);
 		QueryBuilder<S, Integer> queryBuilder = dao.queryBuilder();

@@ -6,7 +6,7 @@ import ke.co.blueconsulting.sianroses.data.adapter.CustomerAdapter;
 import ke.co.blueconsulting.sianroses.data.adapter.CustomerContactsAdapter;
 import ke.co.blueconsulting.sianroses.data.deserializer.ErrorsDeserializer;
 import ke.co.blueconsulting.sianroses.model.salesforce.Customer;
-import ke.co.blueconsulting.sianroses.model.salesforce.CustomerContacts;
+import ke.co.blueconsulting.sianroses.model.salesforce.CustomerContact;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -52,7 +52,7 @@ public class RestServiceBuilder {
 		Gson gson = new GsonBuilder()
 				.registerTypeAdapter(ErrorsDeserializer.Parser.class, new ErrorsDeserializer())
 				.registerTypeAdapter(Customer.class, new CustomerAdapter())
-				.registerTypeAdapter(CustomerContacts.class, new CustomerContactsAdapter())
+				.registerTypeAdapter(CustomerContact.class, new CustomerContactsAdapter())
 				.excludeFieldsWithoutExposeAnnotation()
 				.create();
 		return GsonConverterFactory.create(gson);

@@ -7,13 +7,11 @@ import com.j256.ormlite.stmt.UpdateBuilder;
 import com.j256.ormlite.stmt.Where;
 import ke.co.blueconsulting.sianroses.data.BaseDbService;
 import ke.co.blueconsulting.sianroses.model.salesforce.Customer;
-import ke.co.blueconsulting.sianroses.model.salesforce.CustomerContacts;
 import ke.co.blueconsulting.sianroses.util.StringUtils;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Callable;
 
 /**
  * A class that is used to create a service for storing and retrieving the data
@@ -60,7 +58,7 @@ public class CustomerDbService extends BaseDbService {
 							.eq("ERP_ID__c", customer.geteRPIdC()).countOf() > 0;
 				} else {
 					recordExists = dao.queryBuilder().where()
-							.eq("SalesForceId", customer.getSalesForceId()).countOf() > 0;
+							.eq("SalesForceId", customer.getSalesforceId()).countOf() > 0;
 				}
 				
 				if (recordExists) {
@@ -126,8 +124,8 @@ public class CustomerDbService extends BaseDbService {
 						updateBuilder.updateColumnValue("Group_Type__c", customer.getGroupTypeC());
 					}
 					
-					if (!StringUtils.isNullOrEmpty(customer.getSalesForceId())) {
-						updateBuilder.updateColumnValue("SalesForceId", customer.getSalesForceId());
+					if (!StringUtils.isNullOrEmpty(customer.getSalesforceId())) {
+						updateBuilder.updateColumnValue("SalesForceId", customer.getSalesforceId());
 					}
 					
 					if (!StringUtils.isNullOrEmpty(customer.getName())) {
@@ -185,7 +183,7 @@ public class CustomerDbService extends BaseDbService {
 					if (isUsingErpIdColumn) {
 						updateBuilder.where().eq("ERP_ID__c", customer.geteRPIdC());
 					} else {
-						updateBuilder.where().eq("SalesForceId", customer.getSalesForceId());
+						updateBuilder.where().eq("SalesForceId", customer.getSalesforceId());
 					}
 					
 					updateBuilder.update();
@@ -197,12 +195,12 @@ public class CustomerDbService extends BaseDbService {
 					if (isUsingErpIdColumn) {
 						where = where.eq("ERP_ID__c", customer.geteRPIdC());
 					} else {
-						where = where.eq("SalesForceId", customer.getSalesForceId());
+						where = where.eq("SalesForceId", customer.getSalesforceId());
 					}
 					
-					List<Customer> insertedCustomer = dao.query(where.prepare());
+					List<Customer> insertedCustomerList = dao.query(where.prepare());
 					
-					customer = insertedCustomer.get(0);
+					customer = insertedCustomerList.get(0);
 					
 				} else {
 					dao.createOrUpdate(customer);
@@ -211,92 +209,5 @@ public class CustomerDbService extends BaseDbService {
 			}
 			return upsertedCustomers;
 		});
-	}
-	
-	public void updateCustomerContactsRecords(ArrayList<CustomerContacts> customerContacts) throws SQLException {
-		Dao<CustomerContacts, Integer> dao = createDao(CustomerContacts.class);
-		TransactionManager.callInTransaction(connectionSource,
-				(Callable<Void>) () -> {
-					for (CustomerContacts customerContact : customerContacts) {
-						
-						if (!StringUtils.isNullOrEmpty(customerContact.getAccountNumber())) {
-							
-							UpdateBuilder<CustomerContacts, Integer> updateBuilder = dao.updateBuilder();
-							
-							if (!StringUtils.isNullOrEmpty(customerContact.getAccountId())) {
-								updateBuilder.updateColumnValue("AccountID", customerContact.getAccountId());
-							}
-							
-							
-							updateBuilder.updateColumnValue("BIRTHDATE", customerContact.getBirthDate());
-							
-							
-							/*if (!StringUtils.isNullOrEmpty(customerContact.getContactId())) {
-								updateBuilder.updateColumnValue("CONTACTID", customerContact.getContactId());
-							}*/
-							
-							if (!StringUtils.isNullOrEmpty(customerContact.getEmail())) {
-								updateBuilder.updateColumnValue("Email", customerContact.getEmail());
-							}
-							
-							if (StringUtils.isNullOrEmpty(customerContact.getFax())) {
-								updateBuilder.updateColumnValue("Fax", customerContact.getFax());
-							}
-							
-							if (!StringUtils.isNullOrEmpty(customerContact.getFirstName())) {
-								updateBuilder.updateColumnValue("Firstname", customerContact.getFirstName());
-							}
-							
-							if (!StringUtils.isNullOrEmpty(customerContact.getLastName())) {
-								updateBuilder.updateColumnValue("Lastname", customerContact.getLastName());
-							}
-							
-							if (!StringUtils.isNullOrEmpty(customerContact.getMailingCity())) {
-								updateBuilder.updateColumnValue("MailingCity", customerContact.getMailingCity());
-							}
-							
-							if (!StringUtils.isNullOrEmpty(customerContact.getMailingCountry())) {
-								updateBuilder.updateColumnValue("MailingCountry", customerContact.getMailingCountry());
-							}
-							
-							if (!StringUtils.isNullOrEmpty(customerContact.getMailingPostalCode())) {
-								updateBuilder.updateColumnValue("BillingState", customerContact.getMailingPostalCode());
-							}
-							
-							if (StringUtils.isNullOrEmpty(customerContact.getMailingState())) {
-								updateBuilder.updateColumnValue("MailingState", customerContact.getMailingState());
-							}
-							
-							if (!StringUtils.isNullOrEmpty(customerContact.getMailingStreet())) {
-								updateBuilder.updateColumnValue("MailingStreet", customerContact.getMailingStreet());
-							}
-							
-							if (!StringUtils.isNullOrEmpty(customerContact.getMobilePhone())) {
-								updateBuilder.updateColumnValue("Mobile", customerContact.getMobilePhone());
-							}
-							
-							if (!StringUtils.isNullOrEmpty(customerContact.getPhone())) {
-								updateBuilder.updateColumnValue("Phone", customerContact.getPhone());
-							}
-							
-							
-							updateBuilder.updateColumnValue("Pull_from_SAP__c", customerContact.isPullFromSap());
-							
-							updateBuilder.updateColumnValue("Push_to_SAP__c", customerContact.isPushToSap());
-							
-							
-							if (StringUtils.isNullOrEmpty(customerContact.getTitle())) {
-								updateBuilder.updateColumnValue("Title", customerContact.getTitle());
-							}
-							
-							updateBuilder.where().eq("Account_Number", customerContact.getAccountNumber());
-							updateBuilder.update();
-							
-						} else {
-							dao.createOrUpdate(customerContact);
-						}
-					}
-					return null;
-				});
 	}
 }

@@ -15,12 +15,12 @@ import java.util.Calendar;
  */
 
 @DatabaseTable(tableName = "CUSTOMERCONTACTS")
-public class CustomerContacts implements Serializable {
+public class CustomerContact implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
 	@DatabaseField(generatedId = true, columnName = "AUTOID")
-	private int autoId;
+	private Long autoId;
 	
 	@DatabaseField(columnName = "AccountID")
 	@SerializedName("AccountId")
@@ -122,13 +122,6 @@ public class CustomerContacts implements Serializable {
 	@DatabaseField(columnName = "Title")
 	private String title;
 	
-	public int getAutoId() {
-		return autoId;
-	}
-	
-	public void setAutoId(int autoId) {
-		this.autoId = autoId;
-	}
 	
 	public String getAccountId() {
 		return accountId;
@@ -280,5 +273,13 @@ public class CustomerContacts implements Serializable {
 	
 	public void setSalesforceId(String salesforceId) {
 		this.salesforceId = salesforceId;
+	}
+	
+	public Long getAutoId() {
+		return autoId;
+	}
+	
+	public void setAutoId(Long autoId) {
+		this.autoId = autoId;
 	}
 }

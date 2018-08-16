@@ -1,7 +1,7 @@
 package ke.co.blueconsulting.sianroses.util;
 
 import ke.co.blueconsulting.sianroses.model.salesforce.Customer;
-import ke.co.blueconsulting.sianroses.model.salesforce.CustomerContacts;
+import ke.co.blueconsulting.sianroses.model.salesforce.CustomerContact;
 
 import java.util.ArrayList;
 
@@ -17,11 +17,12 @@ public class UpdateFields {
 		return updatedCustomers;
 	}
 	
-	public static ArrayList<CustomerContacts> updateCustomerContactsPushToSAPFields(ArrayList<CustomerContacts> customers) {
-		ArrayList<CustomerContacts> updatedCustomers = new ArrayList<>();
-		for (CustomerContacts customer : customers) {
-			customer.setPushToSap(false);
-			updatedCustomers.add(customer);
+	public static ArrayList<CustomerContact> updateCustomerContactSyncFields(ArrayList<CustomerContact> customerContacts, boolean pushToSAP, boolean pullFromSAP) {
+		ArrayList<CustomerContact> updatedCustomers = new ArrayList<>();
+		for (CustomerContact customerContact : customerContacts) {
+			customerContact.setPushToSap(pushToSAP);
+			customerContact.setPullFromSap(pullFromSAP);
+			updatedCustomers.add(customerContact);
 		}
 		return updatedCustomers;
 	}

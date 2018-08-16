@@ -2,13 +2,13 @@ package ke.co.blueconsulting.sianroses.presenter;
 
 import ke.co.blueconsulting.sianroses.SyncDashboard;
 import ke.co.blueconsulting.sianroses.contract.SyncContract;
+import ke.co.blueconsulting.sianroses.data.BaseDbService;
 import ke.co.blueconsulting.sianroses.data.DataService;
 import ke.co.blueconsulting.sianroses.data.RestServiceBuilder;
 import ke.co.blueconsulting.sianroses.data.db.AuthCredentialsDbService;
-import ke.co.blueconsulting.sianroses.data.db.CustomerDbService;
 import ke.co.blueconsulting.sianroses.data.impl.AuthDataService;
 import ke.co.blueconsulting.sianroses.data.impl.SyncDataService;
-import ke.co.blueconsulting.sianroses.data.sync.Accounts;
+import ke.co.blueconsulting.sianroses.data.sync.CustomerContacts;
 import ke.co.blueconsulting.sianroses.model.app.AppAuthCredentials;
 import ke.co.blueconsulting.sianroses.model.app.SalesforceAuthCredentials;
 import ke.co.blueconsulting.sianroses.util.StringUtils;
@@ -20,7 +20,7 @@ import static ke.co.blueconsulting.sianroses.util.StringUtils.getString;
 
 public class SyncPresenter implements SyncContract.Presenter {
 	
-	private final CustomerDbService customerDbService;
+	private final BaseDbService dbService;
 	private Thread connectThread;
 	private SyncContract.View syncDashboard;
 	private AuthCredentialsDbService authCredentialsDbService;
@@ -29,7 +29,7 @@ public class SyncPresenter implements SyncContract.Presenter {
 	public SyncPresenter(SyncDashboard syncDashboard) throws SQLException, ClassNotFoundException {
 		this.syncDashboard = syncDashboard;
 		this.authCredentialsDbService = new AuthCredentialsDbService();
-		this.customerDbService = new CustomerDbService();
+		this.dbService = new BaseDbService();
 	}
 	
 	private boolean hasAccessToken() {
@@ -95,7 +95,7 @@ public class SyncPresenter implements SyncContract.Presenter {
 		
 		connectThread = new Thread(() -> {
 			try {
-				if (customerDbService.testServerConnection(serverAddress, serverPort, databaseName, databaseUsername,
+				if (dbService.testServerConnection(serverAddress, serverPort, databaseName, databaseUsername,
 						databasePassword)) {
 					connectionSuccessful[0] = true;
 				}
@@ -228,10 +228,15 @@ public class SyncPresenter implements SyncContract.Presenter {
 	@Override
 	public void performSync() {
 		if (hasAccessToken()) {
+			
 			RestServiceBuilder.switchToApiBaseUrl();
+			
 			SyncDataService syncDataService = new SyncDataService();
-			CustomerDbService customerDbService = new CustomerDbService();
-			Accounts.sync(syncDashboard, syncDataService, customerDbService);
+			
+			//Customers.sync(syncDashboard, syncDataService);
+			
+			CustomerContacts.sync(syncDashboard, syncDataService);
+			
 		} else {
 			syncDashboard.showSuccessMessage("Cannot get access token from Salesforce. No Login Credentials Found");
 		}

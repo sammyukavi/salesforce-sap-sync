@@ -100,9 +100,9 @@ public class CustomerAdapter extends TypeAdapter<Customer> {
 			jsonWriter.value(customer.getGroupTypeC());
 		}
 		
-		if (!StringUtils.isNullOrEmpty(customer.getSalesForceId())) {
+		if (!StringUtils.isNullOrEmpty(customer.getSalesforceId())) {
 			jsonWriter.name("Id");
-			jsonWriter.value(customer.getSalesForceId());
+			jsonWriter.value(customer.getSalesforceId());
 		}
 		
 		if (!StringUtils.isNullOrEmpty(customer.getName())) {
@@ -196,7 +196,7 @@ public class CustomerAdapter extends TypeAdapter<Customer> {
 				}
 				if ("Id".equals(fieldname)) {
 					jsonReader.peek();
-					customer.setSalesForceId(jsonReader.nextString());
+					customer.setSalesforceId(jsonReader.nextString());
 				} else if ("A_R_Account__c".equals(fieldname)) {
 					jsonReader.peek();
 					customer.setaRAccountC(jsonReader.nextString());
