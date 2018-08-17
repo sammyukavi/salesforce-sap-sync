@@ -83,12 +83,12 @@ public class BaseDbService {
 	}
 	
 	
-	public <S> ArrayList<S> getRecordsWithAFieldCheckedTrue(Class<S> sClass) throws SQLException {
+	public <S> ArrayList<S> getRecordsWithPullFromSAPCheckedTrue(Class<S> sClass) throws SQLException {
 		String columnName = "Pull_from_SAP__c";
-		return getRecordsWithAFieldCheckedTrue(sClass, columnName);
+		return getRecordsWithPullFromSAPCheckedTrue(sClass, columnName);
 	}
 	
-	public <S> ArrayList<S> getRecordsWithAFieldCheckedTrue(Class<S> sClass, String columnName) throws SQLException {
+	public <S> ArrayList<S> getRecordsWithPullFromSAPCheckedTrue(Class<S> sClass, String columnName) throws SQLException {
 		Dao<S, Integer> dao = createDao(sClass);
 		QueryBuilder<S, Integer> queryBuilder = dao.queryBuilder();
 		Where<S, Integer> where = queryBuilder.where();

@@ -51,7 +51,7 @@ public class CustomerDbService extends BaseDbService {
 			for (Customer customer : customers) {
 				
 				boolean recordExists;
-				boolean isUsingErpIdColumn = (!StringUtils.isNullOrEmpty(customer.geteRPIdC()));
+				boolean isUsingErpIdColumn = !StringUtils.isNullOrEmpty(customer.geteRPIdC());
 				
 				if (isUsingErpIdColumn) {
 					recordExists = dao.queryBuilder().where()
@@ -62,7 +62,6 @@ public class CustomerDbService extends BaseDbService {
 				}
 				
 				if (recordExists) {
-					//customer exists, update
 					
 					UpdateBuilder<Customer, Integer> updateBuilder = dao.updateBuilder();
 					

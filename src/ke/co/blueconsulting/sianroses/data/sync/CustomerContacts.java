@@ -20,7 +20,7 @@ public class CustomerContacts {
 	private static SyncContract.View syncDashboard;
 	
 	
-	public static <T> void sync(SyncContract.View view, SyncDataService dataService) {
+	public static void sync(SyncContract.View view, SyncDataService dataService) {
 		
 		syncDashboard = view;
 		syncDataService = dataService;

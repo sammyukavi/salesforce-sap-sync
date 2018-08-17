@@ -8,7 +8,7 @@ import com.j256.ormlite.table.DatabaseTable;
 import java.io.Serializable;
 
 /**
- * This model maps Products to Flower_Variety__c in Salesforce.
+ * This model maps Products to Farm_Variety__c in Salesforce.
  * Syncing for products is one way from the SAP server to Salesforce.
  */
 @DatabaseTable(tableName = "PRODUCTSCHILD")
@@ -24,17 +24,17 @@ public class ProductChild implements Serializable {
 	@DatabaseField(columnName = "SalesForceId")
 	@SerializedName("Id")
 	@Expose
-	private String SalesForceId;
+	private String salesforceId;
 	
 	@DatabaseField(columnName = "Breeder__c")
 	@SerializedName("Breeder__c")
 	@Expose
 	private String breederC;
 	
-	/*@DatabaseField(columnName = "Classification__c")
+	@DatabaseField(columnName = "Classification__c")
 	@SerializedName("Classification__c")
 	@Expose
-	private String classificationC;*/
+	private String classificationC;
 	
 	@DatabaseField(columnName = "Color__c")
 	@SerializedName("Color__c")
@@ -56,20 +56,20 @@ public class ProductChild implements Serializable {
 	@Expose
 	private String productFamilyC;
 	
-	/*@DatabaseField(columnName = "Farm__c")
-	@SerializedName("Farms__c")
+	@DatabaseField(columnName = "Farm__c")
+	@SerializedName("Farm__c")
 	@Expose
-	private String farmC;*/
+	private String farmC;
 	
 	@DatabaseField(columnName = "Headsize__c")
-	@SerializedName("Head_size__c")
+	@SerializedName("Headsize__c")
 	@Expose
 	private double headSizeC;
 	
-	/*@DatabaseField(columnName = "Is_Active__c")
+	@DatabaseField(columnName = "Is_Active__c")
 	@SerializedName("Is_Active__c")
 	@Expose
-	private boolean isActiveC;*/
+	private boolean isActiveC;
 	
 	@DatabaseField(columnName = "Length__c")
 	@SerializedName("Length__c")

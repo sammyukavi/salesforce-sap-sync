@@ -98,4 +98,27 @@ public class Response implements Serializable {
 		return instance;
 	}
 	
+	public static Response getInstance() {
+		return instance;
+	}
+	
+	public static void setInstance(Response instance) {
+		Response.instance = instance;
+	}
+	
+	public ArrayList<PriceList> getPriceList() {
+		return priceList;
+	}
+	
+	public ArrayList<Product> getProducts() {
+		return products;
+	}
+	
+	public ArrayList<ProductChild> getProductsChildren() {
+		return productsChildren;
+	}
+	
+	public ArrayList<Warehouse> getWarehouses() {
+		return warehouses;
+	}
 }
