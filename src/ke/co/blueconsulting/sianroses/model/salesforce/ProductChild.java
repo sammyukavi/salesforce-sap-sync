@@ -1,8 +1,11 @@
 package ke.co.blueconsulting.sianroses.model.salesforce;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
+import ke.co.blueconsulting.sianroses.data.adapter.EmptyStringTypeAdapter;
 
 import java.io.Serializable;
 
@@ -14,49 +17,77 @@ import java.io.Serializable;
 public class ProductChild implements Serializable {
 	
 	private static final long serialVersionUID = 19325639692107L;
+	
 	@DatabaseField(columnName = "Push_to_SAP__c")
-	boolean pushToSapC;
+	private boolean pushToSapC;
 	
 	@DatabaseField(columnName = "Flower_Code__c")
 	@SerializedName("Flower_Code__c")
+	@Expose
 	private String flowerCodeC;
+	
 	@DatabaseField(columnName = "Pull_from_SAP__c")
-	boolean pullFromSapC;
+	private boolean pullFromSapC;
+	
 	@DatabaseField(generatedId = true, columnName = "AUTOID")
+	@SerializedName("autoId__c")
+	@Expose
 	private Long autoId;
+	
 	@DatabaseField(columnName = "Name")
+	@SerializedName("Name")
+	@Expose
 	private String name;
+	
 	@DatabaseField(columnName = "Color__c")
 	@SerializedName("Color__c")
+	@Expose
 	private String colorC;
+	
 	@DatabaseField(columnName = "Classification__c")
 	@SerializedName("Classification__c")
+	@Expose
 	private String classificationC;
 	
 	@DatabaseField(columnName = "Product_Family__c")
 	@SerializedName("Family__c")
+	@Expose
 	private String productFamilyC;
 	
 	@DatabaseField(columnName = "Farm__c")
 	@SerializedName("Farm__c")
+	@Expose
 	private String farmC;
+	
 	@DatabaseField(columnName = "Is_Active__c")
 	@SerializedName("Is_Active__c")
-	private String isActiveC;
+	@Expose
+	private boolean isActiveC;
+	
 	@DatabaseField(columnName = "Breeder__c")
 	@SerializedName("Breeder__c")
+	@Expose
 	private String breederC;
+	
 	@DatabaseField(columnName = "Headsize__c")
 	@SerializedName("Head_size__c")
+	@Expose
 	private String headSizeC;
+	
 	@DatabaseField(columnName = "Consumable_Stock__c")
 	@SerializedName("Consumable_Stock__c")
+	@Expose
 	private String consumableStockC;
+	
 	@DatabaseField(columnName = "Length__c")
 	@SerializedName("Length__c")
+	@Expose
 	private String lengthC;
+	
 	@DatabaseField(columnName = "SalesForceID")
 	@SerializedName("Id")
+	@Expose
+	@JsonAdapter(EmptyStringTypeAdapter.class)
 	private String salesforceId;
 	
 	public Long getAutoId() {
@@ -99,11 +130,11 @@ public class ProductChild implements Serializable {
 		this.classificationC = classificationC;
 	}
 	
-	public String getIsActiveC() {
+	public boolean getIsActiveC() {
 		return isActiveC;
 	}
 	
-	public void setIsActiveC(String isActiveC) {
+	public void setIsActiveC(boolean isActiveC) {
 		this.isActiveC = isActiveC;
 	}
 	

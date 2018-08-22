@@ -15,13 +15,11 @@ import static ke.co.blueconsulting.sianroses.util.UpdateFields.updateProductChil
 
 public class ProductsChildren {
 	
-	private static SyncDataService syncDataService;
 	private static ProductChildDbService dbService;
 	private static SyncContract.View syncDashboard;
 	
 	public static void sync(SyncContract.View view, SyncDataService dataService) {
 		syncDashboard = view;
-		syncDataService = dataService;
 		dbService = new ProductChildDbService();
 		
 		syncDashboard.setIsBusy(true);
@@ -71,7 +69,7 @@ public class ProductsChildren {
 			}
 		};
 		
-		syncDataService.pushProductsChildrenToSalesforce(Response.setProductsChildren(productChildren), callback);
+		dataService.pushProductsChildrenToSalesforce(Response.setProductsChildren(productChildren), callback);
 		
 	}
 	

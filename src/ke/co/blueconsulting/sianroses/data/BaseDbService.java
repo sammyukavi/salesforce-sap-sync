@@ -85,13 +85,14 @@ public class BaseDbService {
 	
 	public <S> ArrayList<S> getRecordsWithPullFromSAPCheckedTrue(Class<S> sClass) throws SQLException {
 		String columnName = "Pull_from_SAP__c";
-		return getRecordsWithPullFromSAPCheckedTrue(sClass, columnName);
+		return getRecordsWithPullFromSAPCheckedTrue(sClass, columnName, 0, 1000);
 	}
 	
-	public <S> ArrayList<S> getRecordsWithPullFromSAPCheckedTrue(Class<S> sClass, String columnName) throws SQLException {
+	public <S> ArrayList<S> getRecordsWithPullFromSAPCheckedTrue(Class<S> sClass, String columnName, int startRow, int limit) throws SQLException {
 		Dao<S, Integer> dao = createDao(sClass);
 		QueryBuilder<S, Integer> queryBuilder = dao.queryBuilder();
 		Where<S, Integer> where = queryBuilder.where();
+		queryBuilder.limit((long) limit);
 		return (ArrayList<S>) dao.query(where.or(where.isNull(columnName), where.eq(columnName, true)).prepare());
 	}
 	

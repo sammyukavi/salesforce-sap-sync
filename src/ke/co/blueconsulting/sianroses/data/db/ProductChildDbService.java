@@ -30,11 +30,9 @@ public class ProductChildDbService extends BaseDbService {
 			
 			for (ProductChild productChild : products) {
 				
-				boolean recordExists = dao.queryBuilder().where().eq("SalesForceId", productChild.getSalesforceId()).countOf() > 0;
-				
+				boolean recordExists = dao.queryBuilder().where().eq("AUTOID", productChild.getAutoId()).countOf() > 0;
 				
 				if (recordExists) {
-					//productChild exists, update
 					
 					UpdateBuilder<ProductChild, Integer> updateBuilder = dao.updateBuilder();
 					
@@ -54,7 +52,7 @@ public class ProductChildDbService extends BaseDbService {
 						updateBuilder.updateColumnValue("Classification__c", new SelectArg(productChild.getClassificationC()));
 					}
 					
-					updateBuilder.updateColumnValue("IsActive", productChild.getIsActiveC());
+					updateBuilder.updateColumnValue("Is_Active__c", productChild.getIsActiveC());
 					
 					if (!StringUtils.isNullOrEmpty(productChild.getBreederC())) {
 						updateBuilder.updateColumnValue("Breeder__c", new SelectArg(productChild.getBreederC()));
@@ -88,7 +86,7 @@ public class ProductChildDbService extends BaseDbService {
 						updateBuilder.updateColumnValue("SalesForceId", new SelectArg(productChild.getSalesforceId()));
 					}
 					
-					updateBuilder.where().eq("SalesForceId", new SelectArg(productChild.getSalesforceId()));
+					updateBuilder.where().eq("AUTOID", new SelectArg(productChild.getAutoId()));
 					
 					updateBuilder.prepare();
 					
@@ -98,9 +96,7 @@ public class ProductChildDbService extends BaseDbService {
 					
 					Where<ProductChild, Integer> where = queryBuilder.where();
 					
-					
-					where = where.eq("SalesForceId", new SelectArg(productChild.getSalesforceId()));
-					
+					where = where.eq("AUTOID", new SelectArg(productChild.getAutoId()));
 					
 					List<ProductChild> insertedProductList = dao.query(where.prepare());
 					
