@@ -106,12 +106,12 @@ public class CustomerContacts {
 					
 					ArrayList<CustomerContact> customers = response.getCustomerContacts();
 					
-					int customersCount = customers.size();
+					int contactsCount = customers.size();
 					
 					AppLogger.logInfo("Push To Salesforce Successful. " +
-							"Received " + customersCount + " contacts from Salesforce for updating");
+							"Received " + contactsCount + " contacts from Salesforce for updating");
 					
-					if (customersCount > 0) {
+					if (contactsCount > 0) {
 						
 						customers = updateCustomerContactSyncFields(customers, false, false);
 						

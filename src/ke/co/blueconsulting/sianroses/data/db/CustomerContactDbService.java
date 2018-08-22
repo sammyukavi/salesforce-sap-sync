@@ -3,6 +3,7 @@ package ke.co.blueconsulting.sianroses.data.db;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.misc.TransactionManager;
 import com.j256.ormlite.stmt.QueryBuilder;
+import com.j256.ormlite.stmt.SelectArg;
 import com.j256.ormlite.stmt.UpdateBuilder;
 import com.j256.ormlite.stmt.Where;
 import ke.co.blueconsulting.sianroses.data.BaseDbService;
@@ -66,65 +67,67 @@ public class CustomerContactDbService extends BaseDbService {
 					UpdateBuilder<CustomerContact, Integer> updateBuilder = dao.updateBuilder();
 					
 					if (!StringUtils.isNullOrEmpty(customerContact.getAccountId())) {
-						updateBuilder.updateColumnValue("AccountID", customerContact.getAccountId());
+						updateBuilder.updateColumnValue("AccountID", new SelectArg(customerContact.getAccountId()));
 					}
 					
 					if (!StringUtils.isNullOrEmpty(customerContact.getAccountNumber())) {
-						updateBuilder.updateColumnValue("Account_Number", customerContact.getAccountNumber());
+						updateBuilder.updateColumnValue("Account_Number", new SelectArg(customerContact.getAccountNumber()));
 					}
 					
-					updateBuilder.updateColumnValue("BIRTHDATE", customerContact.getBirthDate());
+					if (!StringUtils.isNullOrEmpty(customerContact.getBirthDate())) {
+						updateBuilder.updateColumnValue("BIRTHDATE", new SelectArg(customerContact.getBirthDate()));
+					}
 					
 					if (!StringUtils.isNullOrEmpty(customerContact.getContactId())) {
-						updateBuilder.updateColumnValue("CONTACTID", customerContact.getContactId());
+						updateBuilder.updateColumnValue("CONTACTID", new SelectArg(customerContact.getContactId()));
 					}
 					
 					if (!StringUtils.isNullOrEmpty(customerContact.getDepartment())) {
-						updateBuilder.updateColumnValue("Department", customerContact.getDepartment());
+						updateBuilder.updateColumnValue("Department", new SelectArg(customerContact.getDepartment()));
 					}
 					
 					if (!StringUtils.isNullOrEmpty(customerContact.getEmail())) {
-						updateBuilder.updateColumnValue("Email", customerContact.getEmail());
+						updateBuilder.updateColumnValue("Email", new SelectArg(customerContact.getEmail()));
 					}
 					
 					if (!StringUtils.isNullOrEmpty(customerContact.getFax())) {
-						updateBuilder.updateColumnValue("Fax", customerContact.getFax());
+						updateBuilder.updateColumnValue("Fax", new SelectArg(customerContact.getFax()));
 					}
 					
 					if (!StringUtils.isNullOrEmpty(customerContact.getFirstName())) {
-						updateBuilder.updateColumnValue("Firstname", customerContact.getFirstName());
+						updateBuilder.updateColumnValue("Firstname", new SelectArg(customerContact.getFirstName()));
 					}
 					
 					if (!StringUtils.isNullOrEmpty(customerContact.getLastName())) {
-						updateBuilder.updateColumnValue("Lastname", customerContact.getLastName());
+						updateBuilder.updateColumnValue("Lastname", new SelectArg(customerContact.getLastName()));
 					}
 					
 					if (!StringUtils.isNullOrEmpty(customerContact.getMailingCity())) {
-						updateBuilder.updateColumnValue("MailingCity", customerContact.getMailingCity());
+						updateBuilder.updateColumnValue("MailingCity", new SelectArg(customerContact.getMailingCity()));
 					}
 					
 					if (!StringUtils.isNullOrEmpty(customerContact.getMailingCountry())) {
-						updateBuilder.updateColumnValue("MailingCountry", customerContact.getMailingCountry());
+						updateBuilder.updateColumnValue("MailingCountry", new SelectArg(customerContact.getMailingCountry()));
 					}
 					
 					if (!StringUtils.isNullOrEmpty(customerContact.getMailingPostalCode())) {
-						updateBuilder.updateColumnValue("MailingPostalCode", customerContact.getMailingPostalCode());
+						updateBuilder.updateColumnValue("MailingPostalCode", new SelectArg(customerContact.getMailingPostalCode()));
 					}
 					
 					if (!StringUtils.isNullOrEmpty(customerContact.getMailingState())) {
-						updateBuilder.updateColumnValue("MailingState", customerContact.getMailingState());
+						updateBuilder.updateColumnValue("MailingState", new SelectArg(customerContact.getMailingState()));
 					}
 					
 					if (!StringUtils.isNullOrEmpty(customerContact.getMailingStreet())) {
-						updateBuilder.updateColumnValue("MailingStreet", customerContact.getMailingStreet());
+						updateBuilder.updateColumnValue("MailingStreet", new SelectArg(customerContact.getMailingStreet()));
 					}
 					
 					if (!StringUtils.isNullOrEmpty(customerContact.getMobilePhone())) {
-						updateBuilder.updateColumnValue("Mobile", customerContact.getMobilePhone());
+						updateBuilder.updateColumnValue("Mobile", new SelectArg(customerContact.getMobilePhone()));
 					}
 					
 					if (!StringUtils.isNullOrEmpty(customerContact.getPhone())) {
-						updateBuilder.updateColumnValue("Phone", customerContact.getPhone());
+						updateBuilder.updateColumnValue("Phone", new SelectArg(customerContact.getPhone()));
 					}
 					
 					updateBuilder.updateColumnValue("Pull_from_SAP__c", customerContact.isPullFromSap());
@@ -132,13 +135,13 @@ public class CustomerContactDbService extends BaseDbService {
 					updateBuilder.updateColumnValue("Push_to_SAP__c", customerContact.isPushToSap());
 					
 					if (StringUtils.isNullOrEmpty(customerContact.getTitle())) {
-						updateBuilder.updateColumnValue("Title", customerContact.getTitle());
+						updateBuilder.updateColumnValue("Title", new SelectArg(customerContact.getTitle()));
 					}
 					
 					if (isUsingSalesforceIdColumn) {
-						updateBuilder.where().eq("SalesForceId", customerContact.getSalesforceId());
+						updateBuilder.where().eq("SalesForceId", new SelectArg(customerContact.getSalesforceId()));
 					} else {
-						updateBuilder.where().eq("Account_Number", customerContact.getAccountNumber());
+						updateBuilder.where().eq("Account_Number", new SelectArg(customerContact.getAccountNumber()));
 					}
 					
 					updateBuilder.update();
@@ -148,9 +151,9 @@ public class CustomerContactDbService extends BaseDbService {
 					Where<CustomerContact, Integer> where = queryBuilder.where();
 					
 					if (isUsingSalesforceIdColumn) {
-						where = where.eq("SalesForceId", customerContact.getSalesforceId());
+						where = where.eq("SalesForceId", new SelectArg(customerContact.getSalesforceId()));
 					} else {
-						where = where.eq("Account_Number", customerContact.getAccountNumber());
+						where = where.eq("Account_Number", new SelectArg(customerContact.getAccountNumber()));
 					}
 					
 					List<CustomerContact> insertedCustomerContactList = dao.query(where.prepare());

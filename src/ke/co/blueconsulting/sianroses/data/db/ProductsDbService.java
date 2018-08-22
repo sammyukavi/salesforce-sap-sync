@@ -3,6 +3,7 @@ package ke.co.blueconsulting.sianroses.data.db;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.misc.TransactionManager;
 import com.j256.ormlite.stmt.QueryBuilder;
+import com.j256.ormlite.stmt.SelectArg;
 import com.j256.ormlite.stmt.UpdateBuilder;
 import com.j256.ormlite.stmt.Where;
 import ke.co.blueconsulting.sianroses.data.BaseDbService;
@@ -46,25 +47,25 @@ public class ProductsDbService extends BaseDbService {
 					UpdateBuilder<Product, Integer> updateBuilder = dao.updateBuilder();
 					
 					if (!StringUtils.isNullOrEmpty(product.getProductCode())) {
-						updateBuilder.updateColumnValue("productcode", product.getProductCode());
+						updateBuilder.updateColumnValue("productcode", new SelectArg(product.getProductCode()));
 					}
 					
 					if (!StringUtils.isNullOrEmpty(product.getName())) {
-						updateBuilder.updateColumnValue("Name", product.getName());
+						updateBuilder.updateColumnValue("Name", new SelectArg(product.getName()));
 					}
 					
 					updateBuilder.updateColumnValue("IsActive", product.isActive());
 					
 					if (!StringUtils.isNullOrEmpty(product.getColorC())) {
-						updateBuilder.updateColumnValue("Color__c", product.getColorC());
+						updateBuilder.updateColumnValue("Color__c", new SelectArg(product.getColorC()));
 					}
 					
 					if (!StringUtils.isNullOrEmpty(product.getClassificationC())) {
-						updateBuilder.updateColumnValue("Classification__c", product.getClassificationC());
+						updateBuilder.updateColumnValue("Classification__c", new SelectArg(product.getClassificationC()));
 					}
 					
 					if (!StringUtils.isNullOrEmpty(product.getBreederC())) {
-						updateBuilder.updateColumnValue("Breeder__c", product.getBreederC());
+						updateBuilder.updateColumnValue("Breeder__c", new SelectArg(product.getBreederC()));
 					}
 					
 					/*if (!StringUtils.isNullOrEmpty(product.getFamily())) {
@@ -72,15 +73,15 @@ public class ProductsDbService extends BaseDbService {
 					}*/
 					
 					if (!StringUtils.isNullOrEmpty(product.getProductTypeC())) {
-						updateBuilder.updateColumnValue("Product_Type__c", product.getProductTypeC());
+						updateBuilder.updateColumnValue("Product_Type__c", new SelectArg(product.getProductTypeC()));
 					}
 					
 					if (!StringUtils.isNullOrEmpty(product.getParentProductC())) {
-						updateBuilder.updateColumnValue("Parent_Product__c", product.getParentProductC());
+						updateBuilder.updateColumnValue("Parent_Product__c", new SelectArg(product.getParentProductC()));
 					}
 					
 					if (!StringUtils.isNullOrEmpty(product.getParentProductCodeC())) {
-						updateBuilder.updateColumnValue("Parent_Product_Code__c", product.getParentProductCodeC());
+						updateBuilder.updateColumnValue("Parent_Product_Code__c", new SelectArg(product.getParentProductCodeC()));
 					}
 					
 					updateBuilder.updateColumnValue("Push_to_SAP__c", product.isPushToSAPC());
@@ -88,18 +89,20 @@ public class ProductsDbService extends BaseDbService {
 					updateBuilder.updateColumnValue("Pull_from_SAP__c", product.isPullFromSAPC());
 					
 					if (!StringUtils.isNullOrEmpty(product.getSalesforceId())) {
-						updateBuilder.updateColumnValue("SalesForceId", product.getSalesforceId());
+						updateBuilder.updateColumnValue("SalesForceId", new SelectArg(product.getSalesforceId()));
 					}
 					
 					if (!StringUtils.isNullOrEmpty(product.getProductCategory())) {
-						updateBuilder.updateColumnValue("product_Category", product.getProductCategory());
+						updateBuilder.updateColumnValue("product_Category", new SelectArg(product.getProductCategory()));
 					}
 					
 					if (isUsingProductCodeColumn) {
-						updateBuilder.where().eq("productcode", product.getProductCode());
+						updateBuilder.where().eq("productcode", new SelectArg(product.getProductCode()));
 					} else {
-						updateBuilder.where().eq("SalesForceId", product.getSalesforceId());
+						updateBuilder.where().eq("SalesForceId", new SelectArg(product.getSalesforceId()));
 					}
+					
+					updateBuilder.prepare();
 					
 					updateBuilder.update();
 					
@@ -108,9 +111,9 @@ public class ProductsDbService extends BaseDbService {
 					Where<Product, Integer> where = queryBuilder.where();
 					
 					if (isUsingProductCodeColumn) {
-						where = where.eq("productcode", product.getProductCode());
+						where = where.eq("productcode", new SelectArg(product.getProductCode()));
 					} else {
-						where = where.eq("SalesForceId", product.getSalesforceId());
+						where = where.eq("SalesForceId", new SelectArg(product.getSalesforceId()));
 					}
 					
 					List<Product> insertedProductList = dao.query(where.prepare());

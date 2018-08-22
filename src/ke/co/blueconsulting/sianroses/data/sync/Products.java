@@ -7,10 +7,11 @@ import ke.co.blueconsulting.sianroses.data.impl.SyncDataService;
 import ke.co.blueconsulting.sianroses.model.app.Response;
 import ke.co.blueconsulting.sianroses.model.salesforce.Product;
 import ke.co.blueconsulting.sianroses.util.AppLogger;
-import ke.co.blueconsulting.sianroses.util.Console;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+
+import static ke.co.blueconsulting.sianroses.util.UpdateFields.updateProductSyncFields;
 
 public class Products {
 	
@@ -37,7 +38,29 @@ public class Products {
 		DataService.GetCallback<Response> callback = new DataService.GetCallback<Response>() {
 			@Override
 			public void onCompleted(Response response) {
-				Console.logToJson(response.getProducts());
+				
+				//Console.logToJson(response.getProducts());
+				
+				ArrayList<Product> products = response.getProducts();
+				
+				int productsCount = products.size();
+				
+				AppLogger.logInfo("Push To Salesforce Successful. " +
+						"Received " + productsCount + " products from Salesforce for updating");
+				
+				if (productsCount > 0) {
+					
+					products = updateProductSyncFields(products, false, false);
+					
+					try {
+						dbService.upsertProductRecords(products);
+						AppLogger.logInfo("Products sync complete");
+					} catch (SQLException e) {
+						e.printStackTrace();
+						AppLogger.logError(e.getMessage());
+					}
+				}
+				
 			}
 			
 			@Override
