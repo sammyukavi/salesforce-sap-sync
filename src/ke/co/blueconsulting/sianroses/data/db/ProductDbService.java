@@ -14,9 +14,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProductsDbService extends BaseDbService {
+public class ProductDbService extends BaseDbService {
 	
-	public ProductsDbService() {
+	public ProductDbService() {
 		super();
 	}
 	

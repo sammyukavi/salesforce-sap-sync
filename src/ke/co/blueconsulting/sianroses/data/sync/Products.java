@@ -2,7 +2,7 @@ package ke.co.blueconsulting.sianroses.data.sync;
 
 import ke.co.blueconsulting.sianroses.contract.SyncContract;
 import ke.co.blueconsulting.sianroses.data.DataService;
-import ke.co.blueconsulting.sianroses.data.db.ProductsDbService;
+import ke.co.blueconsulting.sianroses.data.db.ProductDbService;
 import ke.co.blueconsulting.sianroses.data.impl.SyncDataService;
 import ke.co.blueconsulting.sianroses.model.app.Response;
 import ke.co.blueconsulting.sianroses.model.salesforce.Product;
@@ -15,15 +15,13 @@ import static ke.co.blueconsulting.sianroses.util.UpdateFields.updateProductSync
 
 public class Products {
 	
-	private static SyncDataService syncDataService;
-	private static ProductsDbService dbService;
+	private static ProductDbService dbService;
 	private static SyncContract.View syncDashboard;
 	
 	public static void sync(SyncContract.View view, SyncDataService dataService) {
 		
 		syncDashboard = view;
-		syncDataService = dataService;
-		dbService = new ProductsDbService();
+		dbService = new ProductDbService();
 		
 		syncDashboard.setIsBusy(true);
 		
@@ -74,7 +72,7 @@ public class Products {
 			}
 		};
 		
-		syncDataService.pushProductsToSalesforce(Response.setProducts(product), callback);
+		dataService.pushProductsToSalesforce(Response.setProducts(product), callback);
 		
 	}
 }

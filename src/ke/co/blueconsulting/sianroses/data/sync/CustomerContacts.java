@@ -37,11 +37,11 @@ public class CustomerContacts {
 				
 				ArrayList<CustomerContact> insertedCustomers = new ArrayList<>();
 				
-				int customersCount = customerContacts.size();
+				int contactsCount = customerContacts.size();
 				
-				AppLogger.logInfo("Received " + customersCount + " contacts from Salesforce");
+				AppLogger.logInfo("Received " + contactsCount + " contacts from Salesforce");
 				
-				if (customersCount > 0) {
+				if (contactsCount > 0) {
 					
 					customerContacts = updateCustomerContactSyncFields(customerContacts, false, false);
 					
