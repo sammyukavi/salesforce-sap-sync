@@ -186,6 +186,8 @@ public class CustomerDbService extends BaseDbService {
 						updateBuilder.where().eq("SalesForceId", new SelectArg(customer.getSalesforceId()));
 					}
 					
+					updateBuilder.prepare();
+					
 					updateBuilder.update();
 					
 					QueryBuilder<Customer, Integer> queryBuilder = dao.queryBuilder();

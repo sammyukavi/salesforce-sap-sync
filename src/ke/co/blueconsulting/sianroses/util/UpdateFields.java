@@ -1,9 +1,6 @@
 package ke.co.blueconsulting.sianroses.util;
 
-import ke.co.blueconsulting.sianroses.model.salesforce.Customer;
-import ke.co.blueconsulting.sianroses.model.salesforce.CustomerContact;
-import ke.co.blueconsulting.sianroses.model.salesforce.Product;
-import ke.co.blueconsulting.sianroses.model.salesforce.ProductChild;
+import ke.co.blueconsulting.sianroses.model.salesforce.*;
 
 import java.util.ArrayList;
 
@@ -44,6 +41,16 @@ public class UpdateFields {
 		for (ProductChild product : products) {
 			product.setPushToSapC(pushToSAP);
 			product.setPullFromSapC(pullFromSAP);
+			updatedProducts.add(product);
+		}
+		return updatedProducts;
+	}
+	
+	public static ArrayList<PriceList> updatePriceListSyncFields(ArrayList<PriceList> products, boolean pushToSAP, boolean pullFromSAP) {
+		ArrayList<PriceList> updatedProducts = new ArrayList<>();
+		for (PriceList product : products) {
+			product.setPushToSAP(pushToSAP);
+			product.setPullFromSAPC(pullFromSAP);
 			updatedProducts.add(product);
 		}
 		return updatedProducts;

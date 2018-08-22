@@ -144,6 +144,8 @@ public class CustomerContactDbService extends BaseDbService {
 						updateBuilder.where().eq("Account_Number", new SelectArg(customerContact.getAccountNumber()));
 					}
 					
+					updateBuilder.prepare();
+					
 					updateBuilder.update();
 					
 					QueryBuilder<CustomerContact, Integer> queryBuilder = dao.queryBuilder();

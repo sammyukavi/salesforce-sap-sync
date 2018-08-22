@@ -2,32 +2,32 @@ package ke.co.blueconsulting.sianroses.data.sync;
 
 import ke.co.blueconsulting.sianroses.contract.SyncContract;
 import ke.co.blueconsulting.sianroses.data.DataService;
-import ke.co.blueconsulting.sianroses.data.db.ProductChildDbService;
+import ke.co.blueconsulting.sianroses.data.db.PriceListDbService;
 import ke.co.blueconsulting.sianroses.data.impl.SyncDataService;
 import ke.co.blueconsulting.sianroses.model.app.Response;
-import ke.co.blueconsulting.sianroses.model.salesforce.ProductChild;
+import ke.co.blueconsulting.sianroses.model.salesforce.PriceList;
 import ke.co.blueconsulting.sianroses.util.AppLogger;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import static ke.co.blueconsulting.sianroses.util.UpdateFields.updateProductChildSyncFields;
+import static ke.co.blueconsulting.sianroses.util.UpdateFields.updatePriceListSyncFields;
 
-public class ProductsChildren {
+public class Warehouses {
 	
-	private static ProductChildDbService dbService;
+	private static PriceListDbService dbService;
 	private static SyncContract.View syncDashboard;
 	
 	public static void sync(SyncContract.View view, SyncDataService dataService) {
 		syncDashboard = view;
-		dbService = new ProductChildDbService();
+		dbService = new PriceListDbService();
 		
 		syncDashboard.setIsBusy(true);
 		
-		ArrayList<ProductChild> productChildren = new ArrayList<>();
+		ArrayList<PriceList> priceLists = new ArrayList<>();
 		
 		try {
-			productChildren = dbService.getRecordsWithPullFromSAPCheckedTrue(ProductChild.class);
+			priceLists = dbService.getRecordsWithPullFromSAPCheckedTrue(PriceList.class);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -36,20 +36,20 @@ public class ProductsChildren {
 			@Override
 			public void onCompleted(Response response) {
 				
-				ArrayList<ProductChild> productsChildren = response.getProductsChildren();
+				ArrayList<PriceList> priceLists = response.getPriceList();
 				
-				int productsChildrenCount = productsChildren.size();
+				int listsCount = priceLists.size();
 				
 				AppLogger.logInfo("Push To Salesforce Successful. " +
-						"Received " + productsChildrenCount + " products' children' children from Salesforce for updating");
+						"Received " + listsCount + " price lists from Salesforce for updating");
 				
-				if (productsChildrenCount > 0) {
+				if (listsCount > 0) {
 					
-					productsChildren = updateProductChildSyncFields(productsChildren, false, false);
+					priceLists = updatePriceListSyncFields(priceLists, false, false);
 					
 					try {
-						dbService.upsertRecords(productsChildren);
-						AppLogger.logInfo("Products' children sync complete");
+						dbService.upsertRecords(priceLists);
+						AppLogger.logInfo("Price lists sync complete");
 					} catch (SQLException e) {
 						e.printStackTrace();
 						AppLogger.logError(e.getMessage());
@@ -60,7 +60,7 @@ public class ProductsChildren {
 			
 			@Override
 			public void onError(Throwable t) {
-				AppLogger.logError("Failed to push products' children to salesforce. " + t.getMessage());
+				AppLogger.logError("Failed to push price lists to salesforce. " + t.getMessage());
 			}
 			
 			@Override
@@ -69,8 +69,7 @@ public class ProductsChildren {
 			}
 		};
 		
-		dataService.pushProductsChildrenToSalesforce(Response.setProductsChildren(productChildren), callback);
+		dataService.pushPriceListToSalesforce(Response.setPriceList(priceLists), callback);
 		
 	}
-	
 }
