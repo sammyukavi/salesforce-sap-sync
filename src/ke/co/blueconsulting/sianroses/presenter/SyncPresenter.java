@@ -8,6 +8,7 @@ import ke.co.blueconsulting.sianroses.data.RestServiceBuilder;
 import ke.co.blueconsulting.sianroses.data.db.AuthCredentialsDbService;
 import ke.co.blueconsulting.sianroses.data.impl.AuthDataService;
 import ke.co.blueconsulting.sianroses.data.impl.SyncDataService;
+import ke.co.blueconsulting.sianroses.data.sync.Warehouses;
 import ke.co.blueconsulting.sianroses.model.app.AppAuthCredentials;
 import ke.co.blueconsulting.sianroses.model.app.SalesforceAuthCredentials;
 import ke.co.blueconsulting.sianroses.util.StringUtils;
@@ -253,6 +254,8 @@ public class SyncPresenter implements SyncContract.Presenter {
 			//ProductsChildren.sync(syncDashboard, syncDataService);
 			
 			//PriceLists.sync(syncDashboard, syncDataService);
+			
+			Warehouses.sync(syncDashboard, syncDataService);
 			
 		} else {
 			syncDashboard.showSuccessMessage("Cannot get access token from Salesforce. No Login Credentials Found");

@@ -2,32 +2,32 @@ package ke.co.blueconsulting.sianroses.data.sync;
 
 import ke.co.blueconsulting.sianroses.contract.SyncContract;
 import ke.co.blueconsulting.sianroses.data.DataService;
-import ke.co.blueconsulting.sianroses.data.db.PriceListDbService;
+import ke.co.blueconsulting.sianroses.data.db.WarehouseDbService;
 import ke.co.blueconsulting.sianroses.data.impl.SyncDataService;
 import ke.co.blueconsulting.sianroses.model.app.Response;
-import ke.co.blueconsulting.sianroses.model.salesforce.PriceList;
+import ke.co.blueconsulting.sianroses.model.salesforce.Warehouse;
 import ke.co.blueconsulting.sianroses.util.AppLogger;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import static ke.co.blueconsulting.sianroses.util.UpdateFields.updatePriceListSyncFields;
+import static ke.co.blueconsulting.sianroses.util.UpdateFields.updateWarehouseSyncFields;
 
 public class Warehouses {
 	
-	private static PriceListDbService dbService;
+	private static WarehouseDbService dbService;
 	private static SyncContract.View syncDashboard;
 	
 	public static void sync(SyncContract.View view, SyncDataService dataService) {
 		syncDashboard = view;
-		dbService = new PriceListDbService();
+		dbService = new WarehouseDbService();
 		
 		syncDashboard.setIsBusy(true);
 		
-		ArrayList<PriceList> priceLists = new ArrayList<>();
+		ArrayList<Warehouse> priceLists = new ArrayList<>();
 		
 		try {
-			priceLists = dbService.getRecordsWithPullFromSAPCheckedTrue(PriceList.class);
+			priceLists = dbService.getRecordsWithPullFromSAPCheckedTrue(Warehouse.class);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -36,7 +36,7 @@ public class Warehouses {
 			@Override
 			public void onCompleted(Response response) {
 				
-				ArrayList<PriceList> priceLists = response.getPriceList();
+				ArrayList<Warehouse> priceLists = response.getWarehouses();
 				
 				int listsCount = priceLists.size();
 				
@@ -45,7 +45,7 @@ public class Warehouses {
 				
 				if (listsCount > 0) {
 					
-					priceLists = updatePriceListSyncFields(priceLists, false, false);
+					priceLists = updateWarehouseSyncFields(priceLists, false, false);
 					
 					try {
 						dbService.upsertRecords(priceLists);
@@ -69,7 +69,7 @@ public class Warehouses {
 			}
 		};
 		
-		dataService.pushPriceListToSalesforce(Response.setPriceList(priceLists), callback);
+		dataService.pushWarehousesToSalesforce(Response.setWarehouses(priceLists), callback);
 		
 	}
 }

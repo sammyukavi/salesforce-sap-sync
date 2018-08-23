@@ -55,4 +55,14 @@ public class UpdateFields {
 		}
 		return updatedProducts;
 	}
+	
+	public static ArrayList<Warehouse> updateWarehouseSyncFields(ArrayList<Warehouse> warehouses, boolean pushToSAP, boolean pullFromSAP) {
+		ArrayList<Warehouse> updatedProducts = new ArrayList<>();
+		for (Warehouse product : warehouses) {
+			product.setPushToSAPC(pushToSAP);
+			product.setPullFromSAPC(pullFromSAP);
+			updatedProducts.add(product);
+		}
+		return updatedProducts;
+	}
 }

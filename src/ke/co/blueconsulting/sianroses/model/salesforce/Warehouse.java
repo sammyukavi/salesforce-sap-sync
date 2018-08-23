@@ -20,7 +20,7 @@ public class Warehouse implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@DatabaseField(generatedId = true, columnName = "AUTOID")
-	@SerializedName("ERP_ID__c")
+	@SerializedName("Auto_Id__c")
 	@Expose
 	private int autoId;
 	
@@ -31,7 +31,6 @@ public class Warehouse implements Serializable {
 	private String SalesForceId;
 	
 	@DatabaseField(columnName = "Farm__c")
-	//@SerializedName("Farm__c")
 	@SerializedName("Farm_SAP__c")
 	@Expose
 	private String farmC;
@@ -61,4 +60,68 @@ public class Warehouse implements Serializable {
 	@Expose
 	private String warehouseCodeC;
 	
+	
+	public int getAutoId() {
+		return autoId;
+	}
+	
+	public void setAutoId(int autoId) {
+		this.autoId = autoId;
+	}
+	
+	public String getSalesForceId() {
+		return SalesForceId;
+	}
+	
+	public void setSalesForceId(String salesForceId) {
+		SalesForceId = salesForceId;
+	}
+	
+	public String getFarmC() {
+		return farmC;
+	}
+	
+	public void setFarmC(String farmC) {
+		this.farmC = farmC;
+	}
+	
+	public String getFarmCodeC() {
+		return farmCodeC;
+	}
+	
+	public void setFarmCodeC(String farmCodeC) {
+		this.farmCodeC = farmCodeC;
+	}
+	
+	public String getName() {
+		return name;
+	}
+	
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	public boolean isPullFromSAPC() {
+		return pullFromSAPC;
+	}
+	
+	public void setPullFromSAPC(boolean pullFromSAPC) {
+		this.pullFromSAPC = pullFromSAPC;
+	}
+	
+	public boolean isPushToSAPC() {
+		return pushToSAPC;
+	}
+	
+	public void setPushToSAPC(boolean pushToSAPC) {
+		this.pushToSAPC = pushToSAPC;
+	}
+	
+	public String getWarehouseCodeC() {
+		return warehouseCodeC;
+	}
+	
+	public void setWarehouseCodeC(String warehouseCodeC) {
+		this.warehouseCodeC = warehouseCodeC;
+	}
 }
