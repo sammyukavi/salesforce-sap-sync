@@ -4,11 +4,13 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
+import ke.co.blueconsulting.sianroses.model.BaseSalesforceModel;
 
 import java.io.Serializable;
 
+//packing list items
 @DatabaseTable(tableName = "ARINVOICECH")
-public class ArInvoiceCh implements Serializable {
+public class ArInvoiceCh extends BaseSalesforceModel implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	

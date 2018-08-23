@@ -36,8 +36,8 @@ public class WarehouseDbService extends BaseDbService {
 					
 					UpdateBuilder<Warehouse, Integer> updateBuilder = dao.updateBuilder();
 					
-					if (!StringUtils.isNullOrEmpty(warehouse.getSalesForceId())) {
-						updateBuilder.updateColumnValue("SalesForceId", new SelectArg(warehouse.getSalesForceId()));
+					if (!StringUtils.isNullOrEmpty(warehouse.getSalesforceId())) {
+						updateBuilder.updateColumnValue("SalesForceId", new SelectArg(warehouse.getSalesforceId()));
 					}
 					
 					if (!StringUtils.isNullOrEmpty(warehouse.getFarmC())) {
@@ -56,9 +56,9 @@ public class WarehouseDbService extends BaseDbService {
 						updateBuilder.updateColumnValue("Warehouse_Code__c", new SelectArg(warehouse.getWarehouseCodeC()));
 					}
 					
-					updateBuilder.updateColumnValue("Push_to_SAP__c", warehouse.isPushToSAPC());
+					updateBuilder.updateColumnValue("Push_to_SAP__c", warehouse.isPushToSap());
 					
-					updateBuilder.updateColumnValue("Pull_from_SAP__c", warehouse.isPullFromSAPC());
+					updateBuilder.updateColumnValue("Pull_from_SAP__c", warehouse.isPullFromSap());
 					
 					updateBuilder.where().eq("AUTOID", new SelectArg(warehouse.getAutoId()));
 					

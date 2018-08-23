@@ -1,11 +1,10 @@
 package ke.co.blueconsulting.sianroses.model.salesforce;
 
 import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
-import ke.co.blueconsulting.sianroses.data.adapter.EmptyStringTypeAdapter;
+import ke.co.blueconsulting.sianroses.model.BaseSalesforceModel;
 
 import java.io.Serializable;
 
@@ -14,25 +13,14 @@ import java.io.Serializable;
  * Syncing for products is one way from the SAP server to Salesforce.
  */
 @DatabaseTable(tableName = "PRODUCTSCHILD")
-public class ProductChild implements Serializable {
+public class ProductChild extends BaseSalesforceModel implements Serializable {
 	
 	private static final long serialVersionUID = 19325639692107L;
-	
-	@DatabaseField(columnName = "Push_to_SAP__c")
-	private boolean pushToSapC;
 	
 	@DatabaseField(columnName = "Flower_Code__c")
 	@SerializedName("Flower_Code__c")
 	@Expose
 	private String flowerCodeC;
-	
-	@DatabaseField(columnName = "Pull_from_SAP__c")
-	private boolean pullFromSapC;
-	
-	@DatabaseField(generatedId = true, columnName = "AUTOID")
-	@SerializedName("autoId__c")
-	@Expose
-	private Long autoId;
 	
 	@DatabaseField(columnName = "Name")
 	@SerializedName("Name")
@@ -83,20 +71,6 @@ public class ProductChild implements Serializable {
 	@SerializedName("Length__c")
 	@Expose
 	private String lengthC;
-	
-	@DatabaseField(columnName = "SalesForceID")
-	@SerializedName("Id")
-	@Expose
-	@JsonAdapter(EmptyStringTypeAdapter.class)
-	private String salesforceId;
-	
-	public Long getAutoId() {
-		return autoId;
-	}
-	
-	public void setAutoId(Long autoId) {
-		this.autoId = autoId;
-	}
 	
 	public String getFlowerCodeC() {
 		return flowerCodeC;
@@ -186,27 +160,4 @@ public class ProductChild implements Serializable {
 		this.lengthC = lengthC;
 	}
 	
-	public boolean isPushToSapC() {
-		return pushToSapC;
-	}
-	
-	public void setPushToSapC(boolean pushToSapC) {
-		this.pushToSapC = pushToSapC;
-	}
-	
-	public boolean isPullFromSapC() {
-		return pullFromSapC;
-	}
-	
-	public void setPullFromSapC(boolean pullFromSapC) {
-		this.pullFromSapC = pullFromSapC;
-	}
-	
-	public String getSalesforceId() {
-		return salesforceId;
-	}
-	
-	public void setSalesforceId(String salesforceId) {
-		this.salesforceId = salesforceId;
-	}
 }

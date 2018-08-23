@@ -31,14 +31,9 @@ public class CustomerContactsAdapter extends TypeAdapter<CustomerContact> {
 			jsonWriter.value(customerContact.getBirthDate());
 		}
 		
-		/*if (!StringUtils.isNullOrEmpty(customerContact.getContactId())) {
-			jsonWriter.name("CONTACTID");
-			jsonWriter.value(customerContact.getContactId());
-		}*/
-		
-		if (!StringUtils.isNullOrEmpty(customerContact.getSalesforceId())) {
+		if (!StringUtils.isNullOrEmpty(customerContact.getContactId())) {
 			jsonWriter.name("Id");
-			jsonWriter.value(customerContact.getSalesforceId());
+			jsonWriter.value(customerContact.getContactId());
 		}
 		
 		if (!StringUtils.isNullOrEmpty(customerContact.getDepartment())) {
@@ -102,10 +97,10 @@ public class CustomerContactsAdapter extends TypeAdapter<CustomerContact> {
 		}
 		
 		jsonWriter.name("Pull_from_SAP__c");
-		jsonWriter.value(customerContact.isPullFromSap());
+		jsonWriter.value(customerContact.isPullFromSAP());
 		
 		jsonWriter.name("Push_to_SAP__c");
-		jsonWriter.value(customerContact.isPushToSap());
+		jsonWriter.value(customerContact.isPushToSAP());
 		
 		if (StringUtils.isNullOrEmpty(customerContact.getTitle())) {
 			jsonWriter.name("Title");
@@ -135,14 +130,9 @@ public class CustomerContactsAdapter extends TypeAdapter<CustomerContact> {
 				} else if ("Birthdate".equals(fieldname)) {
 					jsonReader.peek();
 					CustomerContact.setBirthDate(jsonReader.nextString());
-				} /*else if ("CONTACTID".equals(fieldname)) {
+				} else if ("CONTACTID".equals(fieldname)) {
 					jsonReader.peek();
 					CustomerContact.setContactId(jsonReader.nextString());
-				} */ else if ("Id".equals(fieldname)) {
-					jsonReader.peek();
-					String id = jsonReader.nextString();
-					CustomerContact.setSalesforceId(id);
-					CustomerContact.setContactId(id);
 				} else if ("Department".equals(fieldname)) {
 					jsonReader.peek();
 					CustomerContact.setDepartment(jsonReader.nextString());
@@ -181,10 +171,10 @@ public class CustomerContactsAdapter extends TypeAdapter<CustomerContact> {
 					CustomerContact.setPhone(jsonReader.nextString());
 				} else if ("Push_to_SAP__c".equals(fieldname)) {
 					jsonReader.peek();
-					CustomerContact.setPushToSap(jsonReader.nextBoolean());
+					CustomerContact.setPushToSAP(jsonReader.nextBoolean());
 				} else if ("Pull_from_SAP__c".equals(fieldname)) {
 					jsonReader.peek();
-					CustomerContact.setPullFromSap(jsonReader.nextBoolean());
+					CustomerContact.setPullFromSAP(jsonReader.nextBoolean());
 				} else if ("Title".equals(fieldname)) {
 					jsonReader.peek();
 					CustomerContact.setTitle(jsonReader.nextString());

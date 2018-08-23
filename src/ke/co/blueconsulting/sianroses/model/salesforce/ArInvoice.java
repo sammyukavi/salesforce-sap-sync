@@ -4,27 +4,19 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
+import ke.co.blueconsulting.sianroses.model.BaseSalesforceModel;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * @author sukavi
  * This model maps Salesforce Packing List to SAP ARINVOICE Table
  */
 @DatabaseTable(tableName = "ARINVOICE")
-public class ArInvoice implements Serializable {
+public class ArInvoice extends BaseSalesforceModel implements Serializable {
 	
-	private static final long serialVersionUID = 1L;
-	
-	@DatabaseField(columnName = "AUTOID", generatedId = true)
-	@SerializedName("ERP_ID__c")
-	@Expose
-	private int autoId;
-	
-	@DatabaseField(columnName = "SalesForceId")
-	@SerializedName("Id")
-	@Expose
-	private String SalesForceId;
+	private static final long serialVersionUID = 1527097474049L;
 	
 	@DatabaseField(columnName = "AccountID")
 	@SerializedName("Customer_Name__c")
@@ -33,8 +25,7 @@ public class ArInvoice implements Serializable {
 	
 	@DatabaseField(columnName = "Posting_Date__c")
 	@SerializedName("CreatedDate")
-	@Expose
-	private String postingDateC;
+	private Date postingDateC;
 	
 	@DatabaseField(columnName = "Due_Date__c")
 	@SerializedName("Due_Date__c")
@@ -46,23 +37,23 @@ public class ArInvoice implements Serializable {
 	@Expose
 	private String pONumberC;
 	
-	/*@DatabaseField(columnName = "Farm_Order_Number__c")
-	@SerializedName("Consignment_No__c")
+	@DatabaseField(columnName = "Farm_Order_Number__c")
+	@SerializedName("Name")
 	@Expose
-	private String farmOrderNumberC;*/
+	private String farmOrderNumberC;
 	
 	@DatabaseField(columnName = "Invoice_Number__c")
-	@SerializedName("Invoice_Number__c")
+	@SerializedName("Invoice_No__c")
 	@Expose
 	private String invoiceNumberC;
 	
 	@DatabaseField(columnName = "Invoice_Entry__c")
-	@SerializedName("Invoice_Entry__c")
+	@SerializedName("Invoice__c")
 	@Expose
 	private String InvoiceEntryC;
 	
 	@DatabaseField(columnName = "Farm_c")
-	@SerializedName("Farm_c")
+	@SerializedName("Farm__c")
 	@Expose
 	private String farmC;
 	
@@ -76,14 +67,83 @@ public class ArInvoice implements Serializable {
 	@Expose
 	private String Reason;
 	
-	@DatabaseField(columnName = "Pull_from_SAP__c")
-	@SerializedName("Pull_from_SAP__c")
-	@Expose
-	private boolean pullFromSAPC = false;
+	public String getAccountID() {
+		return AccountID;
+	}
 	
-	@DatabaseField(columnName = "Push_to_SAP__c")
-	@SerializedName("Push_to_SAP__c")
-	@Expose
-	private boolean pushToSAPC = false;
+	public void setAccountID(String accountID) {
+		AccountID = accountID;
+	}
 	
+	public Date getPostingDateC() {
+		return postingDateC;
+	}
+	
+	public void setPostingDateC(Date postingDateC) {
+		this.postingDateC = postingDateC;
+	}
+	
+	public String getDueDateC() {
+		return dueDateC;
+	}
+	
+	public void setDueDateC(String dueDateC) {
+		this.dueDateC = dueDateC;
+	}
+	
+	public String getpONumberC() {
+		return pONumberC;
+	}
+	
+	public void setpONumberC(String pONumberC) {
+		this.pONumberC = pONumberC;
+	}
+	
+	public String getFarmOrderNumberC() {
+		return farmOrderNumberC;
+	}
+	
+	public void setFarmOrderNumberC(String farmOrderNumberC) {
+		this.farmOrderNumberC = farmOrderNumberC;
+	}
+	
+	public String getInvoiceNumberC() {
+		return invoiceNumberC;
+	}
+	
+	public void setInvoiceNumberC(String invoiceNumberC) {
+		this.invoiceNumberC = invoiceNumberC;
+	}
+	
+	public String getInvoiceEntryC() {
+		return InvoiceEntryC;
+	}
+	
+	public void setInvoiceEntryC(String invoiceEntryC) {
+		InvoiceEntryC = invoiceEntryC;
+	}
+	
+	public String getFarmC() {
+		return farmC;
+	}
+	
+	public void setFarmC(String farmC) {
+		this.farmC = farmC;
+	}
+	
+	public String getAuction() {
+		return auction;
+	}
+	
+	public void setAuction(String auction) {
+		this.auction = auction;
+	}
+	
+	public String getReason() {
+		return Reason;
+	}
+	
+	public void setReason(String reason) {
+		Reason = reason;
+	}
 }

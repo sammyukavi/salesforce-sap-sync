@@ -36,8 +36,8 @@ public class PriceListDbService extends BaseDbService {
 					
 					UpdateBuilder<PriceList, Integer> updateBuilder = dao.updateBuilder();
 					
-					if (!StringUtils.isNullOrEmpty(productChild.getSalesForceId())) {
-						updateBuilder.updateColumnValue("SalesForceId", new SelectArg(productChild.getSalesForceId()));
+					if (!StringUtils.isNullOrEmpty(productChild.getSalesforceId())) {
+						updateBuilder.updateColumnValue("SalesForceId", new SelectArg(productChild.getSalesforceId()));
 					}
 					
 					if (!StringUtils.isNullOrEmpty(productChild.getCustomerCode())) {
@@ -54,9 +54,9 @@ public class PriceListDbService extends BaseDbService {
 					
 					updateBuilder.updateColumnValue("isActive", new SelectArg(productChild.isActive()));
 					
-					updateBuilder.updateColumnValue("Push_to_SAP__c", productChild.isPushToSAP());
+					updateBuilder.updateColumnValue("Push_to_SAP__c", productChild.isPushToSap());
 					
-					updateBuilder.updateColumnValue("Pull_from_SAP__c", productChild.isPullFromSAPC());
+					updateBuilder.updateColumnValue("Pull_from_SAP__c", productChild.isPullFromSap());
 					
 					updateBuilder.where().eq("AUTOID", new SelectArg(productChild.getAutoId()));
 					

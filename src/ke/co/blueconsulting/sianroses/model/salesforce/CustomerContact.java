@@ -1,9 +1,11 @@
 package ke.co.blueconsulting.sianroses.model.salesforce;
 
 import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
+import ke.co.blueconsulting.sianroses.data.adapter.EmptyStringTypeAdapter;
 
 import java.io.Serializable;
 
@@ -15,10 +17,10 @@ import java.io.Serializable;
 @DatabaseTable(tableName = "CUSTOMERCONTACTS")
 public class CustomerContact implements Serializable {
 	
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1268623598632963L;
 	
 	@DatabaseField(generatedId = true, columnName = "AUTOID")
-	private Long autoId;
+	private int autoId;
 	
 	@DatabaseField(columnName = "AccountID")
 	@SerializedName("AccountId")
@@ -38,12 +40,8 @@ public class CustomerContact implements Serializable {
 	@DatabaseField(columnName = "CONTACTID")
 	@SerializedName("Id")
 	@Expose
+	@JsonAdapter(EmptyStringTypeAdapter.class)
 	private String contactId;
-	
-	@DatabaseField(columnName = "SalesForceId")
-	@SerializedName("Id")
-	@Expose
-	private String salesforceId;
 	
 	@DatabaseField(columnName = "Department")
 	@SerializedName("Department")
@@ -105,28 +103,20 @@ public class CustomerContact implements Serializable {
 	@Expose
 	private String phone;
 	
-	@DatabaseField(columnName = "Push_to_SAP__c")
-	@SerializedName("Push_to_SAP__c")
-	@Expose
-	private boolean pushToSap;
-	
-	@DatabaseField(columnName = "Pull_from_SAP__c")
-	@SerializedName("Pull_from_SAP__c")
-	@Expose
-	private boolean pullFromSap;
-	
 	@SerializedName("Title")
 	@Expose
 	@DatabaseField(columnName = "Title")
 	private String title;
 	
-	public Long getAutoId() {
-		return autoId;
-	}
+	@DatabaseField(columnName = "Pull_from_SAP__c")
+	@SerializedName("Pull_from_SAP__c")
+	@Expose
+	private boolean pullFromSAP = false;
 	
-	public void setAutoId(Long autoId) {
-		this.autoId = autoId;
-	}
+	@DatabaseField(columnName = "Push_to_SAP__c")
+	@SerializedName("Push_to_SAP__c")
+	@Expose
+	private boolean pushToSAP = false;
 	
 	public String getAccountId() {
 		return accountId;
@@ -150,14 +140,6 @@ public class CustomerContact implements Serializable {
 	
 	public void setBirthDate(String birthDate) {
 		this.birthDate = birthDate;
-	}
-	
-	public String getSalesforceId() {
-		return salesforceId;
-	}
-	
-	public void setSalesforceId(String salesforceId) {
-		this.salesforceId = salesforceId;
 	}
 	
 	public String getDepartment() {
@@ -256,22 +238,6 @@ public class CustomerContact implements Serializable {
 		this.phone = phone;
 	}
 	
-	public boolean isPushToSap() {
-		return pushToSap;
-	}
-	
-	public void setPushToSap(boolean pushToSap) {
-		this.pushToSap = pushToSap;
-	}
-	
-	public boolean isPullFromSap() {
-		return pullFromSap;
-	}
-	
-	public void setPullFromSap(boolean pullFromSap) {
-		this.pullFromSap = pullFromSap;
-	}
-	
 	public String getTitle() {
 		return title;
 	}
@@ -286,5 +252,29 @@ public class CustomerContact implements Serializable {
 	
 	public void setContactId(String contactId) {
 		this.contactId = contactId;
+	}
+	
+	public boolean isPullFromSAP() {
+		return pullFromSAP;
+	}
+	
+	public void setPullFromSAP(boolean pullFromSAP) {
+		this.pullFromSAP = pullFromSAP;
+	}
+	
+	public boolean isPushToSAP() {
+		return pushToSAP;
+	}
+	
+	public void setPushToSAP(boolean pushToSAP) {
+		this.pushToSAP = pushToSAP;
+	}
+	
+	public int getAutoId() {
+		return autoId;
+	}
+	
+	public void setAutoId(int autoId) {
+		this.autoId = autoId;
 	}
 }

@@ -2,29 +2,33 @@ package ke.co.blueconsulting.sianroses.data.sync;
 
 import ke.co.blueconsulting.sianroses.contract.SyncContract;
 import ke.co.blueconsulting.sianroses.data.DataService;
-import ke.co.blueconsulting.sianroses.data.db.CustomerDbService;
+import ke.co.blueconsulting.sianroses.data.db.PackingListDbService;
 import ke.co.blueconsulting.sianroses.data.impl.SyncDataService;
 import ke.co.blueconsulting.sianroses.model.app.Response;
-import ke.co.blueconsulting.sianroses.model.salesforce.Customer;
+import ke.co.blueconsulting.sianroses.model.salesforce.ArInvoice;
 import ke.co.blueconsulting.sianroses.util.AppLogger;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 import static ke.co.blueconsulting.sianroses.util.UpdateFields.updateCustomerSyncFields;
+import static ke.co.blueconsulting.sianroses.util.UpdateFields.updateSyncFields;
 
-public class Customers {
+public class PackingLists {
 	
-	private static SyncDataService syncDataService;
-	private static CustomerDbService dbService;
+	private static PackingListDbService dbService;
+	
 	private static SyncContract.View syncDashboard;
 	
+	private static SyncDataService syncDataService;
 	
 	public static void sync(SyncContract.View view, SyncDataService dataService) {
 		
 		syncDashboard = view;
+		
+		dbService = new PackingListDbService();
+		
 		syncDataService = dataService;
-		dbService = new CustomerDbService();
 		
 		syncDashboard.setIsBusy(true);
 		
@@ -33,32 +37,31 @@ public class Customers {
 			@Override
 			public void onCompleted(Response response) {
 				
-				ArrayList<Customer> customers = response.getCustomers();
+				ArrayList<ArInvoice> packingLists = response.getPackingLists();
 				
-				ArrayList<Customer> insertedCustomers = new ArrayList<>();
+				ArrayList<ArInvoice> insertedPackingLists = new ArrayList<>();
 				
-				int customersCount = customers.size();
+				int packingListsCount = packingLists.size();
 				
-				AppLogger.logInfo("Received " + customersCount + " customers from Salesforce");
+				AppLogger.logInfo("Received " + packingListsCount + " packing lists from Salesforce");
 				
-				if (customersCount > 0) {
+				if (packingListsCount > 0) {
 					
-					customers = updateCustomerSyncFields(customers, false, false);
+					updateSyncFields(packingLists, false, false);
 					
 					try {
-						insertedCustomers = dbService.upsertCustomerRecords(customers);
+						insertedPackingLists = dbService.upsertRecords(packingLists);
 					} catch (SQLException e) {
 						AppLogger.logError(e.getMessage());
 					}
 				}
 				
-				updateSalesforceCustomers(insertedCustomers);
+				updateSalesforcePackingList(insertedPackingLists);
 			}
 			
 			@Override
 			public void onError(Throwable t) {
-				AppLogger.logError("Failed to fetch from the server. " + t.getMessage());
-				//TODO show the error here if the Dashboard UI is hidden
+			
 			}
 			
 			@Override
@@ -67,35 +70,35 @@ public class Customers {
 			}
 		};
 		
-		syncDataService.getCustomers(getFromSalesforceCallback);
+		syncDataService.getPackingLists(getFromSalesforceCallback);
+		
 	}
 	
-	
-	private static void updateSalesforceCustomers(ArrayList<Customer> customers) {
+	private static void updateSalesforcePackingList(ArrayList<ArInvoice> insertedPackingLists) {
 		
 		syncDashboard.setIsBusy(true);
 		
-		ArrayList<Customer> unsyncedCustomers = new ArrayList<>();
+		ArrayList<ArInvoice> unsyncedPackingLists = new ArrayList<>();
 		
 		try {
 			
-			ArrayList<Integer> customerIds = new ArrayList<>();
+			ArrayList<Integer> packingListsIds = new ArrayList<>();
 			
-			for (Customer customer : customers) {
-				customerIds.add(customer.getAutoId());
+			for (ArInvoice customer : insertedPackingLists) {
+				packingListsIds.add(customer.getAutoId());
 			}
 			
-			unsyncedCustomers = updateCustomerSyncFields(dbService.getUnsyncedCustomers(customerIds), false, false);
+			unsyncedPackingLists = (ArrayList<ArInvoice>) updateSyncFields(dbService.getUnsyncedPackingLists(packingListsIds), false, false);
 			
 		} catch (SQLException e) {
 			AppLogger.logError(e.getMessage());
 		}
 		
-		customers.addAll(unsyncedCustomers);
+		insertedPackingLists.addAll(unsyncedPackingLists);
 		
-		int customersCount = customers.size();
+		int customersCount = insertedPackingLists.size();
 		
-		AppLogger.logInfo("Found " + customersCount + " customers that need to be pushed to Salesforce. " + (customersCount > 0 ? "Attempting to push." : ""));
+		AppLogger.logInfo("Found " + customersCount + " packing lists that need to be pushed to Salesforce. " + (customersCount > 0 ? "Attempting to push." : ""));
 		
 		if (customersCount > 0) {
 			
@@ -103,19 +106,19 @@ public class Customers {
 				@Override
 				public void onCompleted(Response response) {
 					
-					ArrayList<Customer> customers = response.getCustomers();
+					ArrayList<ArInvoice> packingLists = response.getPackingLists();
 					
-					int customersCount = customers.size();
+					int customersCount = packingLists.size();
 					
 					AppLogger.logInfo("Push To Salesforce Successful. " +
-							"Received " + customersCount + " customers from Salesforce for updating");
+							"Received " + customersCount + " packing lists from Salesforce for updating");
 					
 					if (customersCount > 0) {
 						
-						customers = updateCustomerSyncFields(customers, false, false);
+						packingLists = (ArrayList<ArInvoice>) updateSyncFields(packingLists, false, false);
 						
 						try {
-							dbService.upsertCustomerRecords(customers);
+							dbService.upsertRecords(packingLists);
 							AppLogger.logInfo("Customers sync complete");
 						} catch (SQLException e) {
 							AppLogger.logError(e.getMessage());
@@ -134,10 +137,12 @@ public class Customers {
 				}
 			};
 			
-			syncDataService.pushCustomersToSalesforce(Response.setCustomers(customers), pushToSalesforce);
+			syncDataService.pushPackingListsToSalesforce(Response.setPackingLists(insertedPackingLists), pushToSalesforce);
 		} else {
 			AppLogger.logInfo("Customers sync complete");
 		}
 		
 	}
+	
+	
 }

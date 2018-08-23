@@ -4,6 +4,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
+import ke.co.blueconsulting.sianroses.model.BaseSalesforceModel;
 
 import java.io.Serializable;
 
@@ -12,12 +13,9 @@ import java.io.Serializable;
  * Syncing for user accounts is two way.
  */
 @DatabaseTable(tableName = "CUSTOMERS")
-public class Customer implements Serializable {
+public class Customer extends BaseSalesforceModel implements Serializable {
 	
-	private static final long serialVersionUID = 1L;
-	
-	@DatabaseField(columnName = "AUTOID", generatedId = true)
-	private long autoId;
+	private static final long serialVersionUID = 1966939659263952L;
 	
 	@DatabaseField(columnName = "A_R_Account__c")
 	@SerializedName("A_R_Account__c")
@@ -99,11 +97,6 @@ public class Customer implements Serializable {
 	@Expose
 	private String groupTypeC;
 	
-	@DatabaseField(columnName = "salesforceId")
-	@SerializedName("Id")
-	@Expose
-	private String salesforceId;
-	
 	@DatabaseField(columnName = "Name")
 	@SerializedName("Name")
 	@Expose
@@ -144,16 +137,6 @@ public class Customer implements Serializable {
 	@Expose
 	private double prepaidAmountC;
 	
-	@DatabaseField(columnName = "Pull_from_SAP__c")
-	@SerializedName("Pull_from_SAP__c")
-	@Expose
-	private boolean pullFromSAPC = false;
-	
-	@DatabaseField(columnName = "Push_to_SAP__c")
-	@SerializedName("Push_to_SAP__c")
-	@Expose
-	private boolean pushToSAPC = false;
-	
 	@DatabaseField(columnName = "ShippingCity")
 	@SerializedName("ShippingCity")
 	@Expose
@@ -179,33 +162,8 @@ public class Customer implements Serializable {
 	@Expose
 	private String website;
 	
-	public long getAutoId() {
-		return autoId;
-	}
-	
-	public void setAutoId(long autoId) {
-		this.autoId = autoId;
-	}
-	
 	public boolean isActiveC() {
 		return activeC;
-	}
-	
-	public boolean isPushToSAPC() {
-		return pushToSAPC;
-	}
-	
-	public void setPushToSAPC(boolean pushToSAPC) {
-		this.pushToSAPC = pushToSAPC;
-	}
-	
-	
-	public String getSalesforceId() {
-		return salesforceId;
-	}
-	
-	public void setSalesforceId(String SalesForceId) {
-		this.salesforceId = SalesForceId;
 	}
 	
 	public String getName() {
@@ -398,14 +356,6 @@ public class Customer implements Serializable {
 	
 	public void setPrepaidAmountC(double prepaidAmountC) {
 		this.prepaidAmountC = prepaidAmountC;
-	}
-	
-	public boolean isPullFromSAPC() {
-		return pullFromSAPC;
-	}
-	
-	public void setPullFromSAPC(boolean pullFromSAPC) {
-		this.pullFromSAPC = pullFromSAPC;
 	}
 	
 	public String getShippingCity() {

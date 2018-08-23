@@ -24,7 +24,7 @@ public class CustomerDbService extends BaseDbService {
 		super();
 	}
 	
-	public ArrayList<Customer> getUnsyncedCustomers(ArrayList<Long> ids) throws SQLException {
+	public ArrayList<Customer> getUnsyncedCustomers(ArrayList<Integer> ids) throws SQLException {
 		
 		Dao<Customer, Integer> dao = createDao(Customer.class);
 		
@@ -156,9 +156,9 @@ public class CustomerDbService extends BaseDbService {
 					
 					updateBuilder.updateColumnValue("Prepaid_Amount__c", customer.getPrepaidAmountC());
 					
-					updateBuilder.updateColumnValue("Pull_from_SAP__c", customer.isPullFromSAPC());
+					updateBuilder.updateColumnValue("Pull_from_SAP__c", customer.isPullFromSap());
 					
-					updateBuilder.updateColumnValue("Push_to_SAP__c", customer.isPushToSAPC());
+					updateBuilder.updateColumnValue("Push_to_SAP__c", customer.isPushToSap());
 					
 					if (!StringUtils.isNullOrEmpty(customer.getShippingCity())) {
 						updateBuilder.updateColumnValue("ShippingCity", new SelectArg(customer.getShippingCity()));

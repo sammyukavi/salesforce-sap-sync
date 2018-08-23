@@ -16,6 +16,7 @@ import static ke.co.blueconsulting.sianroses.util.UpdateFields.updatePriceListSy
 public class PriceLists {
 	
 	private static PriceListDbService dbService;
+	
 	private static SyncContract.View syncDashboard;
 	
 	public static void sync(SyncContract.View view, SyncDataService dataService) {

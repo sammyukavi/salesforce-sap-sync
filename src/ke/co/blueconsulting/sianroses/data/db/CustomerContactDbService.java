@@ -23,13 +23,13 @@ public class CustomerContactDbService extends BaseDbService {
 		super();
 	}
 	
-	public ArrayList<CustomerContact> getUnsyncedCustomerContacts(ArrayList<Long> ids) throws SQLException {
+	public ArrayList<CustomerContact> getUnsyncedCustomerContacts(ArrayList<Integer> ids) throws SQLException {
 		
 		Dao<CustomerContact, Integer> dao = createDao(CustomerContact.class);
 		
 		Where<CustomerContact, Integer> where = dao.queryBuilder().where();
 		
-		where = where.or(where.isNull("SalesForceId"), where.eq("SalesForceId", ""),
+		where = where.or(where.isNull("CONTACTID"), where.eq("CONTACTID", ""),
 				where.eq("Pull_from_SAP__c", true)).and().isNotNull("LastName");
 		
 		if (!ids.isEmpty()) {
@@ -52,11 +52,11 @@ public class CustomerContactDbService extends BaseDbService {
 				
 				boolean recordExists;
 				
-				boolean isUsingSalesforceIdColumn = (!StringUtils.isNullOrEmpty(customerContact.getSalesforceId()));
+				boolean isUsingSalesforceIdColumn = (!StringUtils.isNullOrEmpty(customerContact.getContactId()));
 				
 				if (isUsingSalesforceIdColumn) {
 					recordExists = dao.queryBuilder().where()
-							.eq("SalesForceId", customerContact.getSalesforceId()).countOf() > 0;
+							.eq("CONTACTID", customerContact.getContactId()).countOf() > 0;
 				} else {
 					recordExists = dao.queryBuilder().where()
 							.eq("Account_Number", customerContact.getAccountNumber()).countOf() > 0;
@@ -130,16 +130,16 @@ public class CustomerContactDbService extends BaseDbService {
 						updateBuilder.updateColumnValue("Phone", new SelectArg(customerContact.getPhone()));
 					}
 					
-					updateBuilder.updateColumnValue("Pull_from_SAP__c", customerContact.isPullFromSap());
+					updateBuilder.updateColumnValue("Pull_from_SAP__c", customerContact.isPullFromSAP());
 					
-					updateBuilder.updateColumnValue("Push_to_SAP__c", customerContact.isPushToSap());
+					updateBuilder.updateColumnValue("Push_to_SAP__c", customerContact.isPushToSAP());
 					
 					if (StringUtils.isNullOrEmpty(customerContact.getTitle())) {
 						updateBuilder.updateColumnValue("Title", new SelectArg(customerContact.getTitle()));
 					}
 					
 					if (isUsingSalesforceIdColumn) {
-						updateBuilder.where().eq("SalesForceId", new SelectArg(customerContact.getSalesforceId()));
+						updateBuilder.where().eq("CONTACTID", new SelectArg(customerContact.getContactId()));
 					} else {
 						updateBuilder.where().eq("Account_Number", new SelectArg(customerContact.getAccountNumber()));
 					}
@@ -153,7 +153,7 @@ public class CustomerContactDbService extends BaseDbService {
 					Where<CustomerContact, Integer> where = queryBuilder.where();
 					
 					if (isUsingSalesforceIdColumn) {
-						where = where.eq("SalesForceId", new SelectArg(customerContact.getSalesforceId()));
+						where = where.eq("CONTACTID", new SelectArg(customerContact.getContactId()));
 					} else {
 						where = where.eq("Account_Number", new SelectArg(customerContact.getAccountNumber()));
 					}

@@ -79,7 +79,7 @@ public class CustomerContacts {
 		
 		try {
 			
-			ArrayList<Long> customerIds = new ArrayList<>();
+			ArrayList<Integer> customerIds = new ArrayList<>();
 			
 			for (CustomerContact customerContact : customerContacts) {
 				customerIds.add(customerContact.getAutoId());

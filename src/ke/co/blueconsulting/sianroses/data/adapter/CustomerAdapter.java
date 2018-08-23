@@ -141,10 +141,10 @@ public class CustomerAdapter extends TypeAdapter<Customer> {
 		jsonWriter.value(customer.getPrepaidAmountC());
 		
 		jsonWriter.name("Pull_from_SAP__c");
-		jsonWriter.value(customer.isPullFromSAPC());
+		jsonWriter.value(customer.isPullFromSap());
 		
 		jsonWriter.name("Push_to_SAP__c");
-		jsonWriter.value(customer.isPushToSAPC());
+		jsonWriter.value(customer.isPushToSap());
 		
 		if (!StringUtils.isNullOrEmpty(customer.getShippingCity())) {
 			jsonWriter.name("ShippingCity");
@@ -262,10 +262,10 @@ public class CustomerAdapter extends TypeAdapter<Customer> {
 					customer.setPrepaidAmountC(jsonReader.nextDouble());
 				} else if ("Pull_from_SAP__c".equals(fieldname)) {
 					jsonReader.peek();
-					customer.setPullFromSAPC(jsonReader.nextBoolean());
+					customer.setPullFromSap(jsonReader.nextBoolean());
 				} else if ("Push_to_SAP__c".equals(fieldname)) {
 					jsonReader.peek();
-					customer.setPushToSAPC(jsonReader.nextBoolean());
+					customer.setPushToSap(jsonReader.nextBoolean());
 				} else if ("ShippingCity".equals(fieldname)) {
 					jsonReader.peek();
 					customer.setShippingCity(jsonReader.nextString());

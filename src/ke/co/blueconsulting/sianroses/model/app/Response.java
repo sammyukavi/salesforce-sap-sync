@@ -47,28 +47,16 @@ public class Response implements Serializable {
 	@Expose
 	private ArrayList<Warehouse> warehouses = new ArrayList<>();
 	
-	@SerializedName(PACKING_LIST)
+	@SerializedName(PACKING_LISTS)
 	@Expose
-	private ArrayList<PackingList> packingList = new ArrayList<>();
+	private ArrayList<ArInvoice> packingList = new ArrayList<>();
 	
-	public static Response setPriceList(ArrayList<PriceList> priceList) {
-		instance.priceList = priceList;
+	public static Response getInstance() {
 		return instance;
 	}
 	
-	public static Response setProductsChildren(ArrayList<ProductChild> productsChildren) {
-		instance.productsChildren = productsChildren;
-		return instance;
-	}
-	
-	public static Response setProducts(ArrayList<Product> products) {
-		instance.products = products;
-		return instance;
-	}
-	
-	public static Response setWarehouses(ArrayList<Warehouse> warehouses) {
-		instance.warehouses = warehouses;
-		return instance;
+	public static void setInstance(Response instance) {
+		Response.instance = instance;
 	}
 	
 	public ArrayList<Customer> getCustomers() {
@@ -89,36 +77,57 @@ public class Response implements Serializable {
 		return instance;
 	}
 	
-	public ArrayList<PackingList> getPackingList() {
+	public ArrayList<ArInvoice> getArInvoice() {
 		return packingList;
 	}
 	
-	public static Response setPackingList(ArrayList<PackingList> packingList) {
+	public static Response setArInvoice(ArrayList<ArInvoice> packingList) {
 		instance.packingList = packingList;
 		return instance;
-	}
-	
-	public static Response getInstance() {
-		return instance;
-	}
-	
-	public static void setInstance(Response instance) {
-		Response.instance = instance;
 	}
 	
 	public ArrayList<PriceList> getPriceList() {
 		return priceList;
 	}
 	
+	public static Response setPriceList(ArrayList<PriceList> priceList) {
+		instance.priceList = priceList;
+		return instance;
+	}
+	
 	public ArrayList<Product> getProducts() {
 		return products;
+	}
+	
+	public static Response setProducts(ArrayList<Product> products) {
+		instance.products = products;
+		return instance;
 	}
 	
 	public ArrayList<ProductChild> getProductsChildren() {
 		return productsChildren;
 	}
 	
+	public static Response setProductsChildren(ArrayList<ProductChild> productsChildren) {
+		instance.productsChildren = productsChildren;
+		return instance;
+	}
+	
 	public ArrayList<Warehouse> getWarehouses() {
 		return warehouses;
+	}
+	
+	public static Response setWarehouses(ArrayList<Warehouse> warehouses) {
+		instance.warehouses = warehouses;
+		return instance;
+	}
+	
+	public ArrayList<ArInvoice> getPackingLists() {
+		return packingList;
+	}
+	
+	public static Response setPackingLists(ArrayList<ArInvoice> packingList) {
+		instance.packingList = packingList;
+		return instance;
 	}
 }

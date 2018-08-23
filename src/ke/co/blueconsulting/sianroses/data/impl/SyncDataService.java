@@ -25,7 +25,7 @@ public class SyncDataService extends BaseDataService<Response, SyncRestService> 
 		executeSingleTask(callback, restService.fetch(getToken(), ACCOUNTS));
 	}
 	
-	public void pushCustomersToSalsesforce(Response response, GetCallback<Response> callback) {
+	public void pushCustomersToSalesforce(Response response, GetCallback<Response> callback) {
 		executeSingleTask(callback, restService.post(getToken(), ACCOUNTS, response));
 	}
 	
@@ -51,6 +51,14 @@ public class SyncDataService extends BaseDataService<Response, SyncRestService> 
 	
 	public void pushWarehousesToSalesforce(Response response, GetCallback<Response> callback) {
 		executeSingleTask(callback, restService.post(getToken(), WAREHOUSES, response));
+	}
+	
+	public void getPackingLists(GetCallback<Response> callback) {
+		executeSingleTask(callback, restService.fetch(getToken(), PACKING_LISTS));
+	}
+	
+	public void pushPackingListsToSalesforce(Response response, GetCallback<Response> callback) {
+		executeSingleTask(callback, restService.post(getToken(), PACKING_LISTS, response));
 	}
 	
 }

@@ -78,9 +78,9 @@ public class ProductChildDbService extends BaseDbService {
 						updateBuilder.updateColumnValue("Length__c", new SelectArg(productChild.getLengthC()));
 					}
 					
-					updateBuilder.updateColumnValue("Push_to_SAP__c", productChild.isPushToSapC());
+					updateBuilder.updateColumnValue("Push_to_SAP__c", productChild.isPushToSap());
 					
-					updateBuilder.updateColumnValue("Pull_from_SAP__c", productChild.isPullFromSapC());
+					updateBuilder.updateColumnValue("Pull_from_SAP__c", productChild.isPullFromSap());
 					
 					if (!StringUtils.isNullOrEmpty(productChild.getSalesforceId())) {
 						updateBuilder.updateColumnValue("SalesForceId", new SelectArg(productChild.getSalesforceId()));
