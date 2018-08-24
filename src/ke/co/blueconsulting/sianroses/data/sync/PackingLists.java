@@ -44,28 +44,38 @@ public class PackingLists {
 				
 				AppLogger.logInfo("Received " + packingListsCount + " packing lists from Salesforce");
 				
-				if (packingListsCount > 0) {
-					
-					updateSyncFields(packingLists, false, false);
-					
-					try {
+				try {
+					if (packingListsCount > 0) {
+						
+						updateSyncFields(packingLists, false, false);
+						
 						insertedPackingLists = dbService.upsertRecords(packingLists);
-					} catch (SQLException e) {
-						AppLogger.logError(e.getMessage());
+						
 					}
+				} catch (SQLException e) {
+					
+					AppLogger.logError("An error occured when upserting packing lists. " + e.getMessage());
+					
+				} finally {
+					
+					updateSalesforcePackingList(insertedPackingLists);
+					
 				}
 				
-				updateSalesforcePackingList(insertedPackingLists);
 			}
 			
 			@Override
 			public void onError(Throwable t) {
-			
+				
+				AppLogger.logError("Error fetching packing lists from Salesforce. " + t.getMessage());
+				
 			}
 			
 			@Override
 			public void always() {
+				
 				syncDashboard.setIsBusy(false);
+				
 			}
 		};
 		
@@ -99,47 +109,54 @@ public class PackingLists {
 		
 		AppLogger.logInfo("Found " + customersCount + " packing lists that need to be pushed to Salesforce. " + (customersCount > 0 ? "Attempting to push." : ""));
 		
-		if (customersCount > 0) {
+		DataService.GetCallback<Response> pushToSalesforceCallback = new DataService.GetCallback<Response>() {
 			
-			DataService.GetCallback<Response> pushToSalesforce = new DataService.GetCallback<Response>() {
-				@Override
-				public void onCompleted(Response response) {
-					
-					ArrayList<ArInvoice> packingLists = response.getPackingLists();
-					
-					int customersCount = packingLists.size();
-					
-					AppLogger.logInfo("Push To Salesforce Successful. " +
-							"Received " + customersCount + " packing lists from Salesforce for updating");
-					
+			@Override
+			public void onCompleted(Response response) {
+				
+				ArrayList<ArInvoice> packingLists = response.getPackingLists();
+				
+				int customersCount = packingLists.size();
+				
+				AppLogger.logInfo("Push To Salesforce Successful. " +
+						"Received " + customersCount + " packing lists from Salesforce for updating");
+				
+				try {
 					if (customersCount > 0) {
 						
 						packingLists = (ArrayList<ArInvoice>) updateSyncFields(packingLists, false, false);
 						
-						try {
-							dbService.upsertRecords(packingLists);
-							AppLogger.logInfo("Customers sync complete");
-						} catch (SQLException e) {
-							AppLogger.logError(e.getMessage());
-						}
+						dbService.upsertRecords(packingLists);
+						
 					}
+					
+				} catch (SQLException e) {
+					
+					AppLogger.logError("An error occured when upserting packing lists. " + e.getMessage());
+					
+				} finally {
+					
+					AppLogger.logInfo("Customers sync complete");
+					
 				}
-				
-				@Override
-				public void onError(Throwable e) {
-					AppLogger.logError("Error pushing customers to Salesforce. " + e.getMessage());
-				}
-				
-				@Override
-				public void always() {
-					syncDashboard.setIsBusy(false);
-				}
-			};
+			}
 			
-			syncDataService.pushPackingListsToSalesforce(Response.setPackingLists(insertedPackingLists), pushToSalesforce);
-		} else {
-			AppLogger.logInfo("Customers sync complete");
-		}
+			@Override
+			public void onError(Throwable e) {
+				
+				AppLogger.logError("Error pushing packing lists to Salesforce. " + e.getMessage());
+				
+			}
+			
+			@Override
+			public void always() {
+				
+				syncDashboard.setIsBusy(false);
+				
+			}
+		};
+		
+		syncDataService.pushPackingListsToSalesforce(Response.setPackingLists(insertedPackingLists), pushToSalesforceCallback);
 		
 	}
 	

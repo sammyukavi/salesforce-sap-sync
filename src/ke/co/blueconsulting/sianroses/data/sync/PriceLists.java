@@ -16,11 +16,12 @@ import static ke.co.blueconsulting.sianroses.util.UpdateFields.updateSyncFields;
 public class PriceLists {
 	
 	private static PriceListDbService dbService;
-	
 	private static SyncContract.View syncDashboard;
 	
 	public static void sync(SyncContract.View view, SyncDataService dataService) {
+		
 		syncDashboard = view;
+		
 		dbService = new PriceListDbService();
 		
 		syncDashboard.setIsBusy(true);
@@ -28,12 +29,15 @@ public class PriceLists {
 		ArrayList<PriceList> priceLists = new ArrayList<>();
 		
 		try {
-			priceLists = dbService.getRecordsWithPullFromSAPCheckedTrue(PriceList.class);
+			
+			priceLists = dbService.getRecordsWithPullFromSapCheckedTrue(PriceList.class);
+			
 		} catch (SQLException e) {
-			e.printStackTrace();
+			
+			AppLogger.logError("An error occurred when querying price lists. " + e.getMessage());
 		}
 		
-		DataService.GetCallback<Response> callback = new DataService.GetCallback<Response>() {
+		DataService.GetCallback<Response> pushToSalesforceCallback = new DataService.GetCallback<Response>() {
 			@Override
 			public void onCompleted(Response response) {
 				
@@ -44,33 +48,42 @@ public class PriceLists {
 				AppLogger.logInfo("Push To Salesforce Successful. " +
 						"Received " + listsCount + " price lists from Salesforce for updating");
 				
-				if (listsCount > 0) {
+				try {
 					
-					priceLists = (ArrayList<PriceList>) updateSyncFields(priceLists, false, false);
-					
-					try {
+					if (listsCount > 0) {
+						
+						priceLists = (ArrayList<PriceList>) updateSyncFields(priceLists, false, false);
+						
 						dbService.upsertRecords(priceLists);
-						AppLogger.logInfo("Price lists sync complete");
-					} catch (SQLException e) {
-						e.printStackTrace();
-						AppLogger.logError(e.getMessage());
 					}
+					
+				} catch (SQLException e) {
+					
+					AppLogger.logError("An error occured when upserting price lists. " + e.getMessage());
+					
+				} finally {
+					
+					AppLogger.logInfo("Price lists sync complete");
 				}
 				
 			}
 			
 			@Override
 			public void onError(Throwable t) {
+				
 				AppLogger.logError("Failed to push price lists to salesforce. " + t.getMessage());
+				
 			}
 			
 			@Override
 			public void always() {
+				
 				syncDashboard.setIsBusy(false);
+				
 			}
 		};
 		
-		dataService.pushPriceListToSalesforce(Response.setPriceList(priceLists), callback);
+		dataService.pushPriceListToSalesforce(Response.setPriceList(priceLists), pushToSalesforceCallback);
 		
 	}
 }

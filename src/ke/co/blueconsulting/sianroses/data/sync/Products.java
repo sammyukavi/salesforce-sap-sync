@@ -22,22 +22,23 @@ public class Products {
 		
 		syncDashboard = view;
 		dbService = new ProductDbService();
-		
 		syncDashboard.setIsBusy(true);
 		
 		ArrayList<Product> product = new ArrayList<>();
 		
 		try {
-			product = dbService.getRecordsWithPullFromSAPCheckedTrue(Product.class);
+			
+			product = dbService.getRecordsWithPullFromSapCheckedTrue(Product.class);
+			
 		} catch (SQLException e) {
-			e.printStackTrace();
+			
+			AppLogger.logError("An error occurred when querying products. " + e.getMessage());
+			
 		}
 		
 		DataService.GetCallback<Response> callback = new DataService.GetCallback<Response>() {
 			@Override
 			public void onCompleted(Response response) {
-				
-				//Console.logToJson(response.getProducts());
 				
 				ArrayList<Product> products = response.getProducts();
 				
@@ -46,29 +47,37 @@ public class Products {
 				AppLogger.logInfo("Push To Salesforce Successful. " +
 						"Received " + productsCount + " products from Salesforce for updating");
 				
-				if (productsCount > 0) {
-					
-					products = (ArrayList<Product>) updateSyncFields(products, false, false);
-					
-					try {
+				try {
+					if (productsCount > 0) {
+						
+						products = (ArrayList<Product>) updateSyncFields(products, false, false);
+						
 						dbService.upsertProductRecords(products);
-						AppLogger.logInfo("Products sync complete");
-					} catch (SQLException e) {
-						e.printStackTrace();
-						AppLogger.logError(e.getMessage());
 					}
+				} catch (SQLException e) {
+					
+					AppLogger.logError(e.getMessage());
+					
+				} finally {
+					
+					AppLogger.logInfo("Products sync complete");
+					
 				}
 				
 			}
 			
 			@Override
 			public void onError(Throwable t) {
+				
 				AppLogger.logError("Failed to push products to salesforce. " + t.getMessage());
+				
 			}
 			
 			@Override
 			public void always() {
+				
 				syncDashboard.setIsBusy(false);
+				
 			}
 		};
 		

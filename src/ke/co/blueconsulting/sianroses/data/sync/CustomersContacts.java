@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 import static ke.co.blueconsulting.sianroses.util.UpdateFields.updateCustomerContactSyncFields;
 
-public class CustomerContacts {
+public class CustomersContacts {
 	
 	private static SyncDataService syncDataService;
 	private static CustomerContactDbService dbService;
@@ -23,7 +23,9 @@ public class CustomerContacts {
 	public static void sync(SyncContract.View view, SyncDataService dataService) {
 		
 		syncDashboard = view;
+		
 		syncDataService = dataService;
+		
 		dbService = new CustomerContactDbService();
 		
 		syncDashboard.setIsBusy(true);
@@ -41,29 +43,39 @@ public class CustomerContacts {
 				
 				AppLogger.logInfo("Received " + contactsCount + " contacts from Salesforce");
 				
-				if (contactsCount > 0) {
+				try {
 					
-					customerContacts = updateCustomerContactSyncFields(customerContacts, false, false);
-					
-					try {
+					if (contactsCount > 0) {
+						
+						customerContacts = updateCustomerContactSyncFields(customerContacts, false, false);
+						
 						insertedCustomers = dbService.upsertCustomerRecords(customerContacts);
-					} catch (SQLException e) {
-						AppLogger.logError(e.getMessage());
 					}
+					
+				} catch (SQLException e) {
+					
+					AppLogger.logError("An error occured while inserting the customer's contacts. " + e.getMessage());
+					
+				} finally {
+					
+					updateSalesforceCustomers(insertedCustomers);
+					
 				}
 				
-				updateSalesforceCustomers(insertedCustomers);
 			}
 			
 			@Override
 			public void onError(Throwable t) {
+				
 				AppLogger.logError("Failed to fetch from the server. " + t.getMessage());
 				//TODO show the error here if the Dashboard UI is hidden
 			}
 			
 			@Override
 			public void always() {
+				
 				syncDashboard.setIsBusy(false);
+				
 			}
 		};
 		
@@ -82,14 +94,18 @@ public class CustomerContacts {
 			ArrayList<Integer> customerIds = new ArrayList<>();
 			
 			for (CustomerContact customerContact : customerContacts) {
+				
 				customerIds.add(customerContact.getAutoId());
+				
 			}
 			
 			unsyncedCustomers = updateCustomerContactSyncFields(
 					dbService.getUnsyncedCustomerContacts(customerIds), false, false);
 			
 		} catch (SQLException e) {
+			
 			AppLogger.logError(e.getMessage());
+			
 		}
 		
 		customerContacts.addAll(unsyncedCustomers);
@@ -98,48 +114,55 @@ public class CustomerContacts {
 		
 		AppLogger.logInfo("Found " + customersCount + " contacts that need to be pushed to Salesforce. " + (customersCount > 0 ? "Attempting to push." : ""));
 		
-		if (customersCount > 0) {
+		DataService.GetCallback<Response> pushToSalesforceCallback = new DataService.GetCallback<Response>() {
 			
-			DataService.GetCallback<Response> pushToSalesforceCallback = new DataService.GetCallback<Response>() {
-				@Override
-				public void onCompleted(Response response) {
-					
-					ArrayList<CustomerContact> customers = response.getCustomerContacts();
-					
-					int contactsCount = customers.size();
-					
-					AppLogger.logInfo("Push To Salesforce Successful. " +
-							"Received " + contactsCount + " contacts from Salesforce for updating");
+			@Override
+			public void onCompleted(Response response) {
+				
+				ArrayList<CustomerContact> customers = response.getCustomerContacts();
+				
+				int contactsCount = customers.size();
+				
+				AppLogger.logInfo("Push To Salesforce Successful. Received " + contactsCount
+						+ " contacts from Salesforce for updating");
+				
+				try {
 					
 					if (contactsCount > 0) {
 						
 						customers = updateCustomerContactSyncFields(customers, false, false);
 						
-						try {
-							dbService.upsertCustomerRecords(customers);
-							AppLogger.logInfo("Contacts sync complete");
-						} catch (SQLException e) {
-							e.printStackTrace();
-							AppLogger.logError(e.getMessage());
-						}
+						dbService.upsertCustomerRecords(customers);
 					}
+					
+				} catch (SQLException e) {
+					
+					AppLogger.logError("An error occurred while inserting contacts. " + e.getMessage());
+					
+				} finally {
+					
+					AppLogger.logInfo("Contacts sync complete");
+					
 				}
 				
-				@Override
-				public void onError(Throwable e) {
-					AppLogger.logError("Error pushing contacts to Salesforce. " + e.getMessage());
-				}
-				
-				@Override
-				public void always() {
-					syncDashboard.setIsBusy(false);
-				}
-			};
+			}
 			
-			syncDataService.pushCustomersContactsToSalesforce(Response.setCustomerContacts(customerContacts), pushToSalesforceCallback);
-		} else {
-			AppLogger.logInfo("Contacts sync complete");
-		}
+			@Override
+			public void onError(Throwable e) {
+				
+				AppLogger.logError("Error pushing contacts to Salesforce. " + e.getMessage());
+				
+			}
+			
+			@Override
+			public void always() {
+				
+				syncDashboard.setIsBusy(false);
+				
+			}
+		};
+		
+		syncDataService.pushCustomersContactsToSalesforce(Response.setCustomerContacts(customerContacts), pushToSalesforceCallback);
 		
 	}
 }

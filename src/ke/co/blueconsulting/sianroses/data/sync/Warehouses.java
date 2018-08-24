@@ -30,12 +30,16 @@ public class Warehouses {
 		ArrayList<Warehouse> warehouses = new ArrayList<>();
 		
 		try {
-			warehouses = dbService.getRecordsWithPullFromSAPCheckedTrue(Warehouse.class);
+			
+			warehouses = dbService.getRecordsWithPullFromSapCheckedTrue(Warehouse.class);
+			
 		} catch (SQLException e) {
-			e.printStackTrace();
+			
+			AppLogger.logError("An error occurred when querying warehouses. " + e.getMessage());
+			
 		}
 		
-		DataService.GetCallback<Response> callback = new DataService.GetCallback<Response>() {
+		DataService.GetCallback<Response> pushWarehousesToSalesforceCallback = new DataService.GetCallback<Response>() {
 			@Override
 			public void onCompleted(Response response) {
 				
@@ -47,29 +51,40 @@ public class Warehouses {
 				
 				try {
 					if (warehousesCount > 0) {
+						
 						warehouses = (ArrayList<Warehouse>) updateSyncFields(warehouses, false, false);
+						
 						dbService.upsertRecords(warehouses);
+						
 					}
 				} catch (SQLException e) {
-					e.printStackTrace();
-					AppLogger.logError(e.getMessage());
+					
+					AppLogger.logError("An error occurred when upserting warehouses. " + e.getMessage());
+					
 				} finally {
+					
 					AppLogger.logInfo("Warehouses sync is complete");
+					
 				}
 			}
 			
 			
 			@Override
 			public void onError(Throwable t) {
+				
 				AppLogger.logError("Failed to push warehouses to Salesforce. " + t.getMessage());
+				
 			}
 			
 			@Override
 			public void always() {
+				
 				syncDashboard.setIsBusy(false);
+				
 			}
 		};
-		dataService.pushWarehousesToSalesforce(Response.setWarehouses(warehouses), callback);
+		
+		dataService.pushWarehousesToSalesforce(Response.setWarehouses(warehouses), pushWarehousesToSalesforceCallback);
 		
 	}
 }

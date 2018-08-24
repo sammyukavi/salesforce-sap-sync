@@ -23,7 +23,9 @@ public class Customers {
 	public static void sync(SyncContract.View view, SyncDataService dataService) {
 		
 		syncDashboard = view;
+		
 		syncDataService = dataService;
+		
 		dbService = new CustomerDbService();
 		
 		syncDashboard.setIsBusy(true);
@@ -41,18 +43,22 @@ public class Customers {
 				
 				AppLogger.logInfo("Received " + customersCount + " customers from Salesforce");
 				
-				if (customersCount > 0) {
-					
-					customers = (ArrayList<Customer>) updateSyncFields(customers, false, false);
-					
-					try {
+				try {
+					if (customersCount > 0) {
+						
+						customers = (ArrayList<Customer>) updateSyncFields(customers, false, false);
+						
 						insertedCustomers = dbService.upsertCustomerRecords(customers);
-					} catch (SQLException e) {
-						AppLogger.logError(e.getMessage());
 					}
+				} catch (SQLException e) {
+					
+					AppLogger.logError("An error occurred when upserting customer records. " + e.getMessage());
+					
+				} finally {
+					
+					updateSalesforceCustomers(insertedCustomers);
 				}
 				
-				updateSalesforceCustomers(insertedCustomers);
 			}
 			
 			@Override
@@ -63,7 +69,9 @@ public class Customers {
 			
 			@Override
 			public void always() {
+				
 				syncDashboard.setIsBusy(false);
+				
 			}
 		};
 		
@@ -88,7 +96,9 @@ public class Customers {
 			unsyncedCustomers = (ArrayList<Customer>) updateSyncFields(dbService.getUnsyncedCustomers(customerIds), false, false);
 			
 		} catch (SQLException e) {
-			AppLogger.logError(e.getMessage());
+			
+			AppLogger.logError("An error occurred when querying unsynced customers. " + e.getMessage());
+			
 		}
 		
 		customers.addAll(unsyncedCustomers);
@@ -97,47 +107,54 @@ public class Customers {
 		
 		AppLogger.logInfo("Found " + customersCount + " customers that need to be pushed to Salesforce. " + (customersCount > 0 ? "Attempting to push." : ""));
 		
-		if (customersCount > 0) {
-			
-			DataService.GetCallback<Response> pushToSalesforce = new DataService.GetCallback<Response>() {
-				@Override
-				public void onCompleted(Response response) {
-					
-					ArrayList<Customer> customers = response.getCustomers();
-					
-					int customersCount = customers.size();
-					
-					AppLogger.logInfo("Push To Salesforce Successful. " +
-							"Received " + customersCount + " customers from Salesforce for updating");
+		
+		DataService.GetCallback<Response> pushToSalesforce = new DataService.GetCallback<Response>() {
+			@Override
+			public void onCompleted(Response response) {
+				
+				ArrayList<Customer> customers = response.getCustomers();
+				
+				int customersCount = customers.size();
+				
+				AppLogger.logInfo("Push To Salesforce Successful. " +
+						"Received " + customersCount + " customers from Salesforce for updating");
+				
+				try {
 					
 					if (customersCount > 0) {
 						
 						customers = (ArrayList<Customer>) updateSyncFields(customers, false, false);
 						
-						try {
-							dbService.upsertCustomerRecords(customers);
-							AppLogger.logInfo("Customers sync complete");
-						} catch (SQLException e) {
-							AppLogger.logError(e.getMessage());
-						}
+						dbService.upsertCustomerRecords(customers);
 					}
+					
+				} catch (SQLException e) {
+					
+					AppLogger.logError("An error occurred when upserting customer records. " + e.getMessage());
+					
+				} finally {
+					
+					AppLogger.logInfo("Customers sync complete");
+					
 				}
-				
-				@Override
-				public void onError(Throwable e) {
-					AppLogger.logError("Error pushing customers to Salesforce. " + e.getMessage());
-				}
-				
-				@Override
-				public void always() {
-					syncDashboard.setIsBusy(false);
-				}
-			};
+			}
 			
-			syncDataService.pushCustomersToSalesforce(Response.setCustomers(customers), pushToSalesforce);
-		} else {
-			AppLogger.logInfo("Customers sync complete");
-		}
+			@Override
+			public void onError(Throwable e) {
+				
+				AppLogger.logError("Error pushing customers to Salesforce. " + e.getMessage());
+				
+			}
+			
+			@Override
+			public void always() {
+				
+				syncDashboard.setIsBusy(false);
+				
+			}
+		};
+		
+		syncDataService.pushCustomersToSalesforce(Response.setCustomers(customers), pushToSalesforce);
 		
 	}
 }

@@ -27,12 +27,17 @@ public class ProductsChildren {
 		ArrayList<ProductChild> productChildren = new ArrayList<>();
 		
 		try {
-			productChildren = dbService.getRecordsWithPullFromSAPCheckedTrue(ProductChild.class);
+			
+			productChildren = dbService.getRecordsWithPullFromSapCheckedTrue(ProductChild.class);
+			
 		} catch (SQLException e) {
-			e.printStackTrace();
+			
+			AppLogger.logError("An error occurred when querying products child. " + e.getMessage());
+			
 		}
 		
 		DataService.GetCallback<Response> callback = new DataService.GetCallback<Response>() {
+			
 			@Override
 			public void onCompleted(Response response) {
 				
@@ -43,29 +48,37 @@ public class ProductsChildren {
 				AppLogger.logInfo("Push To Salesforce Successful. " +
 						"Received " + productsChildrenCount + " products' children' children from Salesforce for updating");
 				
-				if (productsChildrenCount > 0) {
-					
-					productsChildren = (ArrayList<ProductChild>) updateSyncFields(productsChildren, false, false);
-					
-					try {
+				try {
+					if (productsChildrenCount > 0) {
+						
+						productsChildren = (ArrayList<ProductChild>) updateSyncFields(productsChildren, false, false);
+						
 						dbService.upsertRecords(productsChildren);
-						AppLogger.logInfo("Products' children sync complete");
-					} catch (SQLException e) {
-						e.printStackTrace();
-						AppLogger.logError(e.getMessage());
 					}
+					
+				} catch (SQLException e) {
+					
+					AppLogger.logError("An error occurred when upserting products child. " + e.getMessage());
+					
+				} finally {
+					AppLogger.logInfo("Products' children sync complete");
 				}
+				
 				
 			}
 			
 			@Override
 			public void onError(Throwable t) {
+				
 				AppLogger.logError("Failed to push products' children to salesforce. " + t.getMessage());
+				
 			}
 			
 			@Override
 			public void always() {
+				
 				syncDashboard.setIsBusy(false);
+				
 			}
 		};
 		

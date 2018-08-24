@@ -246,7 +246,7 @@ public class SyncPresenter implements SyncContract.Presenter {
 			
 			//Customers.sync(syncDashboard, syncDataService);
 			
-			//CustomerContacts.sync(syncDashboard, syncDataService);
+			//CustomersContacts.sync(syncDashboard, syncDataService);
 			
 			//Products.sync(syncDashboard, syncDataService);
 			

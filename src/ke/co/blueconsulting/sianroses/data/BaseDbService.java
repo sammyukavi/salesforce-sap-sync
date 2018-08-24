@@ -59,6 +59,12 @@ public class BaseDbService {
 		return status;
 	}
 	
+	public <S> S insertRecord(Class<S> sClass, S record) throws SQLException {
+		Dao<S, Integer> dao = createDao(sClass);
+		dao.createOrUpdate(record);
+		return record;
+	}
+	
 	public <S> ArrayList<S> insertRecords(Class<S> sClass, ArrayList<S> records) throws SQLException {
 		ArrayList<S> insertedRecords = new ArrayList<>();
 		Dao<S, Integer> dao = createDao(sClass);
@@ -83,23 +89,16 @@ public class BaseDbService {
 	}
 	
 	
-	public <S> ArrayList<S> getRecordsWithPullFromSAPCheckedTrue(Class<S> sClass) throws SQLException {
+	public <S> ArrayList<S> getRecordsWithPullFromSapCheckedTrue(Class<S> sClass) throws SQLException {
 		String columnName = "Pull_from_SAP__c";
-		return getRecordsWithPullFromSAPCheckedTrue(sClass, columnName, 0, 1000);
+		return getRecordsWithPullFromSapCheckedTrue(sClass, columnName, 0, 1000);
 	}
 	
-	public <S> ArrayList<S> getRecordsWithPullFromSAPCheckedTrue(Class<S> sClass, String columnName, int startRow, int limit) throws SQLException {
+	private <S> ArrayList<S> getRecordsWithPullFromSapCheckedTrue(Class<S> sClass, String columnName, int startRow, int limit) throws SQLException {
 		Dao<S, Integer> dao = createDao(sClass);
 		QueryBuilder<S, Integer> queryBuilder = dao.queryBuilder();
 		Where<S, Integer> where = queryBuilder.where();
 		queryBuilder.limit((long) limit);
 		return (ArrayList<S>) dao.query(where.or(where.isNull(columnName), where.eq(columnName, true)).prepare());
-	}
-	
-	
-	public <S> S insertRecord(Class<S> sClass, S record) throws SQLException {
-		Dao<S, Integer> dao = createDao(sClass);
-		dao.createOrUpdate(record);
-		return record;
 	}
 }
