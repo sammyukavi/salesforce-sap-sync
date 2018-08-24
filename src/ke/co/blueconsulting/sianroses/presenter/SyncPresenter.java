@@ -8,7 +8,7 @@ import ke.co.blueconsulting.sianroses.data.RestServiceBuilder;
 import ke.co.blueconsulting.sianroses.data.db.AuthCredentialsDbService;
 import ke.co.blueconsulting.sianroses.data.impl.AuthDataService;
 import ke.co.blueconsulting.sianroses.data.impl.SyncDataService;
-import ke.co.blueconsulting.sianroses.data.sync.PackingLists;
+import ke.co.blueconsulting.sianroses.data.sync.*;
 import ke.co.blueconsulting.sianroses.model.app.AppAuthCredentials;
 import ke.co.blueconsulting.sianroses.model.app.SalesforceAuthCredentials;
 import ke.co.blueconsulting.sianroses.util.StringUtils;
@@ -244,18 +244,18 @@ public class SyncPresenter implements SyncContract.Presenter {
 			
 			SyncDataService syncDataService = new SyncDataService();
 			
-			//Customers.sync(syncDashboard, syncDataService);
+			Customers.sync(syncDashboard, syncDataService);
 			
-			//CustomersContacts.sync(syncDashboard, syncDataService);
+			CustomersContacts.sync(syncDashboard, syncDataService);
 			
-			//Products.sync(syncDashboard, syncDataService);
+			Products.sync(syncDashboard, syncDataService);
 			
 			//TODO paginate. Results are more than 1000
-			//ProductsChildren.sync(syncDashboard, syncDataService);
+			ProductsChildren.sync(syncDashboard, syncDataService);
 			
-			//PriceLists.sync(syncDashboard, syncDataService);
+			PriceLists.sync(syncDashboard, syncDataService);
 			
-			//Warehouses.sync(syncDashboard, syncDataService);
+			Warehouses.sync(syncDashboard, syncDataService);
 			
 			PackingLists.sync(syncDashboard, syncDataService);
 			

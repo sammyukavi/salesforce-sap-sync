@@ -4,7 +4,6 @@ import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
-import com.sun.istack.internal.Nullable;
 
 import java.io.IOException;
 
@@ -15,7 +14,7 @@ public class EmptyStringTypeAdapter extends TypeAdapter<String> {
 	
 	@Override
 	@SuppressWarnings("resource")
-	public void write(final JsonWriter jsonWriter, @Nullable final String s)
+	public void write(final JsonWriter jsonWriter, final String s)
 			throws IOException {
 		if (s == null || s.isEmpty()) {
 			jsonWriter.nullValue();

@@ -11,7 +11,7 @@ import java.io.Serializable;
 /**
  * This model maps Salesforce Packing List Items to SAP ARINVOICE Table. Syncing is 2 ways from Salesforce to SAP
  */
-@DatabaseTable(tableName = "ARINVOICECH")
+@DatabaseTable(tableName = "ARCREDITCH")
 public class PackingListItem extends BaseSalesforceModel implements Serializable {
 	
 	private static final long serialVersionUID = 127597320235238L;
