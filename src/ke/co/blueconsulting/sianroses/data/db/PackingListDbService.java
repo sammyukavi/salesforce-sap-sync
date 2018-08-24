@@ -7,7 +7,7 @@ import com.j256.ormlite.stmt.SelectArg;
 import com.j256.ormlite.stmt.UpdateBuilder;
 import com.j256.ormlite.stmt.Where;
 import ke.co.blueconsulting.sianroses.data.BaseDbService;
-import ke.co.blueconsulting.sianroses.model.salesforce.ArInvoice;
+import ke.co.blueconsulting.sianroses.model.salesforce.PackingList;
 import ke.co.blueconsulting.sianroses.util.StringUtils;
 
 import java.sql.SQLException;
@@ -20,21 +20,21 @@ public class PackingListDbService extends BaseDbService {
 		super();
 	}
 	
-	public ArrayList<ArInvoice> upsertRecords(ArrayList<ArInvoice> records) throws SQLException {
+	public ArrayList<PackingList> upsertRecords(ArrayList<PackingList> records) throws SQLException {
 		
-		Dao<ArInvoice, Integer> dao = createDao(ArInvoice.class);
+		Dao<PackingList, Integer> dao = createDao(PackingList.class);
 		
 		return TransactionManager.callInTransaction(connectionSource, () -> {
 			
-			ArrayList<ArInvoice> upsertedPackingLists = new ArrayList<>();
+			ArrayList<PackingList> upsertedPackingLists = new ArrayList<>();
 			
-			for (ArInvoice invoice : records) {
+			for (PackingList invoice : records) {
 				
 				boolean recordExists = dao.queryBuilder().where().eq("SalesForceId", invoice.getSalesforceId()).countOf() > 0;
 				
 				if (recordExists) {
 					
-					UpdateBuilder<ArInvoice, Integer> updateBuilder = dao.updateBuilder();
+					UpdateBuilder<PackingList, Integer> updateBuilder = dao.updateBuilder();
 					
 					if (!StringUtils.isNullOrEmpty(invoice.getAccountID())) {
 						updateBuilder.updateColumnValue("AccountID", new SelectArg(invoice.getAccountID()));
@@ -80,13 +80,13 @@ public class PackingListDbService extends BaseDbService {
 					
 					updateBuilder.update();
 					
-					QueryBuilder<ArInvoice, Integer> queryBuilder = dao.queryBuilder();
+					QueryBuilder<PackingList, Integer> queryBuilder = dao.queryBuilder();
 					
-					Where<ArInvoice, Integer> where = queryBuilder.where();
+					Where<PackingList, Integer> where = queryBuilder.where();
 					
 					where = where.eq("SalesForceId", new SelectArg(invoice.getSalesforceId()));
 					
-					List<ArInvoice> insertedProductList = dao.query(where.prepare());
+					List<PackingList> insertedProductList = dao.query(where.prepare());
 					
 					invoice = insertedProductList.get(0);
 					
@@ -99,11 +99,11 @@ public class PackingListDbService extends BaseDbService {
 		});
 	}
 	
-	public ArrayList<ArInvoice> getUnsyncedPackingLists(ArrayList<Integer> ids) throws SQLException {
+	public ArrayList<PackingList> getUnsyncedPackingLists(ArrayList<Integer> ids) throws SQLException {
 		
-		Dao<ArInvoice, Integer> dao = createDao(ArInvoice.class);
+		Dao<PackingList, Integer> dao = createDao(PackingList.class);
 		
-		Where<ArInvoice, Integer> where = dao.queryBuilder().where();
+		Where<PackingList, Integer> where = dao.queryBuilder().where();
 		
 		where = where.or(where.isNull("SalesForceId"), where.eq("SalesForceId", ""),
 				where.eq("Pull_from_SAP__c", true));
@@ -112,6 +112,6 @@ public class PackingListDbService extends BaseDbService {
 			where = where.and().notIn("AUTOID", ids);
 		}
 		
-		return (ArrayList<ArInvoice>) dao.query(where.prepare());
+		return (ArrayList<PackingList>) dao.query(where.prepare());
 	}
 }

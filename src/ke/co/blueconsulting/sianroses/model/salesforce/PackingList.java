@@ -10,11 +10,10 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * @author sukavi
- * This model maps Salesforce Packing List to SAP ARINVOICE Table
+ * This model maps Salesforce Packing List to SAP ARINVOICE Table. Syncing is 2 ways from Salesforce to SAP
  */
 @DatabaseTable(tableName = "ARINVOICE")
-public class ArInvoice extends BaseSalesforceModel implements Serializable {
+public class PackingList extends BaseSalesforceModel implements Serializable {
 	
 	private static final long serialVersionUID = 1527097474049L;
 	
@@ -66,6 +65,10 @@ public class ArInvoice extends BaseSalesforceModel implements Serializable {
 	@SerializedName("Reason")
 	@Expose
 	private String Reason;
+	
+	@SerializedName("Packing_List_Items__r")
+	private PackingListItems packingListItems;
+	
 	
 	public String getAccountID() {
 		return AccountID;
@@ -145,5 +148,13 @@ public class ArInvoice extends BaseSalesforceModel implements Serializable {
 	
 	public void setReason(String reason) {
 		Reason = reason;
+	}
+	
+	public PackingListItems getPackingListItems() {
+		return packingListItems;
+	}
+	
+	public void setPackingListItems(PackingListItems packingListItems) {
+		this.packingListItems = packingListItems;
 	}
 }

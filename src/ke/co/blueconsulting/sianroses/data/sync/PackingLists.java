@@ -5,7 +5,7 @@ import ke.co.blueconsulting.sianroses.data.DataService;
 import ke.co.blueconsulting.sianroses.data.db.PackingListDbService;
 import ke.co.blueconsulting.sianroses.data.impl.SyncDataService;
 import ke.co.blueconsulting.sianroses.model.app.Response;
-import ke.co.blueconsulting.sianroses.model.salesforce.ArInvoice;
+import ke.co.blueconsulting.sianroses.model.salesforce.PackingList;
 import ke.co.blueconsulting.sianroses.util.AppLogger;
 
 import java.sql.SQLException;
@@ -36,9 +36,9 @@ public class PackingLists {
 			@Override
 			public void onCompleted(Response response) {
 				
-				ArrayList<ArInvoice> packingLists = response.getPackingLists();
+				ArrayList<PackingList> packingLists = response.getPackingLists();
 				
-				ArrayList<ArInvoice> insertedPackingLists = new ArrayList<>();
+				ArrayList<PackingList> insertedPackingLists = new ArrayList<>();
 				
 				int packingListsCount = packingLists.size();
 				
@@ -83,21 +83,21 @@ public class PackingLists {
 		
 	}
 	
-	private static void updateSalesforcePackingList(ArrayList<ArInvoice> insertedPackingLists) {
+	private static void updateSalesforcePackingList(ArrayList<PackingList> insertedPackingLists) {
 		
 		syncDashboard.setIsBusy(true);
 		
-		ArrayList<ArInvoice> unsyncedPackingLists = new ArrayList<>();
+		ArrayList<PackingList> unsyncedPackingLists = new ArrayList<>();
 		
 		try {
 			
 			ArrayList<Integer> packingListsIds = new ArrayList<>();
 			
-			for (ArInvoice customer : insertedPackingLists) {
+			for (PackingList customer : insertedPackingLists) {
 				packingListsIds.add(customer.getAutoId());
 			}
 			
-			unsyncedPackingLists = (ArrayList<ArInvoice>) updateSyncFields(dbService.getUnsyncedPackingLists(packingListsIds), false, false);
+			unsyncedPackingLists = (ArrayList<PackingList>) updateSyncFields(dbService.getUnsyncedPackingLists(packingListsIds), false, false);
 			
 		} catch (SQLException e) {
 			AppLogger.logError(e.getMessage());
@@ -114,7 +114,7 @@ public class PackingLists {
 			@Override
 			public void onCompleted(Response response) {
 				
-				ArrayList<ArInvoice> packingLists = response.getPackingLists();
+				ArrayList<PackingList> packingLists = response.getPackingLists();
 				
 				int customersCount = packingLists.size();
 				
@@ -124,7 +124,7 @@ public class PackingLists {
 				try {
 					if (customersCount > 0) {
 						
-						packingLists = (ArrayList<ArInvoice>) updateSyncFields(packingLists, false, false);
+						packingLists = (ArrayList<PackingList>) updateSyncFields(packingLists, false, false);
 						
 						dbService.upsertRecords(packingLists);
 						

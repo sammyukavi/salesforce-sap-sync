@@ -49,7 +49,7 @@ public class Response implements Serializable {
 	
 	@SerializedName(PACKING_LISTS)
 	@Expose
-	private ArrayList<ArInvoice> packingList = new ArrayList<>();
+	private ArrayList<PackingList> packingLists;
 	
 	public static Response getInstance() {
 		return instance;
@@ -77,12 +77,12 @@ public class Response implements Serializable {
 		return instance;
 	}
 	
-	public ArrayList<ArInvoice> getArInvoice() {
-		return packingList;
+	public ArrayList<PackingList> getArInvoice() {
+		return packingLists;
 	}
 	
-	public static Response setArInvoice(ArrayList<ArInvoice> packingList) {
-		instance.packingList = packingList;
+	public static Response setArInvoice(ArrayList<PackingList> packingList) {
+		instance.packingLists = packingList;
 		return instance;
 	}
 	
@@ -122,12 +122,12 @@ public class Response implements Serializable {
 		return instance;
 	}
 	
-	public ArrayList<ArInvoice> getPackingLists() {
-		return packingList;
+	public ArrayList<PackingList> getPackingLists() {
+		return packingLists;
 	}
 	
-	public static Response setPackingLists(ArrayList<ArInvoice> packingList) {
-		instance.packingList = packingList;
+	public static Response setPackingLists(ArrayList<PackingList> packingList) {
+		instance.packingLists = packingList;
 		return instance;
 	}
 }

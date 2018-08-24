@@ -29,7 +29,7 @@ public class Warehouse extends BaseSalesforceModel implements Serializable {
 	private String farmCodeC;
 	
 	@DatabaseField(columnName = "Name")
-	@SerializedName("Name")
+	@SerializedName("SAP_ID__c")
 	@Expose
 	private String name;
 	
