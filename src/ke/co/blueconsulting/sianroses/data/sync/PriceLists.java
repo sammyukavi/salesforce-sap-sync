@@ -11,7 +11,7 @@ import ke.co.blueconsulting.sianroses.util.AppLogger;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import static ke.co.blueconsulting.sianroses.util.UpdateFields.updatePriceListSyncFields;
+import static ke.co.blueconsulting.sianroses.util.UpdateFields.updateSyncFields;
 
 public class PriceLists {
 	
@@ -46,7 +46,7 @@ public class PriceLists {
 				
 				if (listsCount > 0) {
 					
-					priceLists = updatePriceListSyncFields(priceLists, false, false);
+					priceLists = (ArrayList<PriceList>) updateSyncFields(priceLists, false, false);
 					
 					try {
 						dbService.upsertRecords(priceLists);

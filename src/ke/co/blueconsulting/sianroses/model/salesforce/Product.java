@@ -4,6 +4,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
+import ke.co.blueconsulting.sianroses.model.BaseSalesforceModel;
 
 import java.io.Serializable;
 
@@ -12,14 +13,9 @@ import java.io.Serializable;
  * Syncing for Products is one way from the SAP server to Salesforce.
  */
 @DatabaseTable(tableName = "PRODUCTS")
-public class Product implements Serializable {
+public class Product extends BaseSalesforceModel implements Serializable {
 	
 	private static final long serialVersionUID = 19365904690402L;
-	
-	@DatabaseField(generatedId = true, columnName = "AUTOID")
-	@SerializedName("ERP_ID__c")
-	@Expose
-	private Long autoId;
 	
 	@DatabaseField(columnName = "productcode")
 	@SerializedName("ProductCode")
@@ -71,33 +67,10 @@ public class Product implements Serializable {
 	@Expose
 	private String parentProductCodeC;
 	
-	@DatabaseField(columnName = "Push_to_SAP__c")
-	@SerializedName("Push_to_SAP__c")
-	@Expose
-	private boolean pushToSAPC;
-	
-	@DatabaseField(columnName = "Pull_from_SAP__c")
-	@SerializedName("Pull_from_SAP__c")
-	@Expose
-	private boolean pullFromSAPC;
-	
-	@DatabaseField(columnName = "SalesForceId")
-	@SerializedName("Id")
-	@Expose
-	private String salesforceId;
-	
 	@DatabaseField(columnName = "product_Category")
 	@SerializedName("Family")
 	@Expose
 	private String productCategory;
-	
-	public Long getAutoId() {
-		return autoId;
-	}
-	
-	public void setAutoId(Long autoId) {
-		this.autoId = autoId;
-	}
 	
 	public String getProductCode() {
 		return productCode;
@@ -169,30 +142,6 @@ public class Product implements Serializable {
 	
 	public void setParentProductCodeC(String parentProductCodeC) {
 		this.parentProductCodeC = parentProductCodeC;
-	}
-	
-	public boolean isPushToSAPC() {
-		return pushToSAPC;
-	}
-	
-	public void setPushToSAPC(boolean pushToSAPC) {
-		this.pushToSAPC = pushToSAPC;
-	}
-	
-	public boolean isPullFromSAPC() {
-		return pullFromSAPC;
-	}
-	
-	public void setPullFromSAPC(boolean pullFromSAPC) {
-		this.pullFromSAPC = pullFromSAPC;
-	}
-	
-	public String getSalesforceId() {
-		return salesforceId;
-	}
-	
-	public void setSalesforceId(String salesforceId) {
-		this.salesforceId = salesforceId;
 	}
 	
 	public String getProductCategory() {

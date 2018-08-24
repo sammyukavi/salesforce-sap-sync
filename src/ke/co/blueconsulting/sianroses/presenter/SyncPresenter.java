@@ -9,7 +9,6 @@ import ke.co.blueconsulting.sianroses.data.db.AuthCredentialsDbService;
 import ke.co.blueconsulting.sianroses.data.impl.AuthDataService;
 import ke.co.blueconsulting.sianroses.data.impl.SyncDataService;
 import ke.co.blueconsulting.sianroses.data.sync.PackingLists;
-import ke.co.blueconsulting.sianroses.data.sync.Warehouses;
 import ke.co.blueconsulting.sianroses.model.app.AppAuthCredentials;
 import ke.co.blueconsulting.sianroses.model.app.SalesforceAuthCredentials;
 import ke.co.blueconsulting.sianroses.util.StringUtils;

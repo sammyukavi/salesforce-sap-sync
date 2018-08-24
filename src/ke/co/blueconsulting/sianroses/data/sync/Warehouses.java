@@ -5,10 +5,8 @@ import ke.co.blueconsulting.sianroses.data.DataService;
 import ke.co.blueconsulting.sianroses.data.db.WarehouseDbService;
 import ke.co.blueconsulting.sianroses.data.impl.SyncDataService;
 import ke.co.blueconsulting.sianroses.model.app.Response;
-import ke.co.blueconsulting.sianroses.model.salesforce.CustomerContact;
 import ke.co.blueconsulting.sianroses.model.salesforce.Warehouse;
 import ke.co.blueconsulting.sianroses.util.AppLogger;
-import ke.co.blueconsulting.sianroses.util.Console;
 
 import java.sql.SQLException;
 import java.util.ArrayList;

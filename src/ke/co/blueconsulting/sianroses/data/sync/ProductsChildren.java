@@ -11,7 +11,7 @@ import ke.co.blueconsulting.sianroses.util.AppLogger;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import static ke.co.blueconsulting.sianroses.util.UpdateFields.updateProductChildSyncFields;
+import static ke.co.blueconsulting.sianroses.util.UpdateFields.updateSyncFields;
 
 public class ProductsChildren {
 	
@@ -45,7 +45,7 @@ public class ProductsChildren {
 				
 				if (productsChildrenCount > 0) {
 					
-					productsChildren = updateProductChildSyncFields(productsChildren, false, false);
+					productsChildren = (ArrayList<ProductChild>) updateSyncFields(productsChildren, false, false);
 					
 					try {
 						dbService.upsertRecords(productsChildren);

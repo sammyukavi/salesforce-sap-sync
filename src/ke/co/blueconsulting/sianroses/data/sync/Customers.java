@@ -11,7 +11,7 @@ import ke.co.blueconsulting.sianroses.util.AppLogger;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import static ke.co.blueconsulting.sianroses.util.UpdateFields.updateCustomerSyncFields;
+import static ke.co.blueconsulting.sianroses.util.UpdateFields.updateSyncFields;
 
 public class Customers {
 	
@@ -43,7 +43,7 @@ public class Customers {
 				
 				if (customersCount > 0) {
 					
-					customers = updateCustomerSyncFields(customers, false, false);
+					customers = (ArrayList<Customer>) updateSyncFields(customers, false, false);
 					
 					try {
 						insertedCustomers = dbService.upsertCustomerRecords(customers);
@@ -85,7 +85,7 @@ public class Customers {
 				customerIds.add(customer.getAutoId());
 			}
 			
-			unsyncedCustomers = updateCustomerSyncFields(dbService.getUnsyncedCustomers(customerIds), false, false);
+			unsyncedCustomers = (ArrayList<Customer>) updateSyncFields(dbService.getUnsyncedCustomers(customerIds), false, false);
 			
 		} catch (SQLException e) {
 			AppLogger.logError(e.getMessage());
@@ -112,7 +112,7 @@ public class Customers {
 					
 					if (customersCount > 0) {
 						
-						customers = updateCustomerSyncFields(customers, false, false);
+						customers = (ArrayList<Customer>) updateSyncFields(customers, false, false);
 						
 						try {
 							dbService.upsertCustomerRecords(customers);

@@ -8,7 +8,6 @@ import com.j256.ormlite.stmt.UpdateBuilder;
 import com.j256.ormlite.stmt.Where;
 import ke.co.blueconsulting.sianroses.data.BaseDbService;
 import ke.co.blueconsulting.sianroses.model.salesforce.ArInvoice;
-import ke.co.blueconsulting.sianroses.model.salesforce.Customer;
 import ke.co.blueconsulting.sianroses.util.StringUtils;
 
 import java.sql.SQLException;
@@ -17,7 +16,7 @@ import java.util.List;
 
 public class PackingListDbService extends BaseDbService {
 	
-	public PackingListDbService(){
+	public PackingListDbService() {
 		super();
 	}
 	

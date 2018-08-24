@@ -11,7 +11,6 @@ import ke.co.blueconsulting.sianroses.util.AppLogger;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import static ke.co.blueconsulting.sianroses.util.UpdateFields.updateCustomerSyncFields;
 import static ke.co.blueconsulting.sianroses.util.UpdateFields.updateSyncFields;
 
 public class PackingLists {

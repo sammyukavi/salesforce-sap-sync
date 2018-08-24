@@ -15,7 +15,7 @@ public class BaseSalesforceModel implements Serializable {
 	@DatabaseField(generatedId = true, columnName = "AUTOID")
 	@SerializedName("Auto_Id__c")
 	@Expose
-		private int autoId;
+	private int autoId;
 	
 	@DatabaseField(columnName = "Pull_from_SAP__c")
 	@SerializedName("Pull_from_SAP__c")

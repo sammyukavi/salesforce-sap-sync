@@ -7,7 +7,6 @@ import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.stmt.Where;
 import ke.co.blueconsulting.sianroses.data.db.AuthCredentialsDbService;
 import ke.co.blueconsulting.sianroses.model.app.AppAuthCredentials;
-import ke.co.blueconsulting.sianroses.model.salesforce.ArInvoice;
 import ke.co.blueconsulting.sianroses.util.AppLogger;
 
 import java.sql.Connection;
