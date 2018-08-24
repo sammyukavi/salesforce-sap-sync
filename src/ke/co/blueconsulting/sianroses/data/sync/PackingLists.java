@@ -3,6 +3,7 @@ package ke.co.blueconsulting.sianroses.data.sync;
 import ke.co.blueconsulting.sianroses.contract.SyncContract;
 import ke.co.blueconsulting.sianroses.data.DataService;
 import ke.co.blueconsulting.sianroses.data.db.PackingListDbService;
+import ke.co.blueconsulting.sianroses.data.db.PackingListItemDbService;
 import ke.co.blueconsulting.sianroses.data.impl.SyncDataService;
 import ke.co.blueconsulting.sianroses.model.app.Response;
 import ke.co.blueconsulting.sianroses.model.salesforce.PackingList;
@@ -15,7 +16,9 @@ import static ke.co.blueconsulting.sianroses.util.UpdateFields.updateSyncFields;
 
 public class PackingLists {
 	
-	private static PackingListDbService dbService;
+	private static PackingListDbService packingListDbService;
+	
+	private static PackingListItemDbService packingListItemDbService;
 	
 	private static SyncContract.View syncDashboard;
 	
@@ -25,7 +28,9 @@ public class PackingLists {
 		
 		syncDashboard = view;
 		
-		dbService = new PackingListDbService();
+		packingListDbService = new PackingListDbService();
+		
+		packingListItemDbService = new PackingListItemDbService();
 		
 		syncDataService = dataService;
 		
@@ -49,16 +54,25 @@ public class PackingLists {
 						
 						updateSyncFields(packingLists, false, false);
 						
-						insertedPackingLists = dbService.upsertRecords(packingLists);
+						insertedPackingLists = packingListDbService.upsertRecords(packingLists);
+						
+						for (PackingList packingList : insertedPackingLists) {
+							
+							//packingListItemDbService.upsertRecords(packingList.getPackingListItems().getRecords());
+							
+						}
 						
 					}
+					
 				} catch (SQLException e) {
+					
+					e.printStackTrace();
 					
 					AppLogger.logError("An error occured when upserting packing lists. " + e.getMessage());
 					
 				} finally {
 					
-					updateSalesforcePackingList(insertedPackingLists);
+					//updateSalesforcePackingList(insertedPackingLists);
 					
 				}
 				
@@ -83,7 +97,7 @@ public class PackingLists {
 		
 	}
 	
-	private static void updateSalesforcePackingList(ArrayList<PackingList> insertedPackingLists) {
+	/*private static void updateSalesforcePackingList(ArrayList<PackingList> insertedPackingLists) {
 		
 		syncDashboard.setIsBusy(true);
 		
@@ -97,7 +111,7 @@ public class PackingLists {
 				packingListsIds.add(customer.getAutoId());
 			}
 			
-			unsyncedPackingLists = (ArrayList<PackingList>) updateSyncFields(dbService.getUnsyncedPackingLists(packingListsIds), false, false);
+			unsyncedPackingLists = (ArrayList<PackingList>) updateSyncFields(packingListDbService.getUnsyncedPackingLists(packingListsIds), false, false);
 			
 		} catch (SQLException e) {
 			AppLogger.logError(e.getMessage());
@@ -126,7 +140,7 @@ public class PackingLists {
 						
 						packingLists = (ArrayList<PackingList>) updateSyncFields(packingLists, false, false);
 						
-						dbService.upsertRecords(packingLists);
+						packingListDbService.upsertRecords(packingLists);
 						
 					}
 					
@@ -158,7 +172,7 @@ public class PackingLists {
 		
 		syncDataService.pushPackingListsToSalesforce(Response.setPackingLists(insertedPackingLists), pushToSalesforceCallback);
 		
-	}
+	}*/
 	
 	
 }

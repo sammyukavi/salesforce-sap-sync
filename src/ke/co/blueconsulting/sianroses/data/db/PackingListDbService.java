@@ -114,4 +114,8 @@ public class PackingListDbService extends BaseDbService {
 		
 		return (ArrayList<PackingList>) dao.query(where.prepare());
 	}
+	
+	public PackingList insertRecord(PackingList packingList) throws SQLException {
+		return insertRecord(PackingList.class, packingList);
+	}
 }
