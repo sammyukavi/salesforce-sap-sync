@@ -7,6 +7,7 @@ import ke.co.blueconsulting.sianroses.data.db.PackingListItemDbService;
 import ke.co.blueconsulting.sianroses.data.impl.SyncDataService;
 import ke.co.blueconsulting.sianroses.model.app.Response;
 import ke.co.blueconsulting.sianroses.model.salesforce.PackingList;
+import ke.co.blueconsulting.sianroses.model.salesforce.PackingListItem;
 import ke.co.blueconsulting.sianroses.util.AppLogger;
 
 import java.sql.SQLException;
@@ -58,7 +59,11 @@ public class PackingLists {
 						
 						for (PackingList packingList : insertedPackingLists) {
 							
-							//packingListItemDbService.upsertRecords(packingList.getPackingListItems().getRecords());
+							ArrayList<PackingListItem> records = packingList.getPackingListItems().getRecords();
+							
+							if (records != null) {
+								packingListItemDbService.upsertRecords(records);
+							}
 							
 						}
 						

@@ -28,53 +28,45 @@ public class PackingListDbService extends BaseDbService {
 			
 			ArrayList<PackingList> upsertedPackingLists = new ArrayList<>();
 			
-			for (PackingList invoice : records) {
+			for (PackingList packingList : records) {
 				
-				boolean recordExists = dao.queryBuilder().where().eq("SalesForceId", invoice.getSalesforceId()).countOf() > 0;
+				boolean recordExists = dao.queryBuilder().where().eq("SalesForceId", packingList.getSalesforceId()).countOf() > 0;
 				
 				if (recordExists) {
 					
 					UpdateBuilder<PackingList, Integer> updateBuilder = dao.updateBuilder();
 					
-					if (!StringUtils.isNullOrEmpty(invoice.getAccountID())) {
-						updateBuilder.updateColumnValue("AccountID", new SelectArg(invoice.getAccountID()));
+					if (!StringUtils.isNullOrEmpty(packingList.getAccountID())) {
+						updateBuilder.updateColumnValue("AccountID", new SelectArg(packingList.getAccountID()));
 					}
 					
-					updateBuilder.updateColumnValue("Posting_Date__c", new SelectArg(invoice.getPostingDateC()));
+					updateBuilder.updateColumnValue("Posting_Date__c", new SelectArg(packingList.getPostingDate()));
 					
-					if (!StringUtils.isNullOrEmpty(invoice.getpONumberC())) {
-						updateBuilder.updateColumnValue("PO_Number__c", new SelectArg(invoice.getpONumberC()));
+					if (!StringUtils.isNullOrEmpty(packingList.getPONumber())) {
+						updateBuilder.updateColumnValue("PO_Number__c", new SelectArg(packingList.getPONumber()));
 					}
 					
-					if (!StringUtils.isNullOrEmpty(invoice.getFarmOrderNumberC())) {
-						updateBuilder.updateColumnValue("Farm_Order_Number__c", new SelectArg(invoice.getFarmOrderNumberC()));
+					if (!StringUtils.isNullOrEmpty(packingList.getInvoiceNumber())) {
+						updateBuilder.updateColumnValue("Invoice_Number__c", new SelectArg(packingList.getInvoiceNumber()));
 					}
 					
-					if (!StringUtils.isNullOrEmpty(invoice.getInvoiceNumberC())) {
-						updateBuilder.updateColumnValue("Invoice_Number__c", new SelectArg(invoice.getInvoiceNumberC()));
+					if (!StringUtils.isNullOrEmpty(packingList.getInvoiceEntry())) {
+						updateBuilder.updateColumnValue("Invoice_Entry__c", new SelectArg(packingList.getInvoiceEntry()));
 					}
 					
-					if (!StringUtils.isNullOrEmpty(invoice.getInvoiceEntryC())) {
-						updateBuilder.updateColumnValue("Invoice_Entry__c", new SelectArg(invoice.getInvoiceEntryC()));
+					if (!StringUtils.isNullOrEmpty(packingList.getFarm())) {
+						updateBuilder.updateColumnValue("Farm_c", new SelectArg(packingList.getFarm()));
 					}
 					
-					if (!StringUtils.isNullOrEmpty(invoice.getFarmC())) {
-						updateBuilder.updateColumnValue("Farm_c", new SelectArg(invoice.getFarmC()));
+					if (!StringUtils.isNullOrEmpty(packingList.getReason())) {
+						updateBuilder.updateColumnValue("Reason", new SelectArg(packingList.getReason()));
 					}
 					
-					if (!StringUtils.isNullOrEmpty(invoice.getAuction())) {
-						updateBuilder.updateColumnValue("Auction", new SelectArg(invoice.getAuction()));
-					}
+					updateBuilder.updateColumnValue("Push_to_SAP__c", packingList.isPushToSap());
 					
-					if (!StringUtils.isNullOrEmpty(invoice.getReason())) {
-						updateBuilder.updateColumnValue("Reason", new SelectArg(invoice.getReason()));
-					}
+					updateBuilder.updateColumnValue("Pull_from_SAP__c", packingList.isPullFromSap());
 					
-					updateBuilder.updateColumnValue("Push_to_SAP__c", invoice.isPushToSap());
-					
-					updateBuilder.updateColumnValue("Pull_from_SAP__c", invoice.isPullFromSap());
-					
-					updateBuilder.where().eq("SalesForceId", new SelectArg(invoice.getSalesforceId()));
+					updateBuilder.where().eq("SalesForceId", new SelectArg(packingList.getSalesforceId()));
 					
 					updateBuilder.prepare();
 					
@@ -84,19 +76,55 @@ public class PackingListDbService extends BaseDbService {
 					
 					Where<PackingList, Integer> where = queryBuilder.where();
 					
-					where = where.eq("SalesForceId", new SelectArg(invoice.getSalesforceId()));
+					where = where.eq("SalesForceId", new SelectArg(packingList.getSalesforceId()));
 					
 					List<PackingList> insertedProductList = dao.query(where.prepare());
 					
-					invoice = insertedProductList.get(0);
+					packingList = mergeObject(packingList, insertedProductList.get(0));
 					
 				} else {
-					dao.createOrUpdate(invoice);
+					dao.createOrUpdate(packingList);
 				}
-				upsertedPackingLists.add(invoice);
+				
+				upsertedPackingLists.add(packingList);
 			}
 			return upsertedPackingLists;
 		});
+	}
+	
+	private PackingList mergeObject(PackingList packingList1, PackingList packingList2) {
+		
+		PackingList packingList = new PackingList();
+		
+		packingList.setAutoId(packingList1.getAutoId() != 0 ? packingList1.getAutoId() : packingList2.getAutoId());
+		
+		packingList.setPullFromSap(packingList1.isPullFromSap() || packingList2.isPullFromSap());
+		
+		packingList.setPushToSap(packingList1.isPushToSap() || packingList2.isPushToSap());
+		
+		packingList.setSalesforceId(packingList1.getSalesforceId() != null ? packingList1.getSalesforceId() : packingList2.getSalesforceId());
+		
+		packingList.setPostingDate(packingList1.getPostingDate() != null ? packingList1.getPostingDate() : packingList2.getPostingDate());
+		
+		packingList.setErpId(packingList1.getErpId() != null ? packingList1.getErpId() : packingList2.getErpId());
+		
+		packingList.setAccountID(packingList1.getAccountID() != null ? packingList1.getAccountID() : packingList2.getAccountID());
+		
+		packingList.setDueDate(packingList1.getDueDate() != null ? packingList1.getDueDate() : packingList2.getDueDate());
+		
+		packingList.setPONumber(packingList1.getPONumber() != null ? packingList1.getPONumber() : packingList2.getPONumber());
+		
+		packingList.setInvoiceNumber(packingList1.getInvoiceNumber() != null ? packingList1.getInvoiceNumber() : packingList2.getInvoiceNumber());
+		
+		packingList.setInvoiceEntry(packingList1.getInvoiceEntry() != null ? packingList1.getInvoiceEntry() : packingList2.getInvoiceEntry());
+		
+		packingList.setFarm(packingList1.getFarm() != null ? packingList1.getFarm() : packingList2.getFarm());
+		
+		packingList.setReason(packingList1.getReason() != null ? packingList1.getReason() : packingList2.getReason());
+		
+		packingList.setPackingListItems(packingList1.getPackingListItems() != null ? packingList1.getPackingListItems() : packingList2.getPackingListItems());
+		
+		return packingList;
 	}
 	
 	public ArrayList<PackingList> getUnsyncedPackingLists(ArrayList<Integer> ids) throws SQLException {

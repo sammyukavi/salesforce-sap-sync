@@ -30,12 +30,12 @@ public class Customer extends BaseSalesforceModel implements Serializable {
 	@DatabaseField(columnName = "Account_Payment_Terms__c")
 	@SerializedName("Account_Payment_Terms__c")
 	@Expose
-	private String accountPaymentTermsC;
+	private String accountPaymentTerms;
 	
 	@DatabaseField(columnName = "Active__c")
 	@SerializedName("Active__c")
 	@Expose
-	private boolean activeC;
+	private boolean active;
 	
 	@DatabaseField(columnName = "Available_Credit_Amount")
 	@SerializedName("Available_Credit_Amount__c")
@@ -45,7 +45,7 @@ public class Customer extends BaseSalesforceModel implements Serializable {
 	@DatabaseField(columnName = "AddressID")
 	@SerializedName("AddressID__c")
 	@Expose
-	private String addressIdC;
+	private String addressId;
 	
 	@DatabaseField(columnName = "BillingCity")
 	@SerializedName("BillingCity")
@@ -70,7 +70,7 @@ public class Customer extends BaseSalesforceModel implements Serializable {
 	@DatabaseField(columnName = "Credit_Limit__c")
 	@SerializedName("Credit_Limit__c")
 	@Expose
-	private double creditLimitC;
+	private double creditLimit;
 	
 	@DatabaseField(columnName = "CurrencyIsoCode")
 	@SerializedName("CurrencyIsoCode")
@@ -85,17 +85,17 @@ public class Customer extends BaseSalesforceModel implements Serializable {
 	@DatabaseField(columnName = "Email__c")
 	@SerializedName("Email__c")
 	@Expose
-	private String emailC;
+	private String email;
 	
 	@DatabaseField(columnName = "ERP_ID__c")
 	@SerializedName("ERP_ID__c")
 	@Expose
-	private String eRPIdC;
+	private String eRPId;
 	
 	@DatabaseField(columnName = "Group_Type__c")
 	@SerializedName("Group_Type__c")
 	@Expose
-	private String groupTypeC;
+	private String groupType;
 	
 	@DatabaseField(columnName = "Name")
 	@SerializedName("Name")
@@ -105,7 +105,7 @@ public class Customer extends BaseSalesforceModel implements Serializable {
 	@DatabaseField(columnName = "Outstanding_Balance__c")
 	@SerializedName("Outstanding_Balance__c")
 	@Expose
-	private double outstandingBalanceC;
+	private double outstandingBalance;
 	
 	@DatabaseField(columnName = "OwnerId")
 	@SerializedName("OwnerId")
@@ -120,12 +120,12 @@ public class Customer extends BaseSalesforceModel implements Serializable {
 	@DatabaseField(columnName = "Payment_Delivery_Consolidation__c")
 	@SerializedName("Payment_Delivery_Consolidation__c")
 	@Expose
-	private String paymentDeliveryConsolidationC;
+	private String paymentDeliveryConsolidation;
 	
 	@DatabaseField(columnName = "Payment_Terms__c")
 	@SerializedName("Payment_Terms__c")
 	@Expose
-	private String paymentTermsC;
+	private String paymentTerms;
 	
 	@DatabaseField(columnName = "Phone")
 	@SerializedName("Phone")
@@ -135,7 +135,7 @@ public class Customer extends BaseSalesforceModel implements Serializable {
 	@DatabaseField(columnName = "Prepaid_Amount__c")
 	@SerializedName("Prepaid_Amount__c")
 	@Expose
-	private double prepaidAmountC;
+	private double prepaidAmount;
 	
 	@DatabaseField(columnName = "ShippingCity")
 	@SerializedName("ShippingCity")
@@ -162,8 +162,8 @@ public class Customer extends BaseSalesforceModel implements Serializable {
 	@Expose
 	private String website;
 	
-	public boolean isActiveC() {
-		return activeC;
+	public boolean isActive() {
+		return active;
 	}
 	
 	public String getName() {
@@ -190,20 +190,20 @@ public class Customer extends BaseSalesforceModel implements Serializable {
 		this.accountNumber = accountNumber;
 	}
 	
-	public String getAccountPaymentTermsC() {
-		return accountPaymentTermsC;
+	public void setActive(boolean active) {
+		this.active = active;
 	}
 	
-	public void setAccountPaymentTermsC(String accountPaymentTermsC) {
-		this.accountPaymentTermsC = accountPaymentTermsC;
+	public String getAccountPaymentTerms() {
+		return accountPaymentTerms;
+	}
+	
+	public void setAccountPaymentTerms(String accountPaymentTerms) {
+		this.accountPaymentTerms = accountPaymentTerms;
 	}
 	
 	public boolean getActiveC() {
-		return activeC;
-	}
-	
-	public void setActiveC(boolean activeC) {
-		this.activeC = activeC;
+		return active;
 	}
 	
 	public double getAvailableCreditAmount() {
@@ -214,12 +214,12 @@ public class Customer extends BaseSalesforceModel implements Serializable {
 		this.availableCreditAmount = availableCreditAmount;
 	}
 	
-	public String getAddressIdC() {
-		return addressIdC;
+	public String getAddressId() {
+		return addressId;
 	}
 	
-	public void setAddressIdC(String addressIdC) {
-		this.addressIdC = addressIdC;
+	public void setAddressId(String addressId) {
+		this.addressId = addressId;
 	}
 	
 	public String getBillingCity() {
@@ -254,12 +254,12 @@ public class Customer extends BaseSalesforceModel implements Serializable {
 		this.billingState = billingState;
 	}
 	
-	public double getCreditLimitC() {
-		return creditLimitC;
+	public double getCreditLimit() {
+		return creditLimit;
 	}
 	
-	public void setCreditLimitC(double creditLimitC) {
-		this.creditLimitC = creditLimitC;
+	public void setCreditLimit(double creditLimit) {
+		this.creditLimit = creditLimit;
 	}
 	
 	public String getCurrencyIsoCode() {
@@ -278,36 +278,36 @@ public class Customer extends BaseSalesforceModel implements Serializable {
 		this.description = description;
 	}
 	
-	public String getEmailC() {
-		return emailC;
+	public String getEmail() {
+		return email;
 	}
 	
-	public void setEmailC(String emailC) {
-		this.emailC = emailC;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 	
-	public String geteRPIdC() {
-		return eRPIdC;
+	public String getErpId() {
+		return eRPId;
 	}
 	
-	public void seteRPIdC(String eRPIdC) {
-		this.eRPIdC = eRPIdC;
+	public void setErpId(String eRPId) {
+		this.eRPId = eRPId;
 	}
 	
-	public String getGroupTypeC() {
-		return groupTypeC;
+	public String getGroupType() {
+		return groupType;
 	}
 	
-	public void setGroupTypeC(String groupTypeC) {
-		this.groupTypeC = groupTypeC;
+	public void setGroupType(String groupType) {
+		this.groupType = groupType;
 	}
 	
-	public double getOutstandingBalanceC() {
-		return outstandingBalanceC;
+	public double getOutstandingBalance() {
+		return outstandingBalance;
 	}
 	
-	public void setOutstandingBalanceC(double outstandingBalanceC) {
-		this.outstandingBalanceC = outstandingBalanceC;
+	public void setOutstandingBalance(double outstandingBalance) {
+		this.outstandingBalance = outstandingBalance;
 	}
 	
 	public String getOwnerId() {
@@ -326,20 +326,20 @@ public class Customer extends BaseSalesforceModel implements Serializable {
 		ParentId = parentId;
 	}
 	
-	public String getPaymentDeliveryConsolidationC() {
-		return paymentDeliveryConsolidationC;
+	public String getPaymentDeliveryConsolidation() {
+		return paymentDeliveryConsolidation;
 	}
 	
-	public void setPaymentDeliveryConsolidationC(String paymentDeliveryConsolidationC) {
-		this.paymentDeliveryConsolidationC = paymentDeliveryConsolidationC;
+	public void setPaymentDeliveryConsolidation(String paymentDeliveryConsolidation) {
+		this.paymentDeliveryConsolidation = paymentDeliveryConsolidation;
 	}
 	
-	public String getPaymentTermsC() {
-		return paymentTermsC;
+	public String getPaymentTerms() {
+		return paymentTerms;
 	}
 	
-	public void setPaymentTermsC(String paymentTermsC) {
-		this.paymentTermsC = paymentTermsC;
+	public void setPaymentTerms(String paymentTerms) {
+		this.paymentTerms = paymentTerms;
 	}
 	
 	public String getPhone() {
@@ -350,12 +350,12 @@ public class Customer extends BaseSalesforceModel implements Serializable {
 		this.phone = phone;
 	}
 	
-	public double getPrepaidAmountC() {
-		return prepaidAmountC;
+	public double getPrepaidAmount() {
+		return prepaidAmount;
 	}
 	
-	public void setPrepaidAmountC(double prepaidAmountC) {
-		this.prepaidAmountC = prepaidAmountC;
+	public void setPrepaidAmount(double prepaidAmount) {
+		this.prepaidAmount = prepaidAmount;
 	}
 	
 	public String getShippingCity() {

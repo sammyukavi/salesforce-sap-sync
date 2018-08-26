@@ -35,17 +35,17 @@ public class Product extends BaseSalesforceModel implements Serializable {
 	@DatabaseField(columnName = "Color__c")
 	@SerializedName("Color__c")
 	@Expose
-	private String colorC;
+	private String color;
 	
 	@DatabaseField(columnName = "Classification__c")
 	@SerializedName("Classification__c")
 	@Expose
-	private String classificationC;
+	private String classification;
 	
 	@DatabaseField(columnName = "Breeder__c")
 	@SerializedName("Breeder__c")
 	@Expose
-	private String breederC;
+	private String breeder;
 	
 	/*@DatabaseField(columnName = "Family")
 	@SerializedName("Family")
@@ -55,17 +55,17 @@ public class Product extends BaseSalesforceModel implements Serializable {
 	@DatabaseField(columnName = "Product_Type__c")
 	@SerializedName("Product_Type__c")
 	@Expose
-	private String productTypeC;
+	private String productType;
 	
 	@DatabaseField(columnName = "Parent_Product__c")
 	@SerializedName("Parent_Product__c")
 	@Expose
-	private String parentProductC;
+	private String parentProduct;
 	
 	@DatabaseField(columnName = "Parent_Product_Code__c")
 	@SerializedName("Parent_Product_Code__c")
 	@Expose
-	private String parentProductCodeC;
+	private String parentProductCode;
 	
 	@DatabaseField(columnName = "product_Category")
 	@SerializedName("Family")
@@ -96,52 +96,52 @@ public class Product extends BaseSalesforceModel implements Serializable {
 		isActive = active;
 	}
 	
-	public String getColorC() {
-		return colorC;
+	public String getColor() {
+		return color;
 	}
 	
-	public void setColorC(String colorC) {
-		this.colorC = colorC;
+	public void setColor(String color) {
+		this.color = color;
 	}
 	
-	public String getClassificationC() {
-		return classificationC;
+	public String getClassification() {
+		return classification;
 	}
 	
-	public void setClassificationC(String classificationC) {
-		this.classificationC = classificationC;
+	public void setClassification(String classification) {
+		this.classification = classification;
 	}
 	
-	public String getBreederC() {
-		return breederC;
+	public String getBreeder() {
+		return breeder;
 	}
 	
-	public void setBreederC(String breederC) {
-		this.breederC = breederC;
+	public void setBreeder(String breeder) {
+		this.breeder = breeder;
 	}
 	
-	public String getProductTypeC() {
-		return productTypeC;
+	public String getProductType() {
+		return productType;
 	}
 	
-	public void setProductTypeC(String productTypeC) {
-		this.productTypeC = productTypeC;
+	public void setProductType(String productType) {
+		this.productType = productType;
 	}
 	
-	public String getParentProductC() {
-		return parentProductC;
+	public String getParentProduct() {
+		return parentProduct;
 	}
 	
-	public void setParentProductC(String parentProductC) {
-		this.parentProductC = parentProductC;
+	public void setParentProduct(String parentProduct) {
+		this.parentProduct = parentProduct;
 	}
 	
-	public String getParentProductCodeC() {
-		return parentProductCodeC;
+	public String getParentProductCode() {
+		return parentProductCode;
 	}
 	
-	public void setParentProductCodeC(String parentProductCodeC) {
-		this.parentProductCodeC = parentProductCodeC;
+	public void setParentProductCode(String parentProductCode) {
+		this.parentProductCode = parentProductCode;
 	}
 	
 	public String getProductCategory() {

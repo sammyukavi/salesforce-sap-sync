@@ -56,32 +56,32 @@ public class ProductDbService extends BaseDbService {
 					
 					updateBuilder.updateColumnValue("IsActive", product.isActive());
 					
-					if (!StringUtils.isNullOrEmpty(product.getColorC())) {
-						updateBuilder.updateColumnValue("Color__c", new SelectArg(product.getColorC()));
+					if (!StringUtils.isNullOrEmpty(product.getColor())) {
+						updateBuilder.updateColumnValue("Color__c", new SelectArg(product.getColor()));
 					}
 					
-					if (!StringUtils.isNullOrEmpty(product.getClassificationC())) {
-						updateBuilder.updateColumnValue("Classification__c", new SelectArg(product.getClassificationC()));
+					if (!StringUtils.isNullOrEmpty(product.getClassification())) {
+						updateBuilder.updateColumnValue("Classification__c", new SelectArg(product.getClassification()));
 					}
 					
-					if (!StringUtils.isNullOrEmpty(product.getBreederC())) {
-						updateBuilder.updateColumnValue("Breeder__c", new SelectArg(product.getBreederC()));
+					if (!StringUtils.isNullOrEmpty(product.getBreeder())) {
+						updateBuilder.updateColumnValue("Breeder__c", new SelectArg(product.getBreeder()));
 					}
 					
 					/*if (!StringUtils.isNullOrEmpty(product.getFamily())) {
 						updateBuilder.updateColumnValue("Family", product.getFamily());
 					}*/
 					
-					if (!StringUtils.isNullOrEmpty(product.getProductTypeC())) {
-						updateBuilder.updateColumnValue("Product_Type__c", new SelectArg(product.getProductTypeC()));
+					if (!StringUtils.isNullOrEmpty(product.getProductType())) {
+						updateBuilder.updateColumnValue("Product_Type__c", new SelectArg(product.getProductType()));
 					}
 					
-					if (!StringUtils.isNullOrEmpty(product.getParentProductC())) {
-						updateBuilder.updateColumnValue("Parent_Product__c", new SelectArg(product.getParentProductC()));
+					if (!StringUtils.isNullOrEmpty(product.getParentProduct())) {
+						updateBuilder.updateColumnValue("Parent_Product__c", new SelectArg(product.getParentProduct()));
 					}
 					
-					if (!StringUtils.isNullOrEmpty(product.getParentProductCodeC())) {
-						updateBuilder.updateColumnValue("Parent_Product_Code__c", new SelectArg(product.getParentProductCodeC()));
+					if (!StringUtils.isNullOrEmpty(product.getParentProductCode())) {
+						updateBuilder.updateColumnValue("Parent_Product_Code__c", new SelectArg(product.getParentProductCode()));
 					}
 					
 					updateBuilder.updateColumnValue("Push_to_SAP__c", product.isPushToSap());

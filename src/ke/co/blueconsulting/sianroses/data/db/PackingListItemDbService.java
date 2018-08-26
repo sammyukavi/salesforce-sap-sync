@@ -36,16 +36,16 @@ public class PackingListItemDbService extends BaseDbService {
 					
 					UpdateBuilder<PackingListItem, Integer> updateBuilder = dao.updateBuilder();
 					
-					if (!StringUtils.isNullOrEmpty(invoice.getFlowerCodeC())) {
-						updateBuilder.updateColumnValue("Flower_Code__c", new SelectArg(invoice.getFlowerCodeC()));
+					if (!StringUtils.isNullOrEmpty(invoice.getFlowerCode())) {
+						updateBuilder.updateColumnValue("Flower_Code__c", new SelectArg(invoice.getFlowerCode()));
 					}
 					
 					if (!StringUtils.isNullOrEmpty(invoice.getName())) {
 						updateBuilder.updateColumnValue("Name", new SelectArg(invoice.getName()));
 					}
 					
-					if (!StringUtils.isNullOrEmpty(invoice.getQuantityC())) {
-						updateBuilder.updateColumnValue("Quantity__c", new SelectArg(invoice.getQuantityC()));
+					if (!StringUtils.isNullOrEmpty(invoice.getQuantity())) {
+						updateBuilder.updateColumnValue("Quantity__c", new SelectArg(invoice.getQuantity()));
 					}
 					
 					if (!StringUtils.isNullOrEmpty(invoice.getUnitPrice())) {

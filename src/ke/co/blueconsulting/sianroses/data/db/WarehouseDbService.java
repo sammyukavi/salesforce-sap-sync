@@ -40,20 +40,20 @@ public class WarehouseDbService extends BaseDbService {
 						updateBuilder.updateColumnValue("SalesForceId", new SelectArg(warehouse.getSalesforceId()));
 					}
 					
-					if (!StringUtils.isNullOrEmpty(warehouse.getFarmC())) {
-						updateBuilder.updateColumnValue("Farm__c", new SelectArg(warehouse.getFarmC()));
+					if (!StringUtils.isNullOrEmpty(warehouse.getFarm())) {
+						updateBuilder.updateColumnValue("Farm__c", new SelectArg(warehouse.getFarm()));
 					}
 					
-					if (!StringUtils.isNullOrEmpty(warehouse.getFarmCodeC())) {
-						updateBuilder.updateColumnValue("Farm_Code__c", new SelectArg(warehouse.getFarmCodeC()));
+					if (!StringUtils.isNullOrEmpty(warehouse.getFarmCode())) {
+						updateBuilder.updateColumnValue("Farm_Code__c", new SelectArg(warehouse.getFarmCode()));
 					}
 					
 					if (!StringUtils.isNullOrEmpty(warehouse.getName())) {
 						updateBuilder.updateColumnValue("Name", new SelectArg(warehouse.getName()));
 					}
 					
-					if (!StringUtils.isNullOrEmpty(warehouse.getWarehouseCodeC())) {
-						updateBuilder.updateColumnValue("Warehouse_Code__c", new SelectArg(warehouse.getWarehouseCodeC()));
+					if (!StringUtils.isNullOrEmpty(warehouse.getWarehouseCode())) {
+						updateBuilder.updateColumnValue("Warehouse_Code__c", new SelectArg(warehouse.getWarehouseCode()));
 					}
 					
 					updateBuilder.updateColumnValue("Push_to_SAP__c", warehouse.isPushToSap());

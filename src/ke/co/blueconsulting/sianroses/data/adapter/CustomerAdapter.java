@@ -26,9 +26,9 @@ public class CustomerAdapter extends TypeAdapter<Customer> {
 			jsonWriter.value(customer.getAccountNumber());
 		}
 		
-		if (!StringUtils.isNullOrEmpty(customer.getAccountPaymentTermsC())) {
+		if (!StringUtils.isNullOrEmpty(customer.getAccountPaymentTerms())) {
 			jsonWriter.name("Account_Payment_Terms__c");
-			jsonWriter.value(customer.getAccountPaymentTermsC());
+			jsonWriter.value(customer.getAccountPaymentTerms());
 		}
 		
 		jsonWriter.name("Active__c");
@@ -37,9 +37,9 @@ public class CustomerAdapter extends TypeAdapter<Customer> {
 		jsonWriter.name("Available_Credit_Amount__c");
 		jsonWriter.value(customer.getAvailableCreditAmount());
 		
-		if (!StringUtils.isNullOrEmpty(customer.getAddressIdC())) {
+		if (!StringUtils.isNullOrEmpty(customer.getAddressId())) {
 			jsonWriter.name("AddressID__c");
-			jsonWriter.value(customer.getAddressIdC());
+			jsonWriter.value(customer.getAddressId());
 		}
 		
 		if (!StringUtils.isNullOrEmpty(customer.getBillingCity())) {
@@ -63,7 +63,7 @@ public class CustomerAdapter extends TypeAdapter<Customer> {
 		}
 		
 		jsonWriter.name("Credit_Limit__c");
-		jsonWriter.value(customer.getCreditLimitC());
+		jsonWriter.value(customer.getCreditLimit());
 		
 		/**
 		 * In case you have come here to fix the commented lines below,
@@ -81,19 +81,19 @@ public class CustomerAdapter extends TypeAdapter<Customer> {
 			jsonWriter.value(customer.getDescription());
 		}
 		
-		if (!StringUtils.isNullOrEmpty(customer.getEmailC()) && StringUtils.isValidEmailAddress(customer.getEmailC())) {
+		if (!StringUtils.isNullOrEmpty(customer.getEmail()) && StringUtils.isValidEmailAddress(customer.getEmail())) {
 			jsonWriter.name("Email__c");
-			jsonWriter.value(customer.getEmailC());
+			jsonWriter.value(customer.getEmail());
 		}
 		
-		if (!StringUtils.isNullOrEmpty(customer.geteRPIdC())) {
+		if (!StringUtils.isNullOrEmpty(customer.getErpId())) {
 			jsonWriter.name("ERP_ID__c");
-			jsonWriter.value(customer.geteRPIdC());
+			jsonWriter.value(customer.getErpId());
 		}
 		
-		if (!StringUtils.isNullOrEmpty(customer.getGroupTypeC())) {
+		if (!StringUtils.isNullOrEmpty(customer.getGroupType())) {
 			jsonWriter.name("Group_Type__c");
-			jsonWriter.value(customer.getGroupTypeC());
+			jsonWriter.value(customer.getGroupType());
 		}
 		
 		if (!StringUtils.isNullOrEmpty(customer.getSalesforceId())) {
@@ -107,7 +107,7 @@ public class CustomerAdapter extends TypeAdapter<Customer> {
 		}
 		
 		jsonWriter.name("Outstanding_Balance__c");
-		jsonWriter.value(customer.getOutstandingBalanceC());
+		jsonWriter.value(customer.getOutstandingBalance());
 		
 		if (!StringUtils.isNullOrEmpty(customer.getOwnerId())) {
 			//jsonWriter.name("OwnerId");
@@ -121,15 +121,15 @@ public class CustomerAdapter extends TypeAdapter<Customer> {
 			jsonWriter.value(customer.getParentId());
 		}
 		
-		if (!StringUtils.isNullOrEmpty(customer.getPaymentDeliveryConsolidationC())) {
+		if (!StringUtils.isNullOrEmpty(customer.getPaymentDeliveryConsolidation())) {
 			jsonWriter.name("Payment_Delivery_Consolidation__c");
-			jsonWriter.value(customer.getPaymentDeliveryConsolidationC());
+			jsonWriter.value(customer.getPaymentDeliveryConsolidation());
 		}
 		
-		if (!StringUtils.isNullOrEmpty(customer.getPaymentTermsC())) {
+		if (!StringUtils.isNullOrEmpty(customer.getPaymentTerms())) {
 			//jsonWriter.name("Payment_Terms__c");
 			jsonWriter.name("Payment_Terms_Code__c");
-			jsonWriter.value(customer.getPaymentTermsC());
+			jsonWriter.value(customer.getPaymentTerms());
 		}
 		
 		if (!StringUtils.isNullOrEmpty(customer.getPhone())) {
@@ -138,7 +138,7 @@ public class CustomerAdapter extends TypeAdapter<Customer> {
 		}
 		
 		jsonWriter.name("Prepaid_Amount__c");
-		jsonWriter.value(customer.getPrepaidAmountC());
+		jsonWriter.value(customer.getPrepaidAmount());
 		
 		jsonWriter.name("Pull_from_SAP__c");
 		jsonWriter.value(customer.isPullFromSap());
@@ -196,16 +196,16 @@ public class CustomerAdapter extends TypeAdapter<Customer> {
 					customer.setAccountNumber(jsonReader.nextString());
 				} else if ("Account_Payment_Terms__c".equals(fieldname)) {
 					jsonReader.peek();
-					customer.setAccountPaymentTermsC(jsonReader.nextString());
+					customer.setAccountPaymentTerms(jsonReader.nextString());
 				} else if ("Active__c".equals(fieldname)) {
 					jsonReader.peek();
-					customer.setActiveC(jsonReader.nextBoolean());
+					customer.setActive(jsonReader.nextBoolean());
 				} else if ("Available_Credit_Amount__c".equals(fieldname)) {
 					jsonReader.peek();
 					customer.setAvailableCreditAmount(jsonReader.nextDouble());
 				} else if ("AddressID__c".equals(fieldname)) {
 					jsonReader.peek();
-					customer.setAddressIdC(jsonReader.nextString());
+					customer.setAddressId(jsonReader.nextString());
 				} else if ("BillingCity".equals(fieldname)) {
 					jsonReader.peek();
 					customer.setBillingCity(jsonReader.nextString());
@@ -220,7 +220,7 @@ public class CustomerAdapter extends TypeAdapter<Customer> {
 					customer.setBillingState(jsonReader.nextString());
 				} else if ("Credit_Limit__c".equals(fieldname)) {
 					jsonReader.peek();
-					customer.setCreditLimitC(jsonReader.nextDouble());
+					customer.setCreditLimit(jsonReader.nextDouble());
 				} else if ("CurrencyIsoCode".equals(fieldname)) {
 					jsonReader.peek();
 					customer.setCurrencyIsoCode(jsonReader.nextString());
@@ -229,19 +229,19 @@ public class CustomerAdapter extends TypeAdapter<Customer> {
 					customer.setDescription(jsonReader.nextString());
 				} else if ("Email__c".equals(fieldname)) {
 					jsonReader.peek();
-					customer.setEmailC(jsonReader.nextString());
+					customer.setEmail(jsonReader.nextString());
 				} else if ("ERP_ID__c".equals(fieldname)) {
 					jsonReader.peek();
-					customer.seteRPIdC(jsonReader.nextString());
+					customer.setErpId(jsonReader.nextString());
 				} else if ("Group_Type__c".equals(fieldname)) {
 					jsonReader.peek();
-					customer.setGroupTypeC(jsonReader.nextString());
+					customer.setGroupType(jsonReader.nextString());
 				} else if ("Name".equals(fieldname)) {
 					jsonReader.peek();
 					customer.setName(jsonReader.nextString());
 				} else if ("Outstanding_Balance__c".equals(fieldname)) {
 					jsonReader.peek();
-					customer.setOutstandingBalanceC(jsonReader.nextDouble());
+					customer.setOutstandingBalance(jsonReader.nextDouble());
 				} else if ("OwnerId".equals(fieldname)) {
 					jsonReader.peek();
 					customer.setOwnerId(jsonReader.nextString());
@@ -250,16 +250,16 @@ public class CustomerAdapter extends TypeAdapter<Customer> {
 					customer.setParentId(jsonReader.nextString());
 				} else if ("Payment_Delivery_Consolidation__c".equals(fieldname)) {
 					jsonReader.peek();
-					customer.setPaymentDeliveryConsolidationC(jsonReader.nextString());
+					customer.setPaymentDeliveryConsolidation(jsonReader.nextString());
 				} else if ("Payment_Terms__c".equals(fieldname)) {
 					jsonReader.peek();
-					customer.setPaymentTermsC(jsonReader.nextString());
+					customer.setPaymentTerms(jsonReader.nextString());
 				} else if ("Phone".equals(fieldname)) {
 					jsonReader.peek();
 					customer.setPhone(jsonReader.nextString());
 				} else if ("Prepaid_Amount__c".equals(fieldname)) {
 					jsonReader.peek();
-					customer.setPrepaidAmountC(jsonReader.nextDouble());
+					customer.setPrepaidAmount(jsonReader.nextDouble());
 				} else if ("Pull_from_SAP__c".equals(fieldname)) {
 					jsonReader.peek();
 					customer.setPullFromSap(jsonReader.nextBoolean());

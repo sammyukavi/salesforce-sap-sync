@@ -36,46 +36,46 @@ public class ProductChildDbService extends BaseDbService {
 					
 					UpdateBuilder<ProductChild, Integer> updateBuilder = dao.updateBuilder();
 					
-					if (!StringUtils.isNullOrEmpty(productChild.getFlowerCodeC())) {
-						updateBuilder.updateColumnValue("Flower_Code__c", new SelectArg(productChild.getFlowerCodeC()));
+					if (!StringUtils.isNullOrEmpty(productChild.getFlowerCode())) {
+						updateBuilder.updateColumnValue("Flower_Code__c", new SelectArg(productChild.getFlowerCode()));
 					}
 					
 					if (!StringUtils.isNullOrEmpty(productChild.getName())) {
 						updateBuilder.updateColumnValue("Name", new SelectArg(productChild.getName()));
 					}
 					
-					if (!StringUtils.isNullOrEmpty(productChild.getColorC())) {
-						updateBuilder.updateColumnValue("Color__c", new SelectArg(productChild.getColorC()));
+					if (!StringUtils.isNullOrEmpty(productChild.getColor())) {
+						updateBuilder.updateColumnValue("Color__c", new SelectArg(productChild.getColor()));
 					}
 					
-					if (!StringUtils.isNullOrEmpty(productChild.getClassificationC())) {
-						updateBuilder.updateColumnValue("Classification__c", new SelectArg(productChild.getClassificationC()));
+					if (!StringUtils.isNullOrEmpty(productChild.getClassification())) {
+						updateBuilder.updateColumnValue("Classification__c", new SelectArg(productChild.getClassification()));
 					}
 					
 					updateBuilder.updateColumnValue("Is_Active__c", productChild.getIsActiveC());
 					
-					if (!StringUtils.isNullOrEmpty(productChild.getBreederC())) {
-						updateBuilder.updateColumnValue("Breeder__c", new SelectArg(productChild.getBreederC()));
+					if (!StringUtils.isNullOrEmpty(productChild.getBreeder())) {
+						updateBuilder.updateColumnValue("Breeder__c", new SelectArg(productChild.getBreeder()));
 					}
 					
-					if (!StringUtils.isNullOrEmpty(productChild.getProductFamilyC())) {
-						updateBuilder.updateColumnValue("Product_Family__c", productChild.getProductFamilyC());
+					if (!StringUtils.isNullOrEmpty(productChild.getProductFamily())) {
+						updateBuilder.updateColumnValue("Product_Family__c", productChild.getProductFamily());
 					}
 					
-					if (!StringUtils.isNullOrEmpty(productChild.getFarmC())) {
-						updateBuilder.updateColumnValue("Farm__c", new SelectArg(productChild.getFarmC()));
+					if (!StringUtils.isNullOrEmpty(productChild.getFarm())) {
+						updateBuilder.updateColumnValue("Farm__c", new SelectArg(productChild.getFarm()));
 					}
 					
-					if (!StringUtils.isNullOrEmpty(productChild.getHeadSizeC())) {
-						updateBuilder.updateColumnValue("Head_size__c", new SelectArg(productChild.getHeadSizeC()));
+					if (!StringUtils.isNullOrEmpty(productChild.getHeadSize())) {
+						updateBuilder.updateColumnValue("Head_size__c", new SelectArg(productChild.getHeadSize()));
 					}
 					
-					if (!StringUtils.isNullOrEmpty(productChild.getConsumableStockC())) {
-						updateBuilder.updateColumnValue("Consumable_Stock__c", new SelectArg(productChild.getConsumableStockC()));
+					if (!StringUtils.isNullOrEmpty(productChild.getConsumableStock())) {
+						updateBuilder.updateColumnValue("Consumable_Stock__c", new SelectArg(productChild.getConsumableStock()));
 					}
 					
-					if (!StringUtils.isNullOrEmpty(productChild.getLengthC())) {
-						updateBuilder.updateColumnValue("Length__c", new SelectArg(productChild.getLengthC()));
+					if (!StringUtils.isNullOrEmpty(productChild.getLength())) {
+						updateBuilder.updateColumnValue("Length__c", new SelectArg(productChild.getLength()));
 					}
 					
 					updateBuilder.updateColumnValue("Push_to_SAP__c", productChild.isPushToSap());

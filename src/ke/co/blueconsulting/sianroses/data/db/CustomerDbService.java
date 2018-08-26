@@ -52,11 +52,11 @@ public class CustomerDbService extends BaseDbService {
 			for (Customer customer : customers) {
 				
 				boolean recordExists;
-				boolean isUsingErpIdColumn = !StringUtils.isNullOrEmpty(customer.geteRPIdC());
+				boolean isUsingErpIdColumn = !StringUtils.isNullOrEmpty(customer.getErpId());
 				
 				if (isUsingErpIdColumn) {
 					recordExists = dao.queryBuilder().where()
-							.eq("ERP_ID__c", customer.geteRPIdC()).countOf() > 0;
+							.eq("ERP_ID__c", customer.getErpId()).countOf() > 0;
 				} else {
 					recordExists = dao.queryBuilder().where()
 							.eq("SalesForceId", customer.getSalesforceId()).countOf() > 0;
@@ -74,16 +74,16 @@ public class CustomerDbService extends BaseDbService {
 						updateBuilder.updateColumnValue("Account_Number__c", new SelectArg(customer.getAccountNumber()));
 					}
 					
-					if (!StringUtils.isNullOrEmpty(customer.getAccountPaymentTermsC())) {
-						updateBuilder.updateColumnValue("Account_Payment_Terms__c", new SelectArg(customer.getAccountPaymentTermsC()));
+					if (!StringUtils.isNullOrEmpty(customer.getAccountPaymentTerms())) {
+						updateBuilder.updateColumnValue("Account_Payment_Terms__c", new SelectArg(customer.getAccountPaymentTerms()));
 					}
 					
 					updateBuilder.updateColumnValue("Active__c", customer.getActiveC());
 					
 					updateBuilder.updateColumnValue("Available_Credit_Amount", new SelectArg(customer.getAvailableCreditAmount()));
 					
-					if (!StringUtils.isNullOrEmpty(customer.getAddressIdC())) {
-						updateBuilder.updateColumnValue("AddressID", new SelectArg(customer.getAddressIdC()));
+					if (!StringUtils.isNullOrEmpty(customer.getAddressId())) {
+						updateBuilder.updateColumnValue("AddressID", new SelectArg(customer.getAddressId()));
 					}
 					
 					if (!StringUtils.isNullOrEmpty(customer.getBillingCity())) {
@@ -102,7 +102,7 @@ public class CustomerDbService extends BaseDbService {
 						updateBuilder.updateColumnValue("BillingState", new SelectArg(customer.getBillingState()));
 					}
 					
-					updateBuilder.updateColumnValue("Credit_Limit__c", new SelectArg(customer.getCreditLimitC()));
+					updateBuilder.updateColumnValue("Credit_Limit__c", new SelectArg(customer.getCreditLimit()));
 					
 					if (!StringUtils.isNullOrEmpty(customer.getCurrencyIsoCode())) {
 						updateBuilder.updateColumnValue("CurrencyIsoCode", new SelectArg(customer.getCurrencyIsoCode()));
@@ -112,16 +112,16 @@ public class CustomerDbService extends BaseDbService {
 						updateBuilder.updateColumnValue("Description", new SelectArg(customer.getDescription()));
 					}
 					
-					if (!StringUtils.isNullOrEmpty(customer.getEmailC()) && StringUtils.isValidEmailAddress(customer.getEmailC())) {
-						updateBuilder.updateColumnValue("Email__c", new SelectArg(customer.getEmailC()));
+					if (!StringUtils.isNullOrEmpty(customer.getEmail()) && StringUtils.isValidEmailAddress(customer.getEmail())) {
+						updateBuilder.updateColumnValue("Email__c", new SelectArg(customer.getEmail()));
 					}
 					
-					if (!StringUtils.isNullOrEmpty(customer.geteRPIdC())) {
-						updateBuilder.updateColumnValue("ERP_ID__c", new SelectArg(customer.geteRPIdC()));
+					if (!StringUtils.isNullOrEmpty(customer.getErpId())) {
+						updateBuilder.updateColumnValue("ERP_ID__c", new SelectArg(customer.getErpId()));
 					}
 					
-					if (!StringUtils.isNullOrEmpty(customer.getGroupTypeC())) {
-						updateBuilder.updateColumnValue("Group_Type__c", new SelectArg(customer.getGroupTypeC()));
+					if (!StringUtils.isNullOrEmpty(customer.getGroupType())) {
+						updateBuilder.updateColumnValue("Group_Type__c", new SelectArg(customer.getGroupType()));
 					}
 					
 					if (!StringUtils.isNullOrEmpty(customer.getSalesforceId())) {
@@ -132,7 +132,7 @@ public class CustomerDbService extends BaseDbService {
 						updateBuilder.updateColumnValue("Name", new SelectArg(customer.getName()));
 					}
 					
-					updateBuilder.updateColumnValue("Outstanding_Balance__c", new SelectArg(customer.getOutstandingBalanceC()));
+					updateBuilder.updateColumnValue("Outstanding_Balance__c", new SelectArg(customer.getOutstandingBalance()));
 					
 					if (!StringUtils.isNullOrEmpty(customer.getOwnerId())) {
 						updateBuilder.updateColumnValue("OwnerId", new SelectArg(customer.getOwnerId()));
@@ -142,19 +142,19 @@ public class CustomerDbService extends BaseDbService {
 						updateBuilder.updateColumnValue("ParentId", new SelectArg(customer.getParentId()));
 					}
 					
-					if (!StringUtils.isNullOrEmpty(customer.getPaymentDeliveryConsolidationC())) {
-						updateBuilder.updateColumnValue("Payment_Delivery_Consolidation__c", new SelectArg(customer.getPaymentDeliveryConsolidationC()));
+					if (!StringUtils.isNullOrEmpty(customer.getPaymentDeliveryConsolidation())) {
+						updateBuilder.updateColumnValue("Payment_Delivery_Consolidation__c", new SelectArg(customer.getPaymentDeliveryConsolidation()));
 					}
 					
-					if (!StringUtils.isNullOrEmpty(customer.getPaymentTermsC())) {
-						updateBuilder.updateColumnValue("Payment_Terms__c", new SelectArg(customer.getPaymentTermsC()));
+					if (!StringUtils.isNullOrEmpty(customer.getPaymentTerms())) {
+						updateBuilder.updateColumnValue("Payment_Terms__c", new SelectArg(customer.getPaymentTerms()));
 					}
 					
 					if (!StringUtils.isNullOrEmpty(customer.getPhone())) {
 						updateBuilder.updateColumnValue("Phone", new SelectArg(customer.getPhone()));
 					}
 					
-					updateBuilder.updateColumnValue("Prepaid_Amount__c", customer.getPrepaidAmountC());
+					updateBuilder.updateColumnValue("Prepaid_Amount__c", customer.getPrepaidAmount());
 					
 					updateBuilder.updateColumnValue("Pull_from_SAP__c", customer.isPullFromSap());
 					
@@ -181,7 +181,7 @@ public class CustomerDbService extends BaseDbService {
 					}
 					
 					if (isUsingErpIdColumn) {
-						updateBuilder.where().eq("ERP_ID__c", new SelectArg(customer.geteRPIdC()));
+						updateBuilder.where().eq("ERP_ID__c", new SelectArg(customer.getErpId()));
 					} else {
 						updateBuilder.where().eq("SalesForceId", new SelectArg(customer.getSalesforceId()));
 					}
@@ -195,7 +195,7 @@ public class CustomerDbService extends BaseDbService {
 					Where<Customer, Integer> where = queryBuilder.where();
 					
 					if (isUsingErpIdColumn) {
-						where = where.eq("ERP_ID__c", new SelectArg(customer.geteRPIdC()));
+						where = where.eq("ERP_ID__c", new SelectArg(customer.getErpId()));
 					} else {
 						where = where.eq("SalesForceId", new SelectArg(customer.getSalesforceId()));
 					}

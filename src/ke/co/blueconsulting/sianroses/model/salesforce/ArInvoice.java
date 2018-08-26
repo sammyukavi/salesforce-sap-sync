@@ -12,25 +12,19 @@ import java.util.Date;
 /**
  * This model maps Salesforce Packing List to SAP. Syncing is 2 ways from Salesforce to SAP
  */
-@DatabaseTable(tableName = "ARCREDIT")
-public class PackingList extends BaseSalesforceModel implements Serializable {
+@DatabaseTable(tableName = "ARINVOICE")
+public class ArInvoice extends BaseSalesforceModel implements Serializable {
 	
 	private static final long serialVersionUID = 1527097474049L;
-	
-	@DatabaseField(columnName = "Posting_Date__c")
-	@SerializedName("CreatedDate")
-	@Expose
-	private Date postingDate;
-	
-	@DatabaseField(columnName = "ERP_ID__c")
-	@SerializedName("ERP_ID__c")
-	@Expose
-	private String erpId;
 	
 	@DatabaseField(columnName = "AccountID")
 	@SerializedName("Customer_Name__c")
 	@Expose
-	private String AccountID;
+	private String accountId;
+	
+	@DatabaseField(columnName = "Posting_Date__c")
+	@SerializedName("CreatedDate")
+	private Date postingDate;
 	
 	@DatabaseField(columnName = "Due_Date__c")
 	@SerializedName("Due_Date__c")
@@ -41,6 +35,11 @@ public class PackingList extends BaseSalesforceModel implements Serializable {
 	@SerializedName("PO_Number__c")
 	@Expose
 	private String pONumber;
+	
+	@DatabaseField(columnName = "Farm_Order_Number__c")
+	@SerializedName("Name")
+	@Expose
+	private String farmOrderNumber;
 	
 	@DatabaseField(columnName = "Invoice_Number__c")
 	@SerializedName("Invoice_No__c")
@@ -57,22 +56,26 @@ public class PackingList extends BaseSalesforceModel implements Serializable {
 	@Expose
 	private String farm;
 	
+	@DatabaseField(columnName = "Auction")
+	@SerializedName("Auction")
+	@Expose
+	private String auction;
+	
 	@DatabaseField(columnName = "Reason")
 	@SerializedName("Reason")
 	@Expose
-	private String Reason;
+	private String reason;
 	
 	@SerializedName("Packing_List_Items__r")
-	@Expose
 	private PackingListItems packingListItems;
 	
 	
-	public String getAccountID() {
-		return AccountID;
+	public String getAccountId() {
+		return accountId;
 	}
 	
-	public void setAccountID(String accountID) {
-		AccountID = accountID;
+	public void setAccountId(String accountId) {
+		this.accountId = accountId;
 	}
 	
 	public Date getPostingDate() {
@@ -99,6 +102,14 @@ public class PackingList extends BaseSalesforceModel implements Serializable {
 		this.pONumber = pONumber;
 	}
 	
+	public String getFarmOrderNumber() {
+		return farmOrderNumber;
+	}
+	
+	public void setFarmOrderNumber(String farmOrderNumber) {
+		this.farmOrderNumber = farmOrderNumber;
+	}
+	
 	public String getInvoiceNumber() {
 		return invoiceNumber;
 	}
@@ -123,20 +134,20 @@ public class PackingList extends BaseSalesforceModel implements Serializable {
 		this.farm = farm;
 	}
 	
+	public String getAuction() {
+		return auction;
+	}
+	
+	public void setAuction(String auction) {
+		this.auction = auction;
+	}
+	
 	public String getReason() {
-		return Reason;
+		return reason;
 	}
 	
 	public void setReason(String reason) {
-		Reason = reason;
-	}
-	
-	public String getErpId() {
-		return erpId;
-	}
-	
-	public void setErpId(String erpId) {
-		this.erpId = erpId;
+		this.reason = reason;
 	}
 	
 	public PackingListItems getPackingListItems() {

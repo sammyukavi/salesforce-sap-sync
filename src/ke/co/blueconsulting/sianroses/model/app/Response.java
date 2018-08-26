@@ -77,15 +77,6 @@ public class Response implements Serializable {
 		return instance;
 	}
 	
-	public ArrayList<PackingList> getArInvoice() {
-		return packingLists;
-	}
-	
-	public static Response setArInvoice(ArrayList<PackingList> packingList) {
-		instance.packingLists = packingList;
-		return instance;
-	}
-	
 	public ArrayList<PriceList> getPriceList() {
 		return priceList;
 	}

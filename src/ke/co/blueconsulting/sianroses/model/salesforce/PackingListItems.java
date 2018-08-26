@@ -1,20 +1,22 @@
 package ke.co.blueconsulting.sianroses.model.salesforce;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import javax.annotation.Generated;
 import java.util.ArrayList;
 
-@Generated("com.robohorse.robopojogenerator")
 public class PackingListItems {
 	
 	@SerializedName("totalSize")
+	@Expose
 	private int totalSize;
 	
 	@SerializedName("records")
+	@Expose
 	private ArrayList<PackingListItem> records;
 	
 	@SerializedName("done")
+	@Expose
 	private boolean done;
 	
 	public int getTotalSize() {

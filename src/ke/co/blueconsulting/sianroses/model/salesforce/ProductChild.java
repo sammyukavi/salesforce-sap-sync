@@ -20,7 +20,7 @@ public class ProductChild extends BaseSalesforceModel implements Serializable {
 	@DatabaseField(columnName = "Flower_Code__c")
 	@SerializedName("Flower_Code__c")
 	@Expose
-	private String flowerCodeC;
+	private String flowerCode;
 	
 	@DatabaseField(columnName = "Name")
 	@SerializedName("Name")
@@ -30,54 +30,54 @@ public class ProductChild extends BaseSalesforceModel implements Serializable {
 	@DatabaseField(columnName = "Color__c")
 	@SerializedName("Color__c")
 	@Expose
-	private String colorC;
+	private String color;
 	
 	@DatabaseField(columnName = "Classification__c")
 	@SerializedName("Classification__c")
 	@Expose
-	private String classificationC;
+	private String classification;
 	
 	@DatabaseField(columnName = "Product_Family__c")
 	@SerializedName("Family__c")
 	@Expose
-	private String productFamilyC;
+	private String productFamily;
 	
 	@DatabaseField(columnName = "Farm__c")
 	@SerializedName("Farm__c")
 	@Expose
-	private String farmC;
+	private String farm;
 	
 	@DatabaseField(columnName = "Is_Active__c")
 	@SerializedName("Is_Active__c")
 	@Expose
-	private boolean isActiveC;
+	private boolean isActive;
 	
 	@DatabaseField(columnName = "Breeder__c")
 	@SerializedName("Breeder__c")
 	@Expose
-	private String breederC;
+	private String breeder;
 	
 	@DatabaseField(columnName = "Headsize__c")
 	@SerializedName("Head_size__c")
 	@Expose
-	private String headSizeC;
+	private String headSize;
 	
 	@DatabaseField(columnName = "Consumable_Stock__c")
 	@SerializedName("Consumable_Stock__c")
 	@Expose
-	private String consumableStockC;
+	private String consumableStock;
 	
 	@DatabaseField(columnName = "Length__c")
 	@SerializedName("Length__c")
 	@Expose
-	private String lengthC;
+	private String length;
 	
-	public String getFlowerCodeC() {
-		return flowerCodeC;
+	public String getFlowerCode() {
+		return flowerCode;
 	}
 	
-	public void setFlowerCodeC(String flowerCodeC) {
-		this.flowerCodeC = flowerCodeC;
+	public void setFlowerCode(String flowerCode) {
+		this.flowerCode = flowerCode;
 	}
 	
 	public String getName() {
@@ -88,76 +88,76 @@ public class ProductChild extends BaseSalesforceModel implements Serializable {
 		this.name = name;
 	}
 	
-	public String getColorC() {
-		return colorC;
+	public String getColor() {
+		return color;
 	}
 	
-	public void setColorC(String colorC) {
-		this.colorC = colorC;
+	public void setColor(String color) {
+		this.color = color;
 	}
 	
-	public String getClassificationC() {
-		return classificationC;
+	public String getClassification() {
+		return classification;
 	}
 	
-	public void setClassificationC(String classificationC) {
-		this.classificationC = classificationC;
+	public void setClassification(String classification) {
+		this.classification = classification;
 	}
 	
 	public boolean getIsActiveC() {
-		return isActiveC;
+		return isActive;
 	}
 	
 	public void setIsActiveC(boolean isActiveC) {
-		this.isActiveC = isActiveC;
+		this.isActive = isActiveC;
 	}
 	
-	public String getBreederC() {
-		return breederC;
+	public String getBreeder() {
+		return breeder;
 	}
 	
-	public void setBreederC(String breederC) {
-		this.breederC = breederC;
+	public void setBreeder(String breeder) {
+		this.breeder = breeder;
 	}
 	
-	public String getProductFamilyC() {
-		return productFamilyC;
+	public String getProductFamily() {
+		return productFamily;
 	}
 	
-	public void setProductFamilyC(String productFamilyC) {
-		this.productFamilyC = productFamilyC;
+	public void setProductFamily(String productFamily) {
+		this.productFamily = productFamily;
 	}
 	
-	public String getFarmC() {
-		return farmC;
+	public String getFarm() {
+		return farm;
 	}
 	
-	public void setFarmC(String farmC) {
-		this.farmC = farmC;
+	public void setFarm(String farm) {
+		this.farm = farm;
 	}
 	
-	public String getHeadSizeC() {
-		return headSizeC;
+	public String getHeadSize() {
+		return headSize;
 	}
 	
-	public void setHeadSizeC(String headSizeC) {
-		this.headSizeC = headSizeC;
+	public void setHeadSize(String headSize) {
+		this.headSize = headSize;
 	}
 	
-	public String getConsumableStockC() {
-		return consumableStockC;
+	public String getConsumableStock() {
+		return consumableStock;
 	}
 	
-	public void setConsumableStockC(String consumableStockC) {
-		this.consumableStockC = consumableStockC;
+	public void setConsumableStock(String consumableStock) {
+		this.consumableStock = consumableStock;
 	}
 	
-	public String getLengthC() {
-		return lengthC;
+	public String getLength() {
+		return length;
 	}
 	
-	public void setLengthC(String lengthC) {
-		this.lengthC = lengthC;
+	public void setLength(String length) {
+		this.length = length;
 	}
 	
 }

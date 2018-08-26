@@ -21,12 +21,12 @@ public class Warehouse extends BaseSalesforceModel implements Serializable {
 	@DatabaseField(columnName = "Farm__c")
 	@SerializedName("Farm_SAP__c")
 	@Expose
-	private String farmC;
+	private String farm;
 	
 	@DatabaseField(columnName = "Farm_Code__c")
 	@SerializedName("Farm_Code__c")
 	@Expose
-	private String farmCodeC;
+	private String farmCode;
 	
 	@DatabaseField(columnName = "Name")
 	@SerializedName("SAP_ID__c")
@@ -36,22 +36,22 @@ public class Warehouse extends BaseSalesforceModel implements Serializable {
 	@DatabaseField(columnName = "Warehouse_Code__c")
 	@SerializedName("Warehouse_Code__c")
 	@Expose
-	private String warehouseCodeC;
+	private String warehouseCode;
 	
-	public String getFarmC() {
-		return farmC;
+	public String getFarm() {
+		return farm;
 	}
 	
-	public void setFarmC(String farmC) {
-		this.farmC = farmC;
+	public void setFarm(String farm) {
+		this.farm = farm;
 	}
 	
-	public String getFarmCodeC() {
-		return farmCodeC;
+	public String getFarmCode() {
+		return farmCode;
 	}
 	
-	public void setFarmCodeC(String farmCodeC) {
-		this.farmCodeC = farmCodeC;
+	public void setFarmCode(String farmCode) {
+		this.farmCode = farmCode;
 	}
 	
 	public String getName() {
@@ -62,11 +62,11 @@ public class Warehouse extends BaseSalesforceModel implements Serializable {
 		this.name = name;
 	}
 	
-	public String getWarehouseCodeC() {
-		return warehouseCodeC;
+	public String getWarehouseCode() {
+		return warehouseCode;
 	}
 	
-	public void setWarehouseCodeC(String warehouseCodeC) {
-		this.warehouseCodeC = warehouseCodeC;
+	public void setWarehouseCode(String warehouseCode) {
+		this.warehouseCode = warehouseCode;
 	}
 }
