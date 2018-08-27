@@ -7,4 +7,4 @@ out/
 /build/
 /nbproject/
 /dist/
-/src/ke/co/blueconsulting/sianroses/util/Console.java
+/src/main/java/ke/co/blueconsulting/sianroses/util/Console.java
