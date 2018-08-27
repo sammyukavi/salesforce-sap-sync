@@ -14,6 +14,7 @@ task fatJar(type: Jar) {
     }
     baseName = project.name + '-all'
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    exclude 'META-INF/*.RSA', 'META-INF/*.SF','META-INF/*.DSA'
     with jar
 }
 
@@ -24,14 +25,15 @@ repositories {
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
-    compile files('libs/mssql-jdbc-7.0.0.jre8.jar')
-    implementation group: 'com.j256.ormlite', name: 'ormlite-core', version: '5.1'
-    implementation group: 'com.j256.ormlite', name: 'ormlite-jdbc', version: '5.1'
-    implementation group: 'org.xerial', name: 'sqlite-jdbc', version: '3.23.1'
-    implementation 'com.squareup.okhttp3:okhttp:3.11.0'
-    implementation 'com.squareup.okio:okio:2.0.0'
-    implementation 'com.squareup.retrofit2:retrofit:2.4.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
-    implementation 'com.google.code.gson:gson:2.8.5'
-    implementation 'com.squareup.okhttp3:logging-interceptor:3.10.0'
+    compile group: 'com.microsoft.sqlserver', name: 'mssql-jdbc', version: '7.0.0.jre8'
+    compile group: 'com.j256.ormlite', name: 'ormlite-core', version: '5.1'
+    compile group: 'com.j256.ormlite', name: 'ormlite-jdbc', version: '5.1'
+    compile group: 'org.xerial', name: 'sqlite-jdbc', version: '3.23.1'
+    compile 'com.squareup.okhttp3:okhttp:3.11.0'
+    compile 'com.squareup.okio:okio:2.0.0'
+    compile 'com.squareup.retrofit2:retrofit:2.4.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.4.0'
+    compile 'com.google.code.gson:gson:2.8.5'
+    compile 'com.squareup.okhttp3:logging-interceptor:3.10.0'
+
 }
