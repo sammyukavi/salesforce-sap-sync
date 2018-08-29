@@ -10,11 +10,11 @@ import java.io.Serializable;
 //One way push to salesforce
 
 /**
- * This model maps SAP Warehouse to Salesforce Warehouse.
+ * This model maps SAP Greenhouse to Salesforce Greenhouse.
  * Syncing for warehouses is a one way push from SAP to Salesforce.
  */
 @DatabaseTable(tableName = "WAREHOUSE")
-public class Warehouse extends BaseSalesforceModel implements Serializable {
+public class Greenhouse extends BaseSalesforceModel implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	

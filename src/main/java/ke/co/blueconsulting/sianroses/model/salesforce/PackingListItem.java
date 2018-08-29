@@ -11,15 +11,13 @@ import java.io.Serializable;
 /**
  * This model maps Salesforce Packing List Items to SAP . Syncing is 2 ways from Salesforce to SAP
  */
-@DatabaseTable(tableName = "ARCREDITCH")
+@DatabaseTable(tableName = "ARINVOICECH")
 public class PackingListItem extends BaseSalesforceModel implements Serializable {
 	
 	private static final long serialVersionUID = 127597320235238L;
 	
-	/*@DatabaseField(columnName = "AUTOIDMST")
-	@SerializedName("AUTOIDMST")
-	@Expose
-	private int autoIdMst;*/
+	@DatabaseField(columnName = "AUTOIDMST")
+	private int autoIdMst;
 	
 	@DatabaseField(columnName = "Flower_Code__c")
 	@SerializedName("Flower_Code__c")
@@ -36,25 +34,19 @@ public class PackingListItem extends BaseSalesforceModel implements Serializable
 	@Expose
 	private String quantity;
 	
-	/*@DatabaseField(columnName = "Warehouse__c")
-	@SerializedName("Warehouse__c")
-	@Expose
-	private String warehouse;*/
+	@DatabaseField(columnName = "Warehouse__c")
+	private String warehouse;
 	
 	@DatabaseField(columnName = "UnitPrice")
 	@SerializedName("List_Price__c")
 	@Expose
 	private String unitPrice;
 	
-	/*@DatabaseField(columnName = "Tax_Code__c")
-	@SerializedName("Tax_Code__c")
-	@Expose
-	private String taxCodeC;*/
+	@DatabaseField(columnName = "Tax_Code__c")
+	private String taxCodeC;
 	
-	/*@DatabaseField(columnName = "Invoice_Entry__c")
-	@SerializedName("Invoice_Entry__c")
-	@Expose
-	private String InvoiceEntryC;*/
+	@DatabaseField(columnName = "Invoice_Entry__c")
+	private String InvoiceEntryC;
 	
 	public String getFlowerCode() {
 		return flowerCode;
@@ -86,5 +78,37 @@ public class PackingListItem extends BaseSalesforceModel implements Serializable
 	
 	public void setUnitPrice(String unitPrice) {
 		this.unitPrice = unitPrice;
+	}
+	
+	public int getAutoIdMst() {
+		return autoIdMst;
+	}
+	
+	public void setAutoIdMst(int autoIdMst) {
+		this.autoIdMst = autoIdMst;
+	}
+	
+	public String getWarehouse() {
+		return warehouse;
+	}
+	
+	public void setWarehouse(String warehouse) {
+		this.warehouse = warehouse;
+	}
+	
+	public String getTaxCodeC() {
+		return taxCodeC;
+	}
+	
+	public void setTaxCodeC(String taxCodeC) {
+		this.taxCodeC = taxCodeC;
+	}
+	
+	public String getInvoiceEntryC() {
+		return InvoiceEntryC;
+	}
+	
+	public void setInvoiceEntryC(String invoiceEntryC) {
+		InvoiceEntryC = invoiceEntryC;
 	}
 }

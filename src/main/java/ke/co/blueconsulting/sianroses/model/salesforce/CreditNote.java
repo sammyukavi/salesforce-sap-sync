@@ -12,8 +12,8 @@ import java.util.Date;
 /**
  * This model maps Salesforce Packing List to SAP. Syncing is 2 ways from Salesforce to SAP
  */
-@DatabaseTable(tableName = "ARINVOICE")
-public class ArInvoice extends BaseSalesforceModel implements Serializable {
+@DatabaseTable(tableName = "ARCREDIT")
+public class CreditNote extends BaseSalesforceModel implements Serializable {
 	
 	private static final long serialVersionUID = 1527097474049L;
 	

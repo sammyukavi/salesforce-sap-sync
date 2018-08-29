@@ -46,28 +46,11 @@ public class PackingLists {
 				
 				ArrayList<PackingList> insertedPackingLists = new ArrayList<>();
 				
-				int packingListsCount = packingLists.size();
-				
-				AppLogger.logInfo("Received " + packingListsCount + " packing lists from Salesforce");
+				AppLogger.logInfo("Received " + packingLists.size() + " packing lists from Salesforce");
 				
 				try {
-					if (packingListsCount > 0) {
-						
-						updateSyncFields(packingLists, false, false);
-						
-						insertedPackingLists = packingListDbService.upsertRecords(packingLists);
-						
-						for (PackingList packingList : insertedPackingLists) {
-							
-							ArrayList<PackingListItem> records = packingList.getPackingListItems().getRecords();
-							
-							if (records != null) {
-								packingListItemDbService.upsertRecords(records);
-							}
-							
-						}
-						
-					}
+					
+					insertedPackingLists = performUpserts(insertedPackingLists);
 					
 				} catch (SQLException e) {
 					
@@ -77,7 +60,7 @@ public class PackingLists {
 					
 				} finally {
 					
-					//updateSalesforcePackingList(insertedPackingLists);
+					updateSalesforcePackingList(insertedPackingLists);
 					
 				}
 				
@@ -102,7 +85,26 @@ public class PackingLists {
 		
 	}
 	
-	/*private static void updateSalesforcePackingList(ArrayList<PackingList> insertedPackingLists) {
+	private static ArrayList<PackingList> performUpserts(ArrayList<PackingList> packingLists) throws SQLException {
+		
+		updateSyncFields(packingLists, false, false);
+		
+		ArrayList<PackingList> insertedPackingLists = packingListDbService.upsertRecords(packingLists);
+		
+		for (PackingList packingList : insertedPackingLists) {
+			
+			ArrayList<PackingListItem> records = packingList.getPackingListItems().getRecords();
+			
+			if (records != null) {
+				packingListItemDbService.upsertRecords(records, packingList.getAutoId());
+			}
+			
+		}
+		
+		return insertedPackingLists;
+	}
+	
+	private static void updateSalesforcePackingList(ArrayList<PackingList> insertedPackingLists) {
 		
 		syncDashboard.setIsBusy(true);
 		
@@ -112,8 +114,8 @@ public class PackingLists {
 			
 			ArrayList<Integer> packingListsIds = new ArrayList<>();
 			
-			for (PackingList customer : insertedPackingLists) {
-				packingListsIds.add(customer.getAutoId());
+			for (PackingList packingList : insertedPackingLists) {
+				packingListsIds.add(packingList.getAutoId());
 			}
 			
 			unsyncedPackingLists = (ArrayList<PackingList>) updateSyncFields(packingListDbService.getUnsyncedPackingLists(packingListsIds), false, false);
@@ -123,6 +125,14 @@ public class PackingLists {
 		}
 		
 		insertedPackingLists.addAll(unsyncedPackingLists);
+		
+		ArrayList<PackingList> packingListToPush = new ArrayList<>();
+		
+		for (PackingList packingList : insertedPackingLists) {
+			packingList.setPackingListItems(null);
+			packingList.setPostingDate(null);
+			packingListToPush.add(packingList);
+		}
 		
 		int customersCount = insertedPackingLists.size();
 		
@@ -135,27 +145,23 @@ public class PackingLists {
 				
 				ArrayList<PackingList> packingLists = response.getPackingLists();
 				
-				int customersCount = packingLists.size();
 				
 				AppLogger.logInfo("Push To Salesforce Successful. " +
-						"Received " + customersCount + " packing lists from Salesforce for updating");
+						"Received " + packingLists.size() + " packing lists from Salesforce for updating");
 				
 				try {
-					if (customersCount > 0) {
-						
-						packingLists = (ArrayList<PackingList>) updateSyncFields(packingLists, false, false);
-						
-						packingListDbService.upsertRecords(packingLists);
-						
-					}
+					
+					performUpserts(packingLists);
 					
 				} catch (SQLException e) {
+					
+					e.printStackTrace();
 					
 					AppLogger.logError("An error occured when upserting packing lists. " + e.getMessage());
 					
 				} finally {
 					
-					AppLogger.logInfo("Customers sync complete");
+					AppLogger.logInfo("Packing Lists sync complete");
 					
 				}
 			}
@@ -175,9 +181,9 @@ public class PackingLists {
 			}
 		};
 		
-		syncDataService.pushPackingListsToSalesforce(Response.setPackingLists(insertedPackingLists), pushToSalesforceCallback);
+		syncDataService.pushPackingListsToSalesforce(Response.setPackingLists(packingListToPush), pushToSalesforceCallback);
 		
-	}*/
+	}
 	
 	
 }

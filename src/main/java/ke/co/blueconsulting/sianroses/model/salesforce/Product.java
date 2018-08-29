@@ -47,10 +47,8 @@ public class Product extends BaseSalesforceModel implements Serializable {
 	@Expose
 	private String breeder;
 	
-	/*@DatabaseField(columnName = "Family")
-	@SerializedName("Family")
-	@Expose
-	private String family;*/
+	@DatabaseField(columnName = "Family")
+	private String family;
 	
 	@DatabaseField(columnName = "Product_Type__c")
 	@SerializedName("Product_Type__c")

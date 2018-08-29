@@ -45,7 +45,7 @@ public class Response implements Serializable {
 	
 	@SerializedName(WAREHOUSES)
 	@Expose
-	private ArrayList<Warehouse> warehouses = new ArrayList<>();
+	private ArrayList<Greenhouse> greenhouses = new ArrayList<>();
 	
 	@SerializedName(PACKING_LISTS)
 	@Expose
@@ -104,13 +104,13 @@ public class Response implements Serializable {
 		return instance;
 	}
 	
-	public ArrayList<Warehouse> getWarehouses() {
-		return warehouses;
+	public static Response setWarehouses(ArrayList<Greenhouse> greenhouses) {
+		instance.greenhouses = greenhouses;
+		return instance;
 	}
 	
-	public static Response setWarehouses(ArrayList<Warehouse> warehouses) {
-		instance.warehouses = warehouses;
-		return instance;
+	public ArrayList<Greenhouse> getGreenhouses() {
+		return greenhouses;
 	}
 	
 	public ArrayList<PackingList> getPackingLists() {

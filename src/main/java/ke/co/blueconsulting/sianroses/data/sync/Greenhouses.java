@@ -2,10 +2,10 @@ package ke.co.blueconsulting.sianroses.data.sync;
 
 import ke.co.blueconsulting.sianroses.contract.SyncContract;
 import ke.co.blueconsulting.sianroses.data.DataService;
-import ke.co.blueconsulting.sianroses.data.db.WarehouseDbService;
+import ke.co.blueconsulting.sianroses.data.db.GreenhouseDbService;
 import ke.co.blueconsulting.sianroses.data.impl.SyncDataService;
 import ke.co.blueconsulting.sianroses.model.app.Response;
-import ke.co.blueconsulting.sianroses.model.salesforce.Warehouse;
+import ke.co.blueconsulting.sianroses.model.salesforce.Greenhouse;
 import ke.co.blueconsulting.sianroses.util.AppLogger;
 
 import java.sql.SQLException;
@@ -14,28 +14,28 @@ import java.util.ArrayList;
 import static ke.co.blueconsulting.sianroses.util.UpdateFields.updateSyncFields;
 
 
-public class Warehouses {
+public class Greenhouses {
 	
-	private static WarehouseDbService dbService;
+	private static GreenhouseDbService dbService;
 	private static SyncContract.View syncDashboard;
 	
 	public static void sync(SyncContract.View view, SyncDataService dataService) {
 		
 		syncDashboard = view;
 		
-		dbService = new WarehouseDbService();
+		dbService = new GreenhouseDbService();
 		
 		syncDashboard.setIsBusy(true);
 		
-		ArrayList<Warehouse> warehouses = new ArrayList<>();
+		ArrayList<Greenhouse> greenhouses = new ArrayList<>();
 		
 		try {
 			
-			warehouses = dbService.getRecordsWithPullFromSapCheckedTrue(Warehouse.class);
+			greenhouses = dbService.getRecordsWithPullFromSapCheckedTrue(Greenhouse.class);
 			
 		} catch (SQLException e) {
 			
-			AppLogger.logError("An error occurred when querying warehouses. " + e.getMessage());
+			AppLogger.logError("An error occurred when querying greenhouses. " + e.getMessage());
 			
 		}
 		
@@ -43,27 +43,27 @@ public class Warehouses {
 			@Override
 			public void onCompleted(Response response) {
 				
-				ArrayList<Warehouse> warehouses = response.getWarehouses();
+				ArrayList<Greenhouse> greenhouses = response.getGreenhouses();
 				
-				int warehousesCount = warehouses.size();
+				int warehousesCount = greenhouses.size();
 				
-				AppLogger.logInfo("Push To Salesforce Successful. " + "Received " + warehousesCount + " warehouses from Salesforce for updating");
+				AppLogger.logInfo("Push To Salesforce Successful. " + "Received " + warehousesCount + " greenhouses from Salesforce for updating");
 				
 				try {
 					if (warehousesCount > 0) {
 						
-						warehouses = (ArrayList<Warehouse>) updateSyncFields(warehouses, false, false);
+						greenhouses = (ArrayList<Greenhouse>) updateSyncFields(greenhouses, false, false);
 						
-						dbService.upsertRecords(warehouses);
+						dbService.upsertRecords(greenhouses);
 						
 					}
 				} catch (SQLException e) {
 					
-					AppLogger.logError("An error occurred when upserting warehouses. " + e.getMessage());
+					AppLogger.logError("An error occurred when upserting greenhouses. " + e.getMessage());
 					
 				} finally {
 					
-					AppLogger.logInfo("Warehouses sync is complete");
+					AppLogger.logInfo("Greenhouses sync is complete");
 					
 				}
 			}
@@ -72,7 +72,7 @@ public class Warehouses {
 			@Override
 			public void onError(Throwable t) {
 				
-				AppLogger.logError("Failed to push warehouses to Salesforce. " + t.getMessage());
+				AppLogger.logError("Failed to push greenhouses to Salesforce. " + t.getMessage());
 				
 			}
 			
@@ -84,7 +84,7 @@ public class Warehouses {
 			}
 		};
 		
-		dataService.pushWarehousesToSalesforce(Response.setWarehouses(warehouses), pushWarehousesToSalesforceCallback);
+		dataService.pushWarehousesToSalesforce(Response.setWarehouses(greenhouses), pushWarehousesToSalesforceCallback);
 		
 	}
 }

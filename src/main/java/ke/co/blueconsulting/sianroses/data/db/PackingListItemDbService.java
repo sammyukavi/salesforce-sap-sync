@@ -20,7 +20,7 @@ public class PackingListItemDbService extends BaseDbService {
 		super();
 	}
 	
-	public ArrayList<PackingListItem> upsertRecords(ArrayList<PackingListItem> records) throws SQLException {
+	public ArrayList<PackingListItem> upsertRecords(ArrayList<PackingListItem> records, int autoIdMst) throws SQLException {
 		
 		Dao<PackingListItem, Integer> dao = createDao(PackingListItem.class);
 		
@@ -28,35 +28,37 @@ public class PackingListItemDbService extends BaseDbService {
 			
 			ArrayList<PackingListItem> upsertedPackingListItems = new ArrayList<>();
 			
-			for (PackingListItem invoice : records) {
+			for (PackingListItem packingListItem : records) {
 				
-				boolean recordExists = dao.queryBuilder().where().eq("SalesForceId", invoice.getSalesforceId()).countOf() > 0;
+				boolean recordExists = dao.queryBuilder().where().eq("SalesForceId", packingListItem.getSalesforceId()).countOf() > 0;
+				
+				packingListItem.setAutoIdMst(autoIdMst);
 				
 				if (recordExists) {
 					
 					UpdateBuilder<PackingListItem, Integer> updateBuilder = dao.updateBuilder();
 					
-					if (!StringUtils.isNullOrEmpty(invoice.getFlowerCode())) {
-						updateBuilder.updateColumnValue("Flower_Code__c", new SelectArg(invoice.getFlowerCode()));
+					if (!StringUtils.isNullOrEmpty(packingListItem.getFlowerCode())) {
+						updateBuilder.updateColumnValue("Flower_Code__c", new SelectArg(packingListItem.getFlowerCode()));
 					}
 					
-					if (!StringUtils.isNullOrEmpty(invoice.getName())) {
-						updateBuilder.updateColumnValue("Name", new SelectArg(invoice.getName()));
+					if (!StringUtils.isNullOrEmpty(packingListItem.getName())) {
+						updateBuilder.updateColumnValue("Name", new SelectArg(packingListItem.getName()));
 					}
 					
-					if (!StringUtils.isNullOrEmpty(invoice.getQuantity())) {
-						updateBuilder.updateColumnValue("Quantity__c", new SelectArg(invoice.getQuantity()));
+					if (!StringUtils.isNullOrEmpty(packingListItem.getQuantity())) {
+						updateBuilder.updateColumnValue("Quantity__c", new SelectArg(packingListItem.getQuantity()));
 					}
 					
-					if (!StringUtils.isNullOrEmpty(invoice.getUnitPrice())) {
-						updateBuilder.updateColumnValue("UnitPrice", new SelectArg(invoice.getUnitPrice()));
+					if (!StringUtils.isNullOrEmpty(packingListItem.getUnitPrice())) {
+						updateBuilder.updateColumnValue("UnitPrice", new SelectArg(packingListItem.getUnitPrice()));
 					}
 					
-					updateBuilder.updateColumnValue("Push_to_SAP__c", invoice.isPushToSap());
+					updateBuilder.updateColumnValue("Push_to_SAP__c", packingListItem.isPushToSap());
 					
-					updateBuilder.updateColumnValue("Pull_from_SAP__c", invoice.isPullFromSap());
+					updateBuilder.updateColumnValue("Pull_from_SAP__c", packingListItem.isPullFromSap());
 					
-					updateBuilder.where().eq("SalesForceId", new SelectArg(invoice.getSalesforceId()));
+					updateBuilder.where().eq("SalesForceId", new SelectArg(packingListItem.getSalesforceId()));
 					
 					updateBuilder.prepare();
 					
@@ -66,16 +68,16 @@ public class PackingListItemDbService extends BaseDbService {
 					
 					Where<PackingListItem, Integer> where = queryBuilder.where();
 					
-					where = where.eq("SalesForceId", new SelectArg(invoice.getSalesforceId()));
+					where = where.eq("SalesForceId", new SelectArg(packingListItem.getSalesforceId()));
 					
 					List<PackingListItem> insertedProductList = dao.query(where.prepare());
 					
-					invoice = insertedProductList.get(0);
+					packingListItem = insertedProductList.get(0);
 					
 				} else {
-					dao.createOrUpdate(invoice);
+					dao.createOrUpdate(packingListItem);
 				}
-				upsertedPackingListItems.add(invoice);
+				upsertedPackingListItems.add(packingListItem);
 			}
 			return upsertedPackingListItems;
 		});
@@ -100,4 +102,5 @@ public class PackingListItemDbService extends BaseDbService {
 	public PackingListItem insertRecord(PackingListItem packingList) throws SQLException {
 		return insertRecord(PackingListItem.class, packingList);
 	}
+	
 }
