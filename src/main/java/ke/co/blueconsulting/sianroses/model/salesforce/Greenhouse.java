@@ -16,7 +16,7 @@ import java.io.Serializable;
 @DatabaseTable(tableName = "WAREHOUSE")
 public class Greenhouse extends BaseSalesforceModel implements Serializable {
 	
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1485817458188725741L;
 	
 	@DatabaseField(columnName = "Farm__c")
 	@SerializedName("Farm_SAP__c")

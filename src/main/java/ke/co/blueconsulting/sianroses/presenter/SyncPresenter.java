@@ -245,19 +245,19 @@ public class SyncPresenter implements SyncContract.Presenter {
 			
 			SyncDataService syncDataService = new SyncDataService();
 			
-			Customers.sync(syncDashboard, syncDataService);
+			//Customers.sync(syncDashboard, syncDataService);
 			
-			CustomersContacts.sync(syncDashboard, syncDataService);
+			//CustomersContacts.sync(syncDashboard, syncDataService);
 			
-			Products.sync(syncDashboard, syncDataService);
+			//Products.sync(syncDashboard, syncDataService);
 			
-			ProductsChildren.sync(syncDashboard, syncDataService);
+			//ProductsChildren.sync(syncDashboard, syncDataService);
 			
 			PriceLists.sync(syncDashboard, syncDataService);
 			
-			Greenhouses.sync(syncDashboard, syncDataService);
+			//Greenhouses.sync(syncDashboard, syncDataService);
 			
-			PackingLists.sync(syncDashboard, syncDataService);
+			//PackingLists.sync(syncDashboard, syncDataService);
 			
 		} else {
 			syncDashboard.showSuccessMessage("Cannot get access token from Salesforce. No Login Credentials Found");
