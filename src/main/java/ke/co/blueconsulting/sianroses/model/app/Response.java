@@ -59,6 +59,11 @@ public class Response implements Serializable {
 		Response.instance = instance;
 	}
 	
+	public static Response setWarehouses(ArrayList<Greenhouse> greenhouses) {
+		instance.greenhouses = greenhouses;
+		return instance;
+	}
+	
 	public ArrayList<Customer> getCustomers() {
 		return customers;
 	}
@@ -101,11 +106,6 @@ public class Response implements Serializable {
 	
 	public static Response setProductsChildren(ArrayList<ProductChild> productsChildren) {
 		instance.productsChildren = productsChildren;
-		return instance;
-	}
-	
-	public static Response setWarehouses(ArrayList<Greenhouse> greenhouses) {
-		instance.greenhouses = greenhouses;
 		return instance;
 	}
 	

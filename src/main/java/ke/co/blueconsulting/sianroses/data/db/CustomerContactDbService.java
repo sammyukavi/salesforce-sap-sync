@@ -8,6 +8,7 @@ import com.j256.ormlite.stmt.UpdateBuilder;
 import com.j256.ormlite.stmt.Where;
 import ke.co.blueconsulting.sianroses.data.BaseDbService;
 import ke.co.blueconsulting.sianroses.model.salesforce.CustomerContact;
+import ke.co.blueconsulting.sianroses.util.Console;
 import ke.co.blueconsulting.sianroses.util.StringUtils;
 
 import java.sql.SQLException;
@@ -29,7 +30,7 @@ public class CustomerContactDbService extends BaseDbService {
 		
 		Where<CustomerContact, Integer> where = dao.queryBuilder().where();
 		
-		where = where.or(where.isNull("CONTACTID"), where.eq("CONTACTID", ""),
+		where = where.or(where.isNull("SalesForceId"), where.eq("SalesForceId", ""),
 				where.eq("Pull_from_SAP__c", true)).and().isNotNull("LastName");
 		
 		if (!ids.isEmpty()) {
@@ -52,14 +53,14 @@ public class CustomerContactDbService extends BaseDbService {
 				
 				boolean recordExists;
 				
-				boolean isUsingSalesforceIdColumn = (!StringUtils.isNullOrEmpty(customerContact.getContactId()));
+				boolean isUsingAccountNumberColumn = !StringUtils.isNullOrEmpty(customerContact.getAccountNumber());
 				
-				if (isUsingSalesforceIdColumn) {
-					recordExists = dao.queryBuilder().where()
-							.eq("CONTACTID", customerContact.getContactId()).countOf() > 0;
-				} else {
+				if (isUsingAccountNumberColumn) {
 					recordExists = dao.queryBuilder().where()
 							.eq("Account_Number", customerContact.getAccountNumber()).countOf() > 0;
+				} else {
+					recordExists = dao.queryBuilder().where()
+							.eq("SalesForceId", customerContact.getSalesforceId()).countOf() > 0;
 				}
 				
 				if (recordExists) {
@@ -134,14 +135,18 @@ public class CustomerContactDbService extends BaseDbService {
 					
 					updateBuilder.updateColumnValue("Push_to_SAP__c", customerContact.isPushToSAP());
 					
-					if (StringUtils.isNullOrEmpty(customerContact.getTitle())) {
+					if (!StringUtils.isNullOrEmpty(customerContact.getSalesforceId())) {
+						updateBuilder.updateColumnValue("SalesforceId", new SelectArg(customerContact.getSalesforceId()));
+					}
+					
+					if (!StringUtils.isNullOrEmpty(customerContact.getTitle())) {
 						updateBuilder.updateColumnValue("Title", new SelectArg(customerContact.getTitle()));
 					}
 					
-					if (isUsingSalesforceIdColumn) {
-						updateBuilder.where().eq("CONTACTID", new SelectArg(customerContact.getContactId()));
-					} else {
+					if (isUsingAccountNumberColumn) {
 						updateBuilder.where().eq("Account_Number", new SelectArg(customerContact.getAccountNumber()));
+					} else {
+						updateBuilder.where().eq("SalesForceId", new SelectArg(customerContact.getSalesforceId()));
 					}
 					
 					updateBuilder.prepare();
@@ -152,10 +157,10 @@ public class CustomerContactDbService extends BaseDbService {
 					
 					Where<CustomerContact, Integer> where = queryBuilder.where();
 					
-					if (isUsingSalesforceIdColumn) {
-						where = where.eq("CONTACTID", new SelectArg(customerContact.getContactId()));
-					} else {
+					if (isUsingAccountNumberColumn) {
 						where = where.eq("Account_Number", new SelectArg(customerContact.getAccountNumber()));
+					} else {
+						where = where.eq("SalesForceId", new SelectArg(customerContact.getSalesforceId()));
 					}
 					
 					List<CustomerContact> insertedCustomerContactList = dao.query(where.prepare());
@@ -163,6 +168,17 @@ public class CustomerContactDbService extends BaseDbService {
 					customerContact = insertedCustomerContactList.get(0);
 					
 				} else {
+					
+					if (StringUtils.isNullOrEmpty(customerContact.getContactId())) {
+						
+						String fName = customerContact.getFirstName();
+						
+						String lName = customerContact.getLastName();
+						
+						customerContact.setContactId((StringUtils.isNullOrEmpty(fName) ? "" : fName)
+								+ " "+(StringUtils.isNullOrEmpty(fName) ? "" : lName));
+					}
+					
 					dao.createOrUpdate(customerContact);
 				}
 				upsertedContacts.add(customerContact);

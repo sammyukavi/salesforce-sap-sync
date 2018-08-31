@@ -1,11 +1,9 @@
 package ke.co.blueconsulting.sianroses.model.salesforce;
 
 import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
-import ke.co.blueconsulting.sianroses.data.adapter.EmptyStringTypeAdapter;
 
 import java.io.Serializable;
 
@@ -38,9 +36,6 @@ public class CustomerContact implements Serializable {
 	private String birthDate;
 	
 	@DatabaseField(columnName = "CONTACTID")
-	@SerializedName("Id")
-	@Expose
-	@JsonAdapter(EmptyStringTypeAdapter.class)
 	private String contactId;
 	
 	@DatabaseField(columnName = "Department")
@@ -117,6 +112,11 @@ public class CustomerContact implements Serializable {
 	@SerializedName("Push_to_SAP__c")
 	@Expose
 	private boolean pushToSAP = false;
+	
+	@DatabaseField(columnName = "SalesForceId")
+	@SerializedName("Id")
+	@Expose
+	private String salesforceId;
 	
 	public String getAccountId() {
 		return accountId;
@@ -276,5 +276,13 @@ public class CustomerContact implements Serializable {
 	
 	public void setAutoId(int autoId) {
 		this.autoId = autoId;
+	}
+	
+	public String getSalesforceId() {
+		return salesforceId;
+	}
+	
+	public void setSalesforceId(String salesforceId) {
+		this.salesforceId = salesforceId;
 	}
 }

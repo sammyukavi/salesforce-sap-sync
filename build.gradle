@@ -1,26 +1,61 @@
-apply plugin: 'java'
-apply plugin: 'eclipse'
+import proguard.gradle.ProGuardTask
 
+buildscript {    
+
+    repositories {
+         mavenCentral()
+         mavenLocal()
+    }
+    
+    dependencies {
+        classpath 'net.sf.proguard:proguard-gradle:5.2.1'
+    }
+    
+}
+
+plugins {
+    id 'java'
+    id 'application'  
+    id 'maven'
+    id 'idea'
+}
+
+group 'ke.co.blueconsulting'
 version '1.0-SNAPSHOT'
-
 sourceCompatibility = 1.8
+mainClassName = 'ke.co.blueconsulting.sianroses.SianRosesApp'
+
+def javaName = archivesBaseName
+def fullJavaName = archivesBaseName + '-full'
 
 //create a single Jar with all dependencies
 task fatJar(type: Jar) {
+    dependsOn 'clean'
+    dependsOn 'build'   
+    tasks.findByName('build').mustRunAfter 'clean'    
     manifest {
         attributes 'Implementation-Title': 'Sian Roses Salesforce-SAP Integrator',
                 'Implementation-Version': version,
                 'Main-Class': 'ke.co.blueconsulting.sianroses.SianRosesApp'
     }
-    baseName = project.name + '-all'
-    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+   //baseName = project.name
+   baseName = fullJavaName
+    //from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
     exclude 'META-INF/*.RSA', 'META-INF/*.SF', 'META-INF/*.DSA'
     with jar
 }
 
+task proguard(type: ProGuardTask, dependsOn: 'fatJar') {    
+    configuration 'proguard-rules.txt'
+    injars "$buildDir/libs/${fullJavaName}-${version}.jar"
+    outjars "$buildDir/libs/${javaName}-${version}.jar" 
+    
+    libraryjars "${System.getProperty('java.home')}/lib/rt.jar"
+}
+
 repositories {
-    mavenCentral()
-    mavenLocal()
+         mavenCentral()
+         mavenLocal()
 }
 
 dependencies {

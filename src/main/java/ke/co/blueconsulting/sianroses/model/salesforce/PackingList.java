@@ -37,6 +37,11 @@ public class PackingList extends BaseSalesforceModel implements Serializable {
 	@Expose
 	private String dueDate;
 	
+	@DatabaseField(columnName = "Farm_Order_Number__c")
+	@SerializedName("Name")
+	@Expose
+	private String farmOrderNumber;
+	
 	@DatabaseField(columnName = "PO_Number__c")
 	@SerializedName("PO_Number__c")
 	@Expose
@@ -61,6 +66,11 @@ public class PackingList extends BaseSalesforceModel implements Serializable {
 	@SerializedName("Reason")
 	@Expose
 	private String Reason;
+	
+	@DatabaseField(columnName = "Auction")
+	@SerializedName("Auction")
+	@Expose
+	private String auction;
 	
 	@SerializedName("Packing_List_Items__r")
 	@Expose
@@ -145,5 +155,29 @@ public class PackingList extends BaseSalesforceModel implements Serializable {
 	
 	public void setPackingListItems(PackingListItems packingListItems) {
 		this.packingListItems = packingListItems;
+	}
+	
+	public String getFarmOrderNumber() {
+		return farmOrderNumber;
+	}
+	
+	public void setFarmOrderNumber(String farmOrderNumber) {
+		this.farmOrderNumber = farmOrderNumber;
+	}
+	
+	public String getpONumber() {
+		return pONumber;
+	}
+	
+	public void setpONumber(String pONumber) {
+		this.pONumber = pONumber;
+	}
+	
+	public String getAuction() {
+		return auction;
+	}
+	
+	public void setAuction(String auction) {
+		this.auction = auction;
 	}
 }

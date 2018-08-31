@@ -238,6 +238,7 @@ public class SyncPresenter implements SyncContract.Presenter {
 	
 	@Override
 	public void performSync() {
+		
 		if (hasAccessToken()) {
 			
 			RestServiceBuilder.switchToApiBaseUrl();
@@ -250,7 +251,6 @@ public class SyncPresenter implements SyncContract.Presenter {
 			
 			Products.sync(syncDashboard, syncDataService);
 			
-			//TODO paginate. Results are more than 1000
 			ProductsChildren.sync(syncDashboard, syncDataService);
 			
 			PriceLists.sync(syncDashboard, syncDataService);

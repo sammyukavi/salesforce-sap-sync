@@ -36,11 +36,23 @@ public class PackingListDbService extends BaseDbService {
 					
 					UpdateBuilder<PackingList, Integer> updateBuilder = dao.updateBuilder();
 					
+					updateBuilder.updateColumnValue("Posting_Date__c", new SelectArg(packingList.getPostingDate()));
+					
+					if (!StringUtils.isNullOrEmpty(packingList.getErpId())) {
+						updateBuilder.updateColumnValue("ERP_ID__c", new SelectArg(packingList.getErpId()));
+					}
+					
 					if (!StringUtils.isNullOrEmpty(packingList.getAccountID())) {
 						updateBuilder.updateColumnValue("AccountID", new SelectArg(packingList.getAccountID()));
 					}
 					
-					updateBuilder.updateColumnValue("Posting_Date__c", new SelectArg(packingList.getPostingDate()));
+					if (!StringUtils.isNullOrEmpty(packingList.getDueDate())) {
+						updateBuilder.updateColumnValue("Due_Date__c", new SelectArg(packingList.getDueDate()));
+					}
+					
+					if (!StringUtils.isNullOrEmpty(packingList.getFarmOrderNumber())) {
+						updateBuilder.updateColumnValue("Farm_Order_Number__c", new SelectArg(packingList.getFarmOrderNumber()));
+					}
 					
 					if (!StringUtils.isNullOrEmpty(packingList.getPONumber())) {
 						updateBuilder.updateColumnValue("PO_Number__c", new SelectArg(packingList.getPONumber()));
@@ -60,6 +72,9 @@ public class PackingListDbService extends BaseDbService {
 					
 					if (!StringUtils.isNullOrEmpty(packingList.getReason())) {
 						updateBuilder.updateColumnValue("Reason", new SelectArg(packingList.getReason()));
+					}
+					if (!StringUtils.isNullOrEmpty(packingList.getAuction())) {
+						updateBuilder.updateColumnValue("Auction", new SelectArg(packingList.getAuction()));
 					}
 					
 					updateBuilder.updateColumnValue("Push_to_SAP__c", packingList.isPushToSap());
@@ -112,6 +127,8 @@ public class PackingListDbService extends BaseDbService {
 		
 		packingList.setDueDate(packingList1.getDueDate() != null ? packingList1.getDueDate() : packingList2.getDueDate());
 		
+		packingList.setFarmOrderNumber(packingList1.getFarmOrderNumber() != null ? packingList1.getFarmOrderNumber() : packingList2.getFarmOrderNumber());
+		
 		packingList.setPONumber(packingList1.getPONumber() != null ? packingList1.getPONumber() : packingList2.getPONumber());
 		
 		packingList.setInvoiceNumber(packingList1.getInvoiceNumber() != null ? packingList1.getInvoiceNumber() : packingList2.getInvoiceNumber());
@@ -121,6 +138,8 @@ public class PackingListDbService extends BaseDbService {
 		packingList.setFarm(packingList1.getFarm() != null ? packingList1.getFarm() : packingList2.getFarm());
 		
 		packingList.setReason(packingList1.getReason() != null ? packingList1.getReason() : packingList2.getReason());
+		
+		packingList.setAuction(packingList1.getAuction() != null ? packingList1.getAuction() : packingList2.getAuction());
 		
 		packingList.setPackingListItems(packingList1.getPackingListItems() != null ? packingList1.getPackingListItems() : packingList2.getPackingListItems());
 		

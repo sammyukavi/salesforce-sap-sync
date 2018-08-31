@@ -24,18 +24,6 @@ public class ProductsChildren {
 		
 		syncDashboard.setIsBusy(true);
 		
-		ArrayList<ProductChild> productChildren = new ArrayList<>();
-		
-		try {
-			
-			productChildren = dbService.getRecordsWithPullFromSapCheckedTrue(ProductChild.class);
-			
-		} catch (SQLException e) {
-			
-			AppLogger.logError("An error occurred when querying products child. " + e.getMessage());
-			
-		}
-		
 		DataService.GetCallback<Response> callback = new DataService.GetCallback<Response>() {
 			
 			@Override
@@ -49,6 +37,7 @@ public class ProductsChildren {
 						"Received " + productsChildrenCount + " products' children' children from Salesforce for updating");
 				
 				try {
+					
 					if (productsChildrenCount > 0) {
 						
 						productsChildren = (ArrayList<ProductChild>) updateSyncFields(productsChildren, false, false);
@@ -81,6 +70,23 @@ public class ProductsChildren {
 				
 			}
 		};
+		
+		ArrayList<ProductChild> productChildren = new ArrayList<>();
+		
+		try {
+			
+			productChildren = dbService.getRecordsWithPullFromSapCheckedTrue(ProductChild.class);
+			
+			int size = productChildren.size();
+			
+			AppLogger.logInfo("Found " + size + " products' children that need to be pushed to Salesforce. " + (size > 0 ? "Attempting to push." : ""));
+			
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			AppLogger.logError("An error occurred when querying products child. " + e.getMessage());
+			
+		}
 		
 		dataService.pushProductsChildrenToSalesforce(Response.setProductsChildren(productChildren), callback);
 		

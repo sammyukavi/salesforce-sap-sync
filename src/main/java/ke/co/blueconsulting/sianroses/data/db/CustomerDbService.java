@@ -52,6 +52,7 @@ public class CustomerDbService extends BaseDbService {
 			for (Customer customer : customers) {
 				
 				boolean recordExists;
+				
 				boolean isUsingErpIdColumn = !StringUtils.isNullOrEmpty(customer.getErpId());
 				
 				if (isUsingErpIdColumn) {

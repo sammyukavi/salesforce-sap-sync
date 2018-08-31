@@ -31,6 +31,7 @@ public class ProductDbService extends BaseDbService {
 			for (Product product : products) {
 				
 				boolean recordExists;
+				
 				boolean isUsingProductCodeColumn = (!StringUtils.isNullOrEmpty(product.getProductCode()));
 				
 				if (isUsingProductCodeColumn) {

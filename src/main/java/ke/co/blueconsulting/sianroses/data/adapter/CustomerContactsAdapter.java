@@ -14,6 +14,7 @@ public class CustomerContactsAdapter extends TypeAdapter<CustomerContact> {
 	
 	@Override
 	public void write(JsonWriter jsonWriter, CustomerContact customerContact) throws IOException {
+		
 		jsonWriter.beginObject();
 		
 		if (!StringUtils.isNullOrEmpty(customerContact.getAccountId())) {
@@ -31,9 +32,9 @@ public class CustomerContactsAdapter extends TypeAdapter<CustomerContact> {
 			jsonWriter.value(customerContact.getBirthDate());
 		}
 		
-		if (!StringUtils.isNullOrEmpty(customerContact.getContactId())) {
+		if (!StringUtils.isNullOrEmpty(customerContact.getSalesforceId())) {
 			jsonWriter.name("Id");
-			jsonWriter.value(customerContact.getContactId());
+			jsonWriter.value(customerContact.getSalesforceId());
 		}
 		
 		if (!StringUtils.isNullOrEmpty(customerContact.getDepartment())) {
@@ -121,7 +122,11 @@ public class CustomerContactsAdapter extends TypeAdapter<CustomerContact> {
 				if (token.equals(JsonToken.NAME)) {
 					fieldname = jsonReader.nextName();
 				}
-				if ("AccountId".equals(fieldname)) {
+				
+				if ("Id".equals(fieldname)) {
+					jsonReader.peek();
+					CustomerContact.setSalesforceId(jsonReader.nextString());
+				} else if ("AccountId".equals(fieldname)) {
 					jsonReader.peek();
 					CustomerContact.setAccountId(jsonReader.nextString());
 				} else if ("Account_Number__c".equals(fieldname)) {
@@ -130,9 +135,6 @@ public class CustomerContactsAdapter extends TypeAdapter<CustomerContact> {
 				} else if ("Birthdate".equals(fieldname)) {
 					jsonReader.peek();
 					CustomerContact.setBirthDate(jsonReader.nextString());
-				} else if ("CONTACTID".equals(fieldname)) {
-					jsonReader.peek();
-					CustomerContact.setContactId(jsonReader.nextString());
 				} else if ("Department".equals(fieldname)) {
 					jsonReader.peek();
 					CustomerContact.setDepartment(jsonReader.nextString());

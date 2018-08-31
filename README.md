@@ -1,4 +1,4 @@
-# sian-roses-java-app
+# sian-roses-salesforce-sap-sync-client
 
 This project is for enabling the sync of data between Salesforce and the SAP Server at Sian Roses
 

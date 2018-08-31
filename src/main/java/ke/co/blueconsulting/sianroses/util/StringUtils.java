@@ -28,7 +28,7 @@ public class StringUtils {
 	 * string input is not null or empty
 	 */
 	public static boolean isNullOrEmpty(String stringInput) {
-		return stringInput == null || stringInput.isEmpty();
+		return stringInput == null || stringInput.trim().isEmpty();
 	}
 	
 	/**
@@ -46,7 +46,7 @@ public class StringUtils {
 		
 		if (rest.length() < charLimit) {
 			output = new StringBuilder(rest);
-		} else if (!rest.equals("") && (rest != null)) // safety precaution
+		} else if ((rest != null) &&!rest.equals("")) // safety precaution
 		{
 			do {
 				i = rest.lastIndexOf(" ", charLimit) + 1;
@@ -79,8 +79,8 @@ public class StringUtils {
 		String string = null;
 		try {
 			string = ResourceBundle.getBundle("strings").getString(key);
-		} catch (MissingResourceException ignored) {
-			ignored.printStackTrace();
+		} catch (MissingResourceException e) {
+			e.printStackTrace();
 		}
 		return string;
 	}
