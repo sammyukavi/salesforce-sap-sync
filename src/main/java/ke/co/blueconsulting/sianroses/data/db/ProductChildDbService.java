@@ -6,7 +6,7 @@ import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.stmt.SelectArg;
 import com.j256.ormlite.stmt.UpdateBuilder;
 import com.j256.ormlite.stmt.Where;
-import ke.co.blueconsulting.sianroses.data.BaseDbService;
+import ke.co.blueconsulting.sianroses.data.BaseDbDataService;
 import ke.co.blueconsulting.sianroses.model.salesforce.ProductChild;
 import ke.co.blueconsulting.sianroses.util.StringUtils;
 
@@ -14,7 +14,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProductChildDbService extends BaseDbService {
+public class ProductChildDbService extends BaseDbDataService {
 	
 	public ProductChildDbService() {
 		super();

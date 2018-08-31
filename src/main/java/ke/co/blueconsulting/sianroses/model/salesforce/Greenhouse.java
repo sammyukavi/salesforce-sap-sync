@@ -38,6 +38,11 @@ public class Greenhouse extends BaseSalesforceModel implements Serializable {
 	@Expose
 	private String warehouseCode;
 	
+	@DatabaseField(columnName = "U_variety")
+	@SerializedName("Variety_Name__c")
+	@Expose
+	private String varietyName;
+	
 	public String getFarm() {
 		return farm;
 	}
@@ -68,5 +73,13 @@ public class Greenhouse extends BaseSalesforceModel implements Serializable {
 	
 	public void setWarehouseCode(String warehouseCode) {
 		this.warehouseCode = warehouseCode;
+	}
+	
+	public String getVarietyName() {
+		return varietyName;
+	}
+	
+	public void setVarietyName(String varietyName) {
+		this.varietyName = varietyName;
 	}
 }

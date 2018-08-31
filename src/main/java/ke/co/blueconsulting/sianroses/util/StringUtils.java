@@ -46,7 +46,7 @@ public class StringUtils {
 		
 		if (rest.length() < charLimit) {
 			output = new StringBuilder(rest);
-		} else if ((rest != null) &&!rest.equals("")) // safety precaution
+		} else if ((rest != null) && !rest.equals("")) // safety precaution
 		{
 			do {
 				i = rest.lastIndexOf(" ", charLimit) + 1;

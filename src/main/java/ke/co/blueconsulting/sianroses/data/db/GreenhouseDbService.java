@@ -6,7 +6,7 @@ import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.stmt.SelectArg;
 import com.j256.ormlite.stmt.UpdateBuilder;
 import com.j256.ormlite.stmt.Where;
-import ke.co.blueconsulting.sianroses.data.BaseDbService;
+import ke.co.blueconsulting.sianroses.data.BaseDbDataService;
 import ke.co.blueconsulting.sianroses.model.salesforce.Greenhouse;
 import ke.co.blueconsulting.sianroses.util.StringUtils;
 
@@ -14,7 +14,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GreenhouseDbService extends BaseDbService {
+public class GreenhouseDbService extends BaseDbDataService {
 	
 	public GreenhouseDbService() {
 		super();
@@ -54,6 +54,10 @@ public class GreenhouseDbService extends BaseDbService {
 					
 					if (!StringUtils.isNullOrEmpty(greenhouse.getWarehouseCode())) {
 						updateBuilder.updateColumnValue("Warehouse_Code__c", new SelectArg(greenhouse.getWarehouseCode()));
+					}
+					
+					if (!StringUtils.isNullOrEmpty(greenhouse.getVarietyName())) {
+						updateBuilder.updateColumnValue("Variety_Name__c", new SelectArg(greenhouse.getVarietyName()));
 					}
 					
 					updateBuilder.updateColumnValue("Push_to_SAP__c", greenhouse.isPushToSap());

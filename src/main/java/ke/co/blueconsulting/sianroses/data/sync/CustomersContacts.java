@@ -1,20 +1,11 @@
 package ke.co.blueconsulting.sianroses.data.sync;
 
-import ke.co.blueconsulting.sianroses.contract.SyncContract;
-import ke.co.blueconsulting.sianroses.data.DataService;
-import ke.co.blueconsulting.sianroses.data.db.CustomerContactDbService;
-import ke.co.blueconsulting.sianroses.data.impl.SyncDataService;
-import ke.co.blueconsulting.sianroses.model.app.Response;
-import ke.co.blueconsulting.sianroses.model.salesforce.CustomerContact;
-import ke.co.blueconsulting.sianroses.util.AppLogger;
+import ke.co.blueconsulting.sianroses.data.BaseDbDataService;
+import ke.co.blueconsulting.sianroses.data.rest.SyncRestService;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
-
-import static ke.co.blueconsulting.sianroses.util.UpdateFields.updateCustomerContactSyncFields;
-
-public class CustomersContacts {
+public class CustomersContacts extends BaseDbDataService<SyncRestService> {
 	
+	/*private static final String PROCESS_NAME = "CONTACTS_SYNC";
 	private static SyncDataService syncDataService;
 	private static CustomerContactDbService dbService;
 	private static SyncContract.View syncDashboard;
@@ -29,6 +20,8 @@ public class CustomersContacts {
 		dbService = new CustomerContactDbService();
 		
 		syncDashboard.setIsBusy(true);
+		
+		syncDataService.addToProcessStack(PROCESS_NAME);
 		
 		DataService.GetCallback<Response> getFromSalesforceCallback = new DataService.GetCallback<Response>() {
 			
@@ -53,6 +46,8 @@ public class CustomersContacts {
 					}
 					
 				} catch (SQLException e) {
+					
+					e.printStackTrace();
 					
 					AppLogger.logError("An error occured while inserting the customer's contacts. " + e.getMessage());
 					
@@ -164,5 +159,5 @@ public class CustomersContacts {
 		
 		syncDataService.pushCustomersContactsToSalesforce(Response.setCustomerContacts(customerContacts), pushToSalesforceCallback);
 		
-	}
+	}*/
 }

@@ -127,8 +127,7 @@ public class CustomerAdapter extends TypeAdapter<Customer> {
 		}
 		
 		if (!StringUtils.isNullOrEmpty(customer.getPaymentTerms())) {
-			//jsonWriter.name("Payment_Terms__c");
-			jsonWriter.name("Payment_Terms_Code__c");
+			jsonWriter.name("Payment_Terms__c");
 			jsonWriter.value(customer.getPaymentTerms());
 		}
 		

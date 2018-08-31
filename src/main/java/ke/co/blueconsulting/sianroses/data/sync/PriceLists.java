@@ -15,6 +15,7 @@ import static ke.co.blueconsulting.sianroses.util.UpdateFields.updateSyncFields;
 
 public class PriceLists {
 	
+	private static final String PROCESS_NAME = "PRICE_LISTS_SYNC";
 	private static PriceListDbService dbService;
 	private static SyncContract.View syncDashboard;
 	
@@ -25,6 +26,8 @@ public class PriceLists {
 		dbService = new PriceListDbService();
 		
 		syncDashboard.setIsBusy(true);
+		
+		dataService.addToProcessStack(PROCESS_NAME);
 		
 		ArrayList<PriceList> priceLists = new ArrayList<>();
 		

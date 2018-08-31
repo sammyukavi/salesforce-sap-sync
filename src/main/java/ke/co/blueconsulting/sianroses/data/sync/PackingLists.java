@@ -17,12 +17,10 @@ import static ke.co.blueconsulting.sianroses.util.UpdateFields.updateSyncFields;
 
 public class PackingLists {
 	
+	private static final String PROCESS_NAME = "PACKING_LISTS_SYNC";
 	private static PackingListDbService packingListDbService;
-	
 	private static PackingListItemDbService packingListItemDbService;
-	
 	private static SyncContract.View syncDashboard;
-	
 	private static SyncDataService syncDataService;
 	
 	public static void sync(SyncContract.View view, SyncDataService dataService) {
@@ -36,6 +34,8 @@ public class PackingLists {
 		syncDataService = dataService;
 		
 		syncDashboard.setIsBusy(true);
+		
+		syncDataService.addToProcessStack(PROCESS_NAME);
 		
 		DataService.GetCallback<Response> getFromSalesforceCallback = new DataService.GetCallback<Response>() {
 			

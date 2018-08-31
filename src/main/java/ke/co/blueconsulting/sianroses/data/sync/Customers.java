@@ -15,10 +15,10 @@ import static ke.co.blueconsulting.sianroses.util.UpdateFields.updateSyncFields;
 
 public class Customers {
 	
+	private static final String PROCESS_NAME = "CUSTOMERS_SYNC";
 	private static SyncDataService syncDataService;
 	private static CustomerDbService dbService;
 	private static SyncContract.View syncDashboard;
-	
 	
 	public static void sync(SyncContract.View view, SyncDataService dataService) {
 		
@@ -29,6 +29,8 @@ public class Customers {
 		dbService = new CustomerDbService();
 		
 		syncDashboard.setIsBusy(true);
+		
+		syncDataService.addToProcessStack(PROCESS_NAME);
 		
 		DataService.GetCallback<Response> getFromSalesforceCallback = new DataService.GetCallback<Response>() {
 			
@@ -51,7 +53,6 @@ public class Customers {
 						insertedCustomers = dbService.upsertCustomerRecords(customers);
 					}
 				} catch (SQLException e) {
-					
 					AppLogger.logError("An error occurred when upserting customer records. " + e.getMessage());
 					
 				} finally {
@@ -69,7 +70,7 @@ public class Customers {
 			
 			@Override
 			public void always() {
-				
+				syncDataService.removeFromProcessStack(PROCESS_NAME);
 				syncDashboard.setIsBusy(false);
 				
 			}
@@ -80,6 +81,8 @@ public class Customers {
 	
 	
 	private static void updateSalesforceCustomers(ArrayList<Customer> customers) {
+		
+		syncDataService.addToProcessStack(PROCESS_NAME);
 		
 		syncDashboard.setIsBusy(true);
 		
@@ -148,9 +151,8 @@ public class Customers {
 			
 			@Override
 			public void always() {
-				
+				syncDataService.removeFromProcessStack(PROCESS_NAME);
 				syncDashboard.setIsBusy(false);
-				
 			}
 		};
 		

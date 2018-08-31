@@ -2,13 +2,13 @@ package ke.co.blueconsulting.sianroses.model.salesforce;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import java.io.Serializable;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class PackingListItems implements Serializable{
-    
-    private static final long serialVersionUID = 986369289632L;
+public class PackingListItems implements Serializable {
+	
+	private static final long serialVersionUID = 986369289632L;
 	
 	@SerializedName("totalSize")
 	@Expose

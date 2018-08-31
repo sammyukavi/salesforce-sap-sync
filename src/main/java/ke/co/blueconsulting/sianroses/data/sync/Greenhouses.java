@@ -16,6 +16,7 @@ import static ke.co.blueconsulting.sianroses.util.UpdateFields.updateSyncFields;
 
 public class Greenhouses {
 	
+	private static final String PROCESS_NAME = "GREENHOUSES_SYNC";
 	private static GreenhouseDbService dbService;
 	private static SyncContract.View syncDashboard;
 	
@@ -26,6 +27,8 @@ public class Greenhouses {
 		dbService = new GreenhouseDbService();
 		
 		syncDashboard.setIsBusy(true);
+		
+		dataService.addToProcessStack(PROCESS_NAME);
 		
 		ArrayList<Greenhouse> greenhouses = new ArrayList<>();
 		

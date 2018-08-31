@@ -6,7 +6,7 @@ import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.stmt.SelectArg;
 import com.j256.ormlite.stmt.UpdateBuilder;
 import com.j256.ormlite.stmt.Where;
-import ke.co.blueconsulting.sianroses.data.BaseDbService;
+import ke.co.blueconsulting.sianroses.data.BaseDbDataService;
 import ke.co.blueconsulting.sianroses.model.salesforce.Customer;
 import ke.co.blueconsulting.sianroses.util.StringUtils;
 
@@ -18,7 +18,7 @@ import java.util.List;
  * A class that is used to create a service for storing and retrieving the data
  * in the SAP server
  */
-public class CustomerDbService extends BaseDbService {
+public class CustomerDbService extends BaseDbDataService {
 	
 	public CustomerDbService() {
 		super();

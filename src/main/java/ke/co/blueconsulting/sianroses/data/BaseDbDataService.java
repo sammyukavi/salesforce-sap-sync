@@ -14,15 +14,16 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class BaseDbService {
+public abstract class BaseDbDataService<M> implements DataService<M> {
 	
 	protected JdbcConnectionSource connectionSource;
+	private ArrayList<String> processes = new ArrayList<>();
 	
-	public BaseDbService() {
+	protected BaseDbDataService() {
 		try {
 			connectionSource = new JdbcConnectionSource(getConnectionUrl());
 		} catch (SQLException | ClassNotFoundException e) {
-			AppLogger.logError("An error occured in the BaseDbService Constructor " + e.getMessage());
+			AppLogger.logError("An error occured in the BaseDbDataService Constructor " + e.getMessage());
 		}
 	}
 	

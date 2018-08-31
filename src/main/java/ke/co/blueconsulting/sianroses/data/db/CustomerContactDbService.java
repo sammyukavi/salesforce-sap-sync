@@ -6,9 +6,8 @@ import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.stmt.SelectArg;
 import com.j256.ormlite.stmt.UpdateBuilder;
 import com.j256.ormlite.stmt.Where;
-import ke.co.blueconsulting.sianroses.data.BaseDbService;
+import ke.co.blueconsulting.sianroses.data.BaseDbDataService;
 import ke.co.blueconsulting.sianroses.model.salesforce.CustomerContact;
-import ke.co.blueconsulting.sianroses.util.Console;
 import ke.co.blueconsulting.sianroses.util.StringUtils;
 
 import java.sql.SQLException;
@@ -18,7 +17,7 @@ import java.util.List;
 /**
  * A class used to store and read a customer's contacts from the SAP server
  */
-public class CustomerContactDbService extends BaseDbService {
+public class CustomerContactDbService extends BaseDbDataService {
 	
 	public CustomerContactDbService() {
 		super();
@@ -176,7 +175,7 @@ public class CustomerContactDbService extends BaseDbService {
 						String lName = customerContact.getLastName();
 						
 						customerContact.setContactId((StringUtils.isNullOrEmpty(fName) ? "" : fName)
-								+ " "+(StringUtils.isNullOrEmpty(fName) ? "" : lName));
+								+ " " + (StringUtils.isNullOrEmpty(fName) ? "" : lName));
 					}
 					
 					dao.createOrUpdate(customerContact);

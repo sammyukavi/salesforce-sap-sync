@@ -15,14 +15,19 @@ import static ke.co.blueconsulting.sianroses.util.UpdateFields.updateSyncFields;
 
 public class Products {
 	
+	private static final String PROCESS_NAME = "PRODUCTS_SYNC";
 	private static ProductDbService dbService;
 	private static SyncContract.View syncDashboard;
 	
 	public static void sync(SyncContract.View view, SyncDataService dataService) {
 		
 		syncDashboard = view;
+		
 		dbService = new ProductDbService();
+		
 		syncDashboard.setIsBusy(true);
+		
+		dataService.addToProcessStack(PROCESS_NAME);
 		
 		ArrayList<Product> product = new ArrayList<>();
 		

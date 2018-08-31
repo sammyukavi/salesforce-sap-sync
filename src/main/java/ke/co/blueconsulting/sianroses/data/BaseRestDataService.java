@@ -8,6 +8,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  * A blue print used to create a data service to make REST calls
@@ -16,17 +17,18 @@ import java.sql.SQLException;
  * @param <R> Rest Data Service. An interface that contains the calls to be made
  *            via REST
  */
-public abstract class BaseDataService<M, R> implements DataService<M> {
+public abstract class BaseRestDataService<M, R> implements DataService<M> {
 	
 	protected R restService;
 	protected AuthCredentialsDbService authCredentialsDbService;
+	private ArrayList<String> processes = new ArrayList<>();
 	
-	protected BaseDataService() {
+	protected BaseRestDataService() {
 		restService = RestServiceBuilder.createService(getRestServiceClass());
 		try {
 			authCredentialsDbService = new AuthCredentialsDbService();
 		} catch (ClassNotFoundException | SQLException e) {
-			AppLogger.logError("An error occured in the BaseDataService Constructor. " + e.getMessage());
+			AppLogger.logError("An error occured in the BaseRestDataService Constructor. " + e.getMessage());
 		}
 	}
 	
@@ -76,5 +78,17 @@ public abstract class BaseDataService<M, R> implements DataService<M> {
 				}
 			}
 		});
+	}
+	
+	public final void addToProcessStack(String processName) {
+		this.processes.add(processName);
+	}
+	
+	public final void removeFromProcessStack(String processName) {
+		this.processes.remove(processName);
+	}
+	
+	public final void clearProcessStack() {
+		this.processes.clear();
 	}
 }

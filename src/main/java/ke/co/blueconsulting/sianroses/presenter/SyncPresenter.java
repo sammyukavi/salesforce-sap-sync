@@ -2,13 +2,12 @@ package ke.co.blueconsulting.sianroses.presenter;
 
 import ke.co.blueconsulting.sianroses.SyncDashboard;
 import ke.co.blueconsulting.sianroses.contract.SyncContract;
-import ke.co.blueconsulting.sianroses.data.BaseDbService;
+import ke.co.blueconsulting.sianroses.data.BaseDbDataService;
 import ke.co.blueconsulting.sianroses.data.DataService;
 import ke.co.blueconsulting.sianroses.data.RestServiceBuilder;
 import ke.co.blueconsulting.sianroses.data.db.AuthCredentialsDbService;
 import ke.co.blueconsulting.sianroses.data.impl.AuthDataService;
 import ke.co.blueconsulting.sianroses.data.impl.SyncDataService;
-import ke.co.blueconsulting.sianroses.data.sync.*;
 import ke.co.blueconsulting.sianroses.model.app.AppAuthCredentials;
 import ke.co.blueconsulting.sianroses.model.app.SalesforceAuthCredentials;
 import ke.co.blueconsulting.sianroses.util.StringUtils;
@@ -20,7 +19,7 @@ import static ke.co.blueconsulting.sianroses.util.StringUtils.getString;
 
 public class SyncPresenter implements SyncContract.Presenter {
 	
-	private final BaseDbService dbService;
+	private final BaseDbDataService dbService;
 	private Thread connectThread;
 	private SyncContract.View syncDashboard;
 	private AuthCredentialsDbService authCredentialsDbService;
@@ -29,7 +28,7 @@ public class SyncPresenter implements SyncContract.Presenter {
 	public SyncPresenter(SyncDashboard syncDashboard) throws SQLException, ClassNotFoundException {
 		this.syncDashboard = syncDashboard;
 		this.authCredentialsDbService = new AuthCredentialsDbService();
-		this.dbService = new BaseDbService();
+		this.dbService = new BaseDbDataService();
 	}
 	
 	private boolean hasAccessToken() {
@@ -253,7 +252,7 @@ public class SyncPresenter implements SyncContract.Presenter {
 			
 			//ProductsChildren.sync(syncDashboard, syncDataService);
 			
-			PriceLists.sync(syncDashboard, syncDataService);
+			//PriceLists.sync(syncDashboard, syncDataService);
 			
 			//Greenhouses.sync(syncDashboard, syncDataService);
 			
