@@ -7,17 +7,7 @@ import java.util.ArrayList;
 
 public class UpdateFields {
 	
-	/*public static ArrayList<Customer> updateCustomerSyncFields(ArrayList<Customer> customers, boolean pushToSAP, boolean pullFromSAP) {
-		ArrayList<Customer> updatedCustomers = new ArrayList<>();
-		for (Customer customer : customers) {
-			customer.setPushToSap(pushToSAP);
-			customer.setPullFromSap(pullFromSAP);
-			updatedCustomers.add(customer);
-		}
-		return updatedCustomers;
-	}*/
-	
-	public static ArrayList<CustomerContact> updateCustomerContactSyncFields(ArrayList<CustomerContact> customerContacts, boolean pushToSAP, boolean pullFromSAP) {
+	public static ArrayList<CustomerContact> updateContactSyncFields(ArrayList<CustomerContact> customerContacts, boolean pushToSAP, boolean pullFromSAP) {
 		ArrayList<CustomerContact> updatedCustomers = new ArrayList<>();
 		for (CustomerContact customerContact : customerContacts) {
 			customerContact.setPushToSAP(pushToSAP);

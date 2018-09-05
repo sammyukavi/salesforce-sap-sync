@@ -2,18 +2,18 @@ package ke.co.blueconsulting.sianroses.data.sync;
 
 import ke.co.blueconsulting.sianroses.contract.SyncContract;
 import ke.co.blueconsulting.sianroses.data.DataService;
-import ke.co.blueconsulting.sianroses.data.db.PackingListDbService;
-import ke.co.blueconsulting.sianroses.data.db.PackingListItemDbService;
 import ke.co.blueconsulting.sianroses.data.impl.SyncDataService;
+import ke.co.blueconsulting.sianroses.data.impl.db.PackingListDbService;
+import ke.co.blueconsulting.sianroses.data.impl.db.PackingListItemDbService;
 import ke.co.blueconsulting.sianroses.model.app.Response;
 import ke.co.blueconsulting.sianroses.model.salesforce.PackingList;
 import ke.co.blueconsulting.sianroses.model.salesforce.PackingListItem;
 import ke.co.blueconsulting.sianroses.util.AppLogger;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 import static ke.co.blueconsulting.sianroses.util.UpdateFields.updateSyncFields;
+
 
 public class PackingLists {
 	
@@ -22,6 +22,39 @@ public class PackingLists {
 	private static PackingListItemDbService packingListItemDbService;
 	private static SyncContract.View syncDashboard;
 	private static SyncDataService syncDataService;
+	
+	private static void upsertPackinglistItemsInSap(ArrayList<PackingListItem> records, int autoId) {
+		
+		syncDashboard.setIsBusy(true);
+		
+		syncDataService.addToProcessStack(PROCESS_NAME);
+		
+		DataService.GetCallback<ArrayList<PackingListItem>> upsertRecordsCallback = new DataService.GetCallback<ArrayList<PackingListItem>>() {
+			
+			@Override
+			public void onCompleted(ArrayList<PackingListItem> response) {
+			
+			}
+			
+			@Override
+			public void onError(Throwable t) {
+				
+				AppLogger.logError("An error occured when upserting packing list items. " + t.getMessage());
+			}
+			
+			@Override
+			public void always() {
+				
+				syncDashboard.setIsBusy(false);
+				
+				syncDataService.removeFromProcessStack(PROCESS_NAME);
+				
+			}
+		};
+		
+		packingListItemDbService.upsertRecords(records, autoId, upsertRecordsCallback);
+		
+	}
 	
 	public static void sync(SyncContract.View view, SyncDataService dataService) {
 		
@@ -37,6 +70,7 @@ public class PackingLists {
 		
 		syncDataService.addToProcessStack(PROCESS_NAME);
 		
+		
 		DataService.GetCallback<Response> getFromSalesforceCallback = new DataService.GetCallback<Response>() {
 			
 			@Override
@@ -44,33 +78,15 @@ public class PackingLists {
 				
 				ArrayList<PackingList> packingLists = response.getPackingLists();
 				
-				ArrayList<PackingList> insertedPackingLists = new ArrayList<>();
-				
 				AppLogger.logInfo("Received " + packingLists.size() + " packing lists from Salesforce");
 				
-				try {
-					
-					insertedPackingLists = performUpserts(insertedPackingLists);
-					
-				} catch (SQLException e) {
-					
-					e.printStackTrace();
-					
-					AppLogger.logError("An error occured when upserting packing lists. " + e.getMessage());
-					
-				} finally {
-					
-					updateSalesforcePackingList(insertedPackingLists);
-					
-				}
-				
+				upsertPackinglistsInSap(packingLists);
 			}
 			
 			@Override
 			public void onError(Throwable t) {
 				
 				AppLogger.logError("Error fetching packing lists from Salesforce. " + t.getMessage());
-				
 			}
 			
 			@Override
@@ -78,98 +94,44 @@ public class PackingLists {
 				
 				syncDashboard.setIsBusy(false);
 				
+				syncDataService.removeFromProcessStack(PROCESS_NAME);
 			}
 		};
-		
 		syncDataService.getPackingLists(getFromSalesforceCallback);
 		
 	}
 	
-	private static ArrayList<PackingList> performUpserts(ArrayList<PackingList> packingLists) throws SQLException {
-		
-		updateSyncFields(packingLists, false, false);
-		
-		ArrayList<PackingList> insertedPackingLists = packingListDbService.upsertRecords(packingLists);
-		
-		for (PackingList packingList : insertedPackingLists) {
-			
-			ArrayList<PackingListItem> records = packingList.getPackingListItems().getRecords();
-			
-			if (records != null) {
-				packingListItemDbService.upsertRecords(records, packingList.getAutoId());
-			}
-			
-		}
-		
-		return insertedPackingLists;
-	}
-	
-	private static void updateSalesforcePackingList(ArrayList<PackingList> insertedPackingLists) {
+	private static void upsertPackinglistsInSap(ArrayList<PackingList> packingLists) {
 		
 		syncDashboard.setIsBusy(true);
 		
-		ArrayList<PackingList> unsyncedPackingLists = new ArrayList<>();
+		syncDataService.addToProcessStack(PROCESS_NAME);
 		
-		try {
-			
-			ArrayList<Integer> packingListsIds = new ArrayList<>();
-			
-			for (PackingList packingList : insertedPackingLists) {
-				packingListsIds.add(packingList.getAutoId());
-			}
-			
-			unsyncedPackingLists = (ArrayList<PackingList>) updateSyncFields(packingListDbService.getUnsyncedPackingLists(packingListsIds), false, false);
-			
-		} catch (SQLException e) {
-			AppLogger.logError(e.getMessage());
-		}
+		packingLists = (ArrayList<PackingList>) updateSyncFields(packingLists, false, false);
 		
-		insertedPackingLists.addAll(unsyncedPackingLists);
-		
-		ArrayList<PackingList> packingListToPush = new ArrayList<>();
-		
-		for (PackingList packingList : insertedPackingLists) {
-			packingList.setPackingListItems(null);
-			packingList.setPostingDate(null);
-			packingListToPush.add(packingList);
-		}
-		
-		int customersCount = insertedPackingLists.size();
-		
-		AppLogger.logInfo("Found " + customersCount + " packing lists that need to be pushed to Salesforce. " + (customersCount > 0 ? "Attempting to push." : ""));
-		
-		DataService.GetCallback<Response> pushToSalesforceCallback = new DataService.GetCallback<Response>() {
+		DataService.GetCallback<ArrayList<PackingList>> upsertRecordsCallback = new DataService.GetCallback<ArrayList<PackingList>>() {
 			
 			@Override
-			public void onCompleted(Response response) {
+			public void onCompleted(ArrayList<PackingList> upsertedPackingLists) {
 				
-				ArrayList<PackingList> packingLists = response.getPackingLists();
-				
-				
-				AppLogger.logInfo("Push To Salesforce Successful. " +
-						"Received " + packingLists.size() + " packing lists from Salesforce for updating");
-				
-				try {
+				for (PackingList packingList : upsertedPackingLists) {
 					
-					performUpserts(packingLists);
+					ArrayList<PackingListItem> records = packingList.getPackingListItems().getRecords();
 					
-				} catch (SQLException e) {
-					
-					e.printStackTrace();
-					
-					AppLogger.logError("An error occured when upserting packing lists. " + e.getMessage());
-					
-				} finally {
-					
-					AppLogger.logInfo("Packing Lists sync complete");
+					if (records != null) {
+						upsertPackinglistItemsInSap(records, packingList.getAutoId());
+					}
 					
 				}
+				
+				updateSalesforcePackingList();
+				
 			}
 			
 			@Override
-			public void onError(Throwable e) {
+			public void onError(Throwable t) {
 				
-				AppLogger.logError("Error pushing packing lists to Salesforce. " + e.getMessage());
+				AppLogger.logError("An error occured when upserting packing lists. " + t.getMessage());
 				
 			}
 			
@@ -178,12 +140,44 @@ public class PackingLists {
 				
 				syncDashboard.setIsBusy(false);
 				
+				syncDataService.removeFromProcessStack(PROCESS_NAME);
 			}
 		};
 		
-		syncDataService.pushPackingListsToSalesforce(Response.setPackingLists(packingListToPush), pushToSalesforceCallback);
+		packingListDbService.upsertRecords(packingLists, upsertRecordsCallback);
 		
 	}
 	
+	private static void updateSalesforcePackingList() {
+		
+		syncDashboard.setIsBusy(true);
+		
+		syncDataService.addToProcessStack(PROCESS_NAME);
+		
+		DataService.GetCallback<ArrayList<PackingList>> getUnsyncedCallback = new DataService.GetCallback<ArrayList<PackingList>>() {
+			
+			@Override
+			public void onCompleted(ArrayList<PackingList> response) {
+				
+				AppLogger.logInfo("Packing Lists sync complete");
+			}
+			
+			@Override
+			public void onError(Throwable t) {
+				AppLogger.logError("Error pushing packing lists to Salesforce. " + t.getMessage());
+			}
+			
+			@Override
+			public void always() {
+				
+				syncDashboard.setIsBusy(false);
+				
+				syncDataService.removeFromProcessStack(PROCESS_NAME);
+			}
+		};
+		
+		packingListDbService.getUnsynced(getUnsyncedCallback);
+		
+	}
 	
 }

@@ -1,6 +1,6 @@
 package ke.co.blueconsulting.sianroses.data;
 
-import ke.co.blueconsulting.sianroses.data.db.AuthCredentialsDbService;
+import ke.co.blueconsulting.sianroses.data.impl.db.AuthCredentialsDbService;
 import ke.co.blueconsulting.sianroses.util.AppLogger;
 import ke.co.blueconsulting.sianroses.util.ErrorHandler;
 import retrofit2.Call;
@@ -8,7 +8,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * A blue print used to create a data service to make REST calls
@@ -21,7 +22,7 @@ public abstract class BaseRestDataService<M, R> implements DataService<M> {
 	
 	protected R restService;
 	protected AuthCredentialsDbService authCredentialsDbService;
-	private ArrayList<String> processes = new ArrayList<>();
+	private Set<String> processes = new HashSet<>();
 	
 	protected BaseRestDataService() {
 		restService = RestServiceBuilder.createService(getRestServiceClass());

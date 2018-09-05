@@ -1,9 +1,11 @@
 package ke.co.blueconsulting.sianroses.model.salesforce;
 
 import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
+import ke.co.blueconsulting.sianroses.data.adapter.OwnerIdTypeAdapter;
 import ke.co.blueconsulting.sianroses.model.BaseSalesforceModel;
 
 import java.io.Serializable;
@@ -58,14 +60,14 @@ public class Customer extends BaseSalesforceModel implements Serializable {
 	private String billingCountry;
 	
 	@DatabaseField(columnName = "BillingPostalCode")
-	@SerializedName("BillingPostalCode")
+	@SerializedName("BillingState")
 	@Expose
 	private String billingPostalCode;
 	
-	@DatabaseField(columnName = "BillingState")
+	/*@DatabaseField(columnName = "BillingState")
 	@SerializedName("BillingState")
 	@Expose
-	private String billingState;
+	private String billingState;*/
 	
 	@DatabaseField(columnName = "Credit_Limit__c")
 	@SerializedName("Credit_Limit__c")
@@ -107,11 +109,6 @@ public class Customer extends BaseSalesforceModel implements Serializable {
 	@Expose
 	private double outstandingBalance;
 	
-	@DatabaseField(columnName = "OwnerId")
-	@SerializedName("OwnerId")
-	@Expose
-	private String ownerId;
-	
 	@DatabaseField(columnName = "ParentId")
 	@SerializedName("ParentId")
 	@Expose
@@ -148,19 +145,25 @@ public class Customer extends BaseSalesforceModel implements Serializable {
 	private String shippingCountry;
 	
 	@DatabaseField(columnName = "ShippingPostalCode")
-	@SerializedName("ShippingPostalCode")
+	@SerializedName("ShippingState")
 	@Expose
 	private String shippingPostalCode;
 	
-	@DatabaseField(columnName = "ShippingState")
+	/*@DatabaseField(columnName = "ShippingState")
 	@SerializedName("ShippingState")
 	@Expose
-	private String shippingState;
+	private String shippingState;*/
 	
 	@DatabaseField(columnName = "Website")
 	@SerializedName("Website")
 	@Expose
 	private String website;
+	
+	@DatabaseField(columnName = "OwnerId", foreign = true, foreignAutoRefresh = true)
+	@SerializedName("OwnerId")
+	@Expose
+	@JsonAdapter(OwnerIdTypeAdapter.class)
+	private User user;
 	
 	public boolean isActive() {
 		return active;
@@ -246,14 +249,6 @@ public class Customer extends BaseSalesforceModel implements Serializable {
 		this.billingPostalCode = billingPostalCode;
 	}
 	
-	public String getBillingState() {
-		return billingState;
-	}
-	
-	public void setBillingState(String billingState) {
-		this.billingState = billingState;
-	}
-	
 	public double getCreditLimit() {
 		return creditLimit;
 	}
@@ -308,14 +303,6 @@ public class Customer extends BaseSalesforceModel implements Serializable {
 	
 	public void setOutstandingBalance(double outstandingBalance) {
 		this.outstandingBalance = outstandingBalance;
-	}
-	
-	public String getOwnerId() {
-		return ownerId;
-	}
-	
-	public void setOwnerId(String ownerId) {
-		this.ownerId = ownerId;
 	}
 	
 	public String getParentId() {
@@ -382,19 +369,27 @@ public class Customer extends BaseSalesforceModel implements Serializable {
 		this.shippingPostalCode = shippingPostalCode;
 	}
 	
-	public String getShippingState() {
-		return shippingState;
-	}
-	
-	public void setShippingState(String shippingState) {
-		this.shippingState = shippingState;
-	}
-	
 	public String getWebsite() {
 		return website;
 	}
 	
 	public void setWebsite(String website) {
 		this.website = website;
+	}
+	
+	public String geteRPId() {
+		return eRPId;
+	}
+	
+	public void seteRPId(String eRPId) {
+		this.eRPId = eRPId;
+	}
+	
+	public User getUser() {
+		return user;
+	}
+	
+	public void setUser(User user) {
+		this.user = user;
 	}
 }

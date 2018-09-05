@@ -5,9 +5,10 @@ import ke.co.blueconsulting.sianroses.contract.SyncContract;
 import ke.co.blueconsulting.sianroses.data.BaseDbDataService;
 import ke.co.blueconsulting.sianroses.data.DataService;
 import ke.co.blueconsulting.sianroses.data.RestServiceBuilder;
-import ke.co.blueconsulting.sianroses.data.db.AuthCredentialsDbService;
 import ke.co.blueconsulting.sianroses.data.impl.AuthDataService;
 import ke.co.blueconsulting.sianroses.data.impl.SyncDataService;
+import ke.co.blueconsulting.sianroses.data.impl.db.AuthCredentialsDbService;
+import ke.co.blueconsulting.sianroses.data.sync.Customers;
 import ke.co.blueconsulting.sianroses.model.app.AppAuthCredentials;
 import ke.co.blueconsulting.sianroses.model.app.SalesforceAuthCredentials;
 import ke.co.blueconsulting.sianroses.util.StringUtils;
@@ -19,7 +20,6 @@ import static ke.co.blueconsulting.sianroses.util.StringUtils.getString;
 
 public class SyncPresenter implements SyncContract.Presenter {
 	
-	private final BaseDbDataService dbService;
 	private Thread connectThread;
 	private SyncContract.View syncDashboard;
 	private AuthCredentialsDbService authCredentialsDbService;
@@ -28,7 +28,6 @@ public class SyncPresenter implements SyncContract.Presenter {
 	public SyncPresenter(SyncDashboard syncDashboard) throws SQLException, ClassNotFoundException {
 		this.syncDashboard = syncDashboard;
 		this.authCredentialsDbService = new AuthCredentialsDbService();
-		this.dbService = new BaseDbDataService();
 	}
 	
 	private boolean hasAccessToken() {
@@ -88,13 +87,14 @@ public class SyncPresenter implements SyncContract.Presenter {
 	public void testDbConnection(String serverAddress, String serverPort, String databaseName,
 	                             String databaseUsername, String databasePassword, String syncPeriod,
 	                             String syncPeriodUnit) {
+		
 		syncDashboard.setIsBusy(true);
 		
 		final boolean[] connectionSuccessful = {false};
 		
 		connectThread = new Thread(() -> {
 			try {
-				if (dbService.testServerConnection(serverAddress, serverPort, databaseName, databaseUsername,
+				if (BaseDbDataService.testSAPConnection(serverAddress, serverPort, databaseName, databaseUsername,
 						databasePassword)) {
 					connectionSuccessful[0] = true;
 				}
@@ -244,9 +244,9 @@ public class SyncPresenter implements SyncContract.Presenter {
 			
 			SyncDataService syncDataService = new SyncDataService();
 			
-			//Customers.sync(syncDashboard, syncDataService);
+			Customers.sync(syncDashboard, syncDataService);
 			
-			//CustomersContacts.sync(syncDashboard, syncDataService);
+			//CustomerContacts.sync(syncDashboard, syncDataService);
 			
 			//Products.sync(syncDashboard, syncDataService);
 			

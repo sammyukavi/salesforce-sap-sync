@@ -57,10 +57,10 @@ public class CustomerAdapter extends TypeAdapter<Customer> {
 			jsonWriter.value(customer.getBillingPostalCode());
 		}
 		
-		if (!StringUtils.isNullOrEmpty(customer.getBillingState())) {
+		/*if (!StringUtils.isNullOrEmpty(customer.getBillingState())) {
 			jsonWriter.name("BillingState");
 			jsonWriter.value(customer.getBillingState());
-		}
+		}*/
 		
 		jsonWriter.name("Credit_Limit__c");
 		jsonWriter.value(customer.getCreditLimit());
@@ -71,7 +71,6 @@ public class CustomerAdapter extends TypeAdapter<Customer> {
 		 */
 		
 		if (!StringUtils.isNullOrEmpty(customer.getCurrencyIsoCode())) {
-			//jsonWriter.name("CurrencyIsoCode");
 			jsonWriter.name("Currency__c");
 			jsonWriter.value(customer.getCurrencyIsoCode());
 		}
@@ -109,14 +108,12 @@ public class CustomerAdapter extends TypeAdapter<Customer> {
 		jsonWriter.name("Outstanding_Balance__c");
 		jsonWriter.value(customer.getOutstandingBalance());
 		
-		if (!StringUtils.isNullOrEmpty(customer.getOwnerId())) {
-			//jsonWriter.name("OwnerId");
-			jsonWriter.name("SAP_OwnerId__c");
-			jsonWriter.value(customer.getOwnerId());
+		if (customer.getUser() != null) {
+			jsonWriter.name("OwnerId");
+			jsonWriter.value(customer.getUser().getUserCode());
 		}
 		
 		if (!StringUtils.isNullOrEmpty(customer.getParentId())) {
-			//jsonWriter.name("ParentId");
 			jsonWriter.name("Parent_Id__c");
 			jsonWriter.value(customer.getParentId());
 		}
@@ -160,10 +157,10 @@ public class CustomerAdapter extends TypeAdapter<Customer> {
 			jsonWriter.value(customer.getShippingPostalCode());
 		}
 		
-		if (!StringUtils.isNullOrEmpty(customer.getShippingState())) {
+		/*if (!StringUtils.isNullOrEmpty(customer.getShippingState())) {
 			jsonWriter.name("ShippingState");
 			jsonWriter.value(customer.getShippingState());
-		}
+		}*/
 		
 		if (!StringUtils.isNullOrEmpty(customer.getWebsite())) {
 			jsonWriter.name("Website");
@@ -214,10 +211,10 @@ public class CustomerAdapter extends TypeAdapter<Customer> {
 				} else if ("BillingPostalCode".equals(fieldname)) {
 					jsonReader.peek();
 					customer.setBillingPostalCode(jsonReader.nextString());
-				} else if ("BillingState".equals(fieldname)) {
+				} /*else if ("BillingState".equals(fieldname)) {
 					jsonReader.peek();
 					customer.setBillingState(jsonReader.nextString());
-				} else if ("Credit_Limit__c".equals(fieldname)) {
+				} */ else if ("Credit_Limit__c".equals(fieldname)) {
 					jsonReader.peek();
 					customer.setCreditLimit(jsonReader.nextDouble());
 				} else if ("CurrencyIsoCode".equals(fieldname)) {
@@ -241,10 +238,10 @@ public class CustomerAdapter extends TypeAdapter<Customer> {
 				} else if ("Outstanding_Balance__c".equals(fieldname)) {
 					jsonReader.peek();
 					customer.setOutstandingBalance(jsonReader.nextDouble());
-				} else if ("OwnerId".equals(fieldname)) {
+				} /*else if ("OwnerId".equals(fieldname)) {
 					jsonReader.peek();
 					customer.setOwnerId(jsonReader.nextString());
-				} else if ("ParentId".equals(fieldname)) {
+				}*/ else if ("ParentId".equals(fieldname)) {
 					jsonReader.peek();
 					customer.setParentId(jsonReader.nextString());
 				} else if ("Payment_Delivery_Consolidation__c".equals(fieldname)) {
@@ -274,10 +271,10 @@ public class CustomerAdapter extends TypeAdapter<Customer> {
 				} else if ("ShippingPostalCode".equals(fieldname)) {
 					jsonReader.peek();
 					customer.setShippingPostalCode(jsonReader.nextString());
-				} else if ("ShippingState".equals(fieldname)) {
+				} /*else if ("ShippingState".equals(fieldname)) {
 					jsonReader.peek();
 					customer.setShippingState(jsonReader.nextString());
-				} else if ("Website".equals(fieldname)) {
+				} */ else if ("Website".equals(fieldname)) {
 					jsonReader.peek();
 					customer.setWebsite(jsonReader.nextString());
 				} else {

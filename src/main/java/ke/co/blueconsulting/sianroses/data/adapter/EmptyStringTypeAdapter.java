@@ -10,6 +10,7 @@ import java.io.IOException;
 public class EmptyStringTypeAdapter extends TypeAdapter<String> {
 	
 	private EmptyStringTypeAdapter() {
+	
 	}
 	
 	@Override

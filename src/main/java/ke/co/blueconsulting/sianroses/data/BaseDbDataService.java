@@ -5,7 +5,7 @@ import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.stmt.Where;
-import ke.co.blueconsulting.sianroses.data.db.AuthCredentialsDbService;
+import ke.co.blueconsulting.sianroses.data.impl.db.AuthCredentialsDbService;
 import ke.co.blueconsulting.sianroses.model.app.AppAuthCredentials;
 import ke.co.blueconsulting.sianroses.util.AppLogger;
 
@@ -14,33 +14,22 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public abstract class BaseDbDataService<M> implements DataService<M> {
+public abstract class BaseDbDataService<C> implements DataService<C> {
 	
+	protected Dao<C, Integer> dao;
 	protected JdbcConnectionSource connectionSource;
-	private ArrayList<String> processes = new ArrayList<>();
 	
-	protected BaseDbDataService() {
+	public BaseDbDataService() {
 		try {
-			connectionSource = new JdbcConnectionSource(getConnectionUrl());
+			connectionSource = new JdbcConnectionSource(getSAPConnectionUrl());
+			this.dao = DaoManager.createDao(connectionSource, getDaoServiceClass());
 		} catch (SQLException | ClassNotFoundException e) {
 			AppLogger.logError("An error occured in the BaseDbDataService Constructor " + e.getMessage());
 		}
 	}
 	
-	private String getConnectionUrl() throws SQLException, ClassNotFoundException {
-		AuthCredentialsDbService authCredentialsDbService = new AuthCredentialsDbService();
-		AppAuthCredentials connectionData = authCredentialsDbService.getAppAuthCredentials();
-		return "jdbc:sqlserver://" + connectionData.getServerAddress() + ":" + connectionData.getServerPort()
-				+ ";" + "databaseName=" + connectionData.getDatabaseName() + ";user=" + connectionData.getDatabaseUsername()
-				+ ";password=" + connectionData.getDatabasePassword();
-	}
-	
-	protected <S> Dao<S, Integer> createDao(Class<S> sClass) throws SQLException {
-		return DaoManager.createDao(connectionSource, sClass);
-	}
-	
-	public boolean testServerConnection(String serverAddress, String serverPort, String databaseName,
-	                                    String databaseUsername, String databasePassword) throws ClassNotFoundException, SQLException {
+	public static boolean testSAPConnection(String serverAddress, String serverPort, String databaseName,
+	                                        String databaseUsername, String databasePassword) throws ClassNotFoundException, SQLException {
 		String connectionUrl = "jdbc:sqlserver://" + serverAddress + ":" + serverPort + ";" + "databaseName="
 				+ databaseName + ";user=" + databaseUsername + ";password=" + databasePassword;
 		Connection connection = null;
@@ -60,45 +49,81 @@ public abstract class BaseDbDataService<M> implements DataService<M> {
 		return status;
 	}
 	
-	public <S> S insertRecord(Class<S> sClass, S record) throws SQLException {
-		Dao<S, Integer> dao = createDao(sClass);
+	/**
+	 * Get an instance of the Class used to make REST calls
+	 *
+	 * @return Class Instance
+	 */
+	protected abstract Class<C> getDaoServiceClass();
+	
+	private String getSAPConnectionUrl() throws SQLException, ClassNotFoundException {
+		AuthCredentialsDbService authCredentialsDbService = new AuthCredentialsDbService();
+		AppAuthCredentials connectionData = authCredentialsDbService.getAppAuthCredentials();
+		return "jdbc:sqlserver://" + connectionData.getServerAddress() + ":" + connectionData.getServerPort()
+				+ ";" + "databaseName=" + connectionData.getDatabaseName() + ";user=" + connectionData.getDatabaseUsername()
+				+ ";password=" + connectionData.getDatabasePassword();
+	}
+	
+	public C insertRecord(C record) throws SQLException {
 		dao.createOrUpdate(record);
 		return record;
 	}
 	
-	public <S> ArrayList<S> insertRecords(Class<S> sClass, ArrayList<S> records) throws SQLException {
-		ArrayList<S> insertedRecords = new ArrayList<>();
-		Dao<S, Integer> dao = createDao(sClass);
-		for (S record : records) {
+	public ArrayList<C> insertRecords(ArrayList<C> records) throws SQLException {
+		ArrayList<C> insertedRecords = new ArrayList<>();
+		for (C record : records) {
 			dao.createOrUpdate(record);
 			insertedRecords.add(record);
 		}
 		return insertedRecords;
 	}
 	
-	public <S> ArrayList<S> getRecordsWithoutSalesforceId(Class<S> sClass) throws SQLException {
+	public ArrayList<C> getRecordsWithoutSalesforceId() throws SQLException {
 		String columnName = "SalesForceId";
-		return getRecordsWithNullOrEmptyColumn(sClass, columnName);
+		return getRecordsWithNullOrEmptyColumn(columnName);
 	}
 	
 	
-	private <S> ArrayList<S> getRecordsWithNullOrEmptyColumn(Class<S> sClass, String columnName) throws SQLException {
-		Dao<S, Integer> dao = createDao(sClass);
-		QueryBuilder<S, Integer> queryBuilder = dao.queryBuilder();
-		Where<S, Integer> where = queryBuilder.where();
-		return (ArrayList<S>) dao.query(where.or(where.isNull(columnName), where.eq(columnName, "")).prepare());
+	private ArrayList<C> getRecordsWithNullOrEmptyColumn(String columnName) throws SQLException {
+		QueryBuilder<C, Integer> queryBuilder = dao.queryBuilder();
+		Where<C, Integer> where = queryBuilder.where();
+		queryBuilder.setWhere(where.or(where.isNull(columnName), where.eq(columnName, "")));
+		return (ArrayList<C>) dao.query(queryBuilder.prepare());
 	}
 	
 	
-	public <S> ArrayList<S> getRecordsWithPullFromSapCheckedTrue(Class<S> sClass) throws SQLException {
-		String columnName = "Pull_from_SAP__c";
-		return getRecordsWithPullFromSapCheckedTrue(sClass, columnName);
+	public void getRecordsWithPullFromSapCheckedTrue(GetCallback<ArrayList<C>> callback) {
+		getRecordsWithPullFromSapCheckedTrue("Pull_from_SAP__c", callback);
 	}
 	
-	private <S> ArrayList<S> getRecordsWithPullFromSapCheckedTrue(Class<S> sClass, String columnName) throws SQLException {
-		Dao<S, Integer> dao = createDao(sClass);
-		QueryBuilder<S, Integer> queryBuilder = dao.queryBuilder();
-		Where<S, Integer> where = queryBuilder.where();
-		return (ArrayList<S>) dao.query(where.or(where.isNull(columnName), where.eq(columnName, true)).prepare());
+	private void getRecordsWithPullFromSapCheckedTrue(String columnName, GetCallback<ArrayList<C>> callback) {
+		try {
+			QueryBuilder<C, Integer> queryBuilder = dao.queryBuilder();
+			Where<C, Integer> where = queryBuilder.where();
+			queryBuilder.setWhere(where.or(where.isNull(columnName), where.eq(columnName, true)));
+			callback.onCompleted((ArrayList<C>) dao.query(queryBuilder.prepare()));
+		} catch (SQLException e) {
+			callback.onError(e);
+		} finally {
+			callback.always();
+		}
+		
 	}
+	
+	public void getUnsynced(GetCallback<ArrayList<C>> callback) {
+		try {
+			QueryBuilder<C, Integer> queryBuilder = dao.queryBuilder();
+			Where<C, Integer> where = queryBuilder.where();
+			where = where.or(where.isNull("SalesForceId"), where.eq("SalesForceId", ""),
+					where.eq("Pull_from_SAP__c", true));
+			queryBuilder.setWhere(where);
+			callback.onCompleted((ArrayList<C>) dao.query(queryBuilder.prepare()));
+		} catch (SQLException e) {
+			callback.onError(e);
+		} finally {
+			callback.always();
+		}
+	}
+	
+	
 }
