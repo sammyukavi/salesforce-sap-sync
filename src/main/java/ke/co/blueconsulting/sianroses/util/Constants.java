@@ -49,6 +49,7 @@ public class Constants {
 		public static final String PRODUCTS_CHILDREN = "productsChildren";
 		public static final String WAREHOUSES = "warehouses";
 		public static final String PACKING_LISTS = "packingLists";
+		public static final String STOCK = "stock";
 	}
 	
 	public static class BundleKeys {

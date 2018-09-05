@@ -1,9 +1,11 @@
 package ke.co.blueconsulting.sianroses.model.salesforce;
 
 import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
+import ke.co.blueconsulting.sianroses.data.adapter.EmptyStringTypeAdapter;
 
 import java.io.Serializable;
 
@@ -116,6 +118,7 @@ public class CustomerContact implements Serializable {
 	@DatabaseField(columnName = "SalesForceId")
 	@SerializedName("Id")
 	@Expose
+	@JsonAdapter(EmptyStringTypeAdapter.class)
 	private String salesforceId;
 	
 	public String getAccountId() {

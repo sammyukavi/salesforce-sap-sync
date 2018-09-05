@@ -47,8 +47,6 @@ public class RestServiceBuilder {
 	private static GsonConverterFactory buildGsonConverter() {
 		Gson gson = new GsonBuilder()
 				.registerTypeAdapter(ErrorsDeserializer.Parser.class, new ErrorsDeserializer())
-				//.registerTypeAdapter(Customer.class, new CustomerAdapter())
-				//.registerTypeAdapter(CustomerContact.class, new CustomerContactsAdapter())
 				.excludeFieldsWithoutExposeAnnotation()
 				.create();
 		return GsonConverterFactory.create(gson);

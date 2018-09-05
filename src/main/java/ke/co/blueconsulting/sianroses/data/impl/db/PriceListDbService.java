@@ -69,7 +69,9 @@ public class PriceListDbService extends BaseDbDataService<PriceList> {
 						
 						where = where.eq("AUTOID", new SelectArg(priceList.getAutoId()));
 						
-						List<PriceList> insertedProductList = dao.query(where.prepare());
+						queryBuilder.setWhere(where);
+						
+						List<PriceList> insertedProductList = dao.query(queryBuilder.prepare());
 						
 						priceList = insertedProductList.get(0);
 						

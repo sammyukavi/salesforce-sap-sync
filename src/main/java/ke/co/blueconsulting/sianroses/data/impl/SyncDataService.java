@@ -61,4 +61,7 @@ public class SyncDataService extends BaseRestDataService<Response, SyncRestServi
 		executeSingleTask(callback, restService.post(getToken(), PACKING_LISTS, response));
 	}
 	
+	public void pushStockToSalesforce(Response response, GetCallback<Response> callback) {
+		executeSingleTask(callback, restService.post(getToken(), STOCK, response));
+	}
 }

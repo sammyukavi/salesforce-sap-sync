@@ -115,7 +115,9 @@ public class ProductDbService extends BaseDbDataService<Product> {
 							where = where.eq("SalesForceId", new SelectArg(product.getSalesforceId()));
 						}
 						
-						List<Product> insertedProductList = dao.query(where.prepare());
+						queryBuilder.setWhere(where);
+						
+						List<Product> insertedProductList = dao.query(queryBuilder.prepare());
 						
 						product = insertedProductList.get(0);
 						

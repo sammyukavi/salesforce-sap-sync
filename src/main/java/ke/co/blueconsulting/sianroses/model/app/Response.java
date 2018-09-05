@@ -51,6 +51,10 @@ public class Response implements Serializable {
 	@Expose
 	private ArrayList<PackingList> packingLists;
 	
+	@SerializedName(STOCK)
+	@Expose
+	private ArrayList<Stock> stock = new ArrayList<>();
+	
 	public static Response getInstance() {
 		return instance;
 	}
@@ -119,6 +123,15 @@ public class Response implements Serializable {
 	
 	public static Response setPackingLists(ArrayList<PackingList> packingList) {
 		instance.packingLists = packingList;
+		return instance;
+	}
+	
+	public ArrayList<Stock> getStock() {
+		return stock;
+	}
+	
+	public static Response setStock(ArrayList<Stock> stock) {
+		instance.stock = stock;
 		return instance;
 	}
 }

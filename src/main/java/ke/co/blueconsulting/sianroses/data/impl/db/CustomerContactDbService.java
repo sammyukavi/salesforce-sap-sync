@@ -142,7 +142,9 @@ public class CustomerContactDbService extends BaseDbDataService<CustomerContact>
 							where = where.eq("SalesForceId", new SelectArg(customerContact.getSalesforceId()));
 						}
 						
-						List<CustomerContact> insertedCustomerContactList = dao.query(where.prepare());
+						queryBuilder.setWhere(where);
+						
+						List<CustomerContact> insertedCustomerContactList = dao.query(queryBuilder.prepare());
 						
 						customerContact = insertedCustomerContactList.get(0);
 						

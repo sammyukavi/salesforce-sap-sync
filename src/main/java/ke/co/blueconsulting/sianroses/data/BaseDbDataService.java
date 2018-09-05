@@ -93,14 +93,17 @@ public abstract class BaseDbDataService<C> implements DataService<C> {
 	
 	
 	public void getRecordsWithPullFromSapCheckedTrue(GetCallback<ArrayList<C>> callback) {
-		getRecordsWithPullFromSapCheckedTrue("Pull_from_SAP__c", callback);
+		getRecordsWithPullFromSapCheckedTrue(callback, 0L);
 	}
 	
-	private void getRecordsWithPullFromSapCheckedTrue(String columnName, GetCallback<ArrayList<C>> callback) {
+	public void getRecordsWithPullFromSapCheckedTrue(GetCallback<ArrayList<C>> callback, long limit) {
 		try {
 			QueryBuilder<C, Integer> queryBuilder = dao.queryBuilder();
 			Where<C, Integer> where = queryBuilder.where();
-			queryBuilder.setWhere(where.or(where.isNull(columnName), where.eq(columnName, true)));
+			queryBuilder.setWhere(where.or(where.isNull("Pull_from_SAP__c"), where.eq("Pull_from_SAP__c", true)));
+			if (limit != 0) {
+				queryBuilder.limit(limit);
+			}
 			callback.onCompleted((ArrayList<C>) dao.query(queryBuilder.prepare()));
 		} catch (SQLException e) {
 			callback.onError(e);

@@ -99,7 +99,9 @@ public class ProductChildDbService extends BaseDbDataService<ProductChild> {
 						
 						where = where.eq("AUTOID", new SelectArg(productChild.getAutoId()));
 						
-						List<ProductChild> insertedProductList = dao.query(where.prepare());
+						queryBuilder.setWhere(where);
+						
+						List<ProductChild> insertedProductList = dao.query(queryBuilder.prepare());
 						
 						productChild = insertedProductList.get(0);
 						

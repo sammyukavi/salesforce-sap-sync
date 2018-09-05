@@ -6,36 +6,36 @@ import com.j256.ormlite.stmt.SelectArg;
 import com.j256.ormlite.stmt.UpdateBuilder;
 import com.j256.ormlite.stmt.Where;
 import ke.co.blueconsulting.sianroses.data.BaseDbDataService;
-import ke.co.blueconsulting.sianroses.model.salesforce.Greenhouse;
+import ke.co.blueconsulting.sianroses.model.salesforce.Stock;
 import ke.co.blueconsulting.sianroses.util.StringUtils;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GreenhouseDbService extends BaseDbDataService<Greenhouse> {
+public class StockDbService extends BaseDbDataService<Stock> {
 	
 	@Override
-	protected Class<Greenhouse> getDaoServiceClass() {
-		return Greenhouse.class;
+	protected Class<Stock> getDaoServiceClass() {
+		return Stock.class;
 	}
 	
 	
-	public void upsertRecords(ArrayList<Greenhouse> greenhouses, GetCallback<ArrayList<Greenhouse>> callback) {
+	public void upsertRecords(ArrayList<Stock> greenhouses, GetCallback<ArrayList<Stock>> callback) {
 		
 		try {
 			
 			TransactionManager.callInTransaction(connectionSource, () -> {
 				
-				ArrayList<Greenhouse> upsertedGreenhouses = new ArrayList<>();
+				ArrayList<Stock> upsertedStocks = new ArrayList<>();
 				
-				for (Greenhouse greenhouse : greenhouses) {
+				for (Stock greenhouse : greenhouses) {
 					
 					boolean recordExists = dao.queryBuilder().where().eq("AUTOID", greenhouse.getAutoId()).countOf() > 0;
 					
 					if (recordExists) {
 						
-						UpdateBuilder<Greenhouse, Integer> updateBuilder = dao.updateBuilder();
+						UpdateBuilder<Stock, Integer> updateBuilder = dao.updateBuilder();
 						
 						if (!StringUtils.isNullOrEmpty(greenhouse.getSalesforceId())) {
 							updateBuilder.updateColumnValue("SalesForceId", new SelectArg(greenhouse.getSalesforceId()));
@@ -53,12 +53,12 @@ public class GreenhouseDbService extends BaseDbDataService<Greenhouse> {
 							updateBuilder.updateColumnValue("Name", new SelectArg(greenhouse.getName()));
 						}
 						
-						if (!StringUtils.isNullOrEmpty(greenhouse.getWarehouseCode())) {
-							updateBuilder.updateColumnValue("Warehouse_Code__c", new SelectArg(greenhouse.getWarehouseCode()));
+						if (!StringUtils.isNullOrEmpty(greenhouse.getWarehouse())) {
+							updateBuilder.updateColumnValue("Warehouse__c", new SelectArg(greenhouse.getWarehouse()));
 						}
 						
-						if (!StringUtils.isNullOrEmpty(greenhouse.getVarietyName())) {
-							updateBuilder.updateColumnValue("Variety_Name__c", new SelectArg(greenhouse.getVarietyName()));
+						if (!StringUtils.isNullOrEmpty(greenhouse.getQuantity())) {
+							updateBuilder.updateColumnValue("Quantity__c", new SelectArg(greenhouse.getQuantity()));
 						}
 						
 						updateBuilder.updateColumnValue("Push_to_SAP__c", greenhouse.isPushToSap());
@@ -71,24 +71,24 @@ public class GreenhouseDbService extends BaseDbDataService<Greenhouse> {
 						
 						updateBuilder.update();
 						
-						QueryBuilder<Greenhouse, Integer> queryBuilder = dao.queryBuilder();
+						QueryBuilder<Stock, Integer> queryBuilder = dao.queryBuilder();
 						
-						Where<Greenhouse, Integer> where = queryBuilder.where();
+						Where<Stock, Integer> where = queryBuilder.where();
 						
 						where = where.eq("AUTOID", new SelectArg(greenhouse.getAutoId()));
 						
 						queryBuilder.setWhere(where);
 						
-						List<Greenhouse> insertedProductList = dao.query(queryBuilder.prepare());
+						List<Stock> insertedProductList = dao.query(queryBuilder.prepare());
 						
 						greenhouse = insertedProductList.get(0);
 						
 					} else {
 						dao.createOrUpdate(greenhouse);
 					}
-					upsertedGreenhouses.add(greenhouse);
+					upsertedStocks.add(greenhouse);
 				}
-				callback.onCompleted(upsertedGreenhouses);
+				callback.onCompleted(upsertedStocks);
 				return null;
 			});
 		} catch (SQLException e) {

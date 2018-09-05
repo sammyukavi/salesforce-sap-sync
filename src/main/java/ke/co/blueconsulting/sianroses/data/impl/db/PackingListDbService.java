@@ -92,7 +92,9 @@ public class PackingListDbService extends BaseDbDataService<PackingList> {
 						
 						where = where.eq("SalesForceId", new SelectArg(packingList.getSalesforceId()));
 						
-						List<PackingList> insertedProductList = dao.query(where.prepare());
+						queryBuilder.setWhere(where);
+						
+						List<PackingList> insertedProductList = dao.query(queryBuilder.prepare());
 						
 						packingList = mergeObject(packingList, insertedProductList.get(0));
 						
