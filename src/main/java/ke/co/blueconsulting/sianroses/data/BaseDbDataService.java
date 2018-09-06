@@ -87,6 +87,7 @@ public abstract class BaseDbDataService<C> implements DataService<C> {
 	private ArrayList<C> getRecordsWithNullOrEmptyColumn(String columnName) throws SQLException {
 		QueryBuilder<C, Integer> queryBuilder = dao.queryBuilder();
 		Where<C, Integer> where = queryBuilder.where();
+		queryBuilder.orderBy("AUTOID", true);
 		queryBuilder.setWhere(where.or(where.isNull(columnName), where.eq(columnName, "")));
 		return (ArrayList<C>) dao.query(queryBuilder.prepare());
 	}
@@ -101,14 +102,21 @@ public abstract class BaseDbDataService<C> implements DataService<C> {
 			QueryBuilder<C, Integer> queryBuilder = dao.queryBuilder();
 			Where<C, Integer> where = queryBuilder.where();
 			queryBuilder.setWhere(where.or(where.isNull("Pull_from_SAP__c"), where.eq("Pull_from_SAP__c", true)));
+			queryBuilder.orderBy("AUTOID", true);
 			if (limit != 0) {
 				queryBuilder.limit(limit);
 			}
-			callback.onCompleted((ArrayList<C>) dao.query(queryBuilder.prepare()));
+			if (callback != null) {
+				callback.onCompleted((ArrayList<C>) dao.query(queryBuilder.prepare()));
+			}
 		} catch (SQLException e) {
-			callback.onError(e);
+			if (callback != null) {
+				callback.onError(e);
+			}
 		} finally {
-			callback.always();
+			if (callback != null) {
+				callback.always();
+			}
 		}
 		
 	}
@@ -120,12 +128,41 @@ public abstract class BaseDbDataService<C> implements DataService<C> {
 			where = where.or(where.isNull("SalesForceId"), where.eq("SalesForceId", ""),
 					where.eq("Pull_from_SAP__c", true));
 			queryBuilder.setWhere(where);
-			callback.onCompleted((ArrayList<C>) dao.query(queryBuilder.prepare()));
+			queryBuilder.orderBy("AUTOID", true);
+			if (callback != null) {
+				callback.onCompleted((ArrayList<C>) dao.query(queryBuilder.prepare()));
+			}
 		} catch (SQLException e) {
-			callback.onError(e);
+			if (callback != null) {
+				callback.onError(e);
+			}
 		} finally {
-			callback.always();
+			if (callback != null) {
+				callback.always();
+			}
 		}
+	}
+	
+	public void getUnsyncedCount(GetCallback<Long> callback) {
+		QueryBuilder<C, Integer> queryBuilder = dao.queryBuilder();
+		try {
+			Where<C, Integer> where = queryBuilder.where();
+			where = where.or(where.isNull("SalesForceId"), where.eq("SalesForceId", ""),
+					where.eq("Pull_from_SAP__c", true));
+			queryBuilder.setWhere(where);
+			if (callback != null) {
+				callback.onCompleted(queryBuilder.countOf());
+			}
+		} catch (SQLException e) {
+			if (callback != null) {
+				callback.onError(e);
+			}
+		} finally {
+			if (callback != null) {
+				callback.always();
+			}
+		}
+		
 	}
 	
 	

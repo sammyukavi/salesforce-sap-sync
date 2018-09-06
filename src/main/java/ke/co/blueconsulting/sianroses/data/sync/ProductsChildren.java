@@ -14,18 +14,21 @@ import static ke.co.blueconsulting.sianroses.util.UpdateFields.updateSyncFields;
 
 public class ProductsChildren {
 	
-	private static final String PROCESS_NAME = "PRODUCTS_CHILDREN_SYNC";
-	private static ProductChildDbService productChildDbService;
-	private static SyncContract.View syncDashboard;
-	private static SyncDataService syncDataService;
+	private final String PROCESS_NAME = "PRODUCTS_CHILDREN_SYNC";
+	private ProductChildDbService dbService;
+	private SyncContract.View syncDashboard;
+	private SyncDataService syncDataService;
 	
-	public static void sync(SyncContract.View view, SyncDataService dataService) {
+	public ProductsChildren(SyncContract.View syncDashboard, SyncDataService syncDataService) {
 		
-		syncDashboard = view;
+		this.syncDashboard = syncDashboard;
 		
-		productChildDbService = new ProductChildDbService();
+		this.syncDataService = syncDataService;
 		
-		syncDataService = dataService;
+		this.dbService = new ProductChildDbService();
+	}
+	
+	public void sync() {		
 		
 		syncDashboard.setIsBusy(true);
 		
@@ -55,11 +58,11 @@ public class ProductsChildren {
 			}
 		};
 		
-		productChildDbService.getRecordsWithPullFromSapCheckedTrue(getRecordsWithPullFromSapCheckedTrueCallback);
+		dbService.getRecordsWithPullFromSapCheckedTrue(getRecordsWithPullFromSapCheckedTrueCallback);
 		
 	}
 	
-	private static void pushToSalesforce(ArrayList<ProductChild> productsChildren) {
+	private void pushToSalesforce(ArrayList<ProductChild> productsChildren) {
 		
 		syncDashboard.setIsBusy(true);
 		
@@ -100,7 +103,7 @@ public class ProductsChildren {
 				pushProductsChildrenToSalesforceCallback);
 	}
 	
-	private static void upsertSap(ArrayList<ProductChild> productsChildren) {
+	private void upsertSap(ArrayList<ProductChild> productsChildren) {
 		
 		syncDataService.addToProcessStack(PROCESS_NAME);
 		
@@ -133,6 +136,6 @@ public class ProductsChildren {
 			}
 		};
 		
-		productChildDbService.upsertRecords(productsChildren, upsertProductsCallback);
+		dbService.upsertRecords(productsChildren, upsertProductsCallback);
 	}
 }

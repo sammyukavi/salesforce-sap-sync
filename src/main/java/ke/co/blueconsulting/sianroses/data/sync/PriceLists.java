@@ -14,18 +14,21 @@ import static ke.co.blueconsulting.sianroses.util.UpdateFields.updateSyncFields;
 
 public class PriceLists {
 	
-	private static final String PROCESS_NAME = "PRICE_LISTS_SYNC";
-	private static PriceListDbService dbService;
-	private static SyncContract.View syncDashboard;
-	private static SyncDataService syncDataService;
+	private final String PROCESS_NAME = "PRICE_LISTS_SYNC";
+	private PriceListDbService dbService;
+	private SyncContract.View syncDashboard;
+	private SyncDataService syncDataService;
 	
-	public static void sync(SyncContract.View view, SyncDataService dataService) {
+	public PriceLists(SyncContract.View syncDashboard, SyncDataService syncDataService) {
 		
-		syncDashboard = view;
+		this.syncDashboard = syncDashboard;
 		
-		dbService = new PriceListDbService();
+		this.syncDataService = syncDataService;
 		
-		syncDataService = dataService;
+		this.dbService = new PriceListDbService();
+	}
+	
+	public void sync() {
 		
 		syncDashboard.setIsBusy(true);
 		
@@ -61,7 +64,7 @@ public class PriceLists {
 		
 	}
 	
-	private static void pushToSalesforce(ArrayList<PriceList> priceLists) {
+	private void pushToSalesforce(ArrayList<PriceList> priceLists) {
 		
 		
 		DataService.GetCallback<Response> pushToSalesforceCallback = new DataService.GetCallback<Response>() {
@@ -95,7 +98,7 @@ public class PriceLists {
 	}
 	
 	
-	private static void upsertSap(ArrayList<PriceList> priceLists) {
+	private void upsertSap(ArrayList<PriceList> priceLists) {
 		
 		syncDataService.addToProcessStack(PROCESS_NAME);
 		

@@ -14,19 +14,22 @@ import static ke.co.blueconsulting.sianroses.util.UpdateFields.updateSyncFields;
 
 public class Customers {
 	
-	private static final String PROCESS_NAME = "CUSTOMERS_SYNC";
-	private static SyncDataService syncDataService;
-	private static CustomerDbService dbService;
-	private static SyncContract.View syncDashboard;
+	private final String PROCESS_NAME = "CUSTOMERS_SYNC";
+	private SyncDataService syncDataService;
+	private CustomerDbService dbService;
+	private SyncContract.View syncDashboard;
+	
+	public Customers(SyncContract.View syncDashboard, SyncDataService syncDataService) {
+		
+		this.syncDashboard = syncDashboard;
+		
+		this.syncDataService = syncDataService;
+		
+		this.dbService = new CustomerDbService();
+	}
 	
 	
-	public static void sync(SyncContract.View view, SyncDataService dataService) {
-		
-		syncDashboard = view;
-		
-		syncDataService = dataService;
-		
-		dbService = new CustomerDbService();
+	public void sync() {
 		
 		syncDashboard.setIsBusy(true);
 		
@@ -64,7 +67,7 @@ public class Customers {
 	}
 	
 	
-	private static void getUnsyncedSalesforceCustomers() {
+	private void getUnsyncedSalesforceCustomers() {
 		
 		syncDataService.addToProcessStack(PROCESS_NAME);
 		
@@ -96,7 +99,7 @@ public class Customers {
 		
 	}
 	
-	private static void pushToSalesforce(ArrayList<Customer> customers) {
+	private void pushToSalesforce(ArrayList<Customer> customers) {
 		
 		syncDataService.addToProcessStack(PROCESS_NAME);
 		
@@ -150,7 +153,7 @@ public class Customers {
 		}
 	}
 	
-	private static void upsertSap(ArrayList<Customer> customers) {
+	private void upsertSap(ArrayList<Customer> customers) {
 		
 		syncDataService.addToProcessStack(PROCESS_NAME);
 		

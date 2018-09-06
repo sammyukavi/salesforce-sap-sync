@@ -13,21 +13,25 @@ import java.util.ArrayList;
 
 import static ke.co.blueconsulting.sianroses.util.UpdateFields.updateContactSyncFields;
 
+
 public class CustomerContacts {
 	
-	private static final String PROCESS_NAME = "CONTACTS_SYNC";
-	private static SyncDataService syncDataService;
-	private static CustomerContactDbService dbService;
-	private static SyncContract.View syncDashboard;
+	private final String PROCESS_NAME = "CONTACTS_SYNC";
+	private SyncDataService syncDataService;
+	private CustomerContactDbService dbService;
+	private SyncContract.View syncDashboard;
+	
+	public CustomerContacts(SyncContract.View syncDashboard, SyncDataService syncDataService) {
+		
+		this.syncDashboard = syncDashboard;
+		
+		this.syncDataService = syncDataService;
+		
+		this.dbService = new CustomerContactDbService();
+	}
 	
 	
-	public static void sync(SyncContract.View view, SyncDataService dataService) {
-		
-		syncDashboard = view;
-		
-		syncDataService = dataService;
-		
-		dbService = new CustomerContactDbService();
+	public void sync() {
 		
 		syncDashboard.setIsBusy(true);
 		
@@ -65,7 +69,7 @@ public class CustomerContacts {
 	}
 	
 	
-	private static void getUnsyncedSalesforceCustomerContact() {
+	private void getUnsyncedSalesforceCustomerContact() {
 		
 		syncDataService.addToProcessStack(PROCESS_NAME);
 		
@@ -103,7 +107,7 @@ public class CustomerContacts {
 		
 	}
 	
-	private static void updateSalesforceCustomerContact(ArrayList<CustomerContact> customers) {
+	private void updateSalesforceCustomerContact(ArrayList<CustomerContact> customers) {
 		
 		syncDataService.addToProcessStack(PROCESS_NAME);
 		
@@ -152,7 +156,7 @@ public class CustomerContacts {
 		}
 	}
 	
-	private static void upsertSap(ArrayList<CustomerContact> contacts) {
+	private void upsertSap(ArrayList<CustomerContact> contacts) {
 		
 		syncDataService.addToProcessStack(PROCESS_NAME);
 		

@@ -14,22 +14,27 @@ import static ke.co.blueconsulting.sianroses.util.UpdateFields.updateSyncFields;
 
 public class Greenhouses {
 	
-	private static final String PROCESS_NAME = "GREENHOUSES_SYNC";
-	private static SyncDataService syncDataService;
-	private static GreenhouseDbService dbService;
-	private static SyncContract.View syncDashboard;
+	private final String PROCESS_NAME = "GREENHOUSES_SYNC";
+	private SyncDataService syncDataService;
+	private GreenhouseDbService dbService;
+	private SyncContract.View syncDashboard;
 	
-	public static void sync(SyncContract.View view, SyncDataService dataService) {
+	public Greenhouses(SyncContract.View syncDashboard, SyncDataService syncDataService) {
 		
-		syncDashboard = view;
+		this.syncDashboard = syncDashboard;
 		
-		dbService = new GreenhouseDbService();
+		this.syncDataService = syncDataService;
 		
-		syncDataService = dataService;
+		this.dbService = new GreenhouseDbService();
+		
+		
+	}
+	
+	public void sync() {		
 		
 		syncDashboard.setIsBusy(true);
 		
-		dataService.addToProcessStack(PROCESS_NAME);
+		syncDataService.addToProcessStack(PROCESS_NAME);
 		
 		DataService.GetCallback<ArrayList<Greenhouse>> getRecordsWithPullFromSapCheckedTrueCallback = new DataService.GetCallback<ArrayList<Greenhouse>>() {
 			
@@ -58,7 +63,7 @@ public class Greenhouses {
 		
 	}
 	
-	private static void pushToSaleforce(ArrayList<Greenhouse> greenhouses) {
+	private void pushToSaleforce(ArrayList<Greenhouse> greenhouses) {
 		
 		syncDashboard.setIsBusy(true);
 		
@@ -98,7 +103,7 @@ public class Greenhouses {
 		
 	}
 	
-	private static void upsertSap(ArrayList<Greenhouse> greenhouses) {
+	private void upsertSap(ArrayList<Greenhouse> greenhouses) {
 		
 		syncDashboard.setIsBusy(true);
 		

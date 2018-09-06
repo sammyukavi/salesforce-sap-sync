@@ -13,13 +13,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StockDbService extends BaseDbDataService<Stock> {
-	
+public class StocksDbService extends BaseDbDataService<Stock> {
 	@Override
 	protected Class<Stock> getDaoServiceClass() {
 		return Stock.class;
 	}
-	
 	
 	public void upsertRecords(ArrayList<Stock> greenhouses, GetCallback<ArrayList<Stock>> callback) {
 		
@@ -98,4 +96,30 @@ public class StockDbService extends BaseDbDataService<Stock> {
 		}
 		
 	}
+	
+	public void getRecordsWithPullFromSapCheckedTrue(GetCallback<ArrayList<Stock>> callback, long limit, long startId) {
+		try {
+			QueryBuilder<Stock, Integer> queryBuilder = dao.queryBuilder();
+			Where<Stock, Integer> where = queryBuilder.where();
+			queryBuilder.setWhere(where.or(where.isNull("Pull_from_SAP__c"),
+					where.eq("Pull_from_SAP__c", true)).and().gt("AUTOID", startId));
+			queryBuilder.orderBy("AUTOID", true);
+			if (limit != 0) {
+				queryBuilder.limit(limit);
+			}
+			if (callback != null) {
+				callback.onCompleted((ArrayList<Stock>) dao.query(queryBuilder.prepare()));
+			}
+		} catch (SQLException e) {
+			if (callback != null) {
+				callback.onError(e);
+			}
+		} finally {
+			if (callback != null) {
+				callback.always();
+			}
+		}
+		
+	}
+	
 }

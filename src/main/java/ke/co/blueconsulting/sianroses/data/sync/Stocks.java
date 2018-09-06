@@ -3,7 +3,7 @@ package ke.co.blueconsulting.sianroses.data.sync;
 import ke.co.blueconsulting.sianroses.contract.SyncContract;
 import ke.co.blueconsulting.sianroses.data.DataService;
 import ke.co.blueconsulting.sianroses.data.impl.SyncDataService;
-import ke.co.blueconsulting.sianroses.data.impl.db.StockDbService;
+import ke.co.blueconsulting.sianroses.data.impl.db.StocksDbService;
 import ke.co.blueconsulting.sianroses.model.app.Response;
 import ke.co.blueconsulting.sianroses.model.salesforce.Stock;
 import ke.co.blueconsulting.sianroses.util.AppLogger;
@@ -14,35 +14,47 @@ import static ke.co.blueconsulting.sianroses.util.UpdateFields.updateSyncFields;
 
 public class Stocks {
 	
-	private static final String PROCESS_NAME = "STOCKMANAGEMENT_SYNC";
-	private static SyncDataService syncDataService;
-	private static StockDbService dbService;
-	private static SyncContract.View syncDashboard;
+	private final String PROCESS_NAME = "STOCKMANAGEMENT_SYNC";
+	private final int resultsPerPage = 3000;
+	private SyncDataService syncDataService;
+	private StocksDbService dbService;
+	private SyncContract.View syncDashboard;
+	private long totalRecords = 0;
+	private long totalPages;
+	private long lastRecordId = 0;
 	
-	public static void sync(SyncContract.View view, SyncDataService dataService) {
-		
-		syncDashboard = view;
-		
-		dbService = new StockDbService();
-		
-		syncDataService = dataService;
+	
+	public Stocks(SyncContract.View syncDashboard, SyncDataService syncDataService) {
+		this.syncDashboard = syncDashboard;
+		this.syncDataService = syncDataService;
+		this.dbService = new StocksDbService();
+	}
+	
+	public void sync() {
 		
 		syncDashboard.setIsBusy(true);
 		
-		dataService.addToProcessStack(PROCESS_NAME);
+		syncDataService.addToProcessStack(PROCESS_NAME);
 		
-		DataService.GetCallback<ArrayList<Stock>> getRecordsWithPullFromSapCheckedTrueCallback = new DataService.GetCallback<ArrayList<Stock>>() {
+		dbService.getUnsyncedCount(new DataService.GetCallback<Long>() {
 			
 			@Override
-			public void onCompleted(ArrayList<Stock> stock) {
+			public void onCompleted(Long total) {
 				
-				pushToSaleforce(stock);
+				if (total > 0) {
+					totalRecords = total;
+					long remainder = totalRecords % resultsPerPage;
+					totalPages = totalRecords / resultsPerPage;
+					if (remainder != 0) {
+						totalPages += 1;
+					}
+					fetchRecords();
+				}
 			}
 			
 			@Override
 			public void onError(Throwable t) {
-				
-				AppLogger.logError("An error occurred when querying stock. " + t.getMessage());
+				AppLogger.logError("An error occurred when querying stocks count. " + t.getMessage());
 			}
 			
 			@Override
@@ -52,13 +64,45 @@ public class Stocks {
 				
 				syncDataService.removeFromProcessStack(PROCESS_NAME);
 			}
-		};
-		
-		dbService.getRecordsWithPullFromSapCheckedTrue(getRecordsWithPullFromSapCheckedTrueCallback, 1000L);
-		
+		});
 	}
 	
-	private static void pushToSaleforce(ArrayList<Stock> stock) {
+	private void fetchRecords() {
+		
+		syncDashboard.setIsBusy(true);
+		
+		syncDataService.addToProcessStack(PROCESS_NAME);
+		
+		if (totalPages > 0) {
+			
+			DataService.GetCallback<ArrayList<Stock>> getRecordsWithPullFromSapCheckedTrueCallback = new DataService.GetCallback<ArrayList<Stock>>() {
+				
+				@Override
+				public void onCompleted(ArrayList<Stock> stock) {
+					if (!stock.isEmpty()) {
+						totalPages = totalPages - 1;
+						lastRecordId = stock.get(stock.size() - 1).getAutoId();
+						pushToSalesforce(stock);
+					}
+				}
+				
+				@Override
+				public void onError(Throwable t) {
+					AppLogger.logError("An error occurred when querying stock. " + t.getMessage());
+				}
+				
+				@Override
+				public void always() {
+					syncDashboard.setIsBusy(false);
+					syncDataService.removeFromProcessStack(PROCESS_NAME);
+				}
+			};
+			
+			dbService.getRecordsWithPullFromSapCheckedTrue(getRecordsWithPullFromSapCheckedTrueCallback, resultsPerPage, lastRecordId);
+		}
+	}
+	
+	private void pushToSalesforce(ArrayList<Stock> stock) {
 		
 		syncDashboard.setIsBusy(true);
 		
@@ -98,7 +142,8 @@ public class Stocks {
 		
 	}
 	
-	private static void upsertSap(ArrayList<Stock> stock) {
+	
+	private void upsertSap(ArrayList<Stock> stock) {
 		
 		syncDashboard.setIsBusy(true);
 		
@@ -109,9 +154,13 @@ public class Stocks {
 		DataService.GetCallback<ArrayList<Stock>> upsertRecordsCallback = new DataService.GetCallback<ArrayList<Stock>>() {
 			
 			@Override
-			public void onCompleted(ArrayList<Stock> response) {
+			public void onCompleted(ArrayList<Stock> stock) {
 				
-				AppLogger.logInfo("StockManagements sync is complete");
+				if (totalPages > 0) {
+					fetchRecords();
+				} else {
+					AppLogger.logInfo("Stock Management sync is complete");
+				}
 				
 			}
 			
@@ -122,9 +171,7 @@ public class Stocks {
 			
 			@Override
 			public void always() {
-				
 				syncDashboard.setIsBusy(false);
-				
 				syncDataService.removeFromProcessStack(PROCESS_NAME);
 			}
 		};

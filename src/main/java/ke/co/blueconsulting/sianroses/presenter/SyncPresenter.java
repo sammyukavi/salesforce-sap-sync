@@ -8,7 +8,7 @@ import ke.co.blueconsulting.sianroses.data.RestServiceBuilder;
 import ke.co.blueconsulting.sianroses.data.impl.AuthDataService;
 import ke.co.blueconsulting.sianroses.data.impl.SyncDataService;
 import ke.co.blueconsulting.sianroses.data.impl.db.AuthCredentialsDbService;
-import ke.co.blueconsulting.sianroses.data.sync.Stocks;
+import ke.co.blueconsulting.sianroses.data.sync.*;
 import ke.co.blueconsulting.sianroses.model.app.AppAuthCredentials;
 import ke.co.blueconsulting.sianroses.model.app.SalesforceAuthCredentials;
 import ke.co.blueconsulting.sianroses.util.StringUtils;
@@ -244,21 +244,21 @@ public class SyncPresenter implements SyncContract.Presenter {
 			
 			SyncDataService syncDataService = new SyncDataService();
 			
-			//Customers.sync(syncDashboard, syncDataService);
+			new Customers(syncDashboard, syncDataService).sync();
 			
-			//CustomerContacts.sync(syncDashboard, syncDataService);
+			new CustomerContacts(syncDashboard, syncDataService).sync();
 			
-			//Products.sync(syncDashboard, syncDataService);
+			new Products(syncDashboard, syncDataService).sync();
 			
-			//ProductsChildren.sync(syncDashboard, syncDataService);
+			new ProductsChildren(syncDashboard, syncDataService).sync();
 			
-			//PriceLists.sync(syncDashboard, syncDataService);
+			new PriceLists(syncDashboard, syncDataService).sync();
 			
-			//Greenhouses.sync(syncDashboard, syncDataService);
+			new Greenhouses(syncDashboard, syncDataService).sync();
 			
-			//PackingLists.sync(syncDashboard, syncDataService);
+			new PackingLists(syncDashboard, syncDataService).sync();
 			
-			Stocks.sync(syncDashboard, syncDataService);
+			new Stocks(syncDashboard, syncDataService).sync();
 			
 		} else {
 			syncDashboard.showSuccessMessage("Cannot get access token from Salesforce. No Login Credentials Found");

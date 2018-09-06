@@ -17,13 +17,25 @@ import static ke.co.blueconsulting.sianroses.util.UpdateFields.updateSyncFields;
 
 public class PackingLists {
 	
-	private static final String PROCESS_NAME = "PACKING_LISTS_SYNC";
-	private static PackingListDbService packingListDbService;
-	private static PackingListItemDbService packingListItemDbService;
-	private static SyncContract.View syncDashboard;
-	private static SyncDataService syncDataService;
+	private final String PROCESS_NAME = "PACKING_LISTS_SYNC";
+	private PackingListDbService packingListDbService;
+	private PackingListItemDbService packingListItemDbService;
+	private SyncContract.View syncDashboard;
+	private SyncDataService syncDataService;
 	
-	private static void upsertPackinglistItemsInSap(ArrayList<PackingListItem> records, int autoId) {
+	public PackingLists(SyncContract.View syncDashboard, SyncDataService syncDataService) {
+		
+		this.syncDashboard = syncDashboard;
+		
+		this.syncDataService = syncDataService;
+		
+		packingListDbService = new PackingListDbService();
+		
+		packingListItemDbService = new PackingListItemDbService();
+		
+	}
+	
+	private void upsertPackinglistItemsInSap(ArrayList<PackingListItem> records, int autoId) {
 		
 		syncDashboard.setIsBusy(true);
 		
@@ -56,20 +68,11 @@ public class PackingLists {
 		
 	}
 	
-	public static void sync(SyncContract.View view, SyncDataService dataService) {
-		
-		syncDashboard = view;
-		
-		packingListDbService = new PackingListDbService();
-		
-		packingListItemDbService = new PackingListItemDbService();
-		
-		syncDataService = dataService;
+	public void sync() {
 		
 		syncDashboard.setIsBusy(true);
 		
 		syncDataService.addToProcessStack(PROCESS_NAME);
-		
 		
 		DataService.GetCallback<Response> getFromSalesforceCallback = new DataService.GetCallback<Response>() {
 			
@@ -97,11 +100,12 @@ public class PackingLists {
 				syncDataService.removeFromProcessStack(PROCESS_NAME);
 			}
 		};
+		
 		syncDataService.getPackingLists(getFromSalesforceCallback);
 		
 	}
 	
-	private static void upsertPackinglistsInSap(ArrayList<PackingList> packingLists) {
+	private void upsertPackinglistsInSap(ArrayList<PackingList> packingLists) {
 		
 		syncDashboard.setIsBusy(true);
 		
@@ -148,7 +152,7 @@ public class PackingLists {
 		
 	}
 	
-	private static void updateSalesforcePackingList() {
+	private void updateSalesforcePackingList() {
 		
 		syncDashboard.setIsBusy(true);
 		

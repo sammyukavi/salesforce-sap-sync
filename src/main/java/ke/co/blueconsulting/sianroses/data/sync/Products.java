@@ -14,18 +14,22 @@ import static ke.co.blueconsulting.sianroses.util.UpdateFields.updateSyncFields;
 
 public class Products {
 	
-	private static final String PROCESS_NAME = "PRODUCTS_SYNC";
-	private static ProductDbService productDbService;
-	private static SyncContract.View syncDashboard;
-	private static SyncDataService syncDataService;
+	private final String PROCESS_NAME = "PRODUCTS_SYNC";
+	private ProductDbService dbService;
+	private SyncContract.View syncDashboard;
+	private SyncDataService syncDataService;
 	
-	public static void sync(SyncContract.View view, SyncDataService dataService) {
+	public Products(SyncContract.View syncDashboard, SyncDataService syncDataService) {
 		
-		syncDashboard = view;
+		this.syncDashboard = syncDashboard;
 		
-		productDbService = new ProductDbService();
+		this.syncDataService = syncDataService;
 		
-		syncDataService = dataService;
+		this.dbService = new ProductDbService();
+		
+	}
+	
+	public void sync() {		
 		
 		syncDashboard.setIsBusy(true);
 		
@@ -56,11 +60,11 @@ public class Products {
 			}
 		};
 		
-		productDbService.getRecordsWithPullFromSapCheckedTrue(getRecordsWithPullFromSapCheckedTrueCallback);
+		dbService.getRecordsWithPullFromSapCheckedTrue(getRecordsWithPullFromSapCheckedTrueCallback);
 		
 	}
 	
-	private static void pushToSalesforce(ArrayList<Product> products) {
+	private void pushToSalesforce(ArrayList<Product> products) {
 		
 		syncDataService.addToProcessStack(PROCESS_NAME);
 		
@@ -101,7 +105,7 @@ public class Products {
 		
 	}
 	
-	private static void upsertSap(ArrayList<Product> products) {
+	private void upsertSap(ArrayList<Product> products) {
 		
 		syncDataService.addToProcessStack(PROCESS_NAME);
 		
@@ -134,7 +138,7 @@ public class Products {
 			}
 		};
 		
-		productDbService.upsertRecords(products, upsertProductsCallback);
+		dbService.upsertRecords(products, upsertProductsCallback);
 	}
 	
 }
