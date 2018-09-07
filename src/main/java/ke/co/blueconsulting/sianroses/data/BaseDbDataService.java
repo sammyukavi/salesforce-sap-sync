@@ -14,7 +14,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public abstract class BaseDbDataService<C> implements DataService<C> {
+public abstract class BaseDbDataService<C> implements DataService {
 	
 	protected Dao<C, Integer> dao;
 	protected JdbcConnectionSource connectionSource;
@@ -97,7 +97,7 @@ public abstract class BaseDbDataService<C> implements DataService<C> {
 		getRecordsWithPullFromSapCheckedTrue(callback, 0L);
 	}
 	
-	public void getRecordsWithPullFromSapCheckedTrue(GetCallback<ArrayList<C>> callback, long limit) {
+	private void getRecordsWithPullFromSapCheckedTrue(GetCallback<ArrayList<C>> callback, long limit) {
 		try {
 			QueryBuilder<C, Integer> queryBuilder = dao.queryBuilder();
 			Where<C, Integer> where = queryBuilder.where();

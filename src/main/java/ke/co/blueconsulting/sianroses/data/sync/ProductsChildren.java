@@ -28,7 +28,7 @@ public class ProductsChildren {
 		this.dbService = new ProductChildDbService();
 	}
 	
-	public void sync() {		
+	public void sync() {
 		
 		syncDashboard.setIsBusy(true);
 		

@@ -1,6 +1,6 @@
 package ke.co.blueconsulting.sianroses.data;
 
-public interface DataService<SR> {
+public interface DataService {
 	
 	interface GetCallback<SR> {
 		

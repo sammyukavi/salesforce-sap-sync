@@ -29,7 +29,7 @@ public class Products {
 		
 	}
 	
-	public void sync() {		
+	public void sync() {
 		
 		syncDashboard.setIsBusy(true);
 		

@@ -18,7 +18,7 @@ import java.util.Set;
  * @param <R> Rest Data Service. An interface that contains the calls to be made
  *            via REST
  */
-public abstract class BaseRestDataService<M, R> implements DataService<M> {
+public abstract class BaseRestDataService<M, R> implements DataService {
 	
 	protected R restService;
 	protected AuthCredentialsDbService authCredentialsDbService;

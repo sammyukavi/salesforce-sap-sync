@@ -11,7 +11,7 @@ import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.List;
 
-import static ke.co.blueconsulting.sianroses.util.Constants.BundleKeys.MESSAGE_UNSUPPORTED_ELEMENT;
+import static ke.co.blueconsulting.sianroses.util.Constants.UIStringKeys.MESSAGE_UNSUPPORTED_ELEMENT;
 
 public class ErrorsDeserializer implements JsonDeserializer<ErrorsDeserializer.Parser> {
 	

@@ -9,8 +9,8 @@ public class Constants {
 	public static final String SQLITE_DATABASE_NAME = "production.db";
 	public static final String SALESFORCE_API_BASE_URL = "https://sianroses--Developer.cs89.my.salesforce.com/services/apexrest/";//With a forwardSlash. Very important!!!
 	public static final String SALESFORCE_AUTH_BASE_URL = "https://test.salesforce.com/";//With a forwardSlash. Very important!!!
+	public static final String SQL_LOG_FILE_NAME = "SQL_logs.txt";
 	static final String APP_LOG_FILE_NAME = "Log.txt";
-	static final String SQL_LOG_FILE_NAME = "SQL_logs.txt";
 	
 	public static class Units {
 		
@@ -50,9 +50,14 @@ public class Constants {
 		public static final String WAREHOUSES = "warehouses";
 		public static final String PACKING_LISTS = "packingLists";
 		public static final String STOCK = "stock";
+		static final String ROOT_ELEMENT_NODE_NAME = "AppLog";
+		static final String INFO_MESSAGES_NODE_NAME = "info";
+		static final String WARNING_MESSAGES_NODE_NAME = "warning";
+		static final String ERROR_MESSAGES_NODE_NAME = "error";
+		static final String MESSAGE_TAG_NAME = "message";
 	}
 	
-	public static class BundleKeys {
+	public static class UIStringKeys {
 		
 		public static final String TAB_DATABASE_SERVER_CONFIG = "tab.databaseServerConfiguration";
 		public static final String TAB_SALESFORCE_CONFIG = "tab.salesforceConfiguration";

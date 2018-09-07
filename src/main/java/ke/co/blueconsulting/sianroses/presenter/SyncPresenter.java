@@ -8,14 +8,14 @@ import ke.co.blueconsulting.sianroses.data.RestServiceBuilder;
 import ke.co.blueconsulting.sianroses.data.impl.AuthDataService;
 import ke.co.blueconsulting.sianroses.data.impl.SyncDataService;
 import ke.co.blueconsulting.sianroses.data.impl.db.AuthCredentialsDbService;
-import ke.co.blueconsulting.sianroses.data.sync.*;
+import ke.co.blueconsulting.sianroses.data.sync.Customers;
 import ke.co.blueconsulting.sianroses.model.app.AppAuthCredentials;
 import ke.co.blueconsulting.sianroses.model.app.SalesforceAuthCredentials;
 import ke.co.blueconsulting.sianroses.util.StringUtils;
 
 import java.sql.SQLException;
 
-import static ke.co.blueconsulting.sianroses.util.Constants.BundleKeys.MESSAGE_LOGIN_FAILED;
+import static ke.co.blueconsulting.sianroses.util.Constants.UIStringKeys.MESSAGE_LOGIN_FAILED;
 import static ke.co.blueconsulting.sianroses.util.StringUtils.getString;
 
 public class SyncPresenter implements SyncContract.Presenter {
@@ -246,19 +246,19 @@ public class SyncPresenter implements SyncContract.Presenter {
 			
 			new Customers(syncDashboard, syncDataService).sync();
 			
-			new CustomerContacts(syncDashboard, syncDataService).sync();
+			//new CustomerContacts(syncDashboard, syncDataService).sync();
 			
-			new Products(syncDashboard, syncDataService).sync();
+			//new Products(syncDashboard, syncDataService).sync();
 			
-			new ProductsChildren(syncDashboard, syncDataService).sync();
+			//new ProductsChildren(syncDashboard, syncDataService).sync();
 			
-			new PriceLists(syncDashboard, syncDataService).sync();
+			//new PriceLists(syncDashboard, syncDataService).sync();
 			
-			new Greenhouses(syncDashboard, syncDataService).sync();
+			//new Greenhouses(syncDashboard, syncDataService).sync();
 			
-			new PackingLists(syncDashboard, syncDataService).sync();
+			//new PackingLists(syncDashboard, syncDataService).sync();
 			
-			new Stocks(syncDashboard, syncDataService).sync();
+			//new Stocks(syncDashboard, syncDataService).sync();
 			
 		} else {
 			syncDashboard.showSuccessMessage("Cannot get access token from Salesforce. No Login Credentials Found");

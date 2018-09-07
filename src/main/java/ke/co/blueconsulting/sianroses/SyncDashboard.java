@@ -16,8 +16,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static ke.co.blueconsulting.sianroses.util.Constants.BundleKeys.*;
 import static ke.co.blueconsulting.sianroses.util.Constants.*;
+import static ke.co.blueconsulting.sianroses.util.Constants.UIStringKeys.*;
 import static ke.co.blueconsulting.sianroses.util.StringUtils.getString;
 
 @SuppressWarnings("unused")

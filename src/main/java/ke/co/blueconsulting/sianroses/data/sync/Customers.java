@@ -63,7 +63,7 @@ public class Customers {
 			}
 		};
 		
-		syncDataService.getCustomers(getFromSalesforceCallback);
+		//syncDataService.getCustomers(getFromSalesforceCallback);
 	}
 	
 	

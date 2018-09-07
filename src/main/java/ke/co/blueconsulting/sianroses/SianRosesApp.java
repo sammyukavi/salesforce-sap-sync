@@ -1,14 +1,17 @@
 package ke.co.blueconsulting.sianroses;
 
+import com.j256.ormlite.logger.LocalLog;
 import ke.co.blueconsulting.sianroses.dialog.MessageDialog;
 import ke.co.blueconsulting.sianroses.util.AppLogger;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
 import java.net.URL;
 
-import static ke.co.blueconsulting.sianroses.util.Constants.BundleKeys.LABEL_APP_NAME;
-import static ke.co.blueconsulting.sianroses.util.Constants.BundleKeys.TITLE_ABOUT;
+import static ke.co.blueconsulting.sianroses.util.Constants.SQL_LOG_FILE_NAME;
+import static ke.co.blueconsulting.sianroses.util.Constants.UIStringKeys.LABEL_APP_NAME;
+import static ke.co.blueconsulting.sianroses.util.Constants.UIStringKeys.TITLE_ABOUT;
 import static ke.co.blueconsulting.sianroses.util.StringUtils.breakLongString;
 import static ke.co.blueconsulting.sianroses.util.StringUtils.getString;
 
@@ -22,6 +25,9 @@ public class SianRosesApp {
 	 * The start point of the application
 	 */
 	public static void main(String[] args) {
+		
+		System.setProperty(LocalLog.LOCAL_LOG_LEVEL_PROPERTY, "ERROR");
+		System.setProperty(LocalLog.LOCAL_LOG_FILE_PROPERTY, AppLogger.getDirectoryName() + File.separator + SQL_LOG_FILE_NAME);
 		
 		try {
 			for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {

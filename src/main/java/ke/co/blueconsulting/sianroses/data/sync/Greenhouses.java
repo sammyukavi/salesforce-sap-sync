@@ -30,7 +30,7 @@ public class Greenhouses {
 		
 	}
 	
-	public void sync() {		
+	public void sync() {
 		
 		syncDashboard.setIsBusy(true);
 		
