@@ -1,12 +1,3 @@
 # sian-roses-salesforce-sap-sync-client
 
-This project is for enabling the sync of data between Salesforce and the SAP Server at Sian Roses
-
-To build a jar file
-
-```
-$ gradle clean 
-
-$ gradle fatJar
-
-```
+This project is for enabling the sync of data between Salesforce and a SAP Server
